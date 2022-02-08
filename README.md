@@ -1,29 +1,17 @@
-# Github template
-> This repositry is github template for github user!
+# Project Compass
+> 프로젝트를 쉽고 체계적으로 관리하자
 
-You can use this repositry for your project!
+프로젝트를 쉽고 체계적으로 관리할 수 있게 도와주는 웹 서비스
 
-## How to use this template?
+## 프로젝트의 목적
 
-Just click Use this template button!
+개발자가 아닌 대학생들은 github같은 프로젝트 버전관리, 일정관리를 체계적으로 하기에는 힘들고,
+그러한 서비스들을 공부하는데 많은 시간이 소요됩니다.
 
-Use this template button is left to the About panel
+본 프로젝트는 쉽고 체계적으로 관리할 수 있게 도와줍니다.
 
-## Development setup
+## 더 자세한 내용은......
 
-Commit template setting:
+본 프로젝트에 관련한 모든 내용은 Notion에 정리해 두었습니다.
 
-```sh
-cd (your repositry directory)
-git config commit.template ./.github/.gitmessage
-```
-
-## Usage example
-
-To be added...
-
-## Contact
-
-Plase contact this email if you want to ask to devloper...
-
-BeomJunKim – wka8963@gmail.com
+[Notion으로 이동하기](https://project-compass.notion.site/Project-Compass-1d95ee0947194d39a477b9f70ca34c2a)
