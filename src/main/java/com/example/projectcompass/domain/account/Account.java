@@ -16,4 +16,5 @@ public class Account extends BaseTimeEntity {
     private String password;
 
     private String nickname;
+
 }
