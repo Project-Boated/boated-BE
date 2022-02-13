@@ -1,6 +1,5 @@
 package com.example.projectcompass.domain.common.Entity;
 
-import com.example.projectcompass.domain.account.Account;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
