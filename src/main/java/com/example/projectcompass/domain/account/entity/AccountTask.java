@@ -1,7 +1,6 @@
-package com.example.projectcompass.domain.account;
+package com.example.projectcompass.domain.account.entity;
 
 import com.example.projectcompass.domain.common.Entity.BaseTimeEntity;
-import com.example.projectcompass.domain.project.Project;
 import com.example.projectcompass.domain.task.Task;
 
 import javax.persistence.*;

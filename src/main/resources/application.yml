@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/project_compass?characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/project_compass
     username: root
     password: qjawns9840
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -1,4 +1,4 @@
-package com.example.projectcompass.domain.account;
+package com.example.projectcompass.domain.account.entity;
 
 import com.example.projectcompass.domain.project.Project;
 
