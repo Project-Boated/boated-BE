@@ -15,6 +15,14 @@ public class AccountService {
 
     @Transactional
     public Account save(Account account) {
+        checkUsernameExists(account);
         return accountRepository.save(account);
+    }
+
+    private void checkUsernameExists(Account account) {
+        boolean isExistsUsername = accountRepository.existsByUsername(account.getUsername());
+        if (isExistsUsername) {
+            throw new IllegalArgumentException("예외발생");
+        }
     }
 }

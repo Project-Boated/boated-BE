@@ -24,7 +24,7 @@ public class JsonAuthenticationFilter extends AbstractAuthenticationProcessingFi
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public JsonAuthenticationFilter() {
-        super(new AntPathRequestMatcher("/api/login"));
+        super(new AntPathRequestMatcher("/api/sign-in"));
     }
 
     @Override

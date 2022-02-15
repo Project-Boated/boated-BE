@@ -26,8 +26,7 @@ public class AccountController {
         String role = "ROLE_USER";
 
         Account account = new Account(username, passwordEncoder.encode(password), role);
-        accountService.save(account);
-
-        return ResponseEntity.ok(new IdDto(account.getId()));
+        Account savedAccount = accountService.save(account);
+        return ResponseEntity.ok(new IdDto(savedAccount.getId()));
     }
 }
