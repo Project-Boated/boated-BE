@@ -8,10 +8,12 @@ import com.example.projectcompass.security.handler.JsonAuthenticationSuccessHand
 import com.example.projectcompass.security.handler.JsonLogoutSuccessHandler;
 import com.example.projectcompass.security.provider.JsonAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -24,6 +26,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JsonAuthenticationProvider jsonAuthenticationProvider;
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web
+                .ignoring()
+                    .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                    .antMatchers("/docs/**");
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
