@@ -1,4 +1,4 @@
-package com.example.projectcompass.domain.common.Entity;
+package com.example.projectcompass.domain.common.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedBy;

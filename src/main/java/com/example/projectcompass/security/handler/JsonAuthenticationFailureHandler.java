@@ -1,5 +1,6 @@
 package com.example.projectcompass.security.handler;
 
+import com.example.projectcompass.web.common.exception.dto.ExceptionMessageResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,9 +18,9 @@ public class JsonAuthenticationFailureHandler implements AuthenticationFailureHa
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        objectMapper.writeValue(response.getWriter(), exception.getMessage());
+        objectMapper.writeValue(response.getWriter(), new ExceptionMessageResponse(exception.getMessage()));
     }
 }

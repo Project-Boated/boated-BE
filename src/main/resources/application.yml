@@ -14,5 +14,8 @@ spring:
         default_batch_fetch_size: 100
     database-platform: org.hibernate.dialect.MySQL8Dialect
 
+  messages:
+    basename: messages, errors
+
 logging.level:
   org.hibernate.SQL: debug
