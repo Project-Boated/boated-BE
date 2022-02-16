@@ -54,7 +54,7 @@ class AccountControllerTest extends AcceptanceTest {
                 .port(port)
                 .post("/api/sign-up")
         .then()
-                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test

@@ -1,7 +1,9 @@
 package com.example.projectcompass.domain.account.service;
 
 import com.example.projectcompass.domain.account.entity.Account;
+import com.example.projectcompass.domain.account.exception.UsernameAlreadyExistsException;
 import com.example.projectcompass.domain.account.repository.AccountRepository;
+import com.example.projectcompass.domain.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +22,16 @@ public class AccountService {
     }
 
     private void checkUsernameExists(Account account) {
-        boolean isExistsUsername = accountRepository.existsByUsername(account.getUsername());
-        if (isExistsUsername) {
-            throw new IllegalArgumentException("예외발생");
+        if (isExistsUsername(account) || isExistsNickname(account)) {
+            throw new UsernameAlreadyExistsException(ErrorCode.ACCOUNT_ALREADY_USERNAME_EXISTS);
         }
+    }
+
+    private boolean isExistsNickname(Account account) {
+        return accountRepository.existsByNickname(account.getUsername());
+    }
+
+    private boolean isExistsUsername(Account account) {
+        return accountRepository.existsByUsername(account.getUsername());
     }
 }

@@ -1,6 +1,6 @@
 package com.example.projectcompass.domain.task;
 
-import com.example.projectcompass.domain.common.Entity.BaseTimeEntity;
+import com.example.projectcompass.domain.common.entity.BaseTimeEntity;
 import com.example.projectcompass.domain.kanban.KanbanLane;
 
 import javax.persistence.*;

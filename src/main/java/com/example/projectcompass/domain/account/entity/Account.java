@@ -1,6 +1,6 @@
 package com.example.projectcompass.domain.account.entity;
 
-import com.example.projectcompass.domain.common.Entity.BaseTimeEntity;
+import com.example.projectcompass.domain.common.entity.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,7 +22,7 @@ public class Account extends BaseTimeEntity {
 
     private String role;
 
-    public Account(String username, String password, String role) {
+    public Account(String username, String password, String nickname, String role) {
         this.username = username;
         this.password = password;
         this.role = role;

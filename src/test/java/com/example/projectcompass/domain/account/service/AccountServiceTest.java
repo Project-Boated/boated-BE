@@ -1,6 +1,7 @@
 package com.example.projectcompass.domain.account.service;
 
 import com.example.projectcompass.domain.account.entity.Account;
+import com.example.projectcompass.domain.account.exception.UsernameAlreadyExistsException;
 import com.example.projectcompass.domain.account.repository.AccountRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ class AccountServiceTest {
         // When
         // Then
         assertThatThrownBy(() -> accountService.save(new Account(username, password, role)))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(UsernameAlreadyExistsException.class);
     }
 
     @Test
