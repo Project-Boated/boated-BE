@@ -18,6 +18,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Locale;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -45,15 +47,15 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<BasicFieldErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) throws JsonProcessingException {
+    public ResponseEntity<BasicFieldErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e, Locale locale) throws JsonProcessingException {
         return ResponseEntity
                 .badRequest()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
                         new BasicFieldErrorResponse(
-                                ErrorCode.COMMON_VALIDATION_FAIL,
                                 e.getBindingResult(),
-                                messageSource
+                                messageSource,
+                                locale
                         )
                 );
     }

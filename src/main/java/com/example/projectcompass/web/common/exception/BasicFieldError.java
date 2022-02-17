@@ -1,6 +1,7 @@
 package com.example.projectcompass.web.common.exception;
 
 import lombok.Getter;
+import org.apache.tomcat.jni.Local;
 import org.springframework.context.MessageSource;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -23,21 +24,21 @@ public class BasicFieldError {
         this.reason = reason;
     }
 
-    public static List<BasicFieldError> of(BindingResult bindingResult, MessageSource messageSource) {
+    public static List<BasicFieldError> of(BindingResult bindingResult, MessageSource messageSource, Locale locale) {
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         return fieldErrors.stream()
                 .map(error -> new BasicFieldError(
                             error.getField(),
                             error.getRejectedValue() == null ? "" : error.getRejectedValue().toString(),
-                            getMessage(error, messageSource)))
+                            getMessage(error, messageSource, locale)))
                 .collect(Collectors.toList());
     }
 
-    private static String getMessage(FieldError error, MessageSource messageSource) {
+    private static String getMessage(FieldError error, MessageSource messageSource, Locale locale) {
         String result = error.getDefaultMessage();
         for (String code : error.getCodes()) {
             String messageNotFound = "NotFound";
-            String message = messageSource.getMessage(code, null, messageNotFound, Locale.KOREA);
+            String message = messageSource.getMessage(code, null, messageNotFound, locale);
             if(!message.equals(messageNotFound)) {
                 result = message;
             }

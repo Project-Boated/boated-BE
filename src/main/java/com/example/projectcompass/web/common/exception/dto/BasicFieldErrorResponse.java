@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class BasicFieldErrorResponse extends BasicErrorResponse {
 
@@ -18,9 +19,9 @@ public class BasicFieldErrorResponse extends BasicErrorResponse {
         this.fieldErrors = new ArrayList<>();
     }
 
-    public BasicFieldErrorResponse(ErrorCode errorCode, BindingResult bindingResult, MessageSource messageSource) {
-        super(errorCode);
-        this.fieldErrors = BasicFieldError.of(bindingResult, messageSource);
+    public BasicFieldErrorResponse(BindingResult bindingResult, MessageSource messageSource, Locale locale) {
+        super(ErrorCode.COMMON_VALIDATION_FAIL);
+        this.fieldErrors = BasicFieldError.of(bindingResult, messageSource, locale);
     }
 
     public List<BasicFieldError> getFieldErrors() {
