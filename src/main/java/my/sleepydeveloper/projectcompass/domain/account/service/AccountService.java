@@ -2,12 +2,16 @@ package my.sleepydeveloper.projectcompass.domain.account.service;
 
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.exception.NicknameAlreadyExistsException;
+import my.sleepydeveloper.projectcompass.domain.account.exception.NotFoundAccountException;
 import my.sleepydeveloper.projectcompass.domain.account.exception.UsernameAlreadyExistsException;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import my.sleepydeveloper.projectcompass.domain.account.value.AccountProfile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +41,12 @@ public class AccountService {
 
     private boolean isExistsUsername(Account account) {
         return accountRepository.existsByUsername(account.getUsername());
+    }
+
+    public AccountProfile findAccountProfileByAccount(Account account) {
+        Account findAccount = accountRepository.findByUsername(account.getUsername())
+                .orElseThrow(() -> new NotFoundAccountException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        return new AccountProfile(findAccount);
     }
 }

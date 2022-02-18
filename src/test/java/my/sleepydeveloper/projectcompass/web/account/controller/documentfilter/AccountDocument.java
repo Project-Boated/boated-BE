@@ -24,7 +24,8 @@ public class AccountDocument {
                         fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임")
                 ),
                 responseHeaders(
-                        headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type"),
+                        headerWithName(HttpHeaders.LOCATION).description("회원가입된 유저의 프로필 URL")
                 ),
                 responseFields(
                         fieldWithPath("id").type(JsonFieldType.NUMBER).description("회원가입된 id")

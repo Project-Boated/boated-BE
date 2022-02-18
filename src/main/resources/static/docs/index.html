@@ -463,6 +463,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#resources-accounts-sign-in">유저 로그인</a></li>
 <li><a href="#resources-accounts-sign-up">유저 생성</a></li>
+<li><a href="#resources-accounts-retrieve-profile">유저 프로필 조회</a></li>
 </ul>
 </li>
 </ul>
@@ -606,7 +607,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/sign-in HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Host: localhost:14114
+Host: localhost:4216
 Content-Length: 37
 
 {"username":"user","password":"1111"}</code></pre>
@@ -652,14 +653,14 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: JSESSIONID=AFB0AE26B53F49E65768DEB722286E54; Path=/; HttpOnly
+Set-Cookie: JSESSIONID=46DAAA53FEEB280964B9E7F95F3BB5C9; Path=/; HttpOnly
 Content-Type: application/json;charset=ISO-8859-1
 Content-Length: 8
-Date: Thu, 17 Feb 2022 14:50:00 GMT
+Date: Fri, 18 Feb 2022 14:57:13 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 
-{"id":5}</code></pre>
+{"id":9}</code></pre>
 </div>
 </div>
 </div>
@@ -721,13 +722,13 @@ Connection: keep-alive
 <h5 id="_http_request_2"><a class="link" href="#_http_request_2">http-request</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/sign-up HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/account/sign-up HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Host: localhost:14114
-Content-Length: 55
+Host: localhost:4232
+Content-Length: 63
 
-{"username":"user","password":"1111","nickname":"user"}</code></pre>
+{"username":"username","password":"password","nickname":"user"}</code></pre>
 </div>
 </div>
 </div>
@@ -797,7 +798,8 @@ Content-Length: 55
 <h6 id="_http_response_2"><a class="link" href="#_http_response_2">http-response</a></h6>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
+Location: /api/account/profile3
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
@@ -806,12 +808,12 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 17 Feb 2022 14:49:58 GMT
+Date: Fri, 18 Feb 2022 14:57:15 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 8
 
-{"id":4}</code></pre>
+{"id":3}</code></pre>
 </div>
 </div>
 </div>
@@ -832,6 +834,10 @@ Content-Length: 8
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">보낸 Content Type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Location</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">회원가입된 유저의 프로필 URL</p></td>
 </tr>
 </tbody>
 </table>
@@ -862,13 +868,129 @@ Content-Length: 8
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="resources-accounts-retrieve-profile"><a class="link" href="#resources-accounts-retrieve-profile">유저 프로필 조회</a></h3>
+<div class="paragraph">
+<p><code>GET</code> 요청을 사용해서 유저를 조회할 수 있다.</p>
+</div>
+<div class="sect3">
+<h4 id="_request_3"><a class="link" href="#_request_3">Request</a></h4>
+<div class="sect4">
+<h5 id="_http_request_3"><a class="link" href="#_http_request_3">http-request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/account/profile HTTP/1.1
+Accept: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_request_headers_3"><a class="link" href="#_request_headers_3">request-headers</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Accept</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">받을 타입</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_3"><a class="link" href="#_response_3">Response</a></h4>
+<div class="sect5">
+<h6 id="_http_response_3"><a class="link" href="#_http_response_3">http-response</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 60
+
+{"username":"username","nickname":"user","role":"ROLE_USER"}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_headers_3"><a class="link" href="#_response_headers_3">response-headers</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Media Type</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_response_fields_3"><a class="link" href="#_response_fields_3">response-fields</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>username</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">닉네임</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>role</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">권한</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-02-17 20:45:19 +0900
+Last updated 2022-02-18 23:36:09 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

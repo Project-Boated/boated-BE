@@ -25,6 +25,7 @@ public class Account extends BaseTimeEntity {
     public Account(String username, String password, String nickname, String role) {
         this.username = username;
         this.password = password;
+        this.nickname = nickname;
         this.role = role;
     }
 

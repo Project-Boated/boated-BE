@@ -140,3 +140,26 @@ include::{snippets}/sign-up/response-headers.adoc[]
 
 ===== response-fields
 include::{snippets}/sign-up/response-fields.adoc[]
+
+[[resources-accounts-retrieve-profile]]
+=== 유저 프로필 조회
+`GET` 요청을 사용해서 유저를 조회할 수 있다.
+
+==== Request
+
+===== http-request
+include::{snippets}/account-retrieve-profile/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/account-retrieve-profile/request-headers.adoc[]
+
+==== Response
+
+====== http-response
+include::{snippets}/account-retrieve-profile/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/account-retrieve-profile/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/account-retrieve-profile/response-fields.adoc[]

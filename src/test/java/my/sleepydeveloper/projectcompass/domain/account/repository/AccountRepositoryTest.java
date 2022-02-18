@@ -77,6 +77,19 @@ class AccountRepositoryTest {
         assertThat(existsByUsername).isTrue();
     }
 
+    @Test
+    @DisplayName("Username으로 Account 하나 조회")
+    void findByUsername() throws Exception {
+        // Given
+        createAccount(username, password, nickname);
+
+        // When
+        Optional<Account> account = accountRepository.findByUsername(username);
+
+        // Then
+        assertThat(account).isPresent();
+    }
+
     private Account createAccount(String username, String password, String nickname) {
         return accountRepository.save(new Account(username, password, nickname, "ROLE_USER"));
     }
