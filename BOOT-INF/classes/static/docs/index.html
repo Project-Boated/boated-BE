@@ -607,7 +607,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/sign-in HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Host: localhost:2854
+Host: localhost:4108
 Content-Length: 37
 
 {"username":"user","password":"1111"}</code></pre>
@@ -653,10 +653,10 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: JSESSIONID=2C318DDBCDF903EFADB716222E20AAD2; Path=/; HttpOnly
+Set-Cookie: JSESSIONID=616B9082C47C35A40DC025AC2AE4F5BF; Path=/; HttpOnly
 Content-Type: application/json;charset=ISO-8859-1
 Content-Length: 8
-Date: Fri, 18 Feb 2022 14:53:05 GMT
+Date: Sun, 20 Feb 2022 06:33:53 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 
@@ -725,10 +725,10 @@ Connection: keep-alive
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/account/sign-up HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Host: localhost:2867
-Content-Length: 63
+Host: localhost:4121
+Content-Length: 67
 
-{"username":"username","password":"password","nickname":"user"}</code></pre>
+{"username":"username","password":"password","nickname":"nickname"}</code></pre>
 </div>
 </div>
 </div>
@@ -799,7 +799,7 @@ Content-Length: 63
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
-Location: /api/account/3
+Location: /api/account/profile3
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
@@ -808,7 +808,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Fri, 18 Feb 2022 14:53:07 GMT
+Date: Sun, 20 Feb 2022 06:33:55 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 8
@@ -834,6 +834,10 @@ Content-Length: 8
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">보낸 Content Type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Location</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">회원가입된 유저의 프로필 URL</p></td>
 </tr>
 </tbody>
 </table>
@@ -917,9 +921,9 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 60
+Content-Length: 64
 
-{"username":"username","nickname":"user","role":"ROLE_USER"}</code></pre>
+{"username":"username","nickname":"nickname","role":"ROLE_USER"}</code></pre>
 </div>
 </div>
 </div>

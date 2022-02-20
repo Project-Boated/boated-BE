@@ -163,3 +163,53 @@ include::{snippets}/account-retrieve-profile/response-headers.adoc[]
 
 ===== response-fields
 include::{snippets}/account-retrieve-profile/response-fields.adoc[]
+
+[[resources-accounts-update-profile]]
+=== 유저 프로필 업데이트
+`PATCH` 요청을 사용해서 유저 프로필을 업데이트 할 수 있다.
+
+==== Request
+
+===== http-request
+include::{snippets}/account-update-profile/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/account-update-profile/request-headers.adoc[]
+
+===== request-fields
+include::{snippets}/account-update-profile/request-fields.adoc[]
+
+==== Response
+
+====== http-response
+include::{snippets}/account-update-profile/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/account-update-profile/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/account-update-profile/response-fields.adoc[]
+
+
+[[resources-accounts-update-profile]]
+=== 유저 프로필 업데이트
+`PATCH` 요청을 사용해서 유저 프로필을 업데이트 할 수 있다.
+
+==== Request
+
+===== http-request
+include::{snippets}/account-delete-profile/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/account-delete-profile/request-headers.adoc[]
+
+==== Response
+
+====== http-response
+include::{snippets}/account-delete-profile/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/account-delete-profile/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/account-delete-profile/response-fields.adoc[]

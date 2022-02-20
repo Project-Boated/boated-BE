@@ -9,13 +9,13 @@ import my.sleepydeveloper.projectcompass.domain.account.value.AccountProfile;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountProfileDto {
+public class AccountProfileResponseDto {
 
     private String username;
     private String nickname;
     private String role;
 
-    public AccountProfileDto(AccountProfile accountProfile) {
+    public AccountProfileResponseDto(AccountProfile accountProfile) {
         this.username = accountProfile.getUsername();
         this.nickname = accountProfile.getNickname();
         this.role = accountProfile.getRole();
