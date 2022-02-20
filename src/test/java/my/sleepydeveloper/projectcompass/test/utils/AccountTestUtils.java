@@ -2,6 +2,8 @@ package my.sleepydeveloper.projectcompass.test.utils;
 
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,4 +25,10 @@ public class AccountTestUtils {
     public Account signUp(String username, String password, String nickname, String role) {
         return accountService.save(new Account(username, passwordEncoder.encode(password), nickname, role));
     }
+
+    public static Account getAccountFromSecurityContext() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (Account) authentication.getPrincipal();
+    }
+
 }

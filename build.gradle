@@ -55,6 +55,7 @@ dependencies {
 
     // Spring Rest Docs
     testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
     // Utils
@@ -140,6 +141,8 @@ allprojects {
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
             options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+                    // Graal Compiler setting
+                    //<< "-XX:+UnlockExperimentalVMOptions" << "-XX:+EnableJVMCI" << "-XX:+EnableJVMCI"
         }
     }
 }
