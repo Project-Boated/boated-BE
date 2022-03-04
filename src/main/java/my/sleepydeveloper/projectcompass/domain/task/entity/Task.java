@@ -1,7 +1,7 @@
-package my.sleepydeveloper.projectcompass.domain.task;
+package my.sleepydeveloper.projectcompass.domain.task.entity;
 
 import my.sleepydeveloper.projectcompass.domain.common.entity.BaseTimeEntity;
-import my.sleepydeveloper.projectcompass.domain.kanban.KanbanLane;
+import my.sleepydeveloper.projectcompass.domain.kanban.entity.KanbanLane;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

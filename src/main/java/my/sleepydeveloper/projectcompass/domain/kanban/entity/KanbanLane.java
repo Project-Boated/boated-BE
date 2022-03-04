@@ -1,4 +1,4 @@
-package my.sleepydeveloper.projectcompass.domain.kanban;
+package my.sleepydeveloper.projectcompass.domain.kanban.entity;
 
 import my.sleepydeveloper.projectcompass.domain.common.entity.BaseTimeEntity;
 

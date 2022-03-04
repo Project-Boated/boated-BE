@@ -1,6 +1,6 @@
-package my.sleepydeveloper.projectcompass.test.basetest;
+package my.sleepydeveloper.projectcompass.common.basetest;
 
-import my.sleepydeveloper.projectcompass.test.utils.DatabaseCleanUp;
+import my.sleepydeveloper.projectcompass.common.utils.DatabaseCleanUp;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.AfterEach;

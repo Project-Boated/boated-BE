@@ -14,9 +14,11 @@ import my.sleepydeveloper.projectcompass.web.account.exception.AccountUpdateAcce
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.net.URI;
 
 @RestController
@@ -74,9 +76,11 @@ public class AccountController {
 
     @DeleteMapping("/profile/{accountId}")
     public ResponseEntity<IdDto> deleteAccount(@AuthenticationPrincipal Account account,
-                                               @PathVariable Long accountId) {
+                                               @PathVariable Long accountId,
+                                               HttpSession session) {
         checkRightAccess(account, accountId);
         accountService.delete(account);
+        session.invalidate();
 
         return ResponseEntity.ok(new IdDto(accountId));
     }

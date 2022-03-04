@@ -1,20 +1,19 @@
-package my.sleepydeveloper.projectcompass.domain.account.entity;
+package my.sleepydeveloper.projectcompass.domain.invitation;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
+import my.sleepydeveloper.projectcompass.domain.common.entity.BaseEntity;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 
 @Entity
-@NoArgsConstructor
-@Getter
-public class AccountProject {
+@NoArgsConstructor @Getter
+public class Invitation extends BaseEntity {
 
-    @Id @GeneratedValue
-    @Column(name = "account_project_id")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "invitation_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,7 +24,7 @@ public class AccountProject {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    public AccountProject(Account account, Project project) {
+    public Invitation(Account account, Project project) {
         this.account = account;
         this.project = project;
     }

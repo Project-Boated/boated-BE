@@ -191,9 +191,9 @@ include::{snippets}/account-update-profile/response-headers.adoc[]
 include::{snippets}/account-update-profile/response-fields.adoc[]
 
 
-[[resources-accounts-update-profile]]
-=== 유저 프로필 업데이트
-`PATCH` 요청을 사용해서 유저 프로필을 업데이트 할 수 있다.
+[[resources-accounts-delete-profile]]
+=== 유저 탈퇴
+`DELETE` 요청을 사용해서 회원탈퇴를 진행할 수 있다.
 
 ==== Request
 
@@ -213,3 +213,159 @@ include::{snippets}/account-delete-profile/response-headers.adoc[]
 
 ===== response-fields
 include::{snippets}/account-delete-profile/response-fields.adoc[]
+
+[[resources-project]]
+== 프로젝트
+
+[[resources-project-create]]
+=== 프로젝트 생성
+`POST` 요청을 사용해서 프로젝트를 생성할 수 있다.
+
+==== Request
+
+===== http-request
+include::{snippets}/project-create/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/project-create/request-headers.adoc[]
+
+==== Response
+
+====== http-response
+include::{snippets}/project-create/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/project-create/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/project-create/response-fields.adoc[]
+
+[[resources-project-update]]
+=== 프로젝트 업데이트
+`PATCH` 요청을 사용해서 프로젝트의 내용을 업데이트 할 수 있다.
+
+==== Request
+
+===== http-request
+include::{snippets}/project-update/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/project-update/request-headers.adoc[]
+
+===== response-fields
+include::{snippets}/project-update/request-fields.adoc[]
+
+==== Response
+
+====== http-response
+include::{snippets}/project-update/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/project-update/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/project-update/response-fields.adoc[]
+
+[[resources-project-my-retrieve]]
+=== 내 프로젝트 목록
+`GET` 요청을 사용해서 내 프로젝트의 목록을 확인할 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/project-my-retrieve/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/project-my-retrieve/request-headers.adoc[]
+
+==== Response
+
+====== http-response
+include::{snippets}/project-my-retrieve/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/project-my-retrieve/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/project-my-retrieve/response-fields.adoc[]
+
+[[resources-project-crews-retrieve]]
+=== 프로젝트에 참여한 유저
+`GET` 요청을 사용해서 프로젝트에 참여한 유저를 확인할 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/project-crews-retrieve/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/project-crews-retrieve/request-headers.adoc[]
+
+==== Response
+
+====== http-response
+include::{snippets}/project-crews-retrieve/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/project-crews-retrieve/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/project-crews-retrieve/response-fields.adoc[]
+
+[[resources-project-captain-update]]
+=== 프로젝트의 captain 바꾸기
+`PUT` 요청을 사용해서 프로젝트의 Captain을 바꿀 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/project-captain-update/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/project-captain-update/path-parameters.adoc[]
+
+===== request-headers
+include::{snippets}/project-captain-update/request-headers.adoc[]
+
+===== request-fields
+include::{snippets}/project-captain-update/request-fields.adoc[]
+
+==== Response
+
+====== http-response
+include::{snippets}/project-captain-update/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/project-captain-update/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/project-captain-update/response-fields.adoc[]
+
+[[resources-project-crew-invite]]
+=== 프로젝트 초대하기
+`POST` 요청을 사용해서 프로젝트에 초대할 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/project-crew-invite/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/project-crew-invite/path-parameters.adoc[]
+
+===== request-headers
+include::{snippets}/project-crew-invite/request-headers.adoc[]
+
+===== request-fields
+include::{snippets}/project-crew-invite/request-fields.adoc[]
+
+==== Response
+
+====== http-response
+include::{snippets}/project-crew-invite/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/project-crew-invite/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/project-crew-invite/response-fields.adoc[]

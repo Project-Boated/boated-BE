@@ -1,8 +1,8 @@
 package my.sleepydeveloper.projectcompass.security;
 
 import my.sleepydeveloper.projectcompass.security.dto.UsernamePasswordDto;
-import my.sleepydeveloper.projectcompass.test.basetest.AcceptanceTest;
-import my.sleepydeveloper.projectcompass.test.utils.AccountTestUtils;
+import my.sleepydeveloper.projectcompass.common.basetest.AcceptanceTest;
+import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
