@@ -1,23 +1,16 @@
 package my.sleepydeveloper.projectcompass.domain.account.entity;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class AccountTest {
 
-    private String username = "username";
-    private String password = "password";
-    private String nickname = "nickname";
-    private String role = "ROLE_USER";
-
     @Test
-    @DisplayName("nickname, password 둘다 바꾸기")
-    void updateProfile_change_nickname_password() throws Exception {
+    void updateProfile_모든정보업데이트_업데이트성공() throws Exception {
         // Given
-        Account account = new Account(username, password, nickname, role);
+        Account account = new Account(username, password, nickname, userRole);
 
         // When
         String updatePassword = "updatePassword";
@@ -30,10 +23,9 @@ class AccountTest {
     }
 
     @Test
-    @DisplayName("아무것도 안 바꾸기")
-    void updateProfile_dont_change_nickname_password() throws Exception {
+    void updateProfile_모든정보NULL_기존정보유지() throws Exception {
         // Given
-        Account account = new Account(username, password, nickname, role);
+        Account account = new Account(username, password, nickname, userRole);
 
         // When
         account.updateProfile(null, null);

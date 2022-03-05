@@ -46,7 +46,7 @@ public class AccountController {
 
     @GetMapping("/profile")
     public ResponseEntity<AccountProfileResponseDto> getAccountProfile(@AuthenticationPrincipal Account account) {
-        AccountProfile accountProfile = accountService.findProfileByAccount(account);
+        AccountProfile accountProfile = new AccountProfile(account);
 
         return ResponseEntity.ok(new AccountProfileResponseDto(accountProfile));
     }
@@ -58,12 +58,13 @@ public class AccountController {
 
         checkRightAccess(account, accountId);
 
-        accountService.updateProfile(AccountUpdateCondition.builder()
-                        .accountId(accountId)
-                        .originalPassword(accountUpdateRequest.getOriginalPassword())
-                        .nickname(accountUpdateRequest.getNickname())
-                        .password(accountUpdateRequest.getPassword())
-                .build());
+        AccountUpdateCondition updateCondition = AccountUpdateCondition.builder()
+                .originalPassword(accountUpdateRequest.getOriginalPassword())
+                .nickname(accountUpdateRequest.getNickname())
+                .password(accountUpdateRequest.getPassword())
+                .build();
+
+        accountService.updateProfile(account, updateCondition);
 
         return ResponseEntity.ok(new IdDto(account.getId()));
     }

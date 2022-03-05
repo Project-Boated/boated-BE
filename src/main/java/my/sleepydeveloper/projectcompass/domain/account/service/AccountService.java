@@ -37,24 +37,15 @@ public class AccountService {
     }
 
     private boolean isExistsNickname(Account account) {
-        return accountRepository.existsByNickname(account.getUsername());
+        return accountRepository.existsByNickname(account.getNickname());
     }
 
     private boolean isExistsUsername(Account account) {
         return accountRepository.existsByUsername(account.getUsername());
     }
 
-    public AccountProfile findProfileByAccount(Account account) {
-        Account findAccount = accountRepository.findByUsername(account.getUsername())
-                .orElseThrow(() -> new NotFoundAccountException(ErrorCode.ACCOUNT_NOT_FOUND));
-
-        return new AccountProfile(findAccount);
-    }
-
     @Transactional
-    public void updateProfile(AccountUpdateCondition accountUpdateCondition) {
-        Account account = accountRepository.findById(accountUpdateCondition.getAccountId())
-                .orElseThrow(() -> new NotFoundAccountException(ErrorCode.ACCOUNT_NOT_FOUND));
+    public void updateProfile(Account account, AccountUpdateCondition accountUpdateCondition) {
 
         if (!passwordEncoder.matches(
                 accountUpdateCondition.getOriginalPassword(),
@@ -63,20 +54,24 @@ public class AccountService {
         }
 
         if(accountUpdateCondition.getNickname() != null) {
-            if (accountRepository.existsByNickname(accountUpdateCondition.getNickname())) {
+            if(account.getNickname().equals(accountUpdateCondition.getNickname())) {
+                 accountUpdateCondition.setNickname(null);
+            }
+            else if (accountRepository.existsByNickname(accountUpdateCondition.getNickname())) {
                 throw new DuplicateNicknameException(ErrorCode.ACCOUNT_DUPLICATE_NICKNAME);
             }
         }
 
-        account.updateProfile(accountUpdateCondition.getNickname(), passwordEncoder.encode(accountUpdateCondition.getPassword()));
+        if (accountUpdateCondition.getPassword() == null) {
+            account.updateProfile(accountUpdateCondition.getNickname(), null);
+        } else {
+            account.updateProfile(accountUpdateCondition.getNickname(), passwordEncoder.encode(accountUpdateCondition.getPassword()));
+        }
+
     }
 
     @Transactional
     public void delete(Account account) {
-        if(!accountRepository.existsById(account.getId())) {
-            throw new NotFoundAccountException(ErrorCode.ACCOUNT_NOT_FOUND);
-        }
-
         accountRepository.delete(account);
     }
 }

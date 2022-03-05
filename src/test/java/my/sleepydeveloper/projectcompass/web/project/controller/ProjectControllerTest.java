@@ -2,7 +2,6 @@ package my.sleepydeveloper.projectcompass.web.project.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import my.sleepydeveloper.projectcompass.common.basetest.AcceptanceTest;
-import my.sleepydeveloper.projectcompass.common.data.AccountBasicData;
 import my.sleepydeveloper.projectcompass.common.mock.WithMockJsonUser;
 import my.sleepydeveloper.projectcompass.common.utils.AccountProjectTestUtils;
 import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
@@ -23,8 +22,8 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static my.sleepydeveloper.projectcompass.common.data.AccountBasicData.*;
-import static my.sleepydeveloper.projectcompass.common.data.ProjectBasicData.*;
+import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
+import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.*;
 import static my.sleepydeveloper.projectcompass.web.project.controller.document.ProjectDocument.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

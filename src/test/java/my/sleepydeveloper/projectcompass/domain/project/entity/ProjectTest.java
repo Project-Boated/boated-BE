@@ -1,22 +1,19 @@
 package my.sleepydeveloper.projectcompass.domain.project.entity;
 
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static my.sleepydeveloper.projectcompass.common.data.AccountBasicData.*;
-import static my.sleepydeveloper.projectcompass.common.data.ProjectBasicData.projectDescription;
-import static my.sleepydeveloper.projectcompass.common.data.ProjectBasicData.projectName;
-import static org.assertj.core.api.Assertions.*;
+import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
+import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.projectDescription;
+import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.projectName;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ProjectTest {
     
     @Test
-    @DisplayName("project 정보 업데이트, 모든 요청포함")
-    void changeProjectInform_모든요청포함() throws Exception {
+    void changeProjectInform_모든정보업데이트_업데이트성공() throws Exception {
         // Given
-        Account account = new Account(username, password, nickname, "USER_ROLE");
+        Account account = new Account(username, password, nickname, userRole);
         Project project = new Project(projectName, projectDescription, account);
         
         // When
@@ -30,10 +27,9 @@ class ProjectTest {
     }
 
     @Test
-    @DisplayName("project 정보 업데이트, 모든 요청 NULL")
-    void changeProjectInform_모든요청NULL() throws Exception {
+    void changeProjectInform_모든요청NULL_기존정보유지() throws Exception {
         // Given
-        Account account = new Account(username, password, nickname, "USER_ROLE");
+        Account account = new Account(username, password, nickname, userRole);
         Project project = new Project(projectName, projectDescription, account);
 
         // When
@@ -45,22 +41,21 @@ class ProjectTest {
     }
 
     @Test
-    @DisplayName("change_Captain_정상")
-    void changeCaptain_정상() throws Exception {
+    void changeCaptain_captain바꾸기_바꾸기성공() throws Exception {
         // Given
-        Account captain = new Account(username, password, nickname, "USER_ROLE");
-        Project project = new Project(projectName, projectDescription, captain);
+        Account existingCaptain = new Account(username, password, nickname, "USER_ROLE");
+        Project project = new Project(projectName, projectDescription, existingCaptain);
 
         // When
-        String newNickname = "new";
-        String newUsername = "new";
-        String newPassword = "new";
-        project.changeCaptain(new Account(newUsername, newPassword, newNickname, "ROLE_USER"));
+        String newCaptainUsername = "newUsername";
+        String newCaptainPassword = "newPassword";
+        String newCaptainNickname = "newNickname";
+        project.changeCaptain(new Account(newCaptainUsername, newCaptainPassword, newCaptainNickname, userRole));
 
         // Then
-        assertThat(project.getCaptain().getUsername()).isEqualTo(newUsername);
-        assertThat(project.getCaptain().getNickname()).isEqualTo(newNickname);
-        assertThat(project.getCaptain().getPassword()).isEqualTo(newPassword);
+        assertThat(project.getCaptain().getUsername()).isEqualTo(newCaptainUsername);
+        assertThat(project.getCaptain().getNickname()).isEqualTo(newCaptainNickname);
+        assertThat(project.getCaptain().getPassword()).isEqualTo(newCaptainPassword);
     }
 
 }

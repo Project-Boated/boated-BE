@@ -1,7 +1,5 @@
 package my.sleepydeveloper.projectcompass.domain.project.service;
 
-import my.sleepydeveloper.projectcompass.common.data.ProjectBasicData;
-import my.sleepydeveloper.projectcompass.common.mock.WithMockJsonUser;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.entity.AccountProject;
 import my.sleepydeveloper.projectcompass.domain.account.exception.NotFoundAccountException;
@@ -26,8 +24,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static my.sleepydeveloper.projectcompass.common.data.AccountBasicData.*;
-import static my.sleepydeveloper.projectcompass.common.data.ProjectBasicData.*;
+import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
+import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
