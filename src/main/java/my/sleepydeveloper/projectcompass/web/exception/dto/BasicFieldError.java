@@ -36,7 +36,7 @@ public class BasicFieldError {
         String result = error.getDefaultMessage();
         for (String code : error.getCodes()) {
             String messageNotFound = "NotFound";
-            String message = messageSource.getMessage(code, null, messageNotFound, locale);
+            String message = messageSource.getMessage(code, error.getArguments(), messageNotFound, locale);
             if(!message.equals(messageNotFound)) {
                 result = message;
             }
