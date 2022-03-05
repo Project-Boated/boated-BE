@@ -34,7 +34,7 @@ public class AccountDocument {
                 )
         );
     }
-    public static RestDocumentationResultHandler documentGetProfile() {
+    public static RestDocumentationResultHandler documentAccountProfileRetrieve() {
         return MockMvcRestDocumentation.document("account-retrieve-profile",
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 타입")
@@ -50,7 +50,7 @@ public class AccountDocument {
         );
     }
 
-    public static RestDocumentationResultHandler documentAccountUpdateProfile() {
+    public static RestDocumentationResultHandler documentAccountProfileUpdate() {
         return MockMvcRestDocumentation.document("account-update-profile",
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 타입"),

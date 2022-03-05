@@ -1,7 +1,7 @@
 package my.sleepydeveloper.projectcompass.domain.account.entity;
 
 import my.sleepydeveloper.projectcompass.domain.common.entity.BaseTimeEntity;
-import my.sleepydeveloper.projectcompass.domain.task.Task;
+import my.sleepydeveloper.projectcompass.domain.task.entity.Task;
 
 import javax.persistence.*;
 

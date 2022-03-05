@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -69,6 +71,7 @@ public class AccountService {
         account.updateProfile(accountUpdateCondition.getNickname(), passwordEncoder.encode(accountUpdateCondition.getPassword()));
     }
 
+    @Transactional
     public void delete(Account account) {
         if(!accountRepository.existsById(account.getId())) {
             throw new NotFoundAccountException(ErrorCode.ACCOUNT_NOT_FOUND);

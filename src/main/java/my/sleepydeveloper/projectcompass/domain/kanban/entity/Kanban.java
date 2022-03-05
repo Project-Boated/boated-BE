@@ -1,7 +1,7 @@
-package my.sleepydeveloper.projectcompass.domain.kanban;
+package my.sleepydeveloper.projectcompass.domain.kanban.entity;
 
 import my.sleepydeveloper.projectcompass.domain.common.entity.BaseTimeEntity;
-import my.sleepydeveloper.projectcompass.domain.project.Project;
+import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 
 import javax.persistence.*;
 

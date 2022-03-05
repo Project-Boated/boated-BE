@@ -1,4 +1,4 @@
-package my.sleepydeveloper.projectcompass.test.mock;
+package my.sleepydeveloper.projectcompass.common.mock;
 
 import org.springframework.security.test.context.support.WithSecurityContext;
 

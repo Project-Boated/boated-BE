@@ -1,4 +1,4 @@
-package my.sleepydeveloper.projectcompass.test.utils;
+package my.sleepydeveloper.projectcompass.common.utils;
 
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
@@ -26,7 +26,7 @@ public class AccountTestUtils {
         return accountService.save(new Account(username, passwordEncoder.encode(password), nickname, role));
     }
 
-    public static Account getAccountFromSecurityContext() {
+    public Account getAccountFromSecurityContext() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (Account) authentication.getPrincipal();
     }

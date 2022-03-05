@@ -1,11 +1,11 @@
 package my.sleepydeveloper.projectcompass.web.account.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import my.sleepydeveloper.projectcompass.common.basetest.AcceptanceTest;
+import my.sleepydeveloper.projectcompass.common.mock.WithMockJsonUser;
+import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.security.dto.UsernamePasswordDto;
-import my.sleepydeveloper.projectcompass.test.basetest.AcceptanceTest;
-import my.sleepydeveloper.projectcompass.test.mock.WithMockJsonUser;
-import my.sleepydeveloper.projectcompass.test.utils.AccountTestUtils;
 import my.sleepydeveloper.projectcompass.web.account.dto.AccountDto;
 import my.sleepydeveloper.projectcompass.web.account.dto.AccountUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static io.restassured.RestAssured.given;
-import static my.sleepydeveloper.projectcompass.test.utils.AccountTestUtils.getAccountFromSecurityContext;
 import static my.sleepydeveloper.projectcompass.web.account.controller.document.AccountDocument.*;
 import static org.hamcrest.Matchers.hasKey;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -86,7 +85,7 @@ class AccountControllerTest extends AcceptanceTest {
                 .andExpect(jsonPath("$.username").value(username))
                 .andExpect(jsonPath("$.nickname").value(nickname))
                 .andExpect(jsonPath("$.role").value("ROLE_USER"))
-                .andDo(documentGetProfile());
+                .andDo(documentAccountProfileRetrieve());
     }
 
     @Test
@@ -94,7 +93,7 @@ class AccountControllerTest extends AcceptanceTest {
     @WithMockJsonUser(password = password)
     void updateAccountProfile_성공() throws Exception {
 
-        Account account = getAccountFromSecurityContext();
+        Account account = accountTestUtils.getAccountFromSecurityContext();
 
         mockMvc.perform(patch("/api/account/profile/" + account.getId())
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -102,7 +101,7 @@ class AccountControllerTest extends AcceptanceTest {
                         .content(objectMapper.writeValueAsString(new AccountUpdateRequest(updateNickname, password, updatePassword))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").exists())
-                .andDo(documentAccountUpdateProfile());
+                .andDo(documentAccountProfileUpdate());
     }
 
     @Test
@@ -122,7 +121,7 @@ class AccountControllerTest extends AcceptanceTest {
     @WithMockJsonUser
     void deleteAccount_성공() throws Exception {
 
-        Account account = getAccountFromSecurityContext();
+        Account account = accountTestUtils.getAccountFromSecurityContext();
 
         mockMvc.perform(delete("/api/account/profile/" + account.getId())
                         .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE))

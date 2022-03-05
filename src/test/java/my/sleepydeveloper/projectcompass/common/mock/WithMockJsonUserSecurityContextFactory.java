@@ -1,4 +1,4 @@
-package my.sleepydeveloper.projectcompass.test.mock;
+package my.sleepydeveloper.projectcompass.common.mock;
 
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
