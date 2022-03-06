@@ -52,6 +52,33 @@ class ProjectRepositoryTest {
     }
 
     @Test
+    void existsByNameAndCaptainAndNotProject_projectName이Captain에있는데Project와동일_false() throws Exception {
+        // Given
+        Account captain = accountRepository.save(new Account(username, password, nickname, userRole));
+        Project project = projectRepository.save(new Project(projectName, projectDescription, captain));
+
+        // When
+        Long result = projectRepository.countByNameAndCaptainAndNotProject(project.getName(), captain, project);
+
+        // Then
+        assertThat(result).isEqualTo(0);
+    }
+
+    @Test
+    void existsByNameAndCaptainAndNotProject_projectName이Captain에있는데다른Project_false() throws Exception {
+        // Given
+        Account captain = accountRepository.save(new Account(username, password, nickname, userRole));
+        Project project = projectRepository.save(new Project(projectName, projectDescription, captain));
+        Project project2 = projectRepository.save(new Project("projectName2", "projectDescription2", captain));
+
+        // When
+        Long result = projectRepository.countByNameAndCaptainAndNotProject(project.getName(), captain, project2);
+
+        // Then
+        assertThat(result).isEqualTo(1);
+    }
+
+    @Test
     void findAllByAccount_account에project저장됨_account가소유한project개수() throws Exception {
         // Given
         Account account = accountRepository.save(new Account(username, password, nickname, userRole));

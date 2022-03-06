@@ -1,17 +1,14 @@
 package my.sleepydeveloper.projectcompass.domain.account.service;
 
 import lombok.RequiredArgsConstructor;
-import my.sleepydeveloper.projectcompass.common.exception.ErrorCode;
+import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.exception.*;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.account.service.dto.AccountUpdateCondition;
-import my.sleepydeveloper.projectcompass.domain.account.value.AccountProfile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

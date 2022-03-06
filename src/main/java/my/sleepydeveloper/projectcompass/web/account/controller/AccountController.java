@@ -1,6 +1,6 @@
 package my.sleepydeveloper.projectcompass.web.account.controller;
 
-import my.sleepydeveloper.projectcompass.common.exception.ErrorCode;
+import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
 import my.sleepydeveloper.projectcompass.domain.account.service.dto.AccountUpdateCondition;
@@ -14,7 +14,6 @@ import my.sleepydeveloper.projectcompass.web.account.exception.AccountUpdateAcce
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +31,6 @@ public class AccountController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<IdDto> signUp(@RequestBody @Validated AccountDto accountDto) {
-
         String username = accountDto.getUsername();
         String password = accountDto.getPassword();
         String nickname = accountDto.getNickname();

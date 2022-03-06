@@ -11,6 +11,7 @@ import my.sleepydeveloper.projectcompass.security.dto.IdDto;
 import my.sleepydeveloper.projectcompass.web.project.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +47,7 @@ public class ProjectController {
                 .description(projectUpdateRequest.getDescription())
                 .build();
 
-        projectService.update(account.getId(), projectId, projectUpdateCondition);
+        projectService.update(account, projectId, projectUpdateCondition);
 
         return ResponseEntity.ok(new IdDto(projectId));
     }

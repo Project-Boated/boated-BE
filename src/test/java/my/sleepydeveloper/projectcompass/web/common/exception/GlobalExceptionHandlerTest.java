@@ -1,6 +1,6 @@
 package my.sleepydeveloper.projectcompass.web.common.exception;
 
-import my.sleepydeveloper.projectcompass.common.exception.ErrorCode;
+import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import my.sleepydeveloper.projectcompass.web.exception.GlobalExceptionHandler;
 import my.sleepydeveloper.projectcompass.web.common.exception.codes.ExceptionHandlerTestHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;

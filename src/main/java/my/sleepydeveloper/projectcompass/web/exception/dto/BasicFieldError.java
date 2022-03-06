@@ -33,15 +33,13 @@ public class BasicFieldError {
     }
 
     private static String getMessage(FieldError error, MessageSource messageSource, Locale locale) {
-        String result = error.getDefaultMessage();
         for (String code : error.getCodes()) {
-            String messageNotFound = "NotFound";
-            String message = messageSource.getMessage(code, error.getArguments(), messageNotFound, locale);
-            if(!message.equals(messageNotFound)) {
-                result = message;
+            String message = messageSource.getMessage(code, error.getArguments(), error.getDefaultMessage(), locale);
+            if(!message.equals(error.getDefaultMessage())) {
+                return message;
             }
         }
-        return result;
+        return error.getDefaultMessage();
     }
 
 }

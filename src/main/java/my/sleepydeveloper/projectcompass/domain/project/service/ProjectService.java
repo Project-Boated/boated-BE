@@ -1,7 +1,7 @@
 package my.sleepydeveloper.projectcompass.domain.project.service;
 
 import lombok.RequiredArgsConstructor;
-import my.sleepydeveloper.projectcompass.common.exception.ErrorCode;
+import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.entity.AccountProject;
 import my.sleepydeveloper.projectcompass.domain.account.exception.NotFoundAccountException;
@@ -17,7 +17,6 @@ import my.sleepydeveloper.projectcompass.domain.project.vo.ProjectUpdateConditio
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.security.auth.login.AccountNotFoundException;
 import java.util.List;
 
 @Service
@@ -39,18 +38,16 @@ public class ProjectService {
     }
 
     @Transactional
-    public void update(Long accountId, Long projectId, ProjectUpdateCondition projectUpdateCondition) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new NotFoundAccountException(ErrorCode.ACCOUNT_NOT_FOUND));
+    public void update(Account account, Long projectId, ProjectUpdateCondition projectUpdateCondition) {
 
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if (project.getCaptain().getId() != accountId) {
+        if (project.getCaptain().getId() != account.getId()) {
             throw new ProjectUpdateAccessDenied(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
-        if (projectRepository.existsByNameAndCaptain(projectUpdateCondition.getName(), account)) {
+        if (projectRepository.countByNameAndCaptainAndNotProject(projectUpdateCondition.getName(), account, project) > 0) {
             throw new SameProjectNameInAccountExists(ErrorCode.SameProjectNameInAccountExists);
         }
 
@@ -68,6 +65,7 @@ public class ProjectService {
         return accountProjectRepository.findCrewsFromProject(project);
     }
 
+    @Transactional
     public Account updateCaptain(Account account, String newCaptainUsername, Long projectId) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));

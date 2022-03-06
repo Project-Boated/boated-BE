@@ -1,6 +1,6 @@
 package my.sleepydeveloper.projectcompass.web.exception.dto;
 
-import my.sleepydeveloper.projectcompass.common.exception.ErrorCode;
+import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 
 public class BasicErrorResponse {
 
