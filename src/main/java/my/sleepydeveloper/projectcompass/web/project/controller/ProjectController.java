@@ -11,7 +11,6 @@ import my.sleepydeveloper.projectcompass.security.dto.IdDto;
 import my.sleepydeveloper.projectcompass.web.project.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,6 +1,7 @@
 package my.sleepydeveloper.projectcompass.web.account.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.http.Cookie;
 import my.sleepydeveloper.projectcompass.common.basetest.AcceptanceTest;
 import my.sleepydeveloper.projectcompass.common.mock.WithMockJsonUser;
 import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
@@ -19,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static io.restassured.RestAssured.given;
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static my.sleepydeveloper.projectcompass.web.account.controller.document.AccountDocument.*;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasKey;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -53,18 +55,8 @@ class AccountControllerTest extends AcceptanceTest {
     @Test
     void signUp_중복된username으로가입_오류발생() throws Exception {
 
-        // 정상적인 회원가입
-        given(this.spec)
-            .accept(MediaType.APPLICATION_JSON_VALUE)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(new AccountDto(username, password, nickname))
-        .when()
-            .port(port)
-            .post("/api/account/sign-up")
-        .then()
-            .statusCode(HttpStatus.CREATED.value());
+        AccountTestUtils.createAccount(port, username, password, nickname);
 
-        // 중복된 username으로 가입
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -77,23 +69,27 @@ class AccountControllerTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("AccountProfile_조회_성공")
     @WithMockJsonUser(username = username, nickname = nickname)
-    void getAccountProfile_자신의profile가져오기_성공() throws Exception {
+    void getAccountProfile_자신의profile가져오기_Profile() throws Exception {
+        AccountTestUtils.createAccount(port, username, password, nickname);
+        Cookie cookie = AccountTestUtils.login(port, username, password);
 
-        mockMvc.perform(get("/api/account/profile")
-                        .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value(username))
-                .andExpect(jsonPath("$.nickname").value(nickname))
-                .andExpect(jsonPath("$.role").value("ROLE_USER"))
-                .andDo(documentAccountProfileRetrieve());
+        given(this.spec)
+                .filter(documentAccountProfileRetrieve())
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .cookie(cookie)
+        .when()
+                .port(port)
+                .get("/api/account/profile")
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .assertThat().body("username", equalTo(username))
+                .assertThat().body("nickname", equalTo(nickname))
+                .assertThat().body("role", equalTo("ROLE_USER"));
     }
 
     @Test
-    @DisplayName("UpdateAccountProfile_성공")
-    @WithMockJsonUser(password = password)
-    void updateAccountProfile_성공() throws Exception {
+    void updateAccountProfile_프로필update_update성공() throws Exception {
 
         Account account = accountTestUtils.getAccountFromSecurityContext();
 
