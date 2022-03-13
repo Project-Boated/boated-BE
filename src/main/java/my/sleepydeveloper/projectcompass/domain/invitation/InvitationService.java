@@ -1,7 +1,7 @@
 package my.sleepydeveloper.projectcompass.domain.invitation;
 
 import lombok.RequiredArgsConstructor;
-import my.sleepydeveloper.projectcompass.common.exception.ErrorCode;
+import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.exception.NotFoundAccountException;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
@@ -9,12 +9,8 @@ import my.sleepydeveloper.projectcompass.domain.invitation.exception.InviteCrewA
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectNotFoundException;
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.security.auth.login.AccountNotFoundException;
 
 @Service
 @RequiredArgsConstructor

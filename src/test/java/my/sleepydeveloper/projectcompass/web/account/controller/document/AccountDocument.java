@@ -34,8 +34,8 @@ public class AccountDocument {
                 )
         );
     }
-    public static RestDocumentationResultHandler documentAccountProfileRetrieve() {
-        return MockMvcRestDocumentation.document("account-retrieve-profile",
+    public static RestDocumentationFilter documentAccountProfileRetrieve() {
+        return document("account-retrieve-profile",
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 타입")
                 ),

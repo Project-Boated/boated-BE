@@ -46,7 +46,7 @@ public class ProjectController {
                 .description(projectUpdateRequest.getDescription())
                 .build();
 
-        projectService.update(account.getId(), projectId, projectUpdateCondition);
+        projectService.update(account, projectId, projectUpdateCondition);
 
         return ResponseEntity.ok(new IdDto(projectId));
     }

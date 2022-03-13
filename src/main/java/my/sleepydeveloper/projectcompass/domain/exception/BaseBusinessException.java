@@ -1,4 +1,4 @@
-package my.sleepydeveloper.projectcompass.common.exception;
+package my.sleepydeveloper.projectcompass.domain.exception;
 
 public class BaseBusinessException extends RuntimeException{
 

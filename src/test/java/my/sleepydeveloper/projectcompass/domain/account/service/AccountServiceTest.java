@@ -1,231 +1,178 @@
 package my.sleepydeveloper.projectcompass.domain.account.service;
 
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
-import my.sleepydeveloper.projectcompass.domain.account.exception.*;
+import my.sleepydeveloper.projectcompass.domain.account.exception.DuplicateNicknameException;
+import my.sleepydeveloper.projectcompass.domain.account.exception.NicknameAlreadyExistsException;
+import my.sleepydeveloper.projectcompass.domain.account.exception.UsernameAlreadyExistsException;
+import my.sleepydeveloper.projectcompass.domain.account.exception.WrongPasswordException;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.account.service.dto.AccountUpdateCondition;
-import my.sleepydeveloper.projectcompass.domain.account.value.AccountProfile;
-import org.junit.jupiter.api.DisplayName;
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.security.auth.login.AccountNotFoundException;
-import java.util.Optional;
-
+import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
+import static org.springframework.context.annotation.ComponentScan.*;
 
-@ExtendWith(MockitoExtension.class)
+@DataJpaTest
+@TestInstance(TestInstance. Lifecycle.PER_CLASS)
 class AccountServiceTest {
 
-    @Mock
+    @Autowired
     AccountRepository accountRepository;
 
-    @Mock
     PasswordEncoder passwordEncoder;
 
-    @InjectMocks
     AccountService accountService;
 
-    private final String username = "username";
-    private final String nickname = "nickname";
-    private final String password = "1111";
-    private final String role = "ROLE_USER";
-    private final String newPassword = "newPassword";
-    private String newNickname = "newNickname";
+    @BeforeAll
+    public void init() {
+        passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        accountService = new AccountService(accountRepository, passwordEncoder);
+    }
 
     @Test
-    @DisplayName("save 중복된 Username")
-    void save_중복된_username() throws Exception {
+    void save_모든조건통과_저장된Accunt() throws Exception {
         // Given
-        when(accountRepository.existsByUsername(any())).thenReturn(true);
+        accountRepository.save(new Account(username, password, nickname, userRole));
+
+        // When
+        String newUsername = "newUsername";
+        String newPassword = "newPassword";
+        String newNickname = "newNickname";
+        Account savedAccount = accountRepository.save(new Account(newUsername, newPassword, newNickname, userRole));
+
+        // Then
+        assertThat(savedAccount.getUsername()).isEqualTo(newUsername);
+        assertThat(savedAccount.getPassword()).isEqualTo(newPassword);
+        assertThat(savedAccount.getNickname()).isEqualTo(newNickname);
+        assertThat(savedAccount.getRole()).isEqualTo(userRole);
+    }
+
+    @Test
+    void save_중복된Username저장_오류발생() throws Exception {
+        // Given
+        accountRepository.save(new Account(username, password, nickname, userRole));
 
         // When
         // Then
-        assertThatThrownBy(() -> accountService.save(new Account(username, password, nickname, role)))
+        String newNickname = "newNickname";
+        assertThatThrownBy(() -> accountService.save(new Account(username, password, newNickname, userRole)))
                 .isInstanceOf(UsernameAlreadyExistsException.class);
     }
 
     @Test
-    @DisplayName("save 중복된 nickname")
-    void save_중복된_nickname() throws Exception {
+    void save_중복된Nickname저장_오류발생() throws Exception {
         // Given
-        when(accountRepository.existsByNickname(any())).thenReturn(true);
+        accountRepository.save(new Account(username, password, nickname, userRole));
 
         // When
         // Then
-        assertThatThrownBy(() -> accountService.save(new Account(username, password, nickname, role)))
+        String newUsername = "newUsername";
+        assertThatThrownBy(() -> accountService.save(new Account(newUsername, password, nickname, userRole)))
                 .isInstanceOf(NicknameAlreadyExistsException.class);
     }
 
-    @Test
-    @DisplayName("save 정상 Username, 정상 nickname")
-    void save_정상_username_정상_nickname() throws Exception {
-        // Given
-        Account account = new Account(username, password, nickname, role);
-
-        when(accountRepository.existsByUsername(username)).thenReturn(false);
-        when(accountRepository.existsByNickname(username)).thenReturn(false);
-        when(accountService.save(account)).thenReturn(account);
-
-        // When
-        Account savedAccount = accountService.save(account);
-
-        // Then
-        assertThat(savedAccount.getUsername()).isEqualTo(username);
-        assertThat(savedAccount.getPassword()).isEqualTo(password);
-        assertThat(savedAccount.getNickname()).isEqualTo(nickname);
-        assertThat(savedAccount.getRole()).isEqualTo(role);
-    }
 
     @Test
-    @DisplayName("Account로_AccountProfile_찾기_정상")
-    void findAccountProfileByAccount_정상() throws Exception {
+    void updateProfile_모든필드업데이트_성공() throws Exception {
         // Given
-        Account account = new Account(username, password, nickname, role);
+        Account account = accountRepository.save(new Account(username, passwordEncoder.encode(password), nickname, userRole));
 
-        when(accountRepository.findByUsername(username)).thenReturn(Optional.of(account));
+        String newNickname = "newNickname";
+        String newPassword = "newPassword";
+        AccountUpdateCondition updateCondition = AccountUpdateCondition.builder()
+                .nickname(newNickname)
+                .password(newPassword)
+                .originalPassword(password)
+                .build();
 
         // When
-        AccountProfile accountProfile = accountService.findProfileByAccount(account);
-
-        // Then
-        assertThat(accountProfile.getUsername()).isEqualTo(username);
-        assertThat(accountProfile.getNickname()).isEqualTo(nickname);
-        assertThat(accountProfile.getRole()).isEqualTo(role);
-    }
-
-    @Test
-    @DisplayName("Account로_AccountProfile_찾기_실패")
-    void findAccountProfileByAccount_실패() throws Exception {
-        // Given
-        Account account = new Account(username, password, nickname, role);
-
-        // When
-        when(accountRepository.findByUsername(account.getUsername())).thenReturn(Optional.empty());
-
-        // Then
-        assertThatThrownBy(() -> accountService.findProfileByAccount(account))
-                .isInstanceOf(NotFoundAccountException.class);
-    }
-
-    @Test
-    @DisplayName("UpdateProfile에서 AccountId로 Account 찾기 실패")
-    void updateProfile_account_id_찾기실패() throws Exception {
-        // Given
-        Account account = new Account(username, password, nickname, role);
-
-        // When
-        when(accountRepository.findById(any())).thenReturn(Optional.empty());
-
-        // Then
-        assertThatThrownBy(() -> accountService.updateProfile(createAccountProfileCondition(account)))
-                .isInstanceOf(NotFoundAccountException.class);
-    }
-
-
-    @Test
-    @DisplayName("UpdateProfile_성공_모든필드_update")
-    void updateProfile_성공_모든필드업데이트() throws Exception {
-        // Given
-        Account account = new Account(username, password, nickname, role);
-
-        // When
-        when(accountRepository.findById(any())).thenReturn(Optional.of(account));
-        when(passwordEncoder.matches(any(), any())).thenReturn(true);
-        when(passwordEncoder.encode(any())).thenReturn(newPassword);
-        when(accountRepository.existsByNickname(any())).thenReturn(false);
-
-        accountService.updateProfile(createAccountProfileCondition(account));
+        accountService.updateProfile(account, updateCondition);
 
         // Then
         assertThat(account.getNickname()).isEqualTo(newNickname);
-        assertThat(account.getPassword()).isEqualTo(newPassword);
+        assertThat(account.getPassword()).isNotEqualTo(passwordEncoder.encode(password));
     }
 
     @Test
-    @DisplayName("UpdateProfile_성공_password만_업데이트")
-    void updateProfile_성공_password만() throws Exception {
+    void updateProfile_모든필드NULL_업데이트안함() throws Exception {
         // Given
-        Account account = new Account(username, password, nickname, role);
+        Account account = accountRepository.save(new Account(username, passwordEncoder.encode(password), nickname, userRole));
+        AccountUpdateCondition updateCondition = AccountUpdateCondition.builder()
+                .password(null)
+                .password(null)
+                .originalPassword(password)
+                .build();
 
         // When
-        when(accountRepository.findById(any())).thenReturn(Optional.of(account));
-        when(passwordEncoder.matches(any(), any())).thenReturn(true);
-        when(passwordEncoder.encode(any())).thenReturn(newPassword);
-
-        accountService.updateProfile(new AccountUpdateCondition(account.getId(), null, account.getPassword(), newPassword));
+        accountService.updateProfile(account, updateCondition);
 
         // Then
-        assertThat(account.getNickname()).isEqualTo(nickname);
-        assertThat(account.getPassword()).isEqualTo(newPassword);
+        assertThat(account.getNickname()).isEqualTo(account.getNickname());
+        assertThat(account.getPassword()).isEqualTo(account.getPassword());
     }
 
     @Test
-    @DisplayName("UpdateProfile에서 original password 검증 실패")
-    void updateProfile_original_password_검증_실패() throws Exception {
+    void updateProfile_다른originalPassword_오류발생() throws Exception {
         // Given
-        Account account = new Account(username, password, nickname, role);
+        Account account = accountRepository.save(new Account(username, passwordEncoder.encode(password), nickname, userRole));
+
+        String newNickname = "newNickname";
+        String newPassword = "newPassword";
+        AccountUpdateCondition updateCondition = AccountUpdateCondition.builder()
+                .nickname(newNickname)
+                .password(newPassword)
+                .originalPassword("fail")
+                .build();
 
         // When
-        when(accountRepository.findById(any())).thenReturn(Optional.of(account));
-        when(passwordEncoder.matches(any(), any())).thenReturn(false);
-
         // Then
-        assertThatThrownBy(() -> accountService.updateProfile(createAccountProfileCondition(account)))
+        assertThatThrownBy(() -> accountService.updateProfile(account, updateCondition))
                 .isInstanceOf(WrongPasswordException.class);
     }
 
     @Test
-    @DisplayName("UpdateProfile에서 같은 nickname인 account존재_실패")
-    void updateProfile_같은_nickname인_account_존재_실패() throws Exception {
+    void updateProfile_같은nickname존재_오류발생() throws Exception {
         // Given
-        Account account = new Account(username, password, nickname, role);
+        String existingUsername = "existingUsername";
+        String existingPassword = "existingPassword";
+        String existingNickname = "existingNickname";
+        Account existingAccount = accountRepository.save(new Account(existingUsername, passwordEncoder.encode(existingPassword), existingNickname, userRole));
+
+        Account updateAccount = accountRepository.save(new Account(username, passwordEncoder.encode(password), nickname, userRole));
+
+        String newPassword = "newPassword";
+        AccountUpdateCondition updateCondition = AccountUpdateCondition.builder()
+                .nickname(existingNickname)
+                .password(newPassword)
+                .originalPassword(password)
+                .build();
 
         // When
-        when(accountRepository.findById(any())).thenReturn(Optional.of(account));
-        when(passwordEncoder.matches(any(), any())).thenReturn(true);
-        when(accountRepository.existsByNickname(any())).thenReturn(true);
-
         // Then
-        assertThatThrownBy(() -> accountService.updateProfile(createAccountProfileCondition(account)))
+        assertThatThrownBy(() -> accountService.updateProfile(updateAccount, updateCondition))
                 .isInstanceOf(DuplicateNicknameException.class);
     }
 
     @Test
-    @DisplayName("delete 성공")
-    void delete_성공() throws Exception {
+    void delete_존재하는Account_성공() throws Exception {
         // Given
-        Account account = new Account(username, password, nickname, role);
-
-        when(accountRepository.existsById(any())).thenReturn(true);
+        Account account = accountRepository.save(new Account(username, passwordEncoder.encode(password), nickname, userRole));
 
         // When
         // Then
         accountService.delete(account);
-    }
-
-    @Test
-    @DisplayName("delete_실패_잘못된_account")
-    void delete_실패_잘못된_account() throws Exception {
-        // Given
-        Account account = new Account(username, password, nickname, role);
-
-        when(accountRepository.existsById(any())).thenReturn(false);
-
-        // When
-        // Then
-        assertThatThrownBy(() -> accountService.delete(account))
-                .isInstanceOf(NotFoundAccountException.class);
-    }
-
-    private AccountUpdateCondition createAccountProfileCondition(Account account) {
-        return new AccountUpdateCondition(account.getId(), newNickname, password, newPassword);
     }
 
 }

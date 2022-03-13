@@ -1,50 +1,43 @@
 package my.sleepydeveloper.projectcompass.web.account.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.http.Cookie;
 import my.sleepydeveloper.projectcompass.common.basetest.AcceptanceTest;
 import my.sleepydeveloper.projectcompass.common.mock.WithMockJsonUser;
 import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
-import my.sleepydeveloper.projectcompass.security.dto.UsernamePasswordDto;
 import my.sleepydeveloper.projectcompass.web.account.dto.AccountDto;
 import my.sleepydeveloper.projectcompass.web.account.dto.AccountUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static io.restassured.RestAssured.given;
+import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static my.sleepydeveloper.projectcompass.web.account.controller.document.AccountDocument.*;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasKey;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-@AutoConfigureMockMvc
 class AccountControllerTest extends AcceptanceTest {
 
     @Autowired
     AccountTestUtils accountTestUtils;
 
-    @Autowired
+    @Mock
     MockMvc mockMvc;
 
     final ObjectMapper objectMapper = new ObjectMapper();
 
-    public final String username = "username";
-    public final String password = "password";
-    private final String nickname = "nickname";
-    private final String updatePassword = "updatePassword";
-    private final String updateNickname = "updateNickname";
-
     @Test
-    @DisplayName("회원가입_정상")
-    void signUp_정상() throws Exception {
+    void signUp_회원가입_성공() throws Exception {
 
         given(this.spec)
                 .filter(documentSignUp())
@@ -60,13 +53,14 @@ class AccountControllerTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("회원가입_실패_username_중복")
-    void signUp_실패_username_중복() throws Exception {
+    void signUp_중복된username으로가입_오류발생() throws Exception {
+
+        AccountTestUtils.createAccount(port, username, password, nickname);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new UsernamePasswordDto(username, password))
+                .body(new AccountDto(username, password, "newNickname"))
         .when()
                 .port(port)
                 .post("/api/account/sign-up")
@@ -75,30 +69,34 @@ class AccountControllerTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("AccountProfile_조회_성공")
     @WithMockJsonUser(username = username, nickname = nickname)
-    void getAccountProfile_성공() throws Exception {
+    void getAccountProfile_자신의profile가져오기_Profile() throws Exception {
+        AccountTestUtils.createAccount(port, username, password, nickname);
+        Cookie cookie = AccountTestUtils.login(port, username, password);
 
-        mockMvc.perform(get("/api/account/profile")
-                        .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value(username))
-                .andExpect(jsonPath("$.nickname").value(nickname))
-                .andExpect(jsonPath("$.role").value("ROLE_USER"))
-                .andDo(documentAccountProfileRetrieve());
+        given(this.spec)
+                .filter(documentAccountProfileRetrieve())
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .cookie(cookie)
+        .when()
+                .port(port)
+                .get("/api/account/profile")
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .assertThat().body("username", equalTo(username))
+                .assertThat().body("nickname", equalTo(nickname))
+                .assertThat().body("role", equalTo("ROLE_USER"));
     }
 
     @Test
-    @DisplayName("UpdateAccountProfile_성공")
-    @WithMockJsonUser(password = password)
-    void updateAccountProfile_성공() throws Exception {
+    void updateAccountProfile_프로필update_update성공() throws Exception {
 
         Account account = accountTestUtils.getAccountFromSecurityContext();
 
         mockMvc.perform(patch("/api/account/profile/" + account.getId())
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(new AccountUpdateRequest(updateNickname, password, updatePassword))))
+                        .content(objectMapper.writeValueAsString(new AccountUpdateRequest("updateNickname", password, "updatePassword"))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").exists())
                 .andDo(documentAccountProfileUpdate());
@@ -112,7 +110,7 @@ class AccountControllerTest extends AcceptanceTest {
         mockMvc.perform(patch("/api/account/profile/" + "1234")
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                         .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(new AccountUpdateRequest(updateNickname, password, updatePassword))))
+                        .content(objectMapper.writeValueAsString(new AccountUpdateRequest("updateNickname", password, "updatePassword"))))
                 .andExpect(status().isBadRequest());
     }
 

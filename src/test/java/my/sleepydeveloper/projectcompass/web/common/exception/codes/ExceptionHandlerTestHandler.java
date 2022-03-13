@@ -1,7 +1,7 @@
 package my.sleepydeveloper.projectcompass.web.common.exception.codes;
 
-import my.sleepydeveloper.projectcompass.common.exception.BaseBusinessException;
-import my.sleepydeveloper.projectcompass.common.exception.ErrorCode;
+import my.sleepydeveloper.projectcompass.domain.exception.BaseBusinessException;
+import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;

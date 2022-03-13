@@ -2,7 +2,7 @@ package my.sleepydeveloper.projectcompass.web.exception;
 
 import my.sleepydeveloper.projectcompass.web.exception.dto.BasicErrorResponse;
 import my.sleepydeveloper.projectcompass.web.exception.dto.BasicFieldErrorResponse;
-import my.sleepydeveloper.projectcompass.common.exception.BaseBusinessException;
+import my.sleepydeveloper.projectcompass.domain.exception.BaseBusinessException;
 import my.sleepydeveloper.projectcompass.web.exception.dto.ExceptionMessageResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -62,6 +62,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleServerError(Exception e) throws JsonProcessingException {
         log.error("server internal error", e);
+
+        // slack연결, 오류가 나면 알람울리게
 
         return ResponseEntity
                 .badRequest()

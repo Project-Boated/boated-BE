@@ -4,20 +4,18 @@ import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.entity.AccountProject;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static my.sleepydeveloper.projectcompass.common.data.AccountBasicData.*;
-import static my.sleepydeveloper.projectcompass.common.data.ProjectBasicData.projectDescription;
-import static my.sleepydeveloper.projectcompass.common.data.ProjectBasicData.projectName;
+import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
+import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.projectDescription;
+import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.projectName;
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.context.annotation.ComponentScan.*;
 

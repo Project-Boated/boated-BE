@@ -1,7 +1,5 @@
 package my.sleepydeveloper.projectcompass.domain.project.service;
 
-import my.sleepydeveloper.projectcompass.common.data.ProjectBasicData;
-import my.sleepydeveloper.projectcompass.common.mock.WithMockJsonUser;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.entity.AccountProject;
 import my.sleepydeveloper.projectcompass.domain.account.exception.NotFoundAccountException;
@@ -14,50 +12,48 @@ import my.sleepydeveloper.projectcompass.domain.project.exception.SameProjectNam
 import my.sleepydeveloper.projectcompass.domain.project.exception.UpdateCaptainAccessDenied;
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.project.vo.ProjectUpdateCondition;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
-import static my.sleepydeveloper.projectcompass.common.data.AccountBasicData.*;
-import static my.sleepydeveloper.projectcompass.common.data.ProjectBasicData.*;
+import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
+import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.projectDescription;
+import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.projectName;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.springframework.context.annotation.ComponentScan.Filter;
 
-//@DataJpaTest
-//@Import(TestConfigRegisterAccountService.class)
-@ExtendWith(MockitoExtension.class)
+@DataJpaTest(
+        includeFilters = {
+                @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ProjectService.class),
+                @Filter(type = FilterType.ANNOTATION, classes = Repository.class)
+        }
+)
 class ProjectServiceTest {
 
-    @InjectMocks
+    @Autowired
     ProjectService projectService;
 
-    @Mock
+    @Autowired
     ProjectRepository projectRepository;
 
-    @Mock
+    @Autowired
     AccountRepository accountRepository;
 
-    @Mock
+    @Autowired
     AccountProjectRepository accountProjectRepository;
 
     @Test
-    @DisplayName("save_성공")
-    void save_성공() throws Exception {
+    void save_project하나저장_저장성공() throws Exception {
         // Given
-        Account account = new Account(username, password, nickname, "ROLE_USER");
-        Project project = new Project(projectName, projectDescription, account);
+        Account account = createAccount();
 
-        when(projectRepository.save(project)).thenReturn(project);
+        Project project = new Project(projectName, projectDescription, account);
 
         // When
         Project saveProject = projectService.save(project);
@@ -69,249 +65,232 @@ class ProjectServiceTest {
     }
 
     @Test
-    @DisplayName("save_실패_같은이름의_Project_존재")
-    void save_실패_같은이름의_Project_존재() throws Exception {
+    void save_이미존재하는Name으로생성_오류발생() throws Exception {
         // Given
-        Account account = new Account(username, password, nickname, "ROLE_USER");
-        Project project = new Project(projectName, projectDescription, account);
+        Account account = createAccount();
 
-        when(projectRepository.existsByNameAndCaptain(any(), any())).thenReturn(true);
+        Project project = new Project(projectName, projectDescription, account);
+        projectRepository.save(project);
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.save(project)).isInstanceOf(SameProjectNameInAccountExists.class);
-    }
-
-    @Test
-    @DisplayName("update정상")
-    void update_정상() throws Exception {
-        // Given
-        Account account = new Account(accountId, username, password, nickname, "ROLE_USER");
-        Project project = new Project(projectName, projectDescription, account);
-
-        when(accountRepository.findById(any())).thenReturn(Optional.of(account));
-        when(projectRepository.existsByNameAndCaptain(any(), any())).thenReturn(false);
-        when(projectRepository.findById(any())).thenReturn(Optional.of(project));
-
-        // When
-        // Then
-        projectService.update(account.getId(), project.getId(), new ProjectUpdateCondition(projectName, projectDescription));
-    }
-
-    @Test
-    @DisplayName("update실패_accountId로_account_찾을수없음")
-    void update_실패_accountId로_account_찾을수없음() throws Exception {
-        // Given
-        Account account = new Account(accountId, username, password, nickname, "ROLE_USER");
-        Project project = new Project(projectName, projectDescription, account);
-
-        when(accountRepository.findById(any())).thenReturn(Optional.empty());
-
-        // When
-        // Then
-        assertThatThrownBy(() -> projectService.update(account.getId(), project.getId(), new ProjectUpdateCondition(projectName, projectDescription)))
-                .isInstanceOf(NotFoundAccountException.class);
-    }
-
-    @Test
-    @DisplayName("update_실패_같은account에_같은이름존재")
-    void update_실패_같은_account에_같은이름존재() throws Exception {
-        // Given
-        Account account = new Account(accountId, username, password, nickname, "ROLE_USER");
-        Project project = new Project(projectName, projectDescription, account);
-
-        when(accountRepository.findById(any())).thenReturn(Optional.of(account));
-        when(projectRepository.findById(any())).thenReturn(Optional.of(project));
-        when(projectRepository.existsByNameAndCaptain(any(), any())).thenReturn(true);
-
-        // When
-        // Then
-        assertThatThrownBy(() -> projectService.update(account.getId(), project.getId(), new ProjectUpdateCondition(projectName, projectDescription)))
+        assertThatThrownBy(() -> projectService.save(new Project(projectName, "newDescription", account)))
                 .isInstanceOf(SameProjectNameInAccountExists.class);
     }
 
     @Test
-    @DisplayName("update_실패_projectId로_project못찾음")
-    void update_실패_projectId로_project못찾음() throws Exception {
+    void update_모든정보Update_업데이트성공() throws Exception {
         // Given
-        Account account = new Account(accountId, username, password, nickname, "ROLE_USER");
-        Project project = new Project(projectName, projectDescription, account);
+        Account account = createAccount();
 
-        when(accountRepository.findById(any())).thenReturn(Optional.of(account));
-        when(projectRepository.findById(any())).thenReturn(Optional.empty());
+        Project project = new Project(projectName, projectDescription, account);
+        projectRepository.save(project);
+
+        // When
+        String newProjectName = "newProjectName";
+        String newProjectDescription = "newProjectDescription";
+        projectService.update(account, project.getId(), new ProjectUpdateCondition(newProjectName, newProjectDescription));
+
+        // Then
+        assertThat(project.getName()).isEqualTo(newProjectName);
+        assertThat(project.getDescription()).isEqualTo(newProjectDescription);
+    }
+
+    @Test
+    void update_같은Account에같은Name존재_오류발생() throws Exception {
+        // Given
+        Account account = createAccount();
+
+        Project project = new Project(projectName, projectDescription, account);
+        projectRepository.save(project);
+
+        Project project2 = new Project("projectName2", "projectDescription2", account);
+        projectRepository.save(project2);
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.update(account.getId(), project.getId(), new ProjectUpdateCondition(projectName, projectDescription)))
+        assertThatThrownBy(() -> projectService.update(account, project2.getId(), new ProjectUpdateCondition(projectName, projectDescription)))
+                .isInstanceOf(SameProjectNameInAccountExists.class);
+    }
+
+    @Test
+    void update_존재하지않는projectId_오류발생() throws Exception {
+        // Given
+        Account account = createAccount();
+
+        // When
+        // Then
+        assertThatThrownBy(() -> projectService.update(account, 123L, new ProjectUpdateCondition(projectName, projectDescription)))
                 .isInstanceOf(ProjectNotFoundException.class);
     }
 
     @Test
-    @DisplayName("update_실패_account권한없음")
-    void update_실패_account권한없음() throws Exception {
+    void update_captain이아닌Account가요청_오류발생() throws Exception {
         // Given
-        Account account = new Account(accountId, username, password, nickname, "ROLE_USER");
-        Account account2 = new Account(accountId + 1, username, password, nickname, "ROLE_USER");
-        Project project = new Project(projectName, projectDescription, account);
+        Account account = createAccount();
+        Account account2 = new Account("username2", password, "nickname2", "ROLE_USER");
+        accountRepository.save(account2);
 
-        when(accountRepository.findById(any())).thenReturn(Optional.of(account));
-        when(projectRepository.findById(any())).thenReturn(Optional.of(project));
+        Project project = new Project(projectName, projectDescription, account);
+        projectRepository.save(project);
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.update(account2.getId(), project.getId(), new ProjectUpdateCondition(projectName, projectDescription)))
+        assertThatThrownBy(() -> projectService.update(account2, project.getId(), new ProjectUpdateCondition("newProjectName", "newProjectDescription")))
                 .isInstanceOf(ProjectUpdateAccessDenied.class);
     }
 
     @Test
-    @DisplayName("findAllByAccount_project_아무것도없을때")
-    void findAllByAccount_project_아무것도없을때() throws Exception {
+    void findAllByAccount_Account의Project가없을때_빈리스트() throws Exception {
         // Given
-        Account account = new Account(accountId, username, password, nickname, "ROLE_USER");
+        Account account = createAccount();
 
         // When
-        when(projectService.findAllByAccount(account)).thenReturn(Collections.emptyList());
-
         // Then
         assertThat(projectService.findAllByAccount(account)).isEmpty();
     }
 
     @Test
-    @DisplayName("findAllByAccount_project_10개존재")
-    void findAllByAccount_project_10개존재() throws Exception {
+    void findAllByAccount_Account의Project가10개존재_리스트안에10개() throws Exception {
         // Given
-        Account account = new Account(accountId, username, password, nickname, "ROLE_USER");
+        Account account = createAccount();
         List<Project> projects = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            projects.add(new Project(projectName + i, projectDescription , account));
+            Project project = new Project(projectName + i, projectDescription, account);
+            projectRepository.save(project);
+            projects.add(project);
         }
 
         // When
-        when(projectService.findAllByAccount(account)).thenReturn(projects);
+        int result = projectService.findAllByAccount(account).size();
 
         // Then
-        assertThat(projectService.findAllByAccount(account).size()).isEqualTo(10);
+        assertThat(result).isEqualTo(projects.size());
     }
 
     @Test
-    @DisplayName("findAllCrew_성공")
-    void findAllCrew_성공() throws Exception {
+    void findAllCrew_한명의crew가있을때_한명의crew조회() throws Exception {
         // Given
-        Account account = new Account(accountId, username, password, nickname, "ROLE_USER");
-        Project project = new Project(projectId, projectName, projectDescription, account);
+        Account captain = createAccount();
+        Project project = new Project(projectName, projectDescription, captain);
+        projectRepository.save(project);
 
-        when(projectRepository.findById(any())).thenReturn(Optional.of(project));
-        when(accountProjectRepository.findCrewsFromProject(project)).thenReturn(List.of(account));
+        Account crew = new Account("crew", password, "crew", "ROLE_USER");
+        accountRepository.save(crew);
+
+        AccountProject accountProject = new AccountProject(crew, project);
+        accountProjectRepository.save(accountProject);
 
         // When
+        List<Account> crews = projectService.findAllCrews(project.getId());
+
         // Then
-        assertThat(projectService.findAllCrews(project.getId()))
-                .element(0)
-                .extracting("id", "username", "password", "nickname")
-                .containsExactly(accountId, username, password, nickname);
+        assertThat(crews.size()).isEqualTo(1);
     }
 
     @Test
-    @DisplayName("findAllCrew_실패_projectid로_project찾기실패")
-    void findAllCrew_실패_projectid로_project찾기실패() throws Exception {
+    void findAllCrew_존재하지않는ProjectId_오류발생() throws Exception {
         // Given
-        when(projectRepository.findById(any())).thenReturn(Optional.empty());
-
         // When
         // Then
         assertThatThrownBy(() -> projectService.findAllCrews(1L))
                 .isInstanceOf(ProjectNotFoundException.class);
-
     }
 
     @Test
-    @DisplayName("updateCaptain_성공")
-    void updateCaptain_성공() throws Exception {
+    void updateCaptain_새로운captain으로업데이트_업데이트성공() throws Exception {
         // Given
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Long newAccountId = accountId + 20;
-        Account newCaptain = new Account(newAccountId, newUsername, newPassword, newNickname, "ROLE_USER");
-        Account account = new Account(accountId, username, password, nickname, "ROLE_USER");
-        Project project = new Project(projectId, projectName, projectDescription, account);
-        AccountProject accountProject = new AccountProject(account, project);
+        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER");
+        accountRepository.save(newCaptain);
+        Account captain = createAccount();
+        accountRepository.save(captain);
 
-        when(projectRepository.findById(any())).thenReturn(Optional.of(project));
-        when(accountRepository.findByUsername(any())).thenReturn(Optional.of(newCaptain));
-        when(accountProjectRepository.save(any())).thenReturn(accountProject);
-        when(accountProjectRepository.delete(any(), any())).thenReturn(1L);
+        Project project = new Project(projectName, projectDescription, captain);
+        projectRepository.save(project);
+
+        accountProjectRepository.save(new AccountProject(newCaptain, project));
 
         // When
-        projectService.updateCaptain(account, newCaptain.getUsername(), project.getId());
+        projectService.updateCaptain(captain, newCaptain.getUsername(), project.getId());
 
         // Then
         assertThat(project.getCaptain().getId()).isEqualTo(newCaptain.getId());
     }
 
     @Test
-    @DisplayName("updateCaptain_실패_projectid로_project찾기실패")
-    void updateCaptain_실패_projectid로_project찾기실패() throws Exception {
+    void updateCaptain_존재하지않는projectId_오류발생() throws Exception {
         // Given
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Long newAccountId = accountId + 20;
-        Account newCaptain = new Account(newAccountId, newUsername, newPassword, newNickname, "ROLE_USER");
-        Account account = new Account(accountId, username, password, nickname, "ROLE_USER");
-        Project project = new Project(projectId, projectName, projectDescription, account);
-        AccountProject accountProject = new AccountProject(account, project);
+        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER");
+        accountRepository.save(newCaptain);
+        Account captain = createAccount();
+        accountRepository.save(captain);
 
-        when(projectRepository.findById(any())).thenReturn(Optional.empty());
+        Project project = new Project(projectName, projectDescription, captain);
+        projectRepository.save(project);
+
+        accountProjectRepository.save(new AccountProject(newCaptain, project));
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.updateCaptain(account, newCaptain.getUsername(), project.getId()))
+        assertThatThrownBy(() -> projectService.updateCaptain(captain, newCaptain.getUsername(), 2192L))
                 .isInstanceOf(ProjectNotFoundException.class);
     }
 
 
     @Test
-    @DisplayName("updateCaptain_실패_권한없음")
-    void updateCaptain_실패_권한없음() throws Exception {
+    void updateCaptain_captain이아닌account가update_오류발생() throws Exception {
         // Given
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Long newAccountId = accountId + 20;
-        Account newCaptain = new Account(newAccountId, newUsername, newPassword, newNickname, "ROLE_USER");
-        Account account = new Account(accountId, username, password, nickname, "ROLE_USER");
-        Project project = new Project(projectId, projectName, projectDescription, account);
-        AccountProject accountProject = new AccountProject(account, project);
+        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER");
+        accountRepository.save(newCaptain);
+        Account captain = createAccount();
+        accountRepository.save(captain);
 
-        when(projectRepository.findById(any())).thenReturn(Optional.of(project));
+        Project project = new Project(projectName, projectDescription, captain);
+        projectRepository.save(project);
+
+        accountProjectRepository.save(new AccountProject(newCaptain, project));
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.updateCaptain(new Account(999L, username, password, nickname, "USER_ROLE"), newCaptain.getUsername(), project.getId()))
+        assertThatThrownBy(() -> projectService.updateCaptain(newCaptain, newCaptain.getUsername(), project.getId()))
                 .isInstanceOf(UpdateCaptainAccessDenied.class);
     }
 
     @Test
-    @DisplayName("updateCaptain_실패_newCaptain_찾을수없음")
-    void updateCaptain_실패_newCaptain_찾을수없음() throws Exception {
+    void updateCaptain_새로운Captain의username을찾을수없음_오류발생() throws Exception {
         // Given
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Long newAccountId = accountId + 20;
-        Account newCaptain = new Account(newAccountId, newUsername, newPassword, newNickname, "ROLE_USER");
-        Account account = new Account(accountId, username, password, nickname, "ROLE_USER");
-        Project project = new Project(projectId, projectName, projectDescription, account);
-        AccountProject accountProject = new AccountProject(account, project);
+        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER");
+        accountRepository.save(newCaptain);
+        Account captain = createAccount();
+        accountRepository.save(captain);
 
-        when(projectRepository.findById(any())).thenReturn(Optional.of(project));
-        when(accountRepository.findByUsername(any())).thenReturn(Optional.empty());
+        Project project = new Project(projectName, projectDescription, captain);
+        projectRepository.save(project);
+
+        accountProjectRepository.save(new AccountProject(newCaptain, project));
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.updateCaptain(account, newCaptain.getUsername(), project.getId()))
+        assertThatThrownBy(() -> projectService.updateCaptain(captain, "fail", project.getId()))
                 .isInstanceOf(NotFoundAccountException.class);
     }
 
+
+    private Account createAccount() {
+        Account account = new Account(username, password, nickname, "ROLE_USER");
+        accountRepository.save(account);
+        return account;
+    }
 }
