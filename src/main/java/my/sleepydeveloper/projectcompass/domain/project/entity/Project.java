@@ -37,13 +37,6 @@ public class Project extends BaseTimeEntity {
         this.captain = account;
     }
 
-    public Project(Long id, String name, String description, Account account) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.captain = account;
-    }
-
     public void changeProjectInform(String name, String description) {
         if (name != null) {
             this.name = name;

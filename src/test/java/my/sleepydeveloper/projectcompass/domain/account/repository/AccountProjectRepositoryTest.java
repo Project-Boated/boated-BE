@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.stereotype.Repository;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ import static org.springframework.context.annotation.ComponentScan.*;
         type = FilterType.ANNOTATION,
         classes = Repository.class
 ))
+@ActiveProfiles("test")
 class AccountProjectRepositoryTest {
 
     @Autowired
@@ -35,8 +37,7 @@ class AccountProjectRepositoryTest {
     AccountProjectRepository accountProjectRepository;
 
     @Test
-    @DisplayName("findCrewsFromProject_동작확인")
-    void findCrewsFromProject_동작확인() throws Exception {
+    void findCrewsFromProject_crew찾기_정상() throws Exception {
         // Given
         Account captain = new Account(username, password, nickname, "ROLE_USER");
         accountRepository.save(captain);
@@ -60,8 +61,7 @@ class AccountProjectRepositoryTest {
     }
 
     @Test
-    @DisplayName("delete동작확인")
-    void delete동작확인() throws Exception {
+    void delete_accountProject삭제_삭제됨() throws Exception {
         // Given
         Account captain = new Account(username, password, nickname, "ROLE_USER");
         accountRepository.save(captain);

@@ -3,15 +3,16 @@ package my.sleepydeveloper.projectcompass.domain.invitation;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.exception.NotFoundAccountException;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
+import my.sleepydeveloper.projectcompass.domain.invitation.entity.Invitation;
 import my.sleepydeveloper.projectcompass.domain.invitation.exception.InviteCrewAccessDenied;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectNotFoundException;
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.test.context.ActiveProfiles;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.projectDescription;
@@ -23,6 +24,7 @@ import static org.springframework.context.annotation.ComponentScan.Filter;
 @DataJpaTest(
     includeFilters = @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = InvitationService.class)
 )
+@ActiveProfiles("test")
 class InvitationServiceTest {
 
     @Autowired

@@ -16,8 +16,8 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 
 public class ProjectDocument {
 
-    public static RestDocumentationResultHandler documentProjectCreate() {
-        return MockMvcRestDocumentation.document("project-create",
+    public static RestDocumentationFilter documentProjectCreate() {
+        return document("project-create",
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType"),
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
@@ -35,8 +35,8 @@ public class ProjectDocument {
         );
     }
 
-    public static RestDocumentationResultHandler documentProjectUpdate() {
-        return MockMvcRestDocumentation.document("project-update",
+    public static RestDocumentationFilter documentProjectUpdate() {
+        return document("project-update",
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType"),
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
@@ -54,8 +54,8 @@ public class ProjectDocument {
         );
     }
 
-    public static RestDocumentationResultHandler documentProjectMy() {
-        return MockMvcRestDocumentation.document("project-my-retrieve",
+    public static RestDocumentationFilter documentProjectMy() {
+        return document("project-my-retrieve",
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
                 ),
@@ -107,8 +107,8 @@ public class ProjectDocument {
         );
     }
 
-    public static RestDocumentationResultHandler documentProjectInviteCrew() {
-        return MockMvcRestDocumentation.document("project-crew-invite",
+    public static RestDocumentationFilter documentProjectInviteCrew() {
+        return document("project-crew-invite",
                 pathParameters(
                         parameterWithName("projectId").description("target 프로젝트의 id")
                 ),

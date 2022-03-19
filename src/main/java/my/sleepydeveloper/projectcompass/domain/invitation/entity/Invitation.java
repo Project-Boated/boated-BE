@@ -1,4 +1,4 @@
-package my.sleepydeveloper.projectcompass.domain.invitation;
+package my.sleepydeveloper.projectcompass.domain.invitation.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

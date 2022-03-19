@@ -2,7 +2,7 @@ package my.sleepydeveloper.projectcompass.web.project.controller;
 
 import lombok.RequiredArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
-import my.sleepydeveloper.projectcompass.domain.invitation.Invitation;
+import my.sleepydeveloper.projectcompass.domain.invitation.entity.Invitation;
 import my.sleepydeveloper.projectcompass.domain.invitation.InvitationService;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.service.ProjectService;

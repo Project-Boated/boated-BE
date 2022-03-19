@@ -17,6 +17,7 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -30,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         excludeAutoConfiguration = { SecurityAutoConfiguration.class})
 @AutoConfigureMockMvc
 @MockBean(JpaMetamodelMappingContext.class)
+@ActiveProfiles("test")
 class GlobalExceptionHandlerTest {
 
     @Autowired
@@ -40,8 +42,7 @@ class GlobalExceptionHandlerTest {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    @DisplayName("BaseBusinessException 테스트")
-    void BaseBusinessException() throws Exception {
+    void BaseBusinessException_Test() throws Exception {
 
         mockMvc.perform(get("/BaseBusinessException"))
                 .andExpect(status().is(errorCode.getStatus()))
@@ -51,8 +52,7 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    @DisplayName("HttpMessageNotReadableException 테스트")
-    void HttpMessageNotReadableException() throws Exception {
+    void HttpMessageNotReadableException_Test() throws Exception {
 
         mockMvc.perform(post("/HttpMessageNotReadableException")
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -62,8 +62,7 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    @DisplayName("MethodArgumentNotValidException 테스트")
-    void MethodArgumentNotValidException() throws Exception {
+    void MethodArgumentNotValidException_Test() throws Exception {
 
         mockMvc.perform(post("/MethodArgumentNotValidException")
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -79,8 +78,7 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    @DisplayName("Exception 테스트")
-    void Exception() throws Exception {
+    void Exception_Test() throws Exception {
 
         mockMvc.perform(get("/Exception")
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))

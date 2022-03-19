@@ -18,6 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,6 +27,7 @@ import static org.springframework.context.annotation.ComponentScan.*;
 
 @DataJpaTest
 @TestInstance(TestInstance. Lifecycle.PER_CLASS)
+@ActiveProfiles("test")
 class AccountServiceTest {
 
     @Autowired
@@ -111,7 +113,7 @@ class AccountServiceTest {
         Account account = accountRepository.save(new Account(username, passwordEncoder.encode(password), nickname, userRole));
         AccountUpdateCondition updateCondition = AccountUpdateCondition.builder()
                 .password(null)
-                .password(null)
+                .nickname(null)
                 .originalPassword(password)
                 .build();
 
@@ -121,6 +123,23 @@ class AccountServiceTest {
         // Then
         assertThat(account.getNickname()).isEqualTo(account.getNickname());
         assertThat(account.getPassword()).isEqualTo(account.getPassword());
+    }
+
+    @Test
+    void updateProfile_같은nickname으로업데이트_업데이트안함() throws Exception {
+        // Given
+        Account account = accountRepository.save(new Account(username, passwordEncoder.encode(password), nickname, userRole));
+        AccountUpdateCondition updateCondition = AccountUpdateCondition.builder()
+                .password(null)
+                .nickname(account.getNickname())
+                .originalPassword(password)
+                .build();
+
+        // When
+        accountService.updateProfile(account, updateCondition);
+
+        // Then
+        assertThat(account.getNickname()).isEqualTo(account.getNickname());
     }
 
     @Test

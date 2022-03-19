@@ -1,6 +1,8 @@
 package my.sleepydeveloper.projectcompass.web.project.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.http.ContentType;
+import io.restassured.http.Cookie;
 import my.sleepydeveloper.projectcompass.common.basetest.AcceptanceTest;
 import my.sleepydeveloper.projectcompass.common.mock.WithMockJsonUser;
 import my.sleepydeveloper.projectcompass.common.utils.AccountProjectTestUtils;
@@ -18,13 +20,18 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static io.restassured.RestAssured.given;
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.*;
+import static my.sleepydeveloper.projectcompass.web.account.controller.document.AccountDocument.documentAccountProfileRetrieve;
 import static my.sleepydeveloper.projectcompass.web.project.controller.document.ProjectDocument.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,140 +57,159 @@ class ProjectControllerTest extends AcceptanceTest {
     final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    @DisplayName("save_정상")
-    @WithMockJsonUser
-    void save_정상() throws Exception {
+    void save_프로젝트생성_정상() throws Exception {
         // Given
-        Account account = accountTestUtils.getAccountFromSecurityContext();
+        AccountTestUtils.createAccount(port, username, password, nickname);
+        Cookie cookie = AccountTestUtils.login(port, username, password);
 
         // When
         // Then
-        mockMvc.perform(post("/api/projects")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(new ProjectSaveRequest(projectName, projectDescription))))
-                .andExpect(status().isOk())
-                .andDo(documentProjectCreate());
+        given(this.spec)
+                .filter(documentProjectCreate())
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .cookie(cookie)
+                .body(new ProjectSaveRequest(projectName, projectDescription))
+        .when()
+                .port(port)
+                .post("/api/projects")
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .assertThat().body("id", notNullValue());
     }
 
     @Test
-    @DisplayName("save_실패_같은accunt에_같은name")
     @WithMockJsonUser
-    void save_실패_같은account에_같은name() throws Exception {
+    void save_같은account에같은projectname_오류발생() throws Exception {
         // Given
-        Account account = accountTestUtils.getAccountFromSecurityContext();
-
-        projectService.save(new Project(projectName, projectDescription, account));
+        AccountTestUtils.createAccount(port, username, password, nickname);
+        Cookie cookie = AccountTestUtils.login(port, username, password);
+        ProjectTestUtils.createProject(port, cookie, projectName, projectDescription);
 
         // When
         // Then
-        mockMvc.perform(post("/api/projects")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(new ProjectSaveRequest(projectName, projectDescription))))
-                .andExpect(status().isBadRequest());
+        given(this.spec)
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .cookie(cookie)
+            .body(new ProjectSaveRequest(projectName, projectDescription))
+        .when()
+            .port(port)
+            .post("/api/projects")
+        .then()
+            .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
 
     @Test
-    @DisplayName("update_정상")
-    @WithMockJsonUser
-    void update_정상() throws Exception {
+    void update_모든필드업데이트_정상() throws Exception {
         // Given
-        Account account = accountTestUtils.getAccountFromSecurityContext();
-        Project project = projectTestUtils.createProject(account);
+        AccountTestUtils.createAccount(port, username, password, nickname);
+        Cookie cookie = AccountTestUtils.login(port, username, password);
+        int projectId = ProjectTestUtils.createProject(port, cookie, projectName, projectDescription).jsonPath().get("id");
 
         // When
         // Then
-        mockMvc.perform(patch("/api/projects/" + project.getId())
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(new ProjectUpdateRequest(updateProjectName, updateProjectDescription))))
-                .andExpect(status().isOk())
-                .andDo(documentProjectUpdate());
+        given(this.spec)
+                .filter(documentProjectUpdate())
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .cookie(cookie)
+                .body(new ProjectUpdateRequest(updateProjectName, updateProjectDescription))
+        .when()
+                .port(port)
+                .patch("/api/projects/" + projectId)
+        .then()
+                .statusCode(HttpStatus.OK.value());
     }
 
     @Test
-    @DisplayName("myProject_정상")
-    @WithMockJsonUser
-    void myProject_정상() throws Exception {
+    void myProject_내프로젝트조회_정상() throws Exception {
         // Given
-        Account account = accountTestUtils.getAccountFromSecurityContext();
+        AccountTestUtils.createAccount(port, username, password, nickname);
+        Cookie cookie = AccountTestUtils.login(port, username, password);
         for (int i = 0; i < 3; i++) {
-            projectTestUtils.createProject(account, projectName + i, projectDescription);
+            ProjectTestUtils.createProject(port, cookie, projectName, projectDescription);
         }
 
         // When
         // Then
-        mockMvc.perform(get("/api/projects/my")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(documentProjectMy());
+        given(this.spec)
+            .filter(documentProjectMy())
+            .accept(ContentType.JSON)
+            .cookie(cookie)
+        .when()
+            .port(port)
+            .get("/api/projects/my")
+        .then()
+            .statusCode(HttpStatus.OK.value());
     }
 
-    @Test
-    @DisplayName("getCrews_정상")
-    @WithMockJsonUser
-    void getCrews_정상() throws Exception {
-        // Given
-        Account account = accountTestUtils.getAccountFromSecurityContext();
-        Project project = projectTestUtils.createProject(account);
-        AccountProject accountProject = accountProjectTestUtils.createAccountRepository(account, project);
+    // Invitation 구현이 끝나면 다시 테스팅, 현재는 테스트 불가
+//    @Test
+//    void getCrews_project에속한모든crew조회_성공() throws Exception {
+//        // Given
+//        Account account = accountTestUtils.getAccountFromSecurityContext();
+//        Project project = projectTestUtils.createProject(account);
+//        AccountProject accountProject = accountProjectTestUtils.createAccountRepository(account, project);
+//
+//        // When
+//        // Then
+//        mockMvc.perform(get("/api/projects/" + project.getId() + "/crews")
+//                        .accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("crews").exists())
+//                .andExpect(jsonPath("crews[0].username").value(account.getUsername()))
+//                .andExpect(jsonPath("crews[0].nickname").value(account.getNickname()))
+//                .andDo(documentProjectRetrieveCrews());
+//    }
 
-        // When
-        // Then
-        mockMvc.perform(get("/api/projects/" + project.getId() + "/crews")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("crews").exists())
-                .andExpect(jsonPath("crews[0].username").value(account.getUsername()))
-                .andExpect(jsonPath("crews[0].nickname").value(account.getNickname()))
-                .andDo(documentProjectRetrieveCrews());
-    }
-
-    @Test
-    @DisplayName("updateCaptain_정상")
-    @WithMockJsonUser
-    void updateCaptain_정상() throws Exception {
-        // Given
-        Account captain = accountTestUtils.getAccountFromSecurityContext();
-        Project project = projectTestUtils.createProject(captain, projectName, projectDescription);
-        String newCaptainUsername = "newCaptain";
-        String newCaptainPassword = "newCaptain";
-        String newCaptainNickname = "newCaptain";
-        Account newCaptain = accountTestUtils.signUp(newCaptainUsername, newCaptainPassword, newCaptainNickname, "ROLE_USER");
-        AccountProject accountProject = accountProjectTestUtils.createAccountRepository(newCaptain, project);
-
-        // When
-        // Then
-        mockMvc.perform(RestDocumentationRequestBuilders.put("/api/projects/{projectId}/captain", project.getId())
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(new UpdateCaptainRequest(newCaptainUsername))))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value(newCaptain.getId()))
-                .andDo(documentProjectUpdateCaptain());
-    }
+    // Invitation 구현이 끝나면 다시 테스팅, 현재는 테스트 불가
+//    @Test
+//    void updateCaptain_capatin업데이트_정상() throws Exception {
+//        // Given
+//        Account captain = accountTestUtils.getAccountFromSecurityContext();
+//        Project project = projectTestUtils.createProject(captain, projectName, projectDescription);
+//        String newCaptainUsername = "newCaptain";
+//        String newCaptainPassword = "newCaptain";
+//        String newCaptainNickname = "newCaptain";
+//        Account newCaptain = accountTestUtils.signUp(newCaptainUsername, newCaptainPassword, newCaptainNickname, "ROLE_USER");
+//        AccountProject accountProject = accountProjectTestUtils.createAccountRepository(newCaptain, project);
+//
+//        // When
+//        // Then
+//        mockMvc.perform(RestDocumentationRequestBuilders.put("/api/projects/{projectId}/captain", project.getId())
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(new UpdateCaptainRequest(newCaptainUsername))))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("id").value(newCaptain.getId()))
+//                .andDo(documentProjectUpdateCaptain());
+//    }
 
     @Test
-    @DisplayName("inviteCrew_정상")
-    @WithMockJsonUser
-    void inviteCrew_정상() throws Exception {
+    void inviteCrew_account초대하기_정상() throws Exception {
         // Given
-        Account captain = accountTestUtils.getAccountFromSecurityContext();
-        Project project = projectTestUtils.createProject(captain, projectName, projectDescription);
+        AccountTestUtils.createAccount(port, username, password, nickname);
         String crewUsername = "crew";
         String crewNickname = "crew";
-        Account crew = accountTestUtils.signUpUser(crewUsername, password, crewNickname);
+        AccountTestUtils.createAccount(port, crewUsername, password, crewNickname);
+        Cookie cookie = AccountTestUtils.login(port, username, password);
+        int projectId = ProjectTestUtils.createProject(port, cookie, projectName, projectDescription).jsonPath().get("id");
 
         // When
         // Then
-        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/projects/{projectId}/crews", project.getId())
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(new InviteCrewRequest(crewUsername))))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("id").exists())
-                .andDo(documentProjectInviteCrew());
+        given(this.spec)
+            .filter(documentProjectInviteCrew())
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .cookie(cookie)
+            .body(new InviteCrewRequest(crewUsername))
+        .when()
+            .port(port)
+            .post("/api/projects/{projectId}/crews", projectId)
+        .then()
+            .statusCode(HttpStatus.OK.value())
+            .assertThat().body("id", notNullValue());
     }
 }
