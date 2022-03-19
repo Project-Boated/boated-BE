@@ -1,8 +1,6 @@
 package my.sleepydeveloper.projectcompass.web.account.controller.document;
 
 import org.springframework.http.HttpHeaders;
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
-import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.restassured3.RestDocumentationFilter;
 
@@ -50,8 +48,8 @@ public class AccountDocument {
         );
     }
 
-    public static RestDocumentationResultHandler documentAccountProfileUpdate() {
-        return MockMvcRestDocumentation.document("account-update-profile",
+    public static RestDocumentationFilter documentAccountProfileUpdate() {
+        return document("account-update-profile",
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 타입"),
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("Media Type")
@@ -70,8 +68,8 @@ public class AccountDocument {
         );
     }
 
-    public static RestDocumentationResultHandler documentAccountDelete() {
-        return MockMvcRestDocumentation.document("account-delete-profile",
+    public static RestDocumentationFilter documentAccountDelete() {
+        return document("account-delete-profile",
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 타입")
                 ),

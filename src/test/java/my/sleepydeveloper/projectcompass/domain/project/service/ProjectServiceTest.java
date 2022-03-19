@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.stereotype.Repository;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ import static org.springframework.context.annotation.ComponentScan.Filter;
                 @Filter(type = FilterType.ANNOTATION, classes = Repository.class)
         }
 )
+@ActiveProfiles("test")
 class ProjectServiceTest {
 
     @Autowired

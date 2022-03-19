@@ -8,60 +8,50 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.BindingResultUtils;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.MapBindingResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 @SpringBootTest
-@ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 class BasicFieldErrorTest {
 
-    @Mock
-    BindingResult bindingResult;
-
-    @Mock
+    @Autowired
     MessageSource messageSource;
 
     @Test
-    @DisplayName("messagesource에서 찾을 수 있을 때")
-    void basicFieldErrorTest_find_in_messagesource() {
+    void basicFieldErrorTest_message존재하는경우_message반환() {
         // Given
-        ArrayList<FieldError> fieldErrors = new ArrayList<>();
-        fieldErrors.add(new FieldError("object", "field", null, false, new String[]{"NotEmpty"}, null, null));
-        Mockito.when(bindingResult.getFieldErrors()).thenReturn(fieldErrors);
-
-        String messageSourceMessage = "비어있을 수 없습니다.";
-        Mockito.when(messageSource.getMessage("NotEmpty", null, "NotFound", Locale.KOREA))
-                .thenReturn(messageSourceMessage);
+        BindingResult bindingResult = new MapBindingResult(new HashMap<>(), "test");
+        bindingResult.rejectValue("test", "Test", null);
 
         // When
         List<BasicFieldError> basicFieldErrors = BasicFieldError.of(bindingResult, messageSource, Locale.KOREA);
 
         // Then
-        Assertions.assertThat(basicFieldErrors.get(0).getReason()).isEqualTo(messageSourceMessage);
+        Assertions.assertThat(basicFieldErrors.get(0).getReason()).isEqualTo("Testing");
     }
 
     @Test
-    @DisplayName("messagesource에서 찾을 수 없을 때")
-    void basicFieldErrorTest_not_found_in_messagesource() {
+    void basicFieldErrorTest_message가존재하지않는경우_defaultMessage반환() {
         // Given
-        String defaultMessage = "defaultMessage";
-        ArrayList<FieldError> fieldErrors = new ArrayList<>();
-        fieldErrors.add(new FieldError("object", "field", null, false, new String[]{"NotEmpty"}, null, defaultMessage));
-
-        Mockito.when(bindingResult.getFieldErrors()).thenReturn(fieldErrors);
-        Mockito.when(messageSource.getMessage("NotEmpty", null, "NotFound", Locale.KOREA))
-                .thenReturn("NotFound");
+        BindingResult bindingResult = new MapBindingResult(new HashMap<>(), "test");
+        bindingResult.rejectValue("test", "failure", "default");
 
         // When
         List<BasicFieldError> basicFieldErrors = BasicFieldError.of(bindingResult, messageSource, Locale.KOREA);
 
         // Then
-        Assertions.assertThat(basicFieldErrors.get(0).getReason()).isEqualTo(defaultMessage);
+        Assertions.assertThat(basicFieldErrors.get(0).getReason()).isEqualTo("default");
     }
 }

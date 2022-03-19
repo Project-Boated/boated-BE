@@ -1,8 +1,10 @@
 package my.sleepydeveloper.projectcompass.common.utils;
 
 import io.restassured.http.Cookie;
+import io.restassured.response.ResponseBody;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
+import my.sleepydeveloper.projectcompass.security.dto.IdDto;
 import my.sleepydeveloper.projectcompass.security.dto.UsernamePasswordDto;
 import my.sleepydeveloper.projectcompass.web.account.dto.AccountDto;
 import org.springframework.http.MediaType;
@@ -37,14 +39,15 @@ public class AccountTestUtils {
         return (Account) authentication.getPrincipal();
     }
 
-    public static void createAccount(int port, String username, String password, String nickname) {
-        given()
+    public static ResponseBody createAccount(int port, String username, String password, String nickname) {
+        return given()
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(new AccountDto(username, password, nickname))
         .when()
             .port(port)
-            .post("/api/account/sign-up");
+            .post("/api/account/sign-up")
+        .thenReturn().getBody();
     }
 
     public static Cookie login(int port, String username, String password) {

@@ -1,10 +1,12 @@
 package my.sleepydeveloper.projectcompass.domain.account.entity;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@ActiveProfiles("test")
 class AccountTest {
 
     @Test

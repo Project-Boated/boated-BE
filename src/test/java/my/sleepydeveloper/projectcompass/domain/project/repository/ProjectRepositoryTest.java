@@ -6,6 +6,7 @@ import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.pro
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@ActiveProfiles("test")
 class ProjectRepositoryTest {
 
     @Autowired

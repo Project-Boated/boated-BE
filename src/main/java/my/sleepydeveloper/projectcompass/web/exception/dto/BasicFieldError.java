@@ -35,7 +35,7 @@ public class BasicFieldError {
     private static String getMessage(FieldError error, MessageSource messageSource, Locale locale) {
         for (String code : error.getCodes()) {
             String message = messageSource.getMessage(code, error.getArguments(), error.getDefaultMessage(), locale);
-            if(!message.equals(error.getDefaultMessage())) {
+            if(message!=null && !message.equals(error.getDefaultMessage())) {
                 return message;
             }
         }

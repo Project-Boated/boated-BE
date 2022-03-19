@@ -1,16 +1,14 @@
 package my.sleepydeveloper.projectcompass.web.account.controller;
 
-import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
+import lombok.RequiredArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
 import my.sleepydeveloper.projectcompass.domain.account.service.dto.AccountUpdateCondition;
 import my.sleepydeveloper.projectcompass.domain.account.value.AccountProfile;
 import my.sleepydeveloper.projectcompass.security.dto.IdDto;
 import my.sleepydeveloper.projectcompass.web.account.dto.AccountDto;
-import lombok.RequiredArgsConstructor;
 import my.sleepydeveloper.projectcompass.web.account.dto.AccountProfileResponseDto;
 import my.sleepydeveloper.projectcompass.web.account.dto.AccountUpdateRequest;
-import my.sleepydeveloper.projectcompass.web.account.exception.AccountUpdateAccessDenied;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -49,12 +47,9 @@ public class AccountController {
         return ResponseEntity.ok(new AccountProfileResponseDto(accountProfile));
     }
 
-    @PatchMapping("/profile/{accountId}")
+    @PatchMapping("/profile")
     public ResponseEntity<IdDto> updateAccountProfile(@AuthenticationPrincipal Account account,
-                                                   @PathVariable Long accountId,
                                                    @RequestBody @Validated AccountUpdateRequest accountUpdateRequest) {
-
-        checkRightAccess(account, accountId);
 
         AccountUpdateCondition updateCondition = AccountUpdateCondition.builder()
                 .originalPassword(accountUpdateRequest.getOriginalPassword())
@@ -67,17 +62,11 @@ public class AccountController {
         return ResponseEntity.ok(new IdDto(account.getId()));
     }
 
-    private void checkRightAccess(Account account, Long accountId) {
-        if (account.getId() != accountId) {
-            throw new AccountUpdateAccessDenied(ErrorCode.ACCOUNT_UPDATE_ACCESS_DENIED);
-        }
-    }
-
-    @DeleteMapping("/profile/{accountId}")
+    @DeleteMapping("/profile")
     public ResponseEntity<IdDto> deleteAccount(@AuthenticationPrincipal Account account,
-                                               @PathVariable Long accountId,
                                                HttpSession session) {
-        checkRightAccess(account, accountId);
+        Long accountId = account.getId();
+
         accountService.delete(account);
         session.invalidate();
 
