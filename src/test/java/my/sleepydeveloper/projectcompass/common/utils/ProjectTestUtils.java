@@ -28,14 +28,6 @@ public class ProjectTestUtils {
         this.projectService = projectService;
     }
 
-    public Project createProject(Account account) {
-        return projectService.save(new Project(projectName, projectDescription, account));
-    }
-
-    public Project createProject(Account account, String projectName, String projectDescription) {
-        return projectService.save(new Project(projectName, projectDescription, account));
-    }
-
     public static ResponseBody createProject(int port, Cookie cookie, String projectName, String projectDescription) {
         return given()
                     .accept(ContentType.JSON)

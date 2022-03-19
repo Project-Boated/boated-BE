@@ -1,5 +1,6 @@
 package my.sleepydeveloper.projectcompass.web.common.exception;
 
+import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import my.sleepydeveloper.projectcompass.web.exception.GlobalExceptionHandler;
 import my.sleepydeveloper.projectcompass.web.common.exception.codes.ExceptionHandlerTestHandler;
@@ -31,8 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         excludeAutoConfiguration = { SecurityAutoConfiguration.class})
 @AutoConfigureMockMvc
 @MockBean(JpaMetamodelMappingContext.class)
-@ActiveProfiles("test")
-class GlobalExceptionHandlerTest {
+class GlobalExceptionHandlerTest extends UnitTest {
 
     @Autowired
     MockMvc mockMvc;

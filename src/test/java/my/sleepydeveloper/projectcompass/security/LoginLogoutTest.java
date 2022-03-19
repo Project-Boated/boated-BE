@@ -1,8 +1,8 @@
 package my.sleepydeveloper.projectcompass.security;
 
-import my.sleepydeveloper.projectcompass.security.dto.UsernamePasswordDto;
 import my.sleepydeveloper.projectcompass.common.basetest.AcceptanceTest;
 import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
+import my.sleepydeveloper.projectcompass.security.dto.UsernamePasswordDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import static io.restassured.RestAssured.given;
+import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static my.sleepydeveloper.projectcompass.security.document.LoginLogoutDocument.documentSignIn;
 import static org.hamcrest.Matchers.hasKey;
 
@@ -18,10 +19,6 @@ public class LoginLogoutTest extends AcceptanceTest {
     @Autowired
     AccountTestUtils accountTestUtils;
 
-    public final String username = "user";
-    public final String password = "1111";
-    private final String nickname = "user";
-
     @Test
     @DisplayName("로그인_정상")
     void signin_정상() throws Exception {
@@ -29,16 +26,16 @@ public class LoginLogoutTest extends AcceptanceTest {
         accountTestUtils.signUpUser(username, password, nickname);
 
         given(this.spec)
-                .filter(documentSignIn())
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new UsernamePasswordDto(username, password))
-                .when()
-                .port(port)
-                .post("/api/sign-in")
-                .then()
-                .statusCode(HttpStatus.OK.value())
-                .assertThat().body("$", hasKey("id"));
+            .filter(documentSignIn())
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(new UsernamePasswordDto(username, password))
+        .when()
+            .port(port)
+            .post("/api/sign-in")
+        .then()
+            .statusCode(HttpStatus.OK.value())
+            .assertThat().body("$", hasKey("id"));
     }
 
     @Test

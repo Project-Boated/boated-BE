@@ -1,14 +1,16 @@
 package my.sleepydeveloper.projectcompass.domain.account.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import my.sleepydeveloper.projectcompass.domain.common.entity.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import my.sleepydeveloper.projectcompass.domain.common.entity.BaseTimeEntity;
 
 import javax.persistence.*;
 
 @Entity
 @Getter @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Account extends BaseTimeEntity {
 
@@ -29,11 +31,6 @@ public class Account extends BaseTimeEntity {
         this.password = password;
         this.nickname = nickname;
         this.role = role;
-    }
-
-    public Account(Long id, String username, String password, String nickname, String role) {
-        this(username, password, nickname, role);
-        this.id = id;
     }
 
     public void updateProfile(String nickname, String password) {

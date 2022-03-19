@@ -1,4 +1,4 @@
-package my.sleepydeveloper.projectcompass.common.mock;
+package my.sleepydeveloper.projectcompass.security.mock;
 
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
@@ -38,7 +38,7 @@ public class WithMockJsonUserSecurityContextFactory implements WithSecurityConte
         JsonAuthenticationToken jsonAuthenticationToken = new JsonAuthenticationToken(
                 accountService.save(account),
                 null,
-                List.of(new SimpleGrantedAuthority("ROLE_USER"))
+                List.of(new SimpleGrantedAuthority(account.getRole()))
         );
 
         context.setAuthentication(jsonAuthenticationToken);

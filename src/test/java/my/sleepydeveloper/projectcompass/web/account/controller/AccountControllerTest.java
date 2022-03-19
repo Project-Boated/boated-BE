@@ -3,7 +3,6 @@ package my.sleepydeveloper.projectcompass.web.account.controller;
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
 import my.sleepydeveloper.projectcompass.common.basetest.AcceptanceTest;
-import my.sleepydeveloper.projectcompass.common.mock.WithMockJsonUser;
 import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
 import my.sleepydeveloper.projectcompass.web.account.dto.AccountDto;
 import my.sleepydeveloper.projectcompass.web.account.dto.AccountUpdateRequest;
@@ -54,7 +53,6 @@ class AccountControllerTest extends AcceptanceTest {
     }
 
     @Test
-    @WithMockJsonUser(username = username, nickname = nickname)
     void getAccountProfile_자신의profile가져오기_Profile() throws Exception {
         AccountTestUtils.createAccount(port, username, password, nickname);
         Cookie cookie = AccountTestUtils.login(port, username, password);

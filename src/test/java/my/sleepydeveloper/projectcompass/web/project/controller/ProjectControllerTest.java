@@ -4,37 +4,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
 import my.sleepydeveloper.projectcompass.common.basetest.AcceptanceTest;
-import my.sleepydeveloper.projectcompass.common.mock.WithMockJsonUser;
 import my.sleepydeveloper.projectcompass.common.utils.AccountProjectTestUtils;
 import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
 import my.sleepydeveloper.projectcompass.common.utils.ProjectTestUtils;
-import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
-import my.sleepydeveloper.projectcompass.domain.account.entity.AccountProject;
-import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.service.ProjectService;
 import my.sleepydeveloper.projectcompass.web.project.dto.InviteCrewRequest;
 import my.sleepydeveloper.projectcompass.web.project.dto.ProjectSaveRequest;
 import my.sleepydeveloper.projectcompass.web.project.dto.ProjectUpdateRequest;
-import my.sleepydeveloper.projectcompass.web.project.dto.UpdateCaptainRequest;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static io.restassured.RestAssured.given;
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.*;
-import static my.sleepydeveloper.projectcompass.web.account.controller.document.AccountDocument.documentAccountProfileRetrieve;
 import static my.sleepydeveloper.projectcompass.web.project.controller.document.ProjectDocument.*;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 class ProjectControllerTest extends AcceptanceTest {
@@ -79,7 +66,6 @@ class ProjectControllerTest extends AcceptanceTest {
     }
 
     @Test
-    @WithMockJsonUser
     void save_같은account에같은projectname_오류발생() throws Exception {
         // Given
         AccountTestUtils.createAccount(port, username, password, nickname);

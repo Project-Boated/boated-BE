@@ -1,5 +1,6 @@
 package my.sleepydeveloper.projectcompass.domain.project.service;
 
+import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.entity.AccountProject;
 import my.sleepydeveloper.projectcompass.domain.account.exception.NotFoundAccountException;
@@ -35,8 +36,7 @@ import static org.springframework.context.annotation.ComponentScan.Filter;
                 @Filter(type = FilterType.ANNOTATION, classes = Repository.class)
         }
 )
-@ActiveProfiles("test")
-class ProjectServiceTest {
+class ProjectServiceTest extends UnitTest {
 
     @Autowired
     ProjectService projectService;
