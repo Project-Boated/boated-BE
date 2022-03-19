@@ -1,5 +1,6 @@
 package my.sleepydeveloper.projectcompass.domain.account.service;
 
+import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.exception.DuplicateNicknameException;
 import my.sleepydeveloper.projectcompass.domain.account.exception.NicknameAlreadyExistsException;
@@ -27,8 +28,7 @@ import static org.springframework.context.annotation.ComponentScan.*;
 
 @DataJpaTest
 @TestInstance(TestInstance. Lifecycle.PER_CLASS)
-@ActiveProfiles("test")
-class AccountServiceTest {
+class AccountServiceTest extends UnitTest {
 
     @Autowired
     AccountRepository accountRepository;

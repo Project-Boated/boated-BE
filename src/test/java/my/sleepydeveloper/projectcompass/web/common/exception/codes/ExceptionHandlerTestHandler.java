@@ -33,11 +33,6 @@ public class ExceptionHandlerTestHandler {
         throw new Exception();
     }
 
-    @ResponseBody
-    @GetMapping("/test/access-test")
-    public void accessTest() {
-    }
-
     public static class JsonForTest {
         @Range(min = 0, max = 100)
         int value;

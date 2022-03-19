@@ -1,13 +1,13 @@
 package my.sleepydeveloper.projectcompass.domain.account.entity;
 
+import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@ActiveProfiles("test")
-class AccountTest {
+class AccountTest extends UnitTest {
 
     @Test
     void updateProfile_모든정보업데이트_업데이트성공() throws Exception {

@@ -1,5 +1,6 @@
 package my.sleepydeveloper.projectcompass.web.common.exception;
 
+import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
 import my.sleepydeveloper.projectcompass.web.exception.dto.BasicFieldError;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -23,8 +24,7 @@ import java.util.List;
 import java.util.Locale;
 
 @SpringBootTest
-@ActiveProfiles("test")
-class BasicFieldErrorTest {
+class BasicFieldErrorTest extends UnitTest {
 
     @Autowired
     MessageSource messageSource;

@@ -1,5 +1,6 @@
 package my.sleepydeveloper.projectcompass.domain.invitation;
 
+import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.exception.NotFoundAccountException;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
@@ -24,8 +25,7 @@ import static org.springframework.context.annotation.ComponentScan.Filter;
 @DataJpaTest(
     includeFilters = @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = InvitationService.class)
 )
-@ActiveProfiles("test")
-class InvitationServiceTest {
+class InvitationServiceTest extends UnitTest {
 
     @Autowired
     InvitationService invitationService;
