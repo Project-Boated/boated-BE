@@ -2,12 +2,17 @@ package my.sleepydeveloper.projectcompass.security.config;
 
 import my.sleepydeveloper.projectcompass.security.entrypoint.JsonAuthenticationEntryPoint;
 import my.sleepydeveloper.projectcompass.security.filter.JsonAuthenticationFilter;
+import my.sleepydeveloper.projectcompass.security.filter.KakaoAuthenticationFilter;
 import my.sleepydeveloper.projectcompass.security.handler.JsonAccessDeniedHandler;
 import my.sleepydeveloper.projectcompass.security.handler.JsonAuthenticationFailureHandler;
 import my.sleepydeveloper.projectcompass.security.handler.JsonAuthenticationSuccessHandler;
 import my.sleepydeveloper.projectcompass.security.handler.JsonLogoutSuccessHandler;
+import my.sleepydeveloper.projectcompass.security.handler.KakaoAuthenticationFailureHandler;
+import my.sleepydeveloper.projectcompass.security.handler.KakaoAuthenticationSuccessHandler;
 import my.sleepydeveloper.projectcompass.security.provider.JsonAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
+import my.sleepydeveloper.projectcompass.security.provider.KakaoAuthenticationProvider;
+
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +33,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JsonAuthenticationProvider jsonAuthenticationProvider;
+    private final KakaoAuthenticationProvider kakaoAuthenticationProvider;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -40,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(jsonAuthenticationProvider);
+        auth.authenticationProvider(kakaoAuthenticationProvider);
     }
 
     @Override
@@ -47,10 +54,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/api/account/sign-up").permitAll()
+                .antMatchers("/kakao-login-test.html").permitAll()
                 .anyRequest().authenticated();
 
         http
-                .addFilterBefore(jsonAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(kakaoAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jsonAuthenticationFilter(), KakaoAuthenticationFilter.class);
 
         http
                 .csrf().disable();
@@ -74,6 +83,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         jsonAuthenticationFilter.setAuthenticationSuccessHandler(new JsonAuthenticationSuccessHandler());
         jsonAuthenticationFilter.setAuthenticationFailureHandler(new JsonAuthenticationFailureHandler());
         return jsonAuthenticationFilter;
+    }
+    
+    @Bean
+    public KakaoAuthenticationFilter kakaoAuthenticationFilter() throws Exception {
+        KakaoAuthenticationFilter kakaoAuthenticationFilter = new KakaoAuthenticationFilter();
+        kakaoAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
+        kakaoAuthenticationFilter.setAuthenticationSuccessHandler(new KakaoAuthenticationSuccessHandler());
+        kakaoAuthenticationFilter.setAuthenticationFailureHandler(new KakaoAuthenticationFailureHandler());
+        return kakaoAuthenticationFilter;
     }
 
     @Bean
