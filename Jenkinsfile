@@ -2,9 +2,14 @@ pipeline {
     agent any
     stages {
         stage('whoami') {
-                steps {
-                    sh 'echo $(whoami)'
-                }
+            steps {
+                sh 'echo $(whoami)'
+            }
+        }
+        stage('ls -al') {
+            steps {
+                sh 'echo $(ls -al)'
+            }
         }
         stage('Clean') {
             steps {
