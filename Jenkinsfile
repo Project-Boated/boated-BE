@@ -1,15 +1,19 @@
 pipeline {
     agent any
     stages {
+        stage('Clean') {
+            steps {
+                sh './gradlew clean'
+            }
+        }
         stage('Test') {
             steps {
-                echo 'Test'
-                sh 'echo $(pwd)'
+                sh './gradlew test'
             }
         }
         stage('Build') {
             steps {
-                echo 'Build'
+                sh './gradlew bootJar -x test'
             }
         }
         stage('Deploy') {
