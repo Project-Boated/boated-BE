@@ -8,6 +8,7 @@ pipeline {
         }
         stage('Test') {
             steps {
+                sh 'echo $(whoami)'
                 sh './gradlew test'
             }
         }
