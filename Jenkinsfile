@@ -6,9 +6,13 @@ pipeline {
                 sh './gradlew clean'
             }
         }
-        stage('Test') {
+        stage('whoami') {
             steps {
                 sh 'echo $(whoami)'
+            }
+        }
+        stage('Test') {
+            steps {
                 sh './gradlew test'
             }
         }
