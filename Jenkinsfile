@@ -13,12 +13,12 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh './gradlew test'
+                sh './gradlew test -Dorg.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64'
             }
         }
         stage('Build') {
             steps {
-                sh './gradlew bootJar -x test'
+                sh './gradlew bootJar -x test -Dorg.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64'
             }
         }
         stage('Deploy') {
