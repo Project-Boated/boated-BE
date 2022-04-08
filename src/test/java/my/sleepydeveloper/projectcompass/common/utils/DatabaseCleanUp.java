@@ -34,7 +34,6 @@ public class DatabaseCleanUp {
         em.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate();
 
         for (String table : tables) {
-            if(table.equals("kakao_account")) continue;
             em.createNativeQuery("TRUNCATE TABLE " + table).executeUpdate();
         }
 

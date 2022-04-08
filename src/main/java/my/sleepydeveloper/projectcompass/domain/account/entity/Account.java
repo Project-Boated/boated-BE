@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import my.sleepydeveloper.projectcompass.domain.common.entity.BaseTimeEntity;
 
 import javax.persistence.*;
@@ -12,8 +11,7 @@ import javax.persistence.*;
 @Entity
 @Getter @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="oauth_site")
+@Builder
 public class Account extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,11 +23,9 @@ public class Account extends BaseTimeEntity {
     private String password;
 
     private String nickname;
-    
-    private String profileUrl;
 
     private String role;
-    
+
     public Account(String username, String password, String nickname, String role) {
         this.username = username;
         this.password = password;
