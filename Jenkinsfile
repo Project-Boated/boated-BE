@@ -23,7 +23,12 @@ pipeline {
         }
         stage('Make Docker Image') {
             steps {
-                def customImage = docker.build("boated-BE")
+                sh 'docker build -t boated-be .'
+            }
+        }
+        stage('Delete Docker Image') {
+            steps {
+                sh 'docker rmi boated-be'
             }
         }
     }
