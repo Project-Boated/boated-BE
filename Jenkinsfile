@@ -30,14 +30,10 @@ pipeline {
         stage('Make Docker Image') {
             steps {
                 sh 'docker build -t boated-be .'
-            }
-        }
-        stage('Save Docker Image to Tar') {
-            steps {
                 sh 'docker save -o boated-be.tar boated-be'
             }
         }
-        stage('ssh') {
+        stage('Transfer Image To Server') {
             steps {
                 sh 'scp boated-be.tar ubuntu@15.164.89.188:/home/ubuntu/boated'
                 sh 'ssh ubuntu@15.164.89.188 "cd boated ; sh boated.sh"'
