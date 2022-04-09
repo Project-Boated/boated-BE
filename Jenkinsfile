@@ -33,13 +33,14 @@ pipeline {
         }
         stage('ssh') {
             steps {
-                sh 'ssh ubuntu@15.164.89.188'
-                sh 'ls -al'
+                sh 'scp boated-be.tar ubuntu@15.164.89.188:/home/ubuntu/boated'
+                sh 'ssh ubuntu@15.164.89.188 "cd boated ; sh boated.sh"'
             }
         }
         stage('Delete Docker Image') {
             steps {
                 sh 'docker rmi boated-be'
+                sh 'rm boated-be.tar'
             }
         }
     }
