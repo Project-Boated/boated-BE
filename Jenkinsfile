@@ -26,6 +26,17 @@ pipeline {
                 sh 'docker build -t boated-be .'
             }
         }
+        stage('Save Docker Image to Tar') {
+            steps {
+                sh 'docker save -o boated-be.tar boated-be'
+            }
+        }
+        stage('ssh') {
+            steps {
+                sh 'ssh ubuntu@15.164.89.188'
+                sh 'ls -al'
+            }
+        }
         stage('Delete Docker Image') {
             steps {
                 sh 'docker rmi boated-be'
