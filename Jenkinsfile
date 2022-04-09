@@ -1,6 +1,12 @@
 pipeline {
     agent any
     stages {
+        stage('Send Slack Start') {
+            agent any
+            steps {
+                slackSend (channel: '#jenkins', color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            }
+        }
         stage('Gradlew grant Execute Permission') {
             steps {
                 sh 'chmod +x ./gradlew'
@@ -51,5 +57,5 @@ pipeline {
         failure {
             slackSend (channel: '#jenkins', color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
         }
-    }   
+    }
 }
