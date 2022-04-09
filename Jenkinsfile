@@ -21,9 +21,14 @@ pipeline {
                 sh './gradlew bootJar -x test -Dorg.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64'
             }
         }
-        stage('Deploy') {
+        stage('All Docker Image Delete') {
             steps {
-                echo 'Deploy'
+                sh 'docker rmi $(docker images -q)'
+            }
+        }
+        stage('Make Docker Image') {
+            steps {
+                sh 'docker build -t boated-be .'
             }
         }
     }
