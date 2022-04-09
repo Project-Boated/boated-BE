@@ -23,7 +23,7 @@ pipeline {
         }
         stage('Make Docker Image') {
             steps {
-                app = docker.build("boated-BE")
+                def customImage = docker.build("boated-BE")
             }
         }
     }
