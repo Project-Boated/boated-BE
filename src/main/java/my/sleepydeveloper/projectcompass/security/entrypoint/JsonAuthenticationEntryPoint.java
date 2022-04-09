@@ -22,6 +22,6 @@ public class JsonAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        objectMapper.writeValue(response.getWriter(), new ExceptionMessageResponse("Need to Login"));
+        objectMapper.writeValue(response.getWriter(), new ExceptionMessageResponse("Need to Login!!"));
     }
 }
