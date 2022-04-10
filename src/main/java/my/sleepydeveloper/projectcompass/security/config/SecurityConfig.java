@@ -53,8 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/api/account/sign-up").permitAll()
-                .antMatchers("/kakao-login-test.html").permitAll()
+                .antMatchers("/api/sign-in/kakao").permitAll()
+                .antMatchers("/test/**").permitAll()
                 .anyRequest().authenticated();
 
         http
