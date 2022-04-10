@@ -54,7 +54,7 @@ class AccountControllerTest extends AcceptanceTest {
 
     @Test
     void getAccountProfile_자신의profile가져오기_Profile() throws Exception {
-        AccountTestUtils.createAccount(port, username, password, nickname);
+        System.out.println(AccountTestUtils.createAccount(port, username, password, nickname));
         Cookie cookie = AccountTestUtils.login(port, username, password);
 
         given(this.spec)
