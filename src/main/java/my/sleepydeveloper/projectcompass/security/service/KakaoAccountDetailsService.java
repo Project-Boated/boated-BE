@@ -33,10 +33,6 @@ public class KakaoAccountDetailsService {
 		
 		return kakaoAccountRepository.findByKakaoId(kakaoAccountResponse.getId())
 									 .orElseGet(() -> kakaoAccountRepository.save(KakaoAccount.builder()
-																							  .nickname(
-																								  kakaoAccountResponse.getKakaoAccount()
-																													  .getProfile()
-																													  .getNickname())
 																							  .profileUrl(
 																								  kakaoAccountResponse.getKakaoAccount()
 																													  .getProfile()
