@@ -15,6 +15,7 @@ public enum ErrorCode {
     ACCOUNT_WRONG_PASSWORD(400, "U004", "잘못된 password입니다"),
     ACCOUNT_DUPLICATE_NICKNAME(400, "U005", "중복된 nickname입니다"),
     ACCOUNT_UPDATE_ACCESS_DENIED(400, "U006", "Update불가, 권한없음."),
+    ACCOUNT_NICKNAME_REQUIRED(403, "U007", "닉네임이 필요합니다."),
 
     // Project
     SameProjectNameInAccountExists(400, "P001", "Account에 같은 이름의 프로젝트가 존재합니다."),
