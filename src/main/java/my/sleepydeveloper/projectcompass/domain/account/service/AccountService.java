@@ -28,13 +28,13 @@ public class AccountService {
         if (isExistsUsername(account)) {
             throw new UsernameAlreadyExistsException(ErrorCode.ACCOUNT_EXISTS_USERNAME);
         }
-        if (isExistsNickname(account)) {
+        if (isExistsNickname(account.getNickname())) {
             throw new NicknameAlreadyExistsException(ErrorCode.ACCOUNT_EXISTS_NICKNAME);
         }
     }
 
-    private boolean isExistsNickname(Account account) {
-        return accountRepository.existsByNickname(account.getNickname());
+    public boolean isExistsNickname(String nickname) {
+        return accountRepository.existsByNickname(nickname);
     }
 
     private boolean isExistsUsername(Account account) {
@@ -64,11 +64,19 @@ public class AccountService {
         } else {
             account.updateProfile(accountUpdateCondition.getNickname(), passwordEncoder.encode(accountUpdateCondition.getPassword()));
         }
-
     }
 
     @Transactional
     public void delete(Account account) {
         accountRepository.delete(account);
+    }
+    
+    @Transactional
+    public void changeNickname(Account account, String nickname) {
+        accountRepository.updateNickname(account, nickname);
+    }
+    
+    public Account findById(Long accountId) {
+        return accountRepository.findById(accountId).orElseThrow(() -> new NotFoundAccountException(ErrorCode.ACCOUNT_NOT_FOUND));
     }
 }

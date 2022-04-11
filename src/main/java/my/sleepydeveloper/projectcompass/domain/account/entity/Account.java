@@ -9,6 +9,8 @@ import my.sleepydeveloper.projectcompass.domain.common.entity.BaseTimeEntity;
 
 import javax.persistence.*;
 
+import org.checkerframework.common.aliasing.qual.Unique;
+
 @Entity
 @Getter @NoArgsConstructor
 @AllArgsConstructor
@@ -24,6 +26,7 @@ public class Account extends BaseTimeEntity {
 
     private String password;
 
+    @Column(unique = true)
     private String nickname;
     
     private String profileUrl;

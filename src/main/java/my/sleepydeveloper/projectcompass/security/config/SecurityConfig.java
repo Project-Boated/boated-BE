@@ -47,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JsonAuthenticationProvider jsonAuthenticationProvider;
     private final KakaoAuthenticationProvider kakaoAuthenticationProvider;
+    private final AccountNicknameExistVoter accountNicknameExistVoter;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -114,7 +115,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AccessDecisionManager accessDecisionManager() {
         List<AccessDecisionVoter<? extends Object>> decisionVoters = Arrays.asList(
-            new AccountNicknameExistVoter(),
+            accountNicknameExistVoter,
             new WebExpressionVoter()
         );
         return new AffirmativeBased(decisionVoters);
@@ -123,10 +124,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CharacterEncodingFilter characterEncodingFilter() {
         return new CharacterEncodingFilter("UTF-8", true);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }
