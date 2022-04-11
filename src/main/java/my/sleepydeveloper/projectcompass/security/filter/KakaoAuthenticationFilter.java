@@ -18,32 +18,34 @@ import my.sleepydeveloper.projectcompass.security.exception.KakaoAuthenticationE
 import my.sleepydeveloper.projectcompass.security.token.KakaoAuthenticationToken;
 
 public class KakaoAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-
+    
+    
     Logger log = LoggerFactory.getLogger(KakaoAuthenticationFilter.class);
-
+    
     public KakaoAuthenticationFilter() {
         super(new AntPathRequestMatcher("/api/sign-in/kakao"));
     }
-
+    
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         if (!isKakaoLoginRequest(request)) {
             throw new IsNotKakaoLoginRequest("is not kakao login request.");
         }
-
+        
         if (hasErrors(request)) {
             throw new KakaoAuthenticationException("Kakao Login Exception");
         }
-
-        String token = request.getParameter("token");
         
-        return getAuthenticationManager().authenticate(new KakaoAuthenticationToken(token, null));
+        String code = request.getParameter("code");
+        KakaoAuthenticationToken token = new KakaoAuthenticationToken(code, null);
+        
+        return getAuthenticationManager().authenticate(token);
     }
-
+    
     private boolean hasErrors(HttpServletRequest request) {
         return request.getParameter("error") != null;
     }
-
+    
     private boolean isKakaoLoginRequest(HttpServletRequest request) {
         return request.getParameter("code") != null;
     }

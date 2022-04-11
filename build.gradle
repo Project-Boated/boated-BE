@@ -102,7 +102,10 @@ jacocoTestReport {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
                     "my/sleepydeveloper/projectcompass/domain/common/entity/BaseEntity.class",
-                    "my/sleepydeveloper/projectcompass/domain/**/entity/Q*.class"
+                    "my/sleepydeveloper/projectcompass/domain/**/entity/Q*.class",
+                    "my/sleepydeveloper/projectcompass/security/**/*",
+                    "my/sleepydeveloper/projectcompass/TestController.class",
+                    "my/sleepydeveloper/projectcompass/domain/account/entity/KakaoAccount.class"
             ])
         }))
     }

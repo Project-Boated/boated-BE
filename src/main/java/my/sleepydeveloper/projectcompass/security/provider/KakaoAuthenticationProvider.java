@@ -31,12 +31,15 @@ public class KakaoAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
     
+        String tokenJson = kakaoWebService.getToken((String)authentication.getPrincipal());
+    
         try {
-            String accessToken = (String)authentication.getPrincipal();
-
+            KakaoTokenResponse kakaoTokenResponse = objectMapper.readValue(tokenJson, KakaoTokenResponse.class);
+            String accessToken = kakaoTokenResponse.getAccessToken();
+        
             KakaoAccount account = kakaoUserDetailsService.loadKakaoAccountByAccessToken(accessToken);
             List<SimpleGrantedAuthority> grantedAuthorities = List.of(new SimpleGrantedAuthority(account.getRole()));
-
+        
             return new KakaoAuthenticationToken(account, null, grantedAuthorities);
         } catch (JsonProcessingException e) {
             throw new JsonParsingException("Json ParsingError");
