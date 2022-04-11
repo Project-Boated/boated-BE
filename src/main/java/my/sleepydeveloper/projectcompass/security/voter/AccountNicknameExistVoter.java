@@ -24,7 +24,7 @@ public class AccountNicknameExistVoter implements AccessDecisionVoter {
 	private static Map<String, String> urlWhitelist = new HashMap<>();
 	static {
 		urlWhitelist.put("/api/account/profile/nickname", "PUT");
-		urlWhitelist.put("/api/account/profile/nickname/unique-validation", "GET");
+		urlWhitelist.put("/api/account/profile/nickname/unique-validation", "POST");
 	}
 	
 	public AccountNicknameExistVoter(AccountService accountService) {
