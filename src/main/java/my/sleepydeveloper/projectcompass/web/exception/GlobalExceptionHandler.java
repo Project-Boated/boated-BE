@@ -2,7 +2,7 @@ package my.sleepydeveloper.projectcompass.web.exception;
 
 import my.sleepydeveloper.projectcompass.web.exception.dto.BasicErrorResponse;
 import my.sleepydeveloper.projectcompass.web.exception.dto.BasicFieldErrorResponse;
-import my.sleepydeveloper.projectcompass.domain.exception.BaseBusinessException;
+import my.sleepydeveloper.projectcompass.domain.exception.DefaultBusinessException;
 import my.sleepydeveloper.projectcompass.web.exception.dto.ExceptionMessageResponse;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -33,8 +33,8 @@ public class GlobalExceptionHandler {
 		this.messageSource = messageSource;
 	}
 	
-	@ExceptionHandler(BaseBusinessException.class)
-	public ResponseEntity<BasicErrorResponse> handleBaseBusinessException(BaseBusinessException e) {
+	@ExceptionHandler(DefaultBusinessException.class)
+	public ResponseEntity<BasicErrorResponse> handleBaseBusinessException(DefaultBusinessException e) {
 		return ResponseEntity.status(HttpStatus.valueOf(e.getErrorCode()
 														 .getStatus()))
 							 .body(new BasicErrorResponse(e.getErrorCode()));

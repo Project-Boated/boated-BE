@@ -2,9 +2,10 @@ package my.sleepydeveloper.projectcompass.security.exception;
 
 import org.springframework.security.access.AccessDeniedException;
 
+import my.sleepydeveloper.projectcompass.domain.exception.BusinessException;
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 
-public class NicknameRequiredException extends AccessDeniedException {
+public class NicknameRequiredException extends AccessDeniedException implements BusinessException {
 	
 	private final ErrorCode errorCode;
 	
@@ -13,6 +14,7 @@ public class NicknameRequiredException extends AccessDeniedException {
 		this.errorCode = errorCode;
 	}
 	
+	@Override
 	public ErrorCode getErrorCode() {
 		return errorCode;
 	}

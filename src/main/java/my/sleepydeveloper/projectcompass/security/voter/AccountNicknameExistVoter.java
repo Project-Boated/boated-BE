@@ -11,7 +11,7 @@ import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import my.sleepydeveloper.projectcompass.security.exception.NicknameRequiredException;
 
-public class AccountNicknameBasedVoter implements AccessDecisionVoter {
+public class AccountNicknameExistVoter implements AccessDecisionVoter {
 	
 	@Override
 	public boolean supports(ConfigAttribute attribute) {
@@ -20,13 +20,14 @@ public class AccountNicknameBasedVoter implements AccessDecisionVoter {
 	
 	@Override
 	public int vote(Authentication authentication, Object object, Collection collection) {
-		Account account = (Account)authentication.getPrincipal();
-		
-		if(StringUtils.hasText(account.getNickname())) {
-			return ACCESS_ABSTAIN;
+		if(authentication.getPrincipal() instanceof Account) {
+			Account account = (Account)authentication.getPrincipal();
+			
+			if(!StringUtils.hasText(account.getNickname())) {
+				throw new NicknameRequiredException(ErrorCode.ACCOUNT_NICKNAME_REQUIRED);
+			}
 		}
-		
-		throw new NicknameRequiredException(ErrorCode.ACCOUNT_NICKNAME_REQUIRED);
+		return ACCESS_ABSTAIN;
 	}
 	
 	@Override
