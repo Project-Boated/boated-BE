@@ -52,7 +52,7 @@ public class AccountService {
 //        }
 
         if(accountUpdateCondition.getNickname() != null) {
-            if(account.getNickname().equals(accountUpdateCondition.getNickname())) {
+            if(account.getNickname()!=null && account.getNickname().equals(accountUpdateCondition.getNickname())) {
                  accountUpdateCondition.setNickname(null);
             }
             else if (accountRepository.existsByNickname(accountUpdateCondition.getNickname())) {
