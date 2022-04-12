@@ -17,7 +17,7 @@ import my.sleepydeveloper.projectcompass.security.mock.WithMockJsonUser;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Import(SecurityHandlerTestConfig.class)
-@ActiveProfiles({"oauth", "test"})
+@ActiveProfiles({"deploy", "test"})
 public class SecurityHandlerTest {
 
     @Autowired
