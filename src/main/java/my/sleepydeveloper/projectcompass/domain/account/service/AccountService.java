@@ -28,7 +28,7 @@ public class AccountService {
         if (isExistsUsername(account)) {
             throw new UsernameAlreadyExistsException(ErrorCode.ACCOUNT_EXISTS_USERNAME);
         }
-        if (account.getNickname()!=null && isExistsNickname(account.getNickname())) {
+        if (isExistsNickname(account.getNickname())) {
             throw new NicknameAlreadyExistsException(ErrorCode.ACCOUNT_EXISTS_NICKNAME);
         }
     }
