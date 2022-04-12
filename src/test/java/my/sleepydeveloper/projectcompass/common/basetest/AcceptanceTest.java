@@ -19,7 +19,7 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(RestDocumentationExtension.class)
 @AutoConfigureRestDocs
-@ActiveProfiles({"acceptance", "test", "deploy"})
+@ActiveProfiles({"acceptance", "test"})
 public class AcceptanceTest {
 
     @LocalServerPort
