@@ -51,8 +51,10 @@ public class AccountService {
 //            throw new WrongPasswordException(ErrorCode.ACCOUNT_WRONG_PASSWORD);
 //        }
 
+        Account findAccount = accountRepository.findById(account.getId()).orElseThrow(() -> new NotFoundAccountException(ErrorCode.ACCOUNT_NOT_FOUND));
+
         if(accountUpdateCondition.getNickname() != null) {
-            if(account.getNickname()!=null && account.getNickname().equals(accountUpdateCondition.getNickname())) {
+            if(findAccount.getNickname()!=null && findAccount.getNickname().equals(accountUpdateCondition.getNickname())) {
                  accountUpdateCondition.setNickname(null);
             }
             else if (accountRepository.existsByNickname(accountUpdateCondition.getNickname())) {
@@ -64,7 +66,7 @@ public class AccountService {
             accountUpdateCondition.setPassword(passwordEncoder.encode(accountUpdateCondition.getPassword()));
         }
 
-        account.updateProfile(accountUpdateCondition.getNickname(), accountUpdateCondition.getPassword());
+        findAccount.updateProfile(accountUpdateCondition.getNickname(), accountUpdateCondition.getPassword());
     }
 
     @Transactional
