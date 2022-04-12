@@ -115,6 +115,28 @@ include::{snippets}/sign-in/response-headers.adoc[]
 ===== response-fields
 include::{snippets}/sign-in/response-fields.adoc[]
 
+[[resources-account-kakao-continue]]
+=== 카카오톡으로 계속하기
+`GET` 요청을 사용해서 카카오톡으로 계속할 수 있습니다.
+
+==== Request
+
+===== http-request
+```
+GET /api/sign-in/kakao?code=dsa213021lkfds02 HTTP/1.1
+```
+
+===== request-headers
+
+[cols="1,1"]
+|===
+|Name |Description
+
+|code
+|카카오톡에서 받은 code
+|===
+
+
 [[resources-accounts-sign-up]]
 === 유저 생성
 `POST` 요청을 사용해서 유저를 생성할 수 있다.

@@ -21,6 +21,7 @@
         }
 
         fetch(`http://localhost:8080/api/sign-in/kakao?code=${findGetParameter("code")}`, {
+            method: 'GET',
             credentials: 'include'
         }).then(res => console.log(res.json()));
 
