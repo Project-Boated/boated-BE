@@ -44,11 +44,12 @@ public class AccountService {
     @Transactional
     public void updateProfile(Account account, AccountUpdateCondition accountUpdateCondition) {
 
-        if (!passwordEncoder.matches(
-                accountUpdateCondition.getOriginalPassword(),
-                account.getPassword())) {
-            throw new WrongPasswordException(ErrorCode.ACCOUNT_WRONG_PASSWORD);
-        }
+        // 카카오 로그인은 비밀번호를 검수불가
+//        if (!passwordEncoder.matches(
+//                accountUpdateCondition.getOriginalPassword(),
+//                account.getPassword())) {
+//            throw new WrongPasswordException(ErrorCode.ACCOUNT_WRONG_PASSWORD);
+//        }
 
         if(accountUpdateCondition.getNickname() != null) {
             if(account.getNickname().equals(accountUpdateCondition.getNickname())) {

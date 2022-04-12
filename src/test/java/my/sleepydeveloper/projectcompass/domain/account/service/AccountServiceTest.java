@@ -6,10 +6,7 @@ import my.sleepydeveloper.projectcompass.domain.account.exception.*;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.account.service.dto.AccountUpdateCondition;
 import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -142,6 +139,7 @@ class AccountServiceTest extends UnitTest {
     }
 
     @Test
+    @Disabled("카카오 로그인지원으로 인해 original password입력을 받지 않음.")
     void updateProfile_다른originalPassword_오류발생() throws Exception {
         // Given
         Account account = accountRepository.save(new Account(username, passwordEncoder.encode(password), nickname, userRole));
@@ -157,7 +155,7 @@ class AccountServiceTest extends UnitTest {
         // When
         // Then
         assertThatThrownBy(() -> accountService.updateProfile(account, updateCondition))
-                .isInstanceOf(WrongPasswordException.class);
+                .isInstanceOf(Exception.class);
     }
 
     @Test

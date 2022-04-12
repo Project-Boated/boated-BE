@@ -7,6 +7,7 @@ import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
 import my.sleepydeveloper.projectcompass.web.account.dto.AccountDto;
 import my.sleepydeveloper.projectcompass.web.account.dto.AccountUpdateRequest;
 import my.sleepydeveloper.projectcompass.web.account.dto.NicknameUniqueValidationRequest;
+import my.sleepydeveloper.projectcompass.web.account.dto.PutNicknameRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -128,6 +129,25 @@ class AccountControllerTest extends AcceptanceTest {
         .then()
                 .statusCode(HttpStatus.OK.value())
                 .assertThat().body("duplicated", equalTo(false));
+    }
+
+    @Test
+    void putNickname_닉네임변경_200반환() throws Exception {
+
+        accountTestUtils.createAccount(port, username, password, nickname);
+        Cookie cookie = AccountTestUtils.login(port, username, password);
+
+        given(this.spec)
+                .filter(documentAccountPutNickname())
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .cookie(cookie)
+                .body(new PutNicknameRequest("nickname2"))
+        .when()
+                .port(port)
+                .put("/api/account/profile/nickname")
+        .then()
+                .statusCode(HttpStatus.OK.value());
     }
 
 }

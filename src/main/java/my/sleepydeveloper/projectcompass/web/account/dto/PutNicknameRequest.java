@@ -11,4 +11,8 @@ public class PutNicknameRequest {
 
 	@NotEmpty
 	private String nickname;
+
+	public PutNicknameRequest(String nickname) {
+		this.nickname = nickname;
+	}
 }

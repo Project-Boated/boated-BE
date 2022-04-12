@@ -114,7 +114,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Bean
     public AccessDecisionManager accessDecisionManager() {
-        List<AccessDecisionVoter<? extends Object>> decisionVoters = Arrays.asList(
+        List<AccessDecisionVoter<?>> decisionVoters = Arrays.asList(
             accountNicknameExistVoter,
             new WebExpressionVoter()
         );
