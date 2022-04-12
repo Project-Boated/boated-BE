@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 public class Task extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")
     private Long id;
 

@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 public class AccountProject {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_project_id")
     private Long id;
 
