@@ -10,4 +10,9 @@ public class TestController {
 	public String kakaoLoginTest() {
 		return "kakaologin/kakao-login-test";
 	}
+	
+	@GetMapping("/test/kakaologin/redirection")
+	public String kakaoLoginTestRedirection() {
+		return "kakaologin/kakao-login-test-redirection";
+	}
 }

@@ -28,13 +28,13 @@ public class AccountService {
         if (isExistsUsername(account)) {
             throw new UsernameAlreadyExistsException(ErrorCode.ACCOUNT_EXISTS_USERNAME);
         }
-        if (isExistsNickname(account)) {
+        if (isExistsNickname(account.getNickname())) {
             throw new NicknameAlreadyExistsException(ErrorCode.ACCOUNT_EXISTS_NICKNAME);
         }
     }
 
-    private boolean isExistsNickname(Account account) {
-        return accountRepository.existsByNickname(account.getNickname());
+    public boolean isExistsNickname(String nickname) {
+        return accountRepository.existsByNickname(nickname);
     }
 
     private boolean isExistsUsername(Account account) {
@@ -44,11 +44,12 @@ public class AccountService {
     @Transactional
     public void updateProfile(Account account, AccountUpdateCondition accountUpdateCondition) {
 
-        if (!passwordEncoder.matches(
-                accountUpdateCondition.getOriginalPassword(),
-                account.getPassword())) {
-            throw new WrongPasswordException(ErrorCode.ACCOUNT_WRONG_PASSWORD);
-        }
+        // 카카오 로그인은 비밀번호를 검수불가
+//        if (!passwordEncoder.matches(
+//                accountUpdateCondition.getOriginalPassword(),
+//                account.getPassword())) {
+//            throw new WrongPasswordException(ErrorCode.ACCOUNT_WRONG_PASSWORD);
+//        }
 
         if(accountUpdateCondition.getNickname() != null) {
             if(account.getNickname().equals(accountUpdateCondition.getNickname())) {
@@ -59,16 +60,19 @@ public class AccountService {
             }
         }
 
-        if (accountUpdateCondition.getPassword() == null) {
-            account.updateProfile(accountUpdateCondition.getNickname(), null);
-        } else {
-            account.updateProfile(accountUpdateCondition.getNickname(), passwordEncoder.encode(accountUpdateCondition.getPassword()));
+        if (accountUpdateCondition.getPassword() != null) {
+            accountUpdateCondition.setPassword(passwordEncoder.encode(accountUpdateCondition.getPassword()));
         }
 
+        account.updateProfile(accountUpdateCondition.getNickname(), accountUpdateCondition.getPassword());
     }
 
     @Transactional
     public void delete(Account account) {
         accountRepository.delete(account);
+    }
+    
+    public Account findById(Long accountId) {
+        return accountRepository.findById(accountId).orElseThrow(() -> new NotFoundAccountException(ErrorCode.ACCOUNT_NOT_FOUND));
     }
 }

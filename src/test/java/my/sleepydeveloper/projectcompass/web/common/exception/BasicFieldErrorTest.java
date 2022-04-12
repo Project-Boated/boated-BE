@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Locale;
 
 @SpringBootTest
-@ActiveProfiles("oauth")
+@ActiveProfiles("deploy")
 class BasicFieldErrorTest extends UnitTest {
 
     @Autowired

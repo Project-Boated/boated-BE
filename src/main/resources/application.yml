@@ -1,10 +1,4 @@
 spring:
-  datasource:
-    url: jdbc:mysql://boated2.c68lplzddyon.ap-northeast-2.rds.amazonaws.com:3306/boated
-    username: admin
-    password: boatedboated
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
   jpa:
     hibernate:
       ddl-auto: create
@@ -16,6 +10,17 @@ spring:
 
   messages:
     basename: messages, errors
+
+server:
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        same-site: lax
+    encoding:
+      enabled: true
+      charset: UTF-8
+      force: true
 
 logging.level:
   org.hibernate.SQL: debug

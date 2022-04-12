@@ -12,3 +12,8 @@ spring:
 
   messages:
     basename: messages, errors
+
+kakao:
+  clientId: testClientId
+  redirectUri: testUri
+  clientSecret: testClientSecret
