@@ -12,4 +12,4 @@ COPY --from=builder application/dependencies/ ./
 COPY --from=builder application/spring-boot-loader/ ./
 COPY --from=builder application/snapshot-dependencies/ ./
 COPY --from=builder application/application/ ./
-ENTRYPOINT ["java", "-Dspring.profiles.active=oauth", "org.springframework.boot.loader.JarLauncher", "${JAVA_OPTION}"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=deploy", "org.springframework.boot.loader.JarLauncher", "${JAVA_OPTION}"]
