@@ -28,7 +28,7 @@ public class AccountService {
         if (isExistsUsername(account)) {
             throw new UsernameAlreadyExistsException(ErrorCode.ACCOUNT_EXISTS_USERNAME);
         }
-        if (isExistsNickname(account.getNickname())) {
+        if (account.getNickname()!=null && isExistsNickname(account.getNickname())) {
             throw new NicknameAlreadyExistsException(ErrorCode.ACCOUNT_EXISTS_NICKNAME);
         }
     }
@@ -59,21 +59,16 @@ public class AccountService {
             }
         }
 
-        if (accountUpdateCondition.getPassword() == null) {
-            account.updateProfile(accountUpdateCondition.getNickname(), null);
-        } else {
-            account.updateProfile(accountUpdateCondition.getNickname(), passwordEncoder.encode(accountUpdateCondition.getPassword()));
+        if (accountUpdateCondition.getPassword() != null) {
+            accountUpdateCondition.setPassword(passwordEncoder.encode(accountUpdateCondition.getPassword()));
         }
+
+        account.updateProfile(accountUpdateCondition.getNickname(), accountUpdateCondition.getPassword());
     }
 
     @Transactional
     public void delete(Account account) {
         accountRepository.delete(account);
-    }
-    
-    @Transactional
-    public void changeNickname(Account account, String nickname) {
-        accountRepository.updateNickname(account, nickname);
     }
     
     public Account findById(Long accountId) {

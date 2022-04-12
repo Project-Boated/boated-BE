@@ -46,7 +46,7 @@ class ProjectControllerTest extends AcceptanceTest {
     @Test
     void save_프로젝트생성_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, username, password, nickname);
+        accountTestUtils.createAccount(port, username, password, nickname);
         Cookie cookie = AccountTestUtils.login(port, username, password);
 
         // When
@@ -68,7 +68,7 @@ class ProjectControllerTest extends AcceptanceTest {
     @Test
     void save_같은account에같은projectname_오류발생() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, username, password, nickname);
+        accountTestUtils.createAccount(port, username, password, nickname);
         Cookie cookie = AccountTestUtils.login(port, username, password);
         ProjectTestUtils.createProject(port, cookie, projectName, projectDescription);
 
@@ -90,7 +90,7 @@ class ProjectControllerTest extends AcceptanceTest {
     @Test
     void update_모든필드업데이트_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, username, password, nickname);
+        accountTestUtils.createAccount(port, username, password, nickname);
         Cookie cookie = AccountTestUtils.login(port, username, password);
         int projectId = ProjectTestUtils.createProject(port, cookie, projectName, projectDescription).jsonPath().get("id");
 
@@ -112,7 +112,7 @@ class ProjectControllerTest extends AcceptanceTest {
     @Test
     void myProject_내프로젝트조회_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, username, password, nickname);
+        accountTestUtils.createAccount(port, username, password, nickname);
         Cookie cookie = AccountTestUtils.login(port, username, password);
         for (int i = 0; i < 3; i++) {
             ProjectTestUtils.createProject(port, cookie, projectName, projectDescription);
@@ -176,10 +176,10 @@ class ProjectControllerTest extends AcceptanceTest {
     @Test
     void inviteCrew_account초대하기_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, username, password, nickname);
+        accountTestUtils.createAccount(port, username, password, nickname);
         String crewUsername = "crew";
         String crewNickname = "crew";
-        AccountTestUtils.createAccount(port, crewUsername, password, crewNickname);
+        accountTestUtils.createAccount(port, crewUsername, password, crewNickname);
         Cookie cookie = AccountTestUtils.login(port, username, password);
         int projectId = ProjectTestUtils.createProject(port, cookie, projectName, projectDescription).jsonPath().get("id");
 

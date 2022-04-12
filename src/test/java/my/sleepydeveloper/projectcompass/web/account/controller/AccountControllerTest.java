@@ -6,6 +6,7 @@ import my.sleepydeveloper.projectcompass.common.basetest.AcceptanceTest;
 import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
 import my.sleepydeveloper.projectcompass.web.account.dto.AccountDto;
 import my.sleepydeveloper.projectcompass.web.account.dto.AccountUpdateRequest;
+import my.sleepydeveloper.projectcompass.web.account.dto.NicknameUniqueValidationRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ class AccountControllerTest extends AcceptanceTest {
     @Test
     void signUp_중복된username으로가입_오류발생() throws Exception {
 
-        AccountTestUtils.createAccount(port, username, password, nickname);
+        accountTestUtils.createAccount(port, username, password, nickname);
 
         given(this.spec)
                 .accept(ContentType.JSON)
@@ -54,7 +55,7 @@ class AccountControllerTest extends AcceptanceTest {
 
     @Test
     void getAccountProfile_자신의profile가져오기_Profile() throws Exception {
-        System.out.println(AccountTestUtils.createAccount(port, username, password, nickname));
+        System.out.println(accountTestUtils.createAccount(port, username, password, nickname));
         Cookie cookie = AccountTestUtils.login(port, username, password);
 
         given(this.spec)
@@ -74,7 +75,7 @@ class AccountControllerTest extends AcceptanceTest {
     @Test
     void updateAccountProfile_프로필update_update성공() throws Exception {
 
-        AccountTestUtils.createAccount(port, username, password, nickname);
+        accountTestUtils.createAccount(port, username, password, nickname);
         Cookie cookie = AccountTestUtils.login(port, username, password);
 
         given(this.spec)
@@ -94,7 +95,7 @@ class AccountControllerTest extends AcceptanceTest {
     @Test
     void deleteAccount_회원탈퇴_성공() throws Exception {
 
-        AccountTestUtils.createAccount(port, username, password, nickname);
+        accountTestUtils.createAccount(port, username, password, nickname);
         Cookie cookie = AccountTestUtils.login(port, username, password);
 
         given(this.spec)
@@ -107,6 +108,26 @@ class AccountControllerTest extends AcceptanceTest {
         .then()
                 .statusCode(HttpStatus.OK.value())
                 .assertThat().body("id", notNullValue());
+    }
+
+    @Test
+    void nicknameUniqueValidation_중복되지않는닉네임조회_dupliatedTrue() throws Exception {
+
+        accountTestUtils.createAccount(port, username, password, nickname);
+        Cookie cookie = AccountTestUtils.login(port, username, password);
+
+        given(this.spec)
+                .filter(documentAccountNicknameUniqueValidation())
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .cookie(cookie)
+                .body(new NicknameUniqueValidationRequest("notDuplicatedNickname"))
+        .when()
+                .port(port)
+                .post("/api/account/profile/nickname/unique-validation")
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .assertThat().body("duplicated", equalTo(false));
     }
 
 }

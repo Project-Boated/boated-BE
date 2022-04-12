@@ -1,6 +1,7 @@
 package my.sleepydeveloper.projectcompass.domain.account.repository;
 
 import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
+import my.sleepydeveloper.projectcompass.common.data.BasicAccountData;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +92,7 @@ class AccountRepositoryTest extends UnitTest {
     }
 
     @Test
-    void findById_가입된유저찾기_가입된유저() throws Exception {
+    void findById_가입된유저찾기_조회성공() throws Exception {
         // Given
         Account account = accountRepository.save(new Account(username, password, nickname, userRole));
 

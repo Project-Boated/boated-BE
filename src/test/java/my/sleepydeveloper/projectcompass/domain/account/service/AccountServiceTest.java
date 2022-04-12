@@ -2,10 +2,7 @@ package my.sleepydeveloper.projectcompass.domain.account.service;
 
 import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
-import my.sleepydeveloper.projectcompass.domain.account.exception.DuplicateNicknameException;
-import my.sleepydeveloper.projectcompass.domain.account.exception.NicknameAlreadyExistsException;
-import my.sleepydeveloper.projectcompass.domain.account.exception.UsernameAlreadyExistsException;
-import my.sleepydeveloper.projectcompass.domain.account.exception.WrongPasswordException;
+import my.sleepydeveloper.projectcompass.domain.account.exception.*;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.account.service.dto.AccountUpdateCondition;
 import org.aspectj.lang.annotation.Before;
@@ -20,6 +17,8 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.Optional;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,7 +51,7 @@ class AccountServiceTest extends UnitTest {
         String newUsername = "newUsername";
         String newPassword = "newPassword";
         String newNickname = "newNickname";
-        Account savedAccount = accountRepository.save(new Account(newUsername, newPassword, newNickname, userRole));
+        Account savedAccount = accountService.save(new Account(newUsername, newPassword, newNickname, userRole));
 
         // Then
         assertThat(savedAccount.getUsername()).isEqualTo(newUsername);
@@ -192,6 +191,29 @@ class AccountServiceTest extends UnitTest {
         // When
         // Then
         accountService.delete(account);
+    }
+
+    @Test
+    void findById_존재하는Id로조회_조회성공() {
+        // Given
+        Account account = new Account(username, passwordEncoder.encode(password), nickname, userRole);
+        accountService.save(account);
+
+        // When
+        Account findAccount = accountService.findById(account.getId());
+
+        // Then
+        assertThat(findAccount.getUsername()).isEqualTo(username);
+        assertThat(findAccount.getNickname()).isEqualTo(nickname);
+        assertThat(findAccount.getRole()).isEqualTo(userRole);
+    }
+
+    @Test
+    void findById_존재하지않는Id로조회_오류발생() {
+        // Given
+        // When
+        // Then
+        assertThatThrownBy(() -> accountService.findById(123123L)).isInstanceOf(NotFoundAccountException.class);
     }
 
 }

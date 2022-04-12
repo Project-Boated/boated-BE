@@ -82,6 +82,24 @@ public class AccountDocument {
         );
     }
 
+    public static RestDocumentationFilter documentAccountNicknameUniqueValidation() {
+        return document("account-nickname-validation",
+                requestHeaders(
+                        headerWithName(HttpHeaders.ACCEPT).description("받을 타입"),
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description("Media Type")
+                ),
+                requestFields(
+                        fieldWithPath("nickname").type(JsonFieldType.STRING).description("Validation하고 싶은 이름")
+                ),
+                responseHeaders(
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description("Media Type")
+                ),
+                responseFields(
+                        fieldWithPath("duplicated").type(JsonFieldType.BOOLEAN).description("True면 이미 닉네임이 존재하는것. False면 없는 닉네임")
+                )
+        );
+    }
+
 
 
 }

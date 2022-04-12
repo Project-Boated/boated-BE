@@ -106,7 +106,7 @@ include::{snippets}/sign-in/request-headers.adoc[]
 
 ==== Response
 
-====== http-response
+===== http-response
 include::{snippets}/sign-in/http-response.adoc[]
 
 ===== response-headers
@@ -132,7 +132,7 @@ include::{snippets}/sign-up/request-fields.adoc[]
 
 ==== Response
 
-====== http-response
+===== http-response
 include::{snippets}/sign-up/http-response.adoc[]
 
 ===== response-headers
@@ -155,7 +155,7 @@ include::{snippets}/account-retrieve-profile/request-headers.adoc[]
 
 ==== Response
 
-====== http-response
+===== http-response
 include::{snippets}/account-retrieve-profile/http-response.adoc[]
 
 ===== response-headers
@@ -181,7 +181,7 @@ include::{snippets}/account-update-profile/request-fields.adoc[]
 
 ==== Response
 
-====== http-response
+===== http-response
 include::{snippets}/account-update-profile/http-response.adoc[]
 
 ===== response-headers
@@ -205,7 +205,7 @@ include::{snippets}/account-delete-profile/request-headers.adoc[]
 
 ==== Response
 
-====== http-response
+===== http-response
 include::{snippets}/account-delete-profile/http-response.adoc[]
 
 ===== response-headers
@@ -213,6 +213,32 @@ include::{snippets}/account-delete-profile/response-headers.adoc[]
 
 ===== response-fields
 include::{snippets}/account-delete-profile/response-fields.adoc[]
+
+[[resources-accounts-nickname-validation]]
+=== 닉네임 중복 조회
+`POST` 요청을 사용해서 닉네임 중복을 조회할 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/account-nickname-validation/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/account-nickname-validation/request-headers.adoc[]
+
+===== request-fields
+include::{snippets}/account-nickname-validation/request-fields.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/account-nickname-validation/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/account-nickname-validation/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/account-nickname-validation/response-fields.adoc[]
 
 [[resources-project]]
 == 프로젝트
@@ -231,7 +257,7 @@ include::{snippets}/project-create/request-headers.adoc[]
 
 ==== Response
 
-====== http-response
+===== http-response
 include::{snippets}/project-create/http-response.adoc[]
 
 ===== response-headers
@@ -257,7 +283,7 @@ include::{snippets}/project-update/request-fields.adoc[]
 
 ==== Response
 
-====== http-response
+===== http-response
 include::{snippets}/project-update/http-response.adoc[]
 
 ===== response-headers
@@ -280,7 +306,7 @@ include::{snippets}/project-my-retrieve/request-headers.adoc[]
 
 ==== Response
 
-====== http-response
+===== http-response
 include::{snippets}/project-my-retrieve/http-response.adoc[]
 
 ===== response-headers
@@ -288,58 +314,58 @@ include::{snippets}/project-my-retrieve/response-headers.adoc[]
 
 ===== response-fields
 include::{snippets}/project-my-retrieve/response-fields.adoc[]
-
-[[resources-project-crews-retrieve]]
-=== 프로젝트에 참여한 유저
-`GET` 요청을 사용해서 프로젝트에 참여한 유저를 확인할 수 있습니다.
-
-==== Request
-
-===== http-request
-include::{snippets}/project-crews-retrieve/http-request.adoc[]
-
-===== request-headers
-include::{snippets}/project-crews-retrieve/request-headers.adoc[]
-
-==== Response
-
-====== http-response
-include::{snippets}/project-crews-retrieve/http-response.adoc[]
-
-===== response-headers
-include::{snippets}/project-crews-retrieve/response-headers.adoc[]
-
-===== response-fields
-include::{snippets}/project-crews-retrieve/response-fields.adoc[]
-
-[[resources-project-captain-update]]
-=== 프로젝트의 captain 바꾸기
-`PUT` 요청을 사용해서 프로젝트의 Captain을 바꿀 수 있습니다.
-
-==== Request
-
-===== http-request
-include::{snippets}/project-captain-update/http-request.adoc[]
-
-===== request-headers
-include::{snippets}/project-captain-update/path-parameters.adoc[]
-
-===== request-headers
-include::{snippets}/project-captain-update/request-headers.adoc[]
-
-===== request-fields
-include::{snippets}/project-captain-update/request-fields.adoc[]
-
-==== Response
-
-====== http-response
-include::{snippets}/project-captain-update/http-response.adoc[]
-
-===== response-headers
-include::{snippets}/project-captain-update/response-headers.adoc[]
-
-===== response-fields
-include::{snippets}/project-captain-update/response-fields.adoc[]
+//
+//[[resources-project-crews-retrieve]]
+//=== 프로젝트에 참여한 유저
+//`GET` 요청을 사용해서 프로젝트에 참여한 유저를 확인할 수 있습니다.
+//
+//==== Request
+//
+//===== http-request
+//include::{snippets}/project-crews-retrieve/http-request.adoc[]
+//
+//===== request-headers
+//include::{snippets}/project-crews-retrieve/request-headers.adoc[]
+//
+//==== Response
+//
+//===== http-response
+//include::{snippets}/project-crews-retrieve/http-response.adoc[]
+//
+//===== response-headers
+//include::{snippets}/project-crews-retrieve/response-headers.adoc[]
+//
+//===== response-fields
+//include::{snippets}/project-crews-retrieve/response-fields.adoc[]
+//
+//[[resources-project-captain-update]]
+//=== 프로젝트의 captain 바꾸기
+//`PUT` 요청을 사용해서 프로젝트의 Captain을 바꿀 수 있습니다.
+//
+//==== Request
+//
+//===== http-request
+//include::{snippets}/project-captain-update/http-request.adoc[]
+//
+//===== request-headers
+//include::{snippets}/project-captain-update/path-parameters.adoc[]
+//
+//===== request-headers
+//include::{snippets}/project-captain-update/request-headers.adoc[]
+//
+//===== request-fields
+//include::{snippets}/project-captain-update/request-fields.adoc[]
+//
+//==== Response
+//
+//===== http-response
+//include::{snippets}/project-captain-update/http-response.adoc[]
+//
+//===== response-headers
+//include::{snippets}/project-captain-update/response-headers.adoc[]
+//
+//===== response-fields
+//include::{snippets}/project-captain-update/response-fields.adoc[]
 
 [[resources-project-crew-invite]]
 === 프로젝트 초대하기
@@ -350,7 +376,7 @@ include::{snippets}/project-captain-update/response-fields.adoc[]
 ===== http-request
 include::{snippets}/project-crew-invite/http-request.adoc[]
 
-===== request-headers
+===== request-path-parameters
 include::{snippets}/project-crew-invite/path-parameters.adoc[]
 
 ===== request-headers
@@ -361,7 +387,7 @@ include::{snippets}/project-crew-invite/request-fields.adoc[]
 
 ==== Response
 
-====== http-response
+===== http-response
 include::{snippets}/project-crew-invite/http-response.adoc[]
 
 ===== response-headers

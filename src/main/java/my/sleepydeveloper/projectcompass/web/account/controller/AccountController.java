@@ -84,16 +84,17 @@ public class AccountController {
 	
 	@PostMapping("/profile/nickname/unique-validation")
 	public ResponseEntity<NicknameUniqueValidationResponse> nicknameUniqueValidation(
-		@RequestBody NicknameUniqueValidationRequest request) {
+		@Validated @RequestBody NicknameUniqueValidationRequest request) {
 		
 		return ResponseEntity.ok(new NicknameUniqueValidationResponse(accountService.isExistsNickname(request.getNickname())));
 	}
     
     @PutMapping("/profile/nickname")
     public void putNickname (
-        @RequestBody PutNicknameRequest request,
+			@Validated @RequestBody PutNicknameRequest request,
         @AuthenticationPrincipal Account account
     ) {
-        accountService.changeNickname(account, request.getNickname());
+		AccountUpdateCondition accountUpdateCondition = new AccountUpdateCondition(request.getNickname(), null, null);
+		accountService.updateProfile(account, accountUpdateCondition);
     }
 }
