@@ -620,7 +620,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/sign-in HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Host: localhost:45835
+Host: localhost:38897
 Content-Length: 45
 
 {"username":"username","password":"password"}</code></pre>
@@ -666,10 +666,10 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: JSESSIONID=07F2ECC0BF43B40A5C7CA782546DA967; Path=/; HttpOnly; SameSite=Lax
+Set-Cookie: JSESSIONID=C45E540625EDB2F40AE662E74D314CC7; Path=/; HttpOnly; SameSite=Lax
 Content-Type: application/json;charset=UTF-8
 Content-Length: 8
-Date: Tue, 12 Apr 2022 12:29:23 GMT
+Date: Tue, 12 Apr 2022 13:04:10 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 
@@ -727,14 +727,16 @@ Connection: keep-alive
 <div class="sect2">
 <h3 id="resources-account-kakao-continue"><a class="link" href="#resources-account-kakao-continue">카카오톡으로 계속하기</a></h3>
 <div class="paragraph">
-<p><code>POST</code> 요청을 사용해서 카카오톡으로 계속할 수 있습니다.</p>
+<p><code>GET</code> 요청을 사용해서 카카오톡으로 계속할 수 있습니다.</p>
 </div>
 <div class="sect3">
 <h4 id="_request_2"><a class="link" href="#_request_2">Request</a></h4>
 <div class="sect4">
 <h5 id="_http_request_2"><a class="link" href="#_http_request_2">http-request</a></h5>
-<div class="paragraph">
-<p>/api/sign-in/kakao?code=dsa213021lkfds02</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">GET /api/sign-in/kakao?code=dsa213021lkfds02 HTTP/1.1</code></pre>
+</div>
 </div>
 </div>
 <div class="sect4">
@@ -774,7 +776,7 @@ Connection: keep-alive
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/account/sign-up HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:45835
+Host: localhost:38897
 Content-Length: 67
 
 {"username":"username","password":"password","nickname":"nickname"}</code></pre>
@@ -860,7 +862,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 12 Apr 2022 12:29:26 GMT
+Date: Tue, 12 Apr 2022 13:04:13 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 8
@@ -933,8 +935,8 @@ Content-Length: 8
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/account/profile HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Host: localhost:45835
-Cookie: JSESSIONID=29027310316922CEEB985CDD12F727DA</code></pre>
+Host: localhost:38897
+Cookie: JSESSIONID=FCD22553B198A85CFC160F756498FDB0</code></pre>
 </div>
 </div>
 </div>
@@ -978,7 +980,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 12 Apr 2022 12:29:26 GMT
+Date: Tue, 12 Apr 2022 13:04:13 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 64
@@ -1058,9 +1060,9 @@ Content-Length: 64
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/account/profile HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:45835
+Host: localhost:38897
 Content-Length: 87
-Cookie: JSESSIONID=49BA1FC5B0DC840D5BF6CE0A05D072ED
+Cookie: JSESSIONID=E7A0D93E3F33319B6B4329DAF9F6935F
 
 {"nickname":"updateNickname","originalPassword":"password","password":"updatePassword"}</code></pre>
 </div>
@@ -1144,7 +1146,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 12 Apr 2022 12:29:24 GMT
+Date: Tue, 12 Apr 2022 13:04:12 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 8
@@ -1213,8 +1215,8 @@ Content-Length: 8
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/account/profile HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Host: localhost:45835
-Cookie: JSESSIONID=206E474D23ABA59EA07DA5219CD02848</code></pre>
+Host: localhost:38897
+Cookie: JSESSIONID=6CD5D4E977BC2EEAED86B1906C8B6279</code></pre>
 </div>
 </div>
 </div>
@@ -1258,7 +1260,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 12 Apr 2022 12:29:26 GMT
+Date: Tue, 12 Apr 2022 13:04:13 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 8
@@ -1328,9 +1330,9 @@ Content-Length: 8
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/account/profile/nickname/unique-validation HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:45835
+Host: localhost:38897
 Content-Length: 36
-Cookie: JSESSIONID=60C7359F7FABB411A7578C9CDA44386A
+Cookie: JSESSIONID=B45626CDD91D7F961D84AE63E96F484D
 
 {"nickname":"notDuplicatedNickname"}</code></pre>
 </div>
@@ -1404,7 +1406,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 12 Apr 2022 12:29:26 GMT
+Date: Tue, 12 Apr 2022 13:04:13 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 20
@@ -1474,9 +1476,9 @@ Content-Length: 20
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/account/profile/nickname HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:45835
+Host: localhost:38897
 Content-Length: 24
-Cookie: JSESSIONID=E458D4CF36915AADE8388DC99BABA9FC
+Cookie: JSESSIONID=D63716CB93252318FEC35FB414A79B74
 
 {"nickname":"nickname2"}</code></pre>
 </div>
@@ -1548,7 +1550,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Date: Tue, 12 Apr 2022 12:29:24 GMT
+Date: Tue, 12 Apr 2022 13:04:13 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -1575,9 +1577,9 @@ Connection: keep-alive</code></pre>
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/projects HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:37467
+Host: localhost:43321
 Content-Length: 43
-Cookie: JSESSIONID=9B510B262DD0FCF8131D7A8FD4914EDE
+Cookie: JSESSIONID=732341EA572C5A518BA80187A0751E06
 
 {"name":"name","description":"description"}</code></pre>
 </div>
@@ -1627,7 +1629,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 12 Apr 2022 12:29:32 GMT
+Date: Tue, 12 Apr 2022 13:04:20 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 8
@@ -1697,9 +1699,9 @@ Content-Length: 8
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/projects/5 HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:37467
+Host: localhost:43321
 Content-Length: 55
-Cookie: JSESSIONID=6918B697E6368389E08138FC096A51E4
+Cookie: JSESSIONID=1437B01A0425D4C95B51C2A8288E0AD8
 
 {"name":"updateName","description":"updateDescription"}</code></pre>
 </div>
@@ -1778,7 +1780,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 12 Apr 2022 12:29:33 GMT
+Date: Tue, 12 Apr 2022 13:04:21 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 8
@@ -1847,8 +1849,8 @@ Content-Length: 8
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/projects/my HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Host: localhost:37467
-Cookie: JSESSIONID=6BC03AE067C8CFEBBC7371CFB198846F</code></pre>
+Host: localhost:43321
+Cookie: JSESSIONID=2CF7779DE25E53CE2F12EC8D781F6167</code></pre>
 </div>
 </div>
 </div>
@@ -1892,7 +1894,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 12 Apr 2022 12:29:32 GMT
+Date: Tue, 12 Apr 2022 13:04:21 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 58
@@ -1972,9 +1974,9 @@ Content-Length: 58
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/projects/2/crews HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:37467
+Host: localhost:43321
 Content-Length: 19
-Cookie: JSESSIONID=1FD3D3AB379AC20C0CD48DA5668EEA46
+Cookie: JSESSIONID=3EE43B8E496C4B30FD457D86F8B64527
 
 {"username":"crew"}</code></pre>
 </div>
@@ -2070,7 +2072,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 12 Apr 2022 12:29:32 GMT
+Date: Tue, 12 Apr 2022 13:04:20 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 8
@@ -2132,7 +2134,7 @@ Content-Length: 8
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-04-12 21:36:35 +0900
+Last updated 2022-04-12 21:37:58 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
