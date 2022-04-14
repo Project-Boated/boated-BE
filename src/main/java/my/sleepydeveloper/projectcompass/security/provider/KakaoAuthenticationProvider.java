@@ -1,7 +1,6 @@
 package my.sleepydeveloper.projectcompass.security.provider;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -16,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.account.entity.KakaoAccount;
 import my.sleepydeveloper.projectcompass.security.exception.JsonParsingException;
 import my.sleepydeveloper.projectcompass.security.provider.dto.KakaoTokenResponse;
-import my.sleepydeveloper.projectcompass.security.service.KakaoAccountDetailsService;
+import my.sleepydeveloper.projectcompass.domain.account.service.KakaoAccountService;
 import my.sleepydeveloper.projectcompass.security.service.KakaoWebService;
 import my.sleepydeveloper.projectcompass.security.token.KakaoAuthenticationToken;
 
@@ -24,7 +23,7 @@ import my.sleepydeveloper.projectcompass.security.token.KakaoAuthenticationToken
 @RequiredArgsConstructor
 public class KakaoAuthenticationProvider implements AuthenticationProvider {
 
-    private final KakaoAccountDetailsService kakaoUserDetailsService;
+    private final KakaoAccountService kakaoUserDetailsService;
     private final KakaoWebService kakaoWebService;
     private ObjectMapper objectMapper = new ObjectMapper();
 

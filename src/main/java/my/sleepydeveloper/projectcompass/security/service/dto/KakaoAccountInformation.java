@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class KakaoAccountResponse {
+public class KakaoAccountInformation {
     private Long id;
     private String connectedAt;
     private KakaoProperties properties;
