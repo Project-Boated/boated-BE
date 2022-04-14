@@ -18,4 +18,8 @@ public class KakaoAccountInformation {
     private String connectedAt;
     private KakaoProperties properties;
     private KakaoAccount kakaoAccount;
+
+    public String getProfileImageUrl() {
+        return kakaoAccount.getProfile().getIsDefaultImage().equals("true") ? null : getKakaoAccount().getProfile().getProfileImageUrl();
+    }
 }

@@ -22,6 +22,7 @@ public class KakaoAccountService {
     private final KakaoWebService kakaoWebService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    @Transactional
     public KakaoAccount loadKakaoAccountByAccessToken(String accessToken) throws
             UsernameNotFoundException,
             JsonProcessingException {
@@ -35,9 +36,7 @@ public class KakaoAccountService {
         return kakaoAccountRepository.findByKakaoId(kakaoAccountResponse.getId())
                 .orElseGet(() -> kakaoAccountRepository.save(KakaoAccount.builder()
                         .profileUrl(
-                                kakaoAccountResponse.getKakaoAccount()
-                                        .getProfile()
-                                        .getThumbnailImageUrl())
+                                kakaoAccountResponse.getProfileImageUrl())
                         .role("ROLE_USER")
                         .kakaoId(
                                 kakaoAccountResponse.getId())
