@@ -1,19 +1,14 @@
 package my.sleepydeveloper.projectcompass.domain.account.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import my.sleepydeveloper.projectcompass.domain.common.entity.BaseTimeEntity;
 
 import javax.persistence.*;
 
-import org.checkerframework.common.aliasing.qual.Unique;
-
 @Entity
-@Getter @NoArgsConstructor
-@AllArgsConstructor
+@Getter @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="oauth_site")
 public class Account extends BaseTimeEntity {
@@ -22,6 +17,7 @@ public class Account extends BaseTimeEntity {
     @Column(name = "account_id")
     private Long id;
 
+    @Column(unique = true)
     private String username;
 
     private String password;
@@ -37,6 +33,14 @@ public class Account extends BaseTimeEntity {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
+        this.role = role;
+    }
+
+    public Account(String username, String password, String nickname, String profileUrl, String role) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.profileUrl = profileUrl;
         this.role = role;
     }
 
