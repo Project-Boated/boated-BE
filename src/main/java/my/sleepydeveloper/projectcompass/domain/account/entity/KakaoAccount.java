@@ -16,8 +16,8 @@ public class KakaoAccount extends Account{
 	private Long kakaoId;
 
 	@Builder
-	public KakaoAccount(Long kakaoId, String nickname, String profileUrl, String role) {
-		super(null, null, nickname, profileUrl, role);
+	public KakaoAccount(Long kakaoId, String profileUrl, String role) {
+		super(null, null, null, profileUrl, role);
 		this.kakaoId = kakaoId;
 	}
 }
