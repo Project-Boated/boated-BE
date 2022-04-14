@@ -3,7 +3,7 @@ package my.sleepydeveloper.projectcompass.web.account.controller;
 import lombok.RequiredArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
-import my.sleepydeveloper.projectcompass.domain.account.service.dto.AccountUpdateCondition;
+import my.sleepydeveloper.projectcompass.domain.account.service.condition.AccountUpdateCond;
 import my.sleepydeveloper.projectcompass.web.value.AccountProfile;
 import my.sleepydeveloper.projectcompass.security.dto.IdDto;
 import my.sleepydeveloper.projectcompass.web.account.dto.AccountDto;
@@ -29,7 +29,7 @@ import java.net.URI;
 public class AccountController {
 	
 	private final AccountService accountService;
-	
+
 	private final PasswordEncoder passwordEncoder;
 	
 	@PostMapping("/sign-up")
@@ -61,7 +61,7 @@ public class AccountController {
 													  @RequestBody @Validated
 														  AccountUpdateRequest accountUpdateRequest) {
 		
-		AccountUpdateCondition updateCondition = AccountUpdateCondition.builder()
+		AccountUpdateCond updateCondition = AccountUpdateCond.builder()
 																	   .originalPassword(accountUpdateRequest.getOriginalPassword())
 																	   .nickname(accountUpdateRequest.getNickname())
 																	   .password(accountUpdateRequest.getPassword())
@@ -88,13 +88,12 @@ public class AccountController {
 		
 		return ResponseEntity.ok(new NicknameUniqueValidationResponse(accountService.isExistsNickname(request.getNickname())));
 	}
-    
+
     @PutMapping("/profile/nickname")
     public void putNickname (
 			@Validated @RequestBody PutNicknameRequest request,
         @AuthenticationPrincipal Account account
     ) {
-		AccountUpdateCondition accountUpdateCondition = new AccountUpdateCondition(request.getNickname(), null, null);
-		accountService.updateProfile(account, accountUpdateCondition);
+		accountService.updateNickname(account, request.getNickname());
     }
 }

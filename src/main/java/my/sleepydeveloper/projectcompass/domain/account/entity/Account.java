@@ -44,12 +44,20 @@ public class Account extends BaseTimeEntity {
         this.role = role;
     }
 
-    public void updateProfile(String nickname, String password) {
-        if (nickname != null) {
-            this.nickname = nickname;
-        }
+    public void updateProfile(String nickname, String password, String profileUrl) {
+        updateNickname(nickname);
+
         if (password != null) {
             this.password = password;
+        }
+        if (profileUrl != null) {
+            this.profileUrl = profileUrl;
+        }
+    }
+
+    public void updateNickname(String nickname) {
+        if (nickname != null) {
+            this.nickname = nickname;
         }
     }
 

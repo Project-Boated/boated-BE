@@ -4,7 +4,7 @@ import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.exception.*;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
-import my.sleepydeveloper.projectcompass.domain.account.service.dto.AccountUpdateCondition;
+import my.sleepydeveloper.projectcompass.domain.account.service.condition.AccountUpdateCond;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -82,7 +82,7 @@ class AccountServiceTest extends UnitTest {
 
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        AccountUpdateCondition updateCondition = AccountUpdateCondition.builder()
+        AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(newNickname)
                 .password(newPassword)
                 .originalPassword(password)
@@ -100,7 +100,7 @@ class AccountServiceTest extends UnitTest {
     void updateProfile_모든필드NULL_업데이트안함() throws Exception {
         // Given
         Account account = accountRepository.save(new Account(username, passwordEncoder.encode(password), nickname, userRole));
-        AccountUpdateCondition updateCondition = AccountUpdateCondition.builder()
+        AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .password(null)
                 .nickname(null)
                 .originalPassword(password)
@@ -118,7 +118,7 @@ class AccountServiceTest extends UnitTest {
     void updateProfile_같은nickname으로업데이트_업데이트안함() throws Exception {
         // Given
         Account account = accountRepository.save(new Account(username, passwordEncoder.encode(password), nickname, userRole));
-        AccountUpdateCondition updateCondition = AccountUpdateCondition.builder()
+        AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .password(null)
                 .nickname(account.getNickname())
                 .originalPassword(password)
@@ -139,7 +139,7 @@ class AccountServiceTest extends UnitTest {
 
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        AccountUpdateCondition updateCondition = AccountUpdateCondition.builder()
+        AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(newNickname)
                 .password(newPassword)
                 .originalPassword("fail")
@@ -162,7 +162,7 @@ class AccountServiceTest extends UnitTest {
         Account updateAccount = accountRepository.save(new Account(username, passwordEncoder.encode(password), nickname, userRole));
 
         String newPassword = "newPassword";
-        AccountUpdateCondition updateCondition = AccountUpdateCondition.builder()
+        AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(existingNickname)
                 .password(newPassword)
                 .originalPassword(password)
@@ -171,7 +171,7 @@ class AccountServiceTest extends UnitTest {
         // When
         // Then
         assertThatThrownBy(() -> accountService.updateProfile(updateAccount, updateCondition))
-                .isInstanceOf(AccountNicknameDuplicateException.class);
+                .isInstanceOf(AccountNicknameAlreadyExistsException.class);
     }
 
     @Test

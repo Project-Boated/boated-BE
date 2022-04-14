@@ -17,11 +17,13 @@ class AccountTest extends UnitTest {
         // When
         String updatePassword = "updatePassword";
         String updateNickname = "updateNickname";
-        account.updateProfile(updateNickname, updatePassword);
+        String updateProfileUrl = "updateProfileUrl";
+        account.updateProfile(updateNickname, updatePassword, updateProfileUrl);
 
         // Then
         assertThat(account.getPassword()).isEqualTo(updatePassword);
         assertThat(account.getNickname()).isEqualTo(updateNickname);
+        assertThat(account.getProfileUrl()).isEqualTo(updateProfileUrl);
     }
 
     @Test
@@ -30,7 +32,7 @@ class AccountTest extends UnitTest {
         Account account = new Account(username, password, nickname, userRole);
 
         // When
-        account.updateProfile(null, null);
+        account.updateProfile(null, null, null);
 
         // Then
         assertThat(account.getPassword()).isEqualTo(password);

@@ -1,6 +1,5 @@
-package my.sleepydeveloper.projectcompass.domain.account.service;
+package my.sleepydeveloper.projectcompass.security.service;
 
-import my.sleepydeveloper.projectcompass.security.service.KakaoWebService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +15,7 @@ import my.sleepydeveloper.projectcompass.security.service.dto.KakaoAccountInform
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class KakaoAccountService {
+public class KakaoAccountDetailsService {
 
     private final KakaoAccountRepository kakaoAccountRepository;
     private final KakaoWebService kakaoWebService;

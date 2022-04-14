@@ -1,13 +1,12 @@
-package my.sleepydeveloper.projectcompass.domain.account.service.dto;
+package my.sleepydeveloper.projectcompass.domain.account.service.condition;
 
 import lombok.*;
-import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AccountUpdateCondition {
+public class AccountUpdateCond {
 
     private String nickname;
     private String originalPassword;
