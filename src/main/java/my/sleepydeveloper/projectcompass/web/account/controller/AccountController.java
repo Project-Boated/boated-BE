@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
 import my.sleepydeveloper.projectcompass.domain.account.service.dto.AccountUpdateCondition;
-import my.sleepydeveloper.projectcompass.domain.account.value.AccountProfile;
+import my.sleepydeveloper.projectcompass.web.value.AccountProfile;
 import my.sleepydeveloper.projectcompass.security.dto.IdDto;
 import my.sleepydeveloper.projectcompass.web.account.dto.AccountDto;
 import my.sleepydeveloper.projectcompass.web.account.dto.NicknameUniqueValidationRequest;

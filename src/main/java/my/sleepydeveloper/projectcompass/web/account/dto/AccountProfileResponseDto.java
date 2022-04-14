@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import my.sleepydeveloper.projectcompass.domain.account.value.AccountProfile;
+import my.sleepydeveloper.projectcompass.web.value.AccountProfile;
 
 @Getter @Setter
 @NoArgsConstructor

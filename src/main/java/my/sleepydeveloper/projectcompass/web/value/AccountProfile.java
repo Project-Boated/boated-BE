@@ -1,4 +1,4 @@
-package my.sleepydeveloper.projectcompass.domain.account.value;
+package my.sleepydeveloper.projectcompass.web.value;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
