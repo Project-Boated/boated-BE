@@ -2,9 +2,9 @@ package my.sleepydeveloper.projectcompass.domain.project.service;
 
 import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
-import my.sleepydeveloper.projectcompass.domain.account.entity.AccountProject;
+import my.sleepydeveloper.projectcompass.domain.AccountProject.entity.AccountProject;
 import my.sleepydeveloper.projectcompass.domain.account.exception.NotFoundAccountException;
-import my.sleepydeveloper.projectcompass.domain.account.repository.AccountProjectRepository;
+import my.sleepydeveloper.projectcompass.domain.AccountProject.repository.AccountProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectNotFoundException;
@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.stereotype.Repository;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.List;

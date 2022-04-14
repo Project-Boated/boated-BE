@@ -1,17 +1,16 @@
 package my.sleepydeveloper.projectcompass.domain.account.repository;
 
 import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
+import my.sleepydeveloper.projectcompass.domain.AccountProject.repository.AccountProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
-import my.sleepydeveloper.projectcompass.domain.account.entity.AccountProject;
+import my.sleepydeveloper.projectcompass.domain.AccountProject.entity.AccountProject;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.stereotype.Repository;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
