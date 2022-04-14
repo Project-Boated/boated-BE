@@ -3,21 +3,21 @@ package my.sleepydeveloper.projectcompass.domain.account.entity;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Getter
-@NoArgsConstructor
+@Getter @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DiscriminatorValue("KAKAO")
 public class KakaoAccount extends Account{
 	
 	private Long kakaoId;
-	
+
 	@Builder
-	public KakaoAccount(Long id, String username, String password, String nickname, String profileUrl, String role, Long kakaoId) {
-		super(id, username, password, nickname, profileUrl, role);
+	public KakaoAccount(Long kakaoId, String nickname, String profileUrl, String role) {
+		super(null, null, nickname, profileUrl, role);
 		this.kakaoId = kakaoId;
 	}
 }
