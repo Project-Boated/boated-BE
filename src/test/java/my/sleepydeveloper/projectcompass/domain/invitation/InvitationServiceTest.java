@@ -2,7 +2,7 @@ package my.sleepydeveloper.projectcompass.domain.invitation;
 
 import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
-import my.sleepydeveloper.projectcompass.domain.account.exception.NotFoundAccountException;
+import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNotFoundException;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.invitation.entity.Invitation;
 import my.sleepydeveloper.projectcompass.domain.invitation.exception.InviteCrewAccessDenied;
@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.test.context.ActiveProfiles;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.projectDescription;
@@ -97,6 +96,6 @@ class InvitationServiceTest extends UnitTest {
         // When
         // Then
         assertThatThrownBy(() -> invitationService.inviteCrew(captain, "failusername", project.getId()))
-                .isInstanceOf(NotFoundAccountException.class);
+                .isInstanceOf(AccountNotFoundException.class);
     }
 }

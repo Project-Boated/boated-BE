@@ -26,10 +26,10 @@ public class AccountService {
 
     private void checkDuplicationExists(Account account) {
         if (isExistsUsername(account)) {
-            throw new UsernameAlreadyExistsException(ErrorCode.ACCOUNT_EXISTS_USERNAME);
+            throw new AccountUsernameAlreadyExistsException(ErrorCode.ACCOUNT_EXISTS_USERNAME);
         }
         if (isExistsNickname(account.getNickname())) {
-            throw new NicknameAlreadyExistsException(ErrorCode.ACCOUNT_EXISTS_NICKNAME);
+            throw new AccountNicknameAlreadyExistsException(ErrorCode.ACCOUNT_EXISTS_NICKNAME);
         }
     }
 
@@ -51,14 +51,14 @@ public class AccountService {
 //            throw new WrongPasswordException(ErrorCode.ACCOUNT_WRONG_PASSWORD);
 //        }
 
-        Account findAccount = accountRepository.findById(account.getId()).orElseThrow(() -> new NotFoundAccountException(ErrorCode.ACCOUNT_NOT_FOUND));
+        Account findAccount = accountRepository.findById(account.getId()).orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
         if(accountUpdateCondition.getNickname() != null) {
             if(findAccount.getNickname()!=null && findAccount.getNickname().equals(accountUpdateCondition.getNickname())) {
                  accountUpdateCondition.setNickname(null);
             }
             else if (accountRepository.existsByNickname(accountUpdateCondition.getNickname())) {
-                throw new DuplicateNicknameException(ErrorCode.ACCOUNT_DUPLICATE_NICKNAME);
+                throw new AccountNicknameDuplicateException(ErrorCode.ACCOUNT_DUPLICATE_NICKNAME);
             }
         }
 
@@ -75,6 +75,6 @@ public class AccountService {
     }
     
     public Account findById(Long accountId) {
-        return accountRepository.findById(accountId).orElseThrow(() -> new NotFoundAccountException(ErrorCode.ACCOUNT_NOT_FOUND));
+        return accountRepository.findById(accountId).orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
     }
 }

@@ -5,22 +5,15 @@ import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.exception.*;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.account.service.dto.AccountUpdateCondition;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.ActiveProfiles;
-
-import java.util.Optional;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.springframework.context.annotation.ComponentScan.*;
 
 @DataJpaTest
 @TestInstance(TestInstance. Lifecycle.PER_CLASS)
@@ -66,7 +59,7 @@ class AccountServiceTest extends UnitTest {
         // Then
         String newNickname = "newNickname";
         assertThatThrownBy(() -> accountService.save(new Account(username, password, newNickname, userRole)))
-                .isInstanceOf(UsernameAlreadyExistsException.class);
+                .isInstanceOf(AccountUsernameAlreadyExistsException.class);
     }
 
     @Test
@@ -78,7 +71,7 @@ class AccountServiceTest extends UnitTest {
         // Then
         String newUsername = "newUsername";
         assertThatThrownBy(() -> accountService.save(new Account(newUsername, password, nickname, userRole)))
-                .isInstanceOf(NicknameAlreadyExistsException.class);
+                .isInstanceOf(AccountNicknameAlreadyExistsException.class);
     }
 
 
@@ -178,7 +171,7 @@ class AccountServiceTest extends UnitTest {
         // When
         // Then
         assertThatThrownBy(() -> accountService.updateProfile(updateAccount, updateCondition))
-                .isInstanceOf(DuplicateNicknameException.class);
+                .isInstanceOf(AccountNicknameDuplicateException.class);
     }
 
     @Test
@@ -211,7 +204,7 @@ class AccountServiceTest extends UnitTest {
         // Given
         // When
         // Then
-        assertThatThrownBy(() -> accountService.findById(123123L)).isInstanceOf(NotFoundAccountException.class);
+        assertThatThrownBy(() -> accountService.findById(123123L)).isInstanceOf(AccountNotFoundException.class);
     }
 
 }

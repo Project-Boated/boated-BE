@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.AccountProject.entity.AccountProject;
-import my.sleepydeveloper.projectcompass.domain.account.exception.NotFoundAccountException;
+import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNotFoundException;
 import my.sleepydeveloper.projectcompass.domain.AccountProject.repository.AccountProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
@@ -75,7 +75,7 @@ public class ProjectService {
         }
 
         Account newCaptain = accountRepository.findByUsername(newCaptainUsername)
-                .orElseThrow(() -> new NotFoundAccountException(ErrorCode.ACCOUNT_NOT_FOUND));
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
         accountProjectRepository.save(new AccountProject(account, project));
         accountProjectRepository.delete(project, newCaptain);
