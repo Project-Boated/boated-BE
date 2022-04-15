@@ -1,11 +1,9 @@
-package my.sleepydeveloper.projectcompass.domain.AccountProject.entity;
+package my.sleepydeveloper.projectcompass.domain.accountproject.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 

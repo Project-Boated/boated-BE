@@ -3,7 +3,7 @@ package my.sleepydeveloper.projectcompass.domain.project.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
-import my.sleepydeveloper.projectcompass.domain.AccountProject.entity.AccountProject;
+import my.sleepydeveloper.projectcompass.domain.accountproject.entity.AccountProject;
 import my.sleepydeveloper.projectcompass.domain.common.entity.BaseTimeEntity;
 
 import javax.persistence.*;

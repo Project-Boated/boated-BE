@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.common.entity.BaseTimeEntity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,21 +29,27 @@ public class Account extends BaseTimeEntity {
     
     private String profileUrl;
 
-    private String role;
-    
-    public Account(String username, String password, String nickname, String role) {
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(
+            name="account_role",
+            joinColumns = @JoinColumn(name = "account_id")
+    )
+    private Set<Role> roles = new HashSet<>();
+
+    public Account(String username, String password, String nickname, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
-        this.role = role;
+        this.roles = roles;
     }
 
-    public Account(String username, String password, String nickname, String profileUrl, String role) {
+    public Account(String username, String password, String nickname, String profileUrl, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         this.profileUrl = profileUrl;
-        this.role = role;
+        this.roles = roles;
     }
 
     public void updateProfile(String nickname, String password, String profileUrl) {

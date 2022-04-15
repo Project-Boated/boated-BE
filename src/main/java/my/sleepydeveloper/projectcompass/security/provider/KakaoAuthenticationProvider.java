@@ -1,6 +1,7 @@
 package my.sleepydeveloper.projectcompass.security.provider;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -37,7 +38,8 @@ public class KakaoAuthenticationProvider implements AuthenticationProvider {
             String accessToken = kakaoTokenResponse.getAccessToken();
         
             KakaoAccount account = kakaoUserDetailsService.loadKakaoAccountByAccessToken(accessToken);
-            List<SimpleGrantedAuthority> grantedAuthorities = List.of(new SimpleGrantedAuthority(account.getRole()));
+            List<SimpleGrantedAuthority> grantedAuthorities = account.getRoles().stream()
+                    .map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
         
             return new KakaoAuthenticationToken(account, null, grantedAuthorities);
         } catch (JsonProcessingException e) {

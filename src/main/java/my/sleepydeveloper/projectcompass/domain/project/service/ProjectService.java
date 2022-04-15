@@ -3,9 +3,9 @@ package my.sleepydeveloper.projectcompass.domain.project.service;
 import lombok.RequiredArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
-import my.sleepydeveloper.projectcompass.domain.AccountProject.entity.AccountProject;
+import my.sleepydeveloper.projectcompass.domain.accountproject.entity.AccountProject;
 import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNotFoundException;
-import my.sleepydeveloper.projectcompass.domain.AccountProject.repository.AccountProjectRepository;
+import my.sleepydeveloper.projectcompass.domain.accountproject.repository.AccountProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectNotFoundException;
@@ -31,7 +31,7 @@ public class ProjectService {
     @Transactional
     public Project save(Project project) {
         if (projectRepository.existsByNameAndCaptain(project.getName(), project.getCaptain())) {
-            throw new SameProjectNameInAccountExists(ErrorCode.SameProjectNameInAccountExists);
+            throw new SameProjectNameInAccountExists(ErrorCode.PROJECT_NAME_EXISTS_IN_ACCOUNT);
         }
 
         return projectRepository.save(project);
@@ -48,7 +48,7 @@ public class ProjectService {
         }
 
         if (projectRepository.countByNameAndCaptainAndNotProject(projectUpdateCondition.getName(), account, project) > 0) {
-            throw new SameProjectNameInAccountExists(ErrorCode.SameProjectNameInAccountExists);
+            throw new SameProjectNameInAccountExists(ErrorCode.PROJECT_NAME_EXISTS_IN_ACCOUNT);
         }
 
         project.changeProjectInform(projectUpdateCondition.getName(), projectUpdateCondition.getDescription());
@@ -71,7 +71,7 @@ public class ProjectService {
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
         if (project.getCaptain().getId() != account.getId()) {
-            throw new UpdateCaptainAccessDenied(ErrorCode.PROJECT_UPDATE_CAPTAIN_ACCESS_DENIED);
+            throw new UpdateCaptainAccessDenied(ErrorCode.PROJECT_CAPTAIN_UPDATE_ACCESS_DENIED);
         }
 
         Account newCaptain = accountRepository.findByUsername(newCaptainUsername)

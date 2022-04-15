@@ -1,5 +1,6 @@
 package my.sleepydeveloper.projectcompass.security.service;
 
+import my.sleepydeveloper.projectcompass.domain.account.entity.Role;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.account.entity.KakaoAccount;
 import my.sleepydeveloper.projectcompass.domain.account.repository.KakaoAccountRepository;
 import my.sleepydeveloper.projectcompass.security.service.dto.KakaoAccountInformation;
+
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +39,7 @@ public class KakaoAccountDetailsService {
                 .orElseGet(() -> kakaoAccountRepository.save(KakaoAccount.builder()
                         .profileUrl(
                                 kakaoAccountResponse.getProfileImageUrl())
-                        .role("ROLE_USER")
+                        .roles(Set.of(Role.USER))
                         .kakaoId(
                                 kakaoAccountResponse.getId())
                         .build()));

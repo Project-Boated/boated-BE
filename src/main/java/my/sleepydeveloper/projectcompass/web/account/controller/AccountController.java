@@ -2,17 +2,11 @@ package my.sleepydeveloper.projectcompass.web.account.controller;
 
 import lombok.RequiredArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
+import my.sleepydeveloper.projectcompass.domain.account.entity.Role;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
 import my.sleepydeveloper.projectcompass.domain.account.service.condition.AccountUpdateCond;
-import my.sleepydeveloper.projectcompass.web.value.AccountProfile;
 import my.sleepydeveloper.projectcompass.security.dto.IdDto;
-import my.sleepydeveloper.projectcompass.web.account.dto.AccountDto;
-import my.sleepydeveloper.projectcompass.web.account.dto.NicknameUniqueValidationRequest;
-import my.sleepydeveloper.projectcompass.web.account.dto.NicknameUniqueValidationResponse;
-import my.sleepydeveloper.projectcompass.web.account.dto.AccountProfileResponseDto;
-import my.sleepydeveloper.projectcompass.web.account.dto.AccountUpdateRequest;
-import my.sleepydeveloper.projectcompass.web.account.dto.PutNicknameRequest;
-
+import my.sleepydeveloper.projectcompass.web.account.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,8 +14,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-
 import java.net.URI;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,12 +31,10 @@ public class AccountController {
 		String username = accountDto.getUsername();
 		String password = accountDto.getPassword();
 		String nickname = accountDto.getNickname();
-		String role = "ROLE_USER";
 		
 		Account savedAccount = accountService.save(new Account(username,
 															   passwordEncoder.encode(password),
-															   nickname,
-															   role));
+															   nickname, Set.of(Role.USER)));
 		
 		return ResponseEntity.created(URI.create("/api/account/profile" + savedAccount.getId()))
 							 .body(new IdDto(savedAccount.getId()));
@@ -50,10 +42,8 @@ public class AccountController {
 	
 	@GetMapping("/profile")
 	public ResponseEntity<AccountProfileResponseDto> getAccountProfile(@AuthenticationPrincipal Account account) {
-		
-		AccountProfile accountProfile = new AccountProfile(accountService.findById(account.getId()));
-		
-		return ResponseEntity.ok(new AccountProfileResponseDto(accountProfile));
+
+		return ResponseEntity.ok(new AccountProfileResponseDto(accountService.findById(account.getId())));
 	}
 	
 	@PatchMapping("/profile")

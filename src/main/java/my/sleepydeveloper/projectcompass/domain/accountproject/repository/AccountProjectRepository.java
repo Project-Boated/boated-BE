@@ -1,7 +1,7 @@
-package my.sleepydeveloper.projectcompass.domain.AccountProject.repository;
+package my.sleepydeveloper.projectcompass.domain.accountproject.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import my.sleepydeveloper.projectcompass.domain.AccountProject.entity.AccountProject;
+import my.sleepydeveloper.projectcompass.domain.accountproject.entity.AccountProject;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.entity.QAccount;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static my.sleepydeveloper.projectcompass.domain.AccountProject.entity.QAccountProject.accountProject;
+import static my.sleepydeveloper.projectcompass.domain.accountproject.entity.QAccountProject.accountProject;
 import static my.sleepydeveloper.projectcompass.domain.account.entity.QAccount.account;
 
 @Repository
