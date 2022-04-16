@@ -1,31 +1,23 @@
 package my.sleepydeveloper.projectcompass.web.common.exception;
 
-import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
+import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
 import my.sleepydeveloper.projectcompass.web.exception.dto.BasicFieldError;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.BindingResultUtils;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.MapBindingResult;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 @SpringBootTest
 @ActiveProfiles("deploy")
-class BasicFieldErrorTest extends UnitTest {
+class BasicFieldErrorTest extends BaseTest {
 
     @Autowired
     MessageSource messageSource;

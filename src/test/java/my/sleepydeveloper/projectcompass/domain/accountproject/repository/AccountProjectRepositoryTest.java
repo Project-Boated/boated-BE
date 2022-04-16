@@ -1,6 +1,6 @@
 package my.sleepydeveloper.projectcompass.domain.accountproject.repository;
 
-import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
+import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.accountproject.entity.AccountProject;
@@ -24,7 +24,7 @@ import static org.springframework.context.annotation.ComponentScan.*;
         type = FilterType.ANNOTATION,
         classes = Repository.class
 ))
-class AccountProjectRepositoryTest extends UnitTest {
+class AccountProjectRepositoryTest extends BaseTest {
 
     @Autowired
     AccountRepository accountRepository;

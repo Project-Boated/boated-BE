@@ -15,27 +15,20 @@ public class AccountDocument {
     public static RestDocumentationFilter documentSignUp() {
         return document("sign-up",
                 requestHeaders(
-                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType"),
-                        headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description("보낼 Content Type")
                 ),
                 requestFields(
                         fieldWithPath("username").type(JsonFieldType.STRING).description("유저이름"),
                         fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
-                        fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임")
-                ),
-                responseHeaders(
-                        headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type"),
-                        headerWithName(HttpHeaders.LOCATION).description("회원가입된 유저의 프로필 URL")
-                ),
-                responseFields(
-                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("회원가입된 id")
+                        fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
+                        fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).description("프로필 이미지 URL").optional()
                 )
         );
     }
     public static RestDocumentationFilter documentAccountProfileRetrieve() {
         return document("account-profile-retrieve",
                 requestHeaders(
-                        headerWithName(HttpHeaders.ACCEPT).description("받을 타입")
+                        headerWithName(HttpHeaders.ACCEPT).description("보낼 받을 타입")
                 ),
                 responseHeaders(
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("Media Type")
@@ -43,7 +36,8 @@ public class AccountDocument {
                 responseFields(
                         fieldWithPath("username").type(JsonFieldType.STRING).description("유저 이름"),
                         fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
-                        fieldWithPath("role").type(JsonFieldType.STRING).description("권한")
+                        fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).description("프로필 이미지 URL"),
+                        fieldWithPath("roles").type(JsonFieldType.ARRAY).description("권한")
                 )
         );
     }
@@ -51,45 +45,29 @@ public class AccountDocument {
     public static RestDocumentationFilter documentAccountProfileUpdate() {
         return document("account-profile-update",
                 requestHeaders(
-                        headerWithName(HttpHeaders.ACCEPT).description("받을 타입"),
-                        headerWithName(HttpHeaders.CONTENT_TYPE).description("Media Type")
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description("보낼 Media Type")
                 ),
                 requestFields(
-                        fieldWithPath("nickname").type(JsonFieldType.STRING).description("바꿀 이름(없어도 됨)"),
+                        fieldWithPath("nickname").type(JsonFieldType.STRING).description("바꿀 닉네임").optional(),
                         fieldWithPath("originalPassword").type(JsonFieldType.STRING).description("원래 패스워드, 유저 검증을 위한 값(카카오 로그인시 생략가능)"),
-                        fieldWithPath("password").type(JsonFieldType.STRING).description("바꿀 패스워드(없어도 됨)")
-                ),
-                responseHeaders(
-                        headerWithName(HttpHeaders.CONTENT_TYPE).description("Media Type")
-                ),
-                responseFields(
-                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("바꾼 Account id")
+                        fieldWithPath("newPassword").type(JsonFieldType.STRING).description("바꿀 패스워드, 단 카카오계정이면 적어도 아무일도 안일어남").optional(),
+                        fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).description("Profile 이미지 URL").optional()
                 )
         );
     }
 
     public static RestDocumentationFilter documentAccountDelete() {
-        return document("account-profile-delete",
-                requestHeaders(
-                        headerWithName(HttpHeaders.ACCEPT).description("받을 타입")
-                ),
-                responseHeaders(
-                        headerWithName(HttpHeaders.CONTENT_TYPE).description("Media Type")
-                ),
-                responseFields(
-                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("Delete된 Account id")
-                )
-        );
+        return document("account-profile-delete");
     }
 
     public static RestDocumentationFilter documentAccountNicknameUniqueValidation() {
         return document("account-nickname-validation",
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 타입"),
-                        headerWithName(HttpHeaders.CONTENT_TYPE).description("Media Type")
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description("보낼 Media Type")
                 ),
                 requestFields(
-                        fieldWithPath("nickname").type(JsonFieldType.STRING).description("Validation하고 싶은 닉네")
+                        fieldWithPath("nickname").type(JsonFieldType.STRING).description("Validation하고 싶은 닉네임")
                 ),
                 responseHeaders(
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("Media Type")
@@ -103,8 +81,7 @@ public class AccountDocument {
     public static RestDocumentationFilter documentAccountPutNickname() {
         return document("account-nickname-update",
                 requestHeaders(
-                        headerWithName(HttpHeaders.ACCEPT).description("받을 타입"),
-                        headerWithName(HttpHeaders.CONTENT_TYPE).description("Media Type")
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description("보낼 Media Type")
                 ),
                 requestFields(
                         fieldWithPath("nickname").type(JsonFieldType.STRING).description("바꾸고 싶은 닉네임")

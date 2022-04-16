@@ -1,12 +1,12 @@
 package my.sleepydeveloper.projectcompass.domain.account.entity;
 
-import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
+import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
 import org.junit.jupiter.api.Test;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class AccountTest extends UnitTest {
+class AccountTest extends BaseTest {
 
     @Test
     void constructor_Account생성_정상() {

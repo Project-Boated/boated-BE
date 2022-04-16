@@ -17,13 +17,13 @@ public class GetAccountProfileResponse {
 
     private String username;
     private String nickname;
-    private String profileUrl;
+    private String profileImageUrl;
     private List<String> roles;
 
     public GetAccountProfileResponse(Account account) {
         this.username = account.getUsername();
         this.nickname = account.getNickname();
-        this.profileUrl = account.getProfileImageUrl();
+        this.profileImageUrl = account.getProfileImageUrl();
         this.roles = account.getRoles().stream().map(Role::getName).collect(Collectors.toList());
     }
 }

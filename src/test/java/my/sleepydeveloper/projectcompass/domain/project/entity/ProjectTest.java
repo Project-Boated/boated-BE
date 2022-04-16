@@ -1,6 +1,6 @@
 package my.sleepydeveloper.projectcompass.domain.project.entity;
 
-import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
+import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +9,7 @@ import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.pro
 import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.projectName;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ProjectTest extends UnitTest {
+class ProjectTest extends BaseTest {
     
     @Test
     void changeProjectInform_모든정보업데이트_업데이트성공() throws Exception {

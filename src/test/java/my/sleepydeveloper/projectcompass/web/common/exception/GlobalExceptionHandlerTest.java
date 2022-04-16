@@ -1,11 +1,10 @@
 package my.sleepydeveloper.projectcompass.web.common.exception;
 
-import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
+import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import my.sleepydeveloper.projectcompass.web.exception.GlobalExceptionHandler;
 import my.sleepydeveloper.projectcompass.web.common.exception.codes.ExceptionHandlerTestHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -18,7 +17,6 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -32,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         excludeAutoConfiguration = { SecurityAutoConfiguration.class})
 @AutoConfigureMockMvc
 @MockBean(JpaMetamodelMappingContext.class)
-class GlobalExceptionHandlerTest extends UnitTest {
+class GlobalExceptionHandlerTest extends BaseTest {
 
     @Autowired
     MockMvc mockMvc;

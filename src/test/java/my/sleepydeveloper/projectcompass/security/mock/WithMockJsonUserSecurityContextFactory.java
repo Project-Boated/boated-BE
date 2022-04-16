@@ -1,6 +1,7 @@
 package my.sleepydeveloper.projectcompass.security.mock;
 
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
+import my.sleepydeveloper.projectcompass.domain.account.entity.Role;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
 import my.sleepydeveloper.projectcompass.security.token.JsonAuthenticationToken;
 
@@ -12,6 +13,7 @@ import org.springframework.security.test.context.support.WithSecurityContextFact
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -33,7 +35,7 @@ public class WithMockJsonUserSecurityContextFactory implements WithSecurityConte
         Account account = new Account(annotation.username(),
                 annotation.password(),
                 annotation.nickname(),
-                annotation.role(), null);
+                annotation.profileImageUrl(), Set.of(Role.USER));
 
         JsonAuthenticationToken jsonAuthenticationToken = new JsonAuthenticationToken(accountService.save(account),
                 null,

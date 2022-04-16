@@ -1,6 +1,6 @@
 package my.sleepydeveloper.projectcompass.domain.account.repository;
 
-import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
+import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-class AccountRepositoryTest extends UnitTest {
+class AccountRepositoryTest extends BaseTest {
 
     @Autowired
     AccountRepository accountRepository;

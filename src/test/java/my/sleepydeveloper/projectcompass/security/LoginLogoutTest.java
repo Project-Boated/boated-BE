@@ -16,14 +16,11 @@ import static org.hamcrest.Matchers.hasKey;
 
 public class LoginLogoutTest extends AcceptanceTest {
 
-    @Autowired
-    AccountTestUtils accountTestUtils;
-
     @Test
     @DisplayName("로그인_정상")
     void signin_정상() throws Exception {
 
-        accountTestUtils.signUpUser(USERNAME, PASSWORD, NICKNAME);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
 
         given(this.spec)
             .filter(documentSignIn())
@@ -42,7 +39,7 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_username_없음")
     void signin_실패_username_없음() throws Exception {
 
-        accountTestUtils.signUpUser(USERNAME, PASSWORD, NICKNAME);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -59,7 +56,7 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_password_없음")
     void signin_실패_password_없음() throws Exception {
 
-        accountTestUtils.signUpUser(USERNAME, PASSWORD, NICKNAME);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -76,7 +73,7 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_아무것도_없음")
     void signin_실패_아무것도_없음() throws Exception {
 
-        accountTestUtils.signUpUser(USERNAME, PASSWORD, NICKNAME);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -93,7 +90,7 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_username_틀림")
     void signin_실패_username_틀림() throws Exception {
 
-        accountTestUtils.signUpUser(USERNAME, PASSWORD, NICKNAME);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -111,7 +108,7 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_password_틀림")
     void signin_실패_password_틀림() throws Exception {
 
-        accountTestUtils.signUpUser(USERNAME, PASSWORD, NICKNAME);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -128,7 +125,7 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_잘못된_MediaType")
     void signin_실패_잘못된_헤더() throws Exception {
 
-        accountTestUtils.signUpUser(USERNAME, PASSWORD, NICKNAME);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -145,7 +142,7 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_잘못된_Method")
     void signin_실패_잘못된_Method() throws Exception {
 
-        accountTestUtils.signUpUser(USERNAME, PASSWORD, NICKNAME);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)

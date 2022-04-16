@@ -10,6 +10,6 @@ public class AccountUpdateCond {
 
     private String nickname;
     private String originalPassword;
-    private String password;
+    private String newPassword;
     private String profileImageUrl;
 }

@@ -20,9 +20,12 @@ public class SignUpRequest {
     @NotEmpty
     String nickname;
 
-    public SignUpRequest(String username, String password, String nickname) {
+    String profileImageUrl;
+
+    public SignUpRequest(String username, String password, String nickname, String profileImageUrl) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
+        this.profileImageUrl = profileImageUrl;
     }
 }

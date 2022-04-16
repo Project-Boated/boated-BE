@@ -2,7 +2,6 @@ package my.sleepydeveloper.projectcompass.web.account.controller;
 
 import lombok.RequiredArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
-import my.sleepydeveloper.projectcompass.domain.account.entity.KakaoAccount;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Role;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
 import my.sleepydeveloper.projectcompass.domain.account.service.condition.AccountUpdateCond;
@@ -29,15 +28,15 @@ public class AccountController {
         String username = accountDto.getUsername();
         String password = accountDto.getPassword();
         String nickname = accountDto.getNickname();
+        String profileImageUrl = accountDto.getProfileImageUrl();
 
-        Account savedAccount = accountService.save(new Account(username, password, nickname, null, Set.of(Role.USER)));
+        Account savedAccount = accountService.save(new Account(username, password, nickname, profileImageUrl, Set.of(Role.USER)));
 
         return ResponseEntity.created(URI.create("/api/account/profile" + savedAccount.getId())).build();
     }
 
     @GetMapping("/profile")
     public GetAccountProfileResponse getAccountProfile(@AuthenticationPrincipal Account account) {
-
         return new GetAccountProfileResponse(accountService.findById(account.getId()));
     }
 
@@ -46,8 +45,8 @@ public class AccountController {
 
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .originalPassword(accountUpdateRequest.getOriginalPassword())
+                .newPassword(accountUpdateRequest.getNewPassword())
                 .nickname(accountUpdateRequest.getNickname())
-                .password(accountUpdateRequest.getPassword())
                 .profileImageUrl(accountUpdateRequest.getProfileImageUrl())
                 .build();
 
@@ -55,17 +54,14 @@ public class AccountController {
     }
 
     @DeleteMapping("/profile")
-    public ResponseEntity<IdDto> deleteAccount(@AuthenticationPrincipal Account account, HttpSession session) {
-        Long accountId = account.getId();
-
+    public void deleteAccount(@AuthenticationPrincipal Account account, HttpSession session) {
         accountService.delete(account);
         session.invalidate();
-
-        return ResponseEntity.ok(new IdDto(accountId));
     }
 
     @PostMapping("/profile/nickname/unique-validation")
-    public ResponseEntity<NicknameUniqueValidationResponse> nicknameUniqueValidation(@Validated @RequestBody NicknameUniqueValidationRequest request) {
+    public ResponseEntity<NicknameUniqueValidationResponse> nicknameUniqueValidation(
+            @Validated @RequestBody NicknameUniqueValidationRequest request) {
 
         return ResponseEntity.ok(new NicknameUniqueValidationResponse(accountService.isExistsNickname(request.getNickname())));
     }

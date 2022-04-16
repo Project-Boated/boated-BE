@@ -71,12 +71,12 @@ public class AccountService {
             throw new AccountNicknameAlreadyExistsException(ErrorCode.ACCOUNT_NICKNAME_EXISTS);
         }
 
-        if (accountUpdateCondition.getPassword() != null) {
-            accountUpdateCondition.setPassword(passwordEncoder.encode(accountUpdateCondition.getPassword()));
+        if (accountUpdateCondition.getNewPassword() != null) {
+            accountUpdateCondition.setNewPassword(passwordEncoder.encode(accountUpdateCondition.getNewPassword()));
         }
 
         findAccount.updateProfile(accountUpdateCondition.getNickname(),
-                accountUpdateCondition.getPassword(),
+                accountUpdateCondition.getNewPassword(),
                 accountUpdateCondition.getProfileImageUrl());
     }
 

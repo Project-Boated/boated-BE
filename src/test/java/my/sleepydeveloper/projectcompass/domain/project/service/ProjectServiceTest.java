@@ -1,7 +1,8 @@
 package my.sleepydeveloper.projectcompass.domain.project.service;
 
-import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
+import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
+import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
 import my.sleepydeveloper.projectcompass.domain.accountproject.entity.AccountProject;
 import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNotFoundException;
 import my.sleepydeveloper.projectcompass.domain.accountproject.repository.AccountProjectRepository;
@@ -32,10 +33,11 @@ import static org.springframework.context.annotation.ComponentScan.Filter;
 @DataJpaTest(
         includeFilters = {
                 @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ProjectService.class),
+                @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = AccountService.class),
                 @Filter(type = FilterType.ANNOTATION, classes = Repository.class)
         }
 )
-class ProjectServiceTest extends UnitTest {
+class ProjectServiceTest extends BaseTest {
 
     @Autowired
     ProjectService projectService;
@@ -45,6 +47,9 @@ class ProjectServiceTest extends UnitTest {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    AccountService accountService;
 
     @Autowired
     AccountProjectRepository accountProjectRepository;
@@ -273,9 +278,9 @@ class ProjectServiceTest extends UnitTest {
         String newNickname = "newNickname";
         String newPassword = "newPassword";
         Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER", ROLES);
-        accountRepository.save(newCaptain);
+        accountService.save(newCaptain);
         Account captain = createAccount();
-        accountRepository.save(captain);
+        accountService.save(captain);
 
         Project project = new Project(projectName, projectDescription, captain);
         projectRepository.save(project);

@@ -1,6 +1,6 @@
 package my.sleepydeveloper.projectcompass.domain.account.service;
 
-import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
+import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.entity.KakaoAccount;
 import my.sleepydeveloper.projectcompass.domain.account.exception.*;
@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJpaTest
-class AccountServiceTest extends UnitTest {
+class AccountServiceTest extends BaseTest {
 
     @Autowired
     private AccountRepository accountRepository;
@@ -111,7 +111,7 @@ class AccountServiceTest extends UnitTest {
         String newProfileImageUrl = "newProfileImageUrl";
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(newNickname)
-                .password(newPassword)
+                .newPassword(newPassword)
                 .profileImageUrl(newProfileImageUrl)
                 .originalPassword(PASSWORD)
                 .build();
@@ -158,7 +158,7 @@ class AccountServiceTest extends UnitTest {
         Account account = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(null)
-                .password(null)
+                .newPassword(null)
                 .profileImageUrl(null)
                 .originalPassword(PASSWORD)
                 .build();
@@ -184,7 +184,7 @@ class AccountServiceTest extends UnitTest {
         String newProfileImageUrl = "newProfileImageUrl";
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(newNickname)
-                .password(newPassword)
+                .newPassword(newPassword)
                 .profileImageUrl(newProfileImageUrl)
                 .originalPassword(null)
                 .build();
@@ -205,7 +205,7 @@ class AccountServiceTest extends UnitTest {
         String newProfileImageUrl = "newProfileImageUrl";
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(newNickname)
-                .password(newPassword)
+                .newPassword(newPassword)
                 .profileImageUrl(newProfileImageUrl)
                 .originalPassword("failurePassword")
                 .build();
@@ -226,7 +226,7 @@ class AccountServiceTest extends UnitTest {
         String newProfileImageUrl = "newProfileImageUrl";
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(newNickname)
-                .password(newPassword)
+                .newPassword(newPassword)
                 .profileImageUrl(newProfileImageUrl)
                 .originalPassword(PASSWORD)
                 .build();
@@ -248,7 +248,7 @@ class AccountServiceTest extends UnitTest {
         String newProfileImageUrl = "newProfileImageUrl";
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(NICKNAME)
-                .password(newPassword)
+                .newPassword(newPassword)
                 .profileImageUrl(newProfileImageUrl)
                 .originalPassword(PASSWORD)
                 .build();
@@ -279,7 +279,7 @@ class AccountServiceTest extends UnitTest {
         String newProfileImageUrl = "newProfileImageUrl";
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(account1Nickname)
-                .password(newPassword)
+                .newPassword(newPassword)
                 .profileImageUrl(newProfileImageUrl)
                 .originalPassword(PASSWORD)
                 .build();
