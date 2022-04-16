@@ -3,6 +3,8 @@ package my.sleepydeveloper.projectcompass.security.provider;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
+import my.sleepydeveloper.projectcompass.security.exception.KakaoServerException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -19,6 +21,7 @@ import my.sleepydeveloper.projectcompass.security.provider.dto.KakaoTokenRespons
 import my.sleepydeveloper.projectcompass.security.service.KakaoAccountDetailsService;
 import my.sleepydeveloper.projectcompass.security.service.KakaoWebService;
 import my.sleepydeveloper.projectcompass.security.token.KakaoAuthenticationToken;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @Component
 @RequiredArgsConstructor
@@ -30,19 +33,20 @@ public class KakaoAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-    
-        String tokenJson = kakaoWebService.getToken((String)authentication.getPrincipal());
-    
         try {
+            String tokenJson = kakaoWebService.getToken((String) authentication.getPrincipal());
             KakaoTokenResponse kakaoTokenResponse = objectMapper.readValue(tokenJson, KakaoTokenResponse.class);
             String accessToken = kakaoTokenResponse.getAccessToken();
-        
+
             KakaoAccount account = kakaoUserDetailsService.loadKakaoAccountByAccessToken(accessToken);
-            List<SimpleGrantedAuthority> grantedAuthorities = List.of(new SimpleGrantedAuthority(account.getRole()));
-        
+            List<SimpleGrantedAuthority> grantedAuthorities = account.getRoles().stream()
+                    .map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
+
             return new KakaoAuthenticationToken(account, null, grantedAuthorities);
         } catch (JsonProcessingException e) {
             throw new JsonParsingException("Json ParsingError");
+        } catch (WebClientResponseException e) {
+            throw new KakaoServerException(ErrorCode.KAKAO_SERVER_EXCEPTION);
         }
     }
 

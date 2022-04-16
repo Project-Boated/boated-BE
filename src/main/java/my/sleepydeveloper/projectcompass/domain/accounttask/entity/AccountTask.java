@@ -1,5 +1,6 @@
-package my.sleepydeveloper.projectcompass.domain.account.entity;
+package my.sleepydeveloper.projectcompass.domain.accounttask.entity;
 
+import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.common.entity.BaseTimeEntity;
 import my.sleepydeveloper.projectcompass.domain.task.entity.Task;
 

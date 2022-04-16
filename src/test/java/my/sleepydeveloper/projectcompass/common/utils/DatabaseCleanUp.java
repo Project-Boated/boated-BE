@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Profile("acceptance")
 public class DatabaseCleanUp {
     @Autowired
     EntityManager em;

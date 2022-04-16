@@ -14,11 +14,5 @@ public class ProjectcompassApplication {
     public static void main(String[] args) {
         SpringApplication.run(ProjectcompassApplication.class, args);
     }
-    
-    
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
 
 }

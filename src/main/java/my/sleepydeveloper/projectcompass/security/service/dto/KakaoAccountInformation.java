@@ -13,9 +13,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class KakaoAccountResponse {
+public class KakaoAccountInformation {
     private Long id;
     private String connectedAt;
     private KakaoProperties properties;
     private KakaoAccount kakaoAccount;
+
+    public String getProfileImageUrl() {
+        return kakaoAccount.getProfile().getIsDefaultImage().equals("true") ? null : getKakaoAccount().getProfile().getProfileImageUrl();
+    }
 }

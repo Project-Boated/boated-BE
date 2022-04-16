@@ -620,7 +620,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/sign-in HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Host: localhost:38897
+Host: localhost:34731
 Content-Length: 45
 
 {"username":"username","password":"password"}</code></pre>
@@ -666,10 +666,10 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: JSESSIONID=C45E540625EDB2F40AE662E74D314CC7; Path=/; HttpOnly; SameSite=Lax
+Set-Cookie: JSESSIONID=25C0A5775B9189145B59E85C7A0F586A; Path=/; HttpOnly; SameSite=Lax
 Content-Type: application/json;charset=UTF-8
 Content-Length: 8
-Date: Tue, 12 Apr 2022 13:04:10 GMT
+Date: Sat, 16 Apr 2022 11:27:16 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 
@@ -774,12 +774,11 @@ Connection: keep-alive
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/account/sign-up HTTP/1.1
-Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:38897
-Content-Length: 67
+Host: localhost:34731
+Content-Length: 103
 
-{"username":"username","password":"password","nickname":"nickname"}</code></pre>
+{"username":"username","password":"password","nickname":"nickname","profileImageUrl":"profileImageUrl"}</code></pre>
 </div>
 </div>
 </div>
@@ -798,12 +797,8 @@ Content-Length: 67
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Accept</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">받을 MediaType</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">보낸 Content Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">보낼 Content Type</p></td>
 </tr>
 </tbody>
 </table>
@@ -839,6 +834,11 @@ Content-Length: 67
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">닉네임</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>profileImageUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">프로필 이미지 URL</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -853,48 +853,22 @@ Content-Length: 67
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Location: /api/account/profile7
+Location: /api/account/profile6
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Type: application/json;charset=UTF-8
-Transfer-Encoding: chunked
-Date: Tue, 12 Apr 2022 13:04:13 GMT
+Date: Sat, 16 Apr 2022 11:27:19 GMT
 Keep-Alive: timeout=60
-Connection: keep-alive
-Content-Length: 8
-
-{"id":7}</code></pre>
+Connection: keep-alive</code></pre>
 </div>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_response_headers_2"><a class="link" href="#_response_headers_2">response-headers</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">보낸 Content Type</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Location</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">회원가입된 유저의 프로필 URL</p></td>
-</tr>
-</tbody>
-</table>
+
 </div>
 <div class="sect4">
 <h5 id="_response_fields_2"><a class="link" href="#_response_fields_2">response-fields</a></h5>
@@ -935,8 +909,8 @@ Content-Length: 8
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/account/profile HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Host: localhost:38897
-Cookie: JSESSIONID=FCD22553B198A85CFC160F756498FDB0</code></pre>
+Host: localhost:34731
+Cookie: JSESSIONID=43A90BD8DDFAA435CEDC45255C532204</code></pre>
 </div>
 </div>
 </div>
@@ -956,7 +930,7 @@ Cookie: JSESSIONID=FCD22553B198A85CFC160F756498FDB0</code></pre>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Accept</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">받을 타입</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">보낼 받을 타입</p></td>
 </tr>
 </tbody>
 </table>
@@ -980,12 +954,12 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 12 Apr 2022 13:04:13 GMT
+Date: Sat, 16 Apr 2022 11:27:18 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 64
+Content-Length: 103
 
-{"username":"username","nickname":"nickname","role":"ROLE_USER"}</code></pre>
+{"username":"username","nickname":"nickname","profileImageUrl":"profileImageUrl","roles":["ROLE_USER"]}</code></pre>
 </div>
 </div>
 </div>
@@ -1037,8 +1011,13 @@ Content-Length: 64
 <td class="tableblock halign-left valign-top"><p class="tableblock">닉네임</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>role</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>profileImageUrl</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">프로필 이미지 URL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>roles</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">권한</p></td>
 </tr>
 </tbody>
@@ -1060,11 +1039,11 @@ Content-Length: 64
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/account/profile HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:38897
-Content-Length: 87
-Cookie: JSESSIONID=E7A0D93E3F33319B6B4329DAF9F6935F
+Host: localhost:34731
+Content-Length: 132
+Cookie: JSESSIONID=17F6ACFAFDB309D083F20E5777C5EF2A
 
-{"nickname":"updateNickname","originalPassword":"password","password":"updatePassword"}</code></pre>
+{"nickname":"updateNickname","originalPassword":"password","newPassword":"updatePassword","profileImageUrl":"updateProfileImageUrl"}</code></pre>
 </div>
 </div>
 </div>
@@ -1083,12 +1062,8 @@ Cookie: JSESSIONID=E7A0D93E3F33319B6B4329DAF9F6935F
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Accept</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">받을 타입</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Media Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">보낼 Media Type</p></td>
 </tr>
 </tbody>
 </table>
@@ -1112,7 +1087,7 @@ Cookie: JSESSIONID=E7A0D93E3F33319B6B4329DAF9F6935F
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>nickname</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">바꿀 이름(없어도 됨)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">바꿀 닉네임</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>originalPassword</code></p></td>
@@ -1120,9 +1095,14 @@ Cookie: JSESSIONID=E7A0D93E3F33319B6B4329DAF9F6935F
 <td class="tableblock halign-left valign-top"><p class="tableblock">원래 패스워드, 유저 검증을 위한 값(카카오 로그인시 생략가능)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>password</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>newPassword</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">바꿀 패스워드(없어도 됨)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">바꿀 패스워드, 단 카카오계정이면 적어도 아무일도 안일어남</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>profileImageUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Profile 이미지 URL</p></td>
 </tr>
 </tbody>
 </table>
@@ -1144,14 +1124,9 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Type: application/json;charset=UTF-8
-Transfer-Encoding: chunked
-Date: Tue, 12 Apr 2022 13:04:12 GMT
+Date: Sat, 16 Apr 2022 11:27:19 GMT
 Keep-Alive: timeout=60
-Connection: keep-alive
-Content-Length: 8
-
-{"id":1}</code></pre>
+Connection: keep-alive</code></pre>
 </div>
 </div>
 </div>
@@ -1215,8 +1190,8 @@ Content-Length: 8
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/account/profile HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Host: localhost:38897
-Cookie: JSESSIONID=6CD5D4E977BC2EEAED86B1906C8B6279</code></pre>
+Host: localhost:34731
+Cookie: JSESSIONID=D554218BF346B581EFE3B6247DB65E7E</code></pre>
 </div>
 </div>
 </div>
@@ -1258,14 +1233,9 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Type: application/json;charset=UTF-8
-Transfer-Encoding: chunked
-Date: Tue, 12 Apr 2022 13:04:13 GMT
+Date: Sat, 16 Apr 2022 11:27:19 GMT
 Keep-Alive: timeout=60
-Connection: keep-alive
-Content-Length: 8
-
-{"id":5}</code></pre>
+Connection: keep-alive</code></pre>
 </div>
 </div>
 </div>
@@ -1330,9 +1300,9 @@ Content-Length: 8
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/account/profile/nickname/unique-validation HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:38897
+Host: localhost:34731
 Content-Length: 36
-Cookie: JSESSIONID=B45626CDD91D7F961D84AE63E96F484D
+Cookie: JSESSIONID=8FFB458EEF777279B039E54CAE77B9CB
 
 {"nickname":"notDuplicatedNickname"}</code></pre>
 </div>
@@ -1358,7 +1328,7 @@ Cookie: JSESSIONID=B45626CDD91D7F961D84AE63E96F484D
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Media Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">보낼 Media Type</p></td>
 </tr>
 </tbody>
 </table>
@@ -1382,7 +1352,7 @@ Cookie: JSESSIONID=B45626CDD91D7F961D84AE63E96F484D
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>nickname</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Validation하고 싶은 닉네</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Validation하고 싶은 닉네임</p></td>
 </tr>
 </tbody>
 </table>
@@ -1406,7 +1376,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 12 Apr 2022 13:04:13 GMT
+Date: Sat, 16 Apr 2022 11:27:19 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 20
@@ -1476,9 +1446,9 @@ Content-Length: 20
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/account/profile/nickname HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:38897
+Host: localhost:34731
 Content-Length: 24
-Cookie: JSESSIONID=D63716CB93252318FEC35FB414A79B74
+Cookie: JSESSIONID=74B986DC10035793D3D80BA7082EA9E3
 
 {"nickname":"nickname2"}</code></pre>
 </div>
@@ -1499,12 +1469,8 @@ Cookie: JSESSIONID=D63716CB93252318FEC35FB414A79B74
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Accept</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">받을 타입</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Media Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">보낼 Media Type</p></td>
 </tr>
 </tbody>
 </table>
@@ -1550,7 +1516,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Date: Tue, 12 Apr 2022 13:04:13 GMT
+Date: Sat, 16 Apr 2022 11:27:18 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -1577,9 +1543,9 @@ Connection: keep-alive</code></pre>
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/projects HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:43321
+Host: localhost:40281
 Content-Length: 43
-Cookie: JSESSIONID=732341EA572C5A518BA80187A0751E06
+Cookie: JSESSIONID=FEE0DDCC11F470555827E075DA34E322
 
 {"name":"name","description":"description"}</code></pre>
 </div>
@@ -1629,7 +1595,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 12 Apr 2022 13:04:20 GMT
+Date: Sat, 16 Apr 2022 11:27:25 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 8
@@ -1699,9 +1665,9 @@ Content-Length: 8
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/projects/5 HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:43321
+Host: localhost:40281
 Content-Length: 55
-Cookie: JSESSIONID=1437B01A0425D4C95B51C2A8288E0AD8
+Cookie: JSESSIONID=3A4E0B1FCF726BBAF95678413D8F1DF0
 
 {"name":"updateName","description":"updateDescription"}</code></pre>
 </div>
@@ -1780,7 +1746,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 12 Apr 2022 13:04:21 GMT
+Date: Sat, 16 Apr 2022 11:27:26 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 8
@@ -1849,8 +1815,8 @@ Content-Length: 8
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/projects/my HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Host: localhost:43321
-Cookie: JSESSIONID=2CF7779DE25E53CE2F12EC8D781F6167</code></pre>
+Host: localhost:40281
+Cookie: JSESSIONID=721E2B236DE88F59A4E038470C15D632</code></pre>
 </div>
 </div>
 </div>
@@ -1894,7 +1860,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 12 Apr 2022 13:04:21 GMT
+Date: Sat, 16 Apr 2022 11:27:26 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 58
@@ -1974,9 +1940,9 @@ Content-Length: 58
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/projects/2/crews HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:43321
+Host: localhost:40281
 Content-Length: 19
-Cookie: JSESSIONID=3EE43B8E496C4B30FD457D86F8B64527
+Cookie: JSESSIONID=D13EC668E0E05A95680D8B626C1EE4F7
 
 {"username":"crew"}</code></pre>
 </div>
@@ -2072,7 +2038,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 12 Apr 2022 13:04:20 GMT
+Date: Sat, 16 Apr 2022 11:27:25 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 8

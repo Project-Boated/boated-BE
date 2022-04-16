@@ -4,7 +4,6 @@ import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.security.exception.IllegalUsernamePassword;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -26,9 +25,7 @@ public class JsonUserDetailsService implements UserDetailsService {
         Account account = accountRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalUsernamePassword("Username or Password is not Correct"));
 
-        LinkedList<GrantedAuthority> authorities = new LinkedList<>();
-        authorities.add(new SimpleGrantedAuthority(account.getRole()));
-
-        return new AccountDetails(account, authorities);
+        List<SimpleGrantedAuthority> simpleGrantedAuthorities = account.getRoles().stream().map(r -> new SimpleGrantedAuthority(r.getName())).toList();
+        return new AccountDetails(account, simpleGrantedAuthorities);
     }
 }

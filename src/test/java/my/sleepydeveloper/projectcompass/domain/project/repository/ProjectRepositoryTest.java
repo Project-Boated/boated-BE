@@ -1,13 +1,12 @@
 package my.sleepydeveloper.projectcompass.domain.project.repository;
 
-import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
+import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,7 @@ import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.pro
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-class ProjectRepositoryTest extends UnitTest {
+class ProjectRepositoryTest extends BaseTest {
 
     @Autowired
     ProjectRepository projectRepository;
@@ -29,7 +28,7 @@ class ProjectRepositoryTest extends UnitTest {
     @Test
     void existsByNameAndCaptain_projectName이Captain에있음_true() throws Exception {
         // Given
-        Account account = accountRepository.save(new Account(username, password, nickname, userRole));
+        Account account = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
         Project project = projectRepository.save(new Project(projectName, projectDescription, account));
 
         // When
@@ -42,9 +41,9 @@ class ProjectRepositoryTest extends UnitTest {
     @Test
     void existsByNameAndCaptain_projectName이Captain에없음_false() throws Exception {
         // Given
-        Account captain = accountRepository.save(new Account(username, password, nickname, userRole));
+        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
         Project project = projectRepository.save(new Project(projectName, projectDescription, captain));
-        Account newAccount = accountRepository.save(new Account("newUsername", password, "newNickname", userRole));
+        Account newAccount = accountRepository.save(new Account("newUsername", PASSWORD, "newNickname", PROFILE_IMAGE_URL, ROLES));
 
         // When
         boolean result = projectRepository.existsByNameAndCaptain(project.getName(), newAccount);
@@ -56,7 +55,7 @@ class ProjectRepositoryTest extends UnitTest {
     @Test
     void existsByNameAndCaptainAndNotProject_projectName이Captain에있는데Project와동일_false() throws Exception {
         // Given
-        Account captain = accountRepository.save(new Account(username, password, nickname, userRole));
+        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
         Project project = projectRepository.save(new Project(projectName, projectDescription, captain));
 
         // When
@@ -69,7 +68,7 @@ class ProjectRepositoryTest extends UnitTest {
     @Test
     void existsByNameAndCaptainAndNotProject_projectName이Captain에있는데다른Project_false() throws Exception {
         // Given
-        Account captain = accountRepository.save(new Account(username, password, nickname, userRole));
+        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
         Project project = projectRepository.save(new Project(projectName, projectDescription, captain));
         Project project2 = projectRepository.save(new Project("projectName2", "projectDescription2", captain));
 
@@ -83,7 +82,7 @@ class ProjectRepositoryTest extends UnitTest {
     @Test
     void findAllByAccount_account에project저장됨_account가소유한project개수() throws Exception {
         // Given
-        Account account = accountRepository.save(new Account(username, password, nickname, userRole));
+        Account account = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
         List<Project> projects = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             projectRepository.save(new Project(projectName + "i", projectDescription, account));

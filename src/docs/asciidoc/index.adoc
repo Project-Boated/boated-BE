@@ -157,12 +157,6 @@ include::{snippets}/sign-up/request-fields.adoc[]
 ===== http-response
 include::{snippets}/sign-up/http-response.adoc[]
 
-===== response-headers
-include::{snippets}/sign-up/response-headers.adoc[]
-
-===== response-fields
-include::{snippets}/sign-up/response-fields.adoc[]
-
 [[resources-account-profile-retrieve]]
 === 유저 프로필 조회
 `GET` 요청을 사용해서 유저를 조회할 수 있다.
@@ -206,13 +200,6 @@ include::{snippets}/account-profile-update/request-fields.adoc[]
 ===== http-response
 include::{snippets}/account-profile-update/http-response.adoc[]
 
-===== response-headers
-include::{snippets}/account-profile-update/response-headers.adoc[]
-
-===== response-fields
-include::{snippets}/account-profile-update/response-fields.adoc[]
-
-
 [[resources-accounts-delete-profile]]
 === 유저 탈퇴
 `DELETE` 요청을 사용해서 회원탈퇴를 진행할 수 있다.
@@ -229,12 +216,6 @@ include::{snippets}/account-profile-delete/request-headers.adoc[]
 
 ===== http-response
 include::{snippets}/account-profile-delete/http-response.adoc[]
-
-===== response-headers
-include::{snippets}/account-profile-delete/response-headers.adoc[]
-
-===== response-fields
-include::{snippets}/account-profile-delete/response-fields.adoc[]
 
 [[resources-accounts-nickname-validation]]
 === 닉네임 중복 조회

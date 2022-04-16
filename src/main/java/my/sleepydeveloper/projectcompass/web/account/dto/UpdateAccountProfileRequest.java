@@ -5,17 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
-
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountUpdateRequest {
+public class UpdateAccountProfileRequest {
 
     private String nickname;
 
-    @NotEmpty
     private String originalPassword;
 
-    private String password;
+    private String newPassword;
+
+    private String profileImageUrl;
 }

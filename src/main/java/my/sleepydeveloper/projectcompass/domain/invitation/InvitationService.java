@@ -3,7 +3,7 @@ package my.sleepydeveloper.projectcompass.domain.invitation;
 import lombok.RequiredArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
-import my.sleepydeveloper.projectcompass.domain.account.exception.NotFoundAccountException;
+import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNotFoundException;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.invitation.entity.Invitation;
 import my.sleepydeveloper.projectcompass.domain.invitation.exception.InviteCrewAccessDenied;
@@ -32,7 +32,7 @@ public class InvitationService {
         }
 
         Account account = accountRepository.findByUsername(username)
-                .orElseThrow(() -> new NotFoundAccountException(ErrorCode.ACCOUNT_NOT_FOUND));
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
         return invitationRepository.save(new Invitation(account, project));
     }

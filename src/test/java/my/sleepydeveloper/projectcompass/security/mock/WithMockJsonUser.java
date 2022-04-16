@@ -16,5 +16,5 @@ public @interface WithMockJsonUser {
     String password() default "password";
     String nickname() default "nickname";
 
-    String role() default "ROLE_USER";
+    String profileImageUrl() default "profileImageUrl";
 }

@@ -1,10 +1,11 @@
 package my.sleepydeveloper.projectcompass.domain.project.service;
 
-import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
+import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
-import my.sleepydeveloper.projectcompass.domain.account.entity.AccountProject;
-import my.sleepydeveloper.projectcompass.domain.account.exception.NotFoundAccountException;
-import my.sleepydeveloper.projectcompass.domain.account.repository.AccountProjectRepository;
+import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
+import my.sleepydeveloper.projectcompass.domain.accountproject.entity.AccountProject;
+import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNotFoundException;
+import my.sleepydeveloper.projectcompass.domain.accountproject.repository.AccountProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectNotFoundException;
@@ -13,12 +14,13 @@ import my.sleepydeveloper.projectcompass.domain.project.exception.SameProjectNam
 import my.sleepydeveloper.projectcompass.domain.project.exception.UpdateCaptainAccessDenied;
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.project.vo.ProjectUpdateCondition;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +35,12 @@ import static org.springframework.context.annotation.ComponentScan.Filter;
 @DataJpaTest(
         includeFilters = {
                 @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ProjectService.class),
+                @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = AccountService.class),
+                @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = PasswordEncoder.class),
                 @Filter(type = FilterType.ANNOTATION, classes = Repository.class)
         }
 )
-class ProjectServiceTest extends UnitTest {
+class ProjectServiceTest extends BaseTest {
 
     @Autowired
     ProjectService projectService;
@@ -48,12 +52,15 @@ class ProjectServiceTest extends UnitTest {
     AccountRepository accountRepository;
 
     @Autowired
+    AccountService accountService;
+
+    @Autowired
     AccountProjectRepository accountProjectRepository;
 
     @Test
     void save_project하나저장_저장성공() throws Exception {
         // Given
-        Account account = createAccount();
+        Account account = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
         Project project = new Project(projectName, projectDescription, account);
 
@@ -130,7 +137,7 @@ class ProjectServiceTest extends UnitTest {
     void update_captain이아닌Account가요청_오류발생() throws Exception {
         // Given
         Account account = createAccount();
-        Account account2 = new Account("username2", password, "nickname2", "ROLE_USER");
+        Account account2 = new Account("username2", PASSWORD, "nickname2", "ROLE_USER", ROLES);
         accountRepository.save(account2);
 
         Project project = new Project(projectName, projectDescription, account);
@@ -177,7 +184,7 @@ class ProjectServiceTest extends UnitTest {
         Project project = new Project(projectName, projectDescription, captain);
         projectRepository.save(project);
 
-        Account crew = new Account("crew", password, "crew", "ROLE_USER");
+        Account crew = new Account("crew", PASSWORD, "crew", "ROLE_USER", ROLES);
         accountRepository.save(crew);
 
         AccountProject accountProject = new AccountProject(crew, project);
@@ -205,10 +212,8 @@ class ProjectServiceTest extends UnitTest {
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER");
-        accountRepository.save(newCaptain);
-        Account captain = createAccount();
-        accountRepository.save(captain);
+        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_URL, ROLES));
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
         Project project = new Project(projectName, projectDescription, captain);
         projectRepository.save(project);
@@ -228,10 +233,8 @@ class ProjectServiceTest extends UnitTest {
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER");
-        accountRepository.save(newCaptain);
-        Account captain = createAccount();
-        accountRepository.save(captain);
+        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_URL, ROLES));
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
         Project project = new Project(projectName, projectDescription, captain);
         projectRepository.save(project);
@@ -251,10 +254,8 @@ class ProjectServiceTest extends UnitTest {
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER");
-        accountRepository.save(newCaptain);
-        Account captain = createAccount();
-        accountRepository.save(captain);
+        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_URL, ROLES));
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
         Project project = new Project(projectName, projectDescription, captain);
         projectRepository.save(project);
@@ -273,10 +274,9 @@ class ProjectServiceTest extends UnitTest {
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER");
-        accountRepository.save(newCaptain);
-        Account captain = createAccount();
-        accountRepository.save(captain);
+
+        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_URL, ROLES));
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
         Project project = new Project(projectName, projectDescription, captain);
         projectRepository.save(project);
@@ -286,12 +286,12 @@ class ProjectServiceTest extends UnitTest {
         // When
         // Then
         assertThatThrownBy(() -> projectService.updateCaptain(captain, "fail", project.getId()))
-                .isInstanceOf(NotFoundAccountException.class);
+                .isInstanceOf(AccountNotFoundException.class);
     }
 
 
     private Account createAccount() {
-        Account account = new Account(username, password, nickname, "ROLE_USER");
+        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
         accountRepository.save(account);
         return account;
     }
