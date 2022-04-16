@@ -39,11 +39,11 @@ class InvitationServiceTest extends UnitTest {
     @Test
     void inviteCrew_초대1개생성_정상() throws Exception {
         // Given
-        Account captain = accountRepository.save(new Account(username, password, nickname, "ROLE_USER"));
+        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
         Project project = projectRepository.save(new Project(projectName, projectDescription, captain));
         String crewNickname = "crew";
         String crewUsername = "crew";
-        Account crew = accountRepository.save(new Account(crewUsername, password, crewNickname, "ROLE_USER"));
+        Account crew = accountRepository.save(new Account(crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL, ROLES));
 
         // When
         Invitation invitation = invitationService.inviteCrew(captain, crewUsername, project.getId());
@@ -57,11 +57,11 @@ class InvitationServiceTest extends UnitTest {
     @Test
     void inviteCrew_존재하지않는ProjectId_오류발생() throws Exception {
         // Given
-        Account captain = accountRepository.save(new Account(username, password, nickname, "ROLE_USER"));
+        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
         Project project = projectRepository.save(new Project(projectName, projectDescription, captain));
         String crewNickname = "crew";
         String crewUsername = "crew";
-        Account crew = accountRepository.save(new Account(crewUsername, password, crewNickname, "ROLE_USER"));
+        Account crew = accountRepository.save(new Account(crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL, ROLES));
 
         // When
         // Then
@@ -72,11 +72,11 @@ class InvitationServiceTest extends UnitTest {
     @Test
     void inviteCrew_captain이아닌account가초대생성_오류발생() throws Exception {
         // Given
-        Account captain = accountRepository.save(new Account(username, password, nickname, "ROLE_USER"));
+        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
         Project project = projectRepository.save(new Project(projectName, projectDescription, captain));
         String crewNickname = "crew";
         String crewUsername = "crew";
-        Account crew = accountRepository.save(new Account(crewUsername, password, crewNickname, "ROLE_USER"));
+        Account crew = accountRepository.save(new Account(crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL, ROLES));
 
         // When
         // Then
@@ -87,11 +87,11 @@ class InvitationServiceTest extends UnitTest {
     @Test
     void inviteCrew_없는username으로초대_오류발생() throws Exception {
         // Given
-        Account captain = accountRepository.save(new Account(username, password, nickname, "ROLE_USER"));
+        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
         Project project = projectRepository.save(new Project(projectName, projectDescription, captain));
         String crewNickname = "crew";
         String crewUsername = "crew";
-        Account crew = accountRepository.save(new Account(crewUsername, password, crewNickname, "ROLE_USER"));
+        Account crew = accountRepository.save(new Account(crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL, ROLES));
 
         // When
         // Then

@@ -1,5 +1,6 @@
 package my.sleepydeveloper.projectcompass.domain.account.entity;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -14,11 +15,12 @@ import java.util.Set;
 @Getter @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DiscriminatorValue("KAKAO")
 public class KakaoAccount extends Account{
-	
+
+	@Column(unique = true)
 	private Long kakaoId;
 
 	@Builder
-	public KakaoAccount(Long kakaoId, String profileUrl, Set<Role> roles) {
+	public KakaoAccount(Long kakaoId, Set<Role> roles, String profileUrl) {
 		super(null, null, null, profileUrl, roles);
 		this.kakaoId = kakaoId;
 	}

@@ -13,17 +13,17 @@ import java.util.stream.Collectors;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountProfileResponseDto {
+public class GetAccountProfileResponse {
 
     private String username;
     private String nickname;
     private String profileUrl;
     private List<String> roles;
 
-    public AccountProfileResponseDto(Account account) {
+    public GetAccountProfileResponse(Account account) {
         this.username = account.getUsername();
         this.nickname = account.getNickname();
-        this.profileUrl = account.getProfileUrl();
+        this.profileUrl = account.getProfileImageUrl();
         this.roles = account.getRoles().stream().map(Role::getName).collect(Collectors.toList());
     }
 }

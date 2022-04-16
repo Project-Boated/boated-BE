@@ -3,17 +3,20 @@ package my.sleepydeveloper.projectcompass.common.utils;
 import io.restassured.http.Cookie;
 import io.restassured.response.ResponseBody;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
+import my.sleepydeveloper.projectcompass.domain.account.entity.Role;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
-import my.sleepydeveloper.projectcompass.security.dto.IdDto;
 import my.sleepydeveloper.projectcompass.security.dto.UsernamePasswordDto;
-import my.sleepydeveloper.projectcompass.web.account.dto.AccountDto;
+import my.sleepydeveloper.projectcompass.web.account.dto.SignUpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 import static io.restassured.RestAssured.given;
+import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.PROFILE_IMAGE_URL;
 
 @Service
 public class AccountTestUtils {
@@ -27,11 +30,11 @@ public class AccountTestUtils {
     }
 
     public Account signUpUser(String username, String password, String nickname) {
-        return signUp(username, password, nickname, "ROLE_USER");
+        return signUp(username, password, nickname, Set.of(Role.USER));
     }
 
-    public Account signUp(String username, String password, String nickname, String role) {
-        return accountService.save(new Account(username, passwordEncoder.encode(password), nickname, role));
+    public Account signUp(String username, String password, String nickname, Set<Role> roles) {
+        return accountService.save(new Account(username, password, nickname, PROFILE_IMAGE_URL, roles));
     }
 
     public Account getAccountFromSecurityContext() {
@@ -43,7 +46,7 @@ public class AccountTestUtils {
         return given()
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(new AccountDto(username, password, nickname))
+            .body(new SignUpRequest(username, password, nickname))
         .when()
             .port(port)
             .post("/api/account/sign-up")

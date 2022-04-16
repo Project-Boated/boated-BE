@@ -14,8 +14,9 @@ public class AccountUpdateRequest {
 
     private String nickname;
 
-    @NotEmpty
     private String originalPassword;
 
     private String password;
+
+    private String profileImageUrl;
 }

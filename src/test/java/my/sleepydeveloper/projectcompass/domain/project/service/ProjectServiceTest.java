@@ -129,7 +129,7 @@ class ProjectServiceTest extends UnitTest {
     void update_captain이아닌Account가요청_오류발생() throws Exception {
         // Given
         Account account = createAccount();
-        Account account2 = new Account("username2", password, "nickname2", "ROLE_USER");
+        Account account2 = new Account("username2", PASSWORD, "nickname2", "ROLE_USER", ROLES);
         accountRepository.save(account2);
 
         Project project = new Project(projectName, projectDescription, account);
@@ -176,7 +176,7 @@ class ProjectServiceTest extends UnitTest {
         Project project = new Project(projectName, projectDescription, captain);
         projectRepository.save(project);
 
-        Account crew = new Account("crew", password, "crew", "ROLE_USER");
+        Account crew = new Account("crew", PASSWORD, "crew", "ROLE_USER", ROLES);
         accountRepository.save(crew);
 
         AccountProject accountProject = new AccountProject(crew, project);
@@ -204,7 +204,7 @@ class ProjectServiceTest extends UnitTest {
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER");
+        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER", ROLES);
         accountRepository.save(newCaptain);
         Account captain = createAccount();
         accountRepository.save(captain);
@@ -227,7 +227,7 @@ class ProjectServiceTest extends UnitTest {
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER");
+        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER", ROLES);
         accountRepository.save(newCaptain);
         Account captain = createAccount();
         accountRepository.save(captain);
@@ -250,7 +250,7 @@ class ProjectServiceTest extends UnitTest {
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER");
+        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER", ROLES);
         accountRepository.save(newCaptain);
         Account captain = createAccount();
         accountRepository.save(captain);
@@ -272,7 +272,7 @@ class ProjectServiceTest extends UnitTest {
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER");
+        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER", ROLES);
         accountRepository.save(newCaptain);
         Account captain = createAccount();
         accountRepository.save(captain);
@@ -290,7 +290,7 @@ class ProjectServiceTest extends UnitTest {
 
 
     private Account createAccount() {
-        Account account = new Account(username, password, nickname, "ROLE_USER");
+        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
         accountRepository.save(account);
         return account;
     }

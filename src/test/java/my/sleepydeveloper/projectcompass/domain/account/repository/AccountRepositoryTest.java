@@ -1,14 +1,12 @@
 package my.sleepydeveloper.projectcompass.domain.account.repository;
 
 import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
-import my.sleepydeveloper.projectcompass.common.data.BasicAccountData;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
 
-import javax.persistence.EntityManager;
 import java.util.Optional;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
@@ -21,48 +19,49 @@ class AccountRepositoryTest extends UnitTest {
     AccountRepository accountRepository;
 
     @Test
-    void findByUsername_가입된유저찾기_가입된유저() throws Exception {
+    void findByUsername_가입된유저찾기_성공() throws Exception {
         // Given
-        accountRepository.save(new Account(username, password, nickname, userRole));
+        accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
         // When
-        Optional<Account> account = accountRepository.findByUsername(username);
+        Optional<Account> account = accountRepository.findByUsername(USERNAME);
 
         // Then
         assertThat(account).isPresent();
-        assertThat(account.get().getUsername()).isEqualTo(username);
-        assertThat(account.get().getPassword()).isEqualTo(password);
-        assertThat(account.get().getUsername()).isEqualTo(username);
-        assertThat(account.get().getRole()).isEqualTo(userRole);
+        AssertionsForClassTypes.assertThat(account.get().getUsername()).isEqualTo(USERNAME);
+        AssertionsForClassTypes.assertThat(account.get().getPassword()).isEqualTo(PASSWORD);
+        AssertionsForClassTypes.assertThat(account.get().getNickname()).isEqualTo(NICKNAME);
+        AssertionsForClassTypes.assertThat(account.get().getProfileImageUrl()).isEqualTo(PROFILE_IMAGE_URL);
+        AssertionsForClassTypes.assertThat(account.get().getRoles()).isEqualTo(ROLES);
     }
 
     @Test
-    void findByUsername_가입되지않은유저찾기_Empty() throws Exception {
+    void findByUsername_없는유저찾기_Empty() throws Exception {
         // Given
         // When
-        Optional<Account> account = accountRepository.findByUsername(username);
+        Optional<Account> account = accountRepository.findByUsername(USERNAME);
 
         // Then
         assertThat(account).isEmpty();
     }
 
     @Test
-    void existsByUsername_가입된유저확인_true() throws Exception {
+    void existsByUsername_가입된유저찾기_true() throws Exception {
         // Given
-        accountRepository.save(new Account(username, password, nickname, userRole));
+        accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
         // When
-        boolean existsByUsername = accountRepository.existsByUsername(username);
+        boolean existsByUsername = accountRepository.existsByUsername(USERNAME);
 
         // Then
         assertThat(existsByUsername).isTrue();
     }
 
     @Test
-    void existsByUsername_가입되지않은유저확인_false() throws Exception {
+    void existsByUsername_가입되지않은유저찾기_false() throws Exception {
         // Given
         // When
-        boolean existsByUsername = accountRepository.existsByUsername(username);
+        boolean existsByUsername = accountRepository.existsByUsername(USERNAME);
 
         // Then
         assertThat(existsByUsername).isFalse();
@@ -70,9 +69,9 @@ class AccountRepositoryTest extends UnitTest {
 
 
     @Test
-    void existsById_가입된유저확인_true() throws Exception {
+    void existsById_가입된유저찾기_true() throws Exception {
         // Given
-        Account account = accountRepository.save(new Account(username, password, nickname, userRole));
+        Account account = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
         // When
         boolean result = accountRepository.existsById(account.getId());
@@ -94,7 +93,7 @@ class AccountRepositoryTest extends UnitTest {
     @Test
     void findById_가입된유저찾기_조회성공() throws Exception {
         // Given
-        Account account = accountRepository.save(new Account(username, password, nickname, userRole));
+        Account account = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
         // When
         Optional<Account> findAccount = accountRepository.findById(account.getId());
@@ -105,7 +104,7 @@ class AccountRepositoryTest extends UnitTest {
         assertThat(findAccount.get().getUsername()).isEqualTo(account.getUsername());
         assertThat(findAccount.get().getPassword()).isEqualTo(account.getPassword());
         assertThat(findAccount.get().getNickname()).isEqualTo(account.getNickname());
-        assertThat(findAccount.get().getRole()).isEqualTo(account.getRole());
+        assertThat(findAccount.get().getRoles()).isEqualTo(account.getRoles());
     }
 
     @Test

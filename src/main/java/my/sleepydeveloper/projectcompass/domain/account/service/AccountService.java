@@ -1,6 +1,7 @@
 package my.sleepydeveloper.projectcompass.domain.account.service;
 
 import lombok.RequiredArgsConstructor;
+import my.sleepydeveloper.projectcompass.domain.account.entity.KakaoAccount;
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.exception.*;
@@ -9,6 +10,8 @@ import my.sleepydeveloper.projectcompass.domain.account.service.condition.Accoun
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +22,15 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
 
     public Account findById(Long accountId) {
-        return accountRepository.findById(accountId).orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+        return accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+    }
+
+    @Transactional
+    public Account save(Account account) {
+        checkDuplicationExists(account);
+        passwordEncode(account);
+        return accountRepository.save(account);
     }
 
     private void checkDuplicationExists(Account account) {
@@ -31,45 +42,53 @@ public class AccountService {
         }
     }
 
-    public boolean isExistsNickname(String nickname) {
-        return accountRepository.existsByNickname(nickname);
-    }
-
     private boolean isExistsUsername(Account account) {
         return accountRepository.existsByUsername(account.getUsername());
     }
 
-    @Transactional
-    public Account save(Account account) {
-        checkDuplicationExists(account);
-        return accountRepository.save(account);
+    public boolean isExistsNickname(String nickname) {
+        return accountRepository.existsByNickname(nickname);
+    }
+
+    private void passwordEncode(Account account) {
+        account.updatePassword(passwordEncoder.encode(account.getPassword()));
     }
 
     @Transactional
     public void updateProfile(Account account, AccountUpdateCond accountUpdateCondition) {
 
-        // 카카오 로그인은 비밀번호를 검수불가
-//        if (!passwordEncoder.matches(
-//                accountUpdateCondition.getOriginalPassword(),
-//                account.getPassword())) {
-//            throw new WrongPasswordException(ErrorCode.ACCOUNT_WRONG_PASSWORD);
-//        }
-
-        Account findAccount = accountRepository.findById(account.getId()).orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
-
-        if (accountUpdateCondition.getNickname() != null) {
-            if (findAccount.getNickname() != null && findAccount.getNickname().equals(accountUpdateCondition.getNickname())) {
-                accountUpdateCondition.setNickname(null);
-            } else if (accountRepository.existsByNickname(accountUpdateCondition.getNickname())) {
-                throw new AccountNicknameAlreadyExistsException(ErrorCode.ACCOUNT_NICKNAME_EXISTS);
+        if (!(account instanceof KakaoAccount)) {
+            if (!checkVaildPassword(account, accountUpdateCondition.getOriginalPassword())) {
+                throw new AccountPasswordWrong(ErrorCode.ACCOUNT_PASSWORD_WRONG);
             }
+        }
+
+        Account findAccount = accountRepository.findById(account.getId())
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        if (!hasSameNickname(accountUpdateCondition, findAccount) &&
+                checkDuplicatedNickname(accountUpdateCondition.getNickname())) {
+            throw new AccountNicknameAlreadyExistsException(ErrorCode.ACCOUNT_NICKNAME_EXISTS);
         }
 
         if (accountUpdateCondition.getPassword() != null) {
             accountUpdateCondition.setPassword(passwordEncoder.encode(accountUpdateCondition.getPassword()));
         }
 
-        findAccount.updateProfile(accountUpdateCondition.getNickname(), accountUpdateCondition.getPassword(), null);
+        findAccount.updateProfile(accountUpdateCondition.getNickname(),
+                accountUpdateCondition.getPassword(),
+                accountUpdateCondition.getProfileImageUrl());
+    }
+
+    private boolean hasSameNickname(AccountUpdateCond accountUpdateCondition, Account findAccount) {
+        return Objects.equals(findAccount.getNickname(), accountUpdateCondition.getNickname());
+    }
+
+    private boolean checkVaildPassword(Account account, String password) {
+        if (password == null) {
+            return false;
+        }
+        return passwordEncoder.matches(password, account.getPassword());
     }
 
 
@@ -80,7 +99,18 @@ public class AccountService {
 
     @Transactional
     public void updateNickname(Account account, String nickname) {
-        Account findAccount = accountRepository.findById(account.getId()).orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+        Account findAccount = accountRepository.findById(account.getId())
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        if (!Objects.equals(account.getNickname(), nickname)
+                && checkDuplicatedNickname(nickname)) {
+            throw new AccountNicknameAlreadyExistsException(ErrorCode.ACCOUNT_NICKNAME_EXISTS);
+        }
+
         findAccount.updateNickname(nickname);
+    }
+
+    private boolean checkDuplicatedNickname(String nickname) {
+        return nickname != null && accountRepository.existsByNickname(nickname);
     }
 }

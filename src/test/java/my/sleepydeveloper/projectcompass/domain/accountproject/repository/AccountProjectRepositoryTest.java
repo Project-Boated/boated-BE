@@ -1,7 +1,7 @@
-package my.sleepydeveloper.projectcompass.domain.account.repository;
+package my.sleepydeveloper.projectcompass.domain.accountproject.repository;
 
 import my.sleepydeveloper.projectcompass.common.basetest.UnitTest;
-import my.sleepydeveloper.projectcompass.domain.accountproject.repository.AccountProjectRepository;
+import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.accountproject.entity.AccountProject;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
@@ -38,7 +38,7 @@ class AccountProjectRepositoryTest extends UnitTest {
     @Test
     void findCrewsFromProject_crew찾기_정상() throws Exception {
         // Given
-        Account captain = new Account(username, password, nickname, "ROLE_USER");
+        Account captain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
         accountRepository.save(captain);
 
         Project project = new Project(projectName, projectDescription, captain);
@@ -46,7 +46,7 @@ class AccountProjectRepositoryTest extends UnitTest {
 
         int crewsNumber = 3;
         for(int i = 0; i< crewsNumber; i++) {
-            Account crew = new Account(username + i, password, nickname + i, "ROLE_USER");
+            Account crew = new Account(USERNAME + i, PASSWORD, NICKNAME + i, PROFILE_IMAGE_URL, ROLES);
             accountRepository.save(crew);
             AccountProject accountProject = new AccountProject(crew, project);
             accountProjectRepository.save(accountProject);
@@ -62,7 +62,7 @@ class AccountProjectRepositoryTest extends UnitTest {
     @Test
     void delete_accountProject삭제_삭제됨() throws Exception {
         // Given
-        Account captain = new Account(username, password, nickname, "ROLE_USER");
+        Account captain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
         accountRepository.save(captain);
 
         Project project = new Project(projectName, projectDescription, captain);

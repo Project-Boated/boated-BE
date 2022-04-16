@@ -3,19 +3,12 @@ package my.sleepydeveloper.projectcompass.common.utils;
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
 import io.restassured.response.ResponseBody;
-import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
-import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.service.ProjectService;
-import my.sleepydeveloper.projectcompass.web.account.dto.AccountDto;
 import my.sleepydeveloper.projectcompass.web.project.dto.ProjectSaveRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static io.restassured.RestAssured.given;
-import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.*;
-import static my.sleepydeveloper.projectcompass.web.project.controller.document.ProjectDocument.documentProjectCreate;
 import static org.hamcrest.Matchers.notNullValue;
 
 @Service

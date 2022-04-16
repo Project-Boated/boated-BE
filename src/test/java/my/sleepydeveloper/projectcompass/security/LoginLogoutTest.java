@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 
 import static io.restassured.RestAssured.given;
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
@@ -24,13 +23,13 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_정상")
     void signin_정상() throws Exception {
 
-        accountTestUtils.signUpUser(username, password, nickname);
+        accountTestUtils.signUpUser(USERNAME, PASSWORD, NICKNAME);
 
         given(this.spec)
             .filter(documentSignIn())
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(new UsernamePasswordDto(username, password))
+            .body(new UsernamePasswordDto(USERNAME, PASSWORD))
         .when()
             .port(port)
             .post("/api/sign-in")
@@ -43,12 +42,12 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_username_없음")
     void signin_실패_username_없음() throws Exception {
 
-        accountTestUtils.signUpUser(username, password, nickname);
+        accountTestUtils.signUpUser(USERNAME, PASSWORD, NICKNAME);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new UsernamePasswordDto(null, password))
+                .body(new UsernamePasswordDto(null, PASSWORD))
                 .when()
                 .port(port)
                 .post("/api/sign-in")
@@ -60,7 +59,7 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_password_없음")
     void signin_실패_password_없음() throws Exception {
 
-        accountTestUtils.signUpUser(username, password, nickname);
+        accountTestUtils.signUpUser(USERNAME, PASSWORD, NICKNAME);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -77,7 +76,7 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_아무것도_없음")
     void signin_실패_아무것도_없음() throws Exception {
 
-        accountTestUtils.signUpUser(username, password, nickname);
+        accountTestUtils.signUpUser(USERNAME, PASSWORD, NICKNAME);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -94,12 +93,12 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_username_틀림")
     void signin_실패_username_틀림() throws Exception {
 
-        accountTestUtils.signUpUser(username, password, nickname);
+        accountTestUtils.signUpUser(USERNAME, PASSWORD, NICKNAME);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new UsernamePasswordDto("failure", password))
+                .body(new UsernamePasswordDto("failure", PASSWORD))
                 .when()
                 .port(port)
                 .post("/api/sign-in")
@@ -112,12 +111,12 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_password_틀림")
     void signin_실패_password_틀림() throws Exception {
 
-        accountTestUtils.signUpUser(username, password, nickname);
+        accountTestUtils.signUpUser(USERNAME, PASSWORD, NICKNAME);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new UsernamePasswordDto(username, "failure"))
+                .body(new UsernamePasswordDto(USERNAME, "failure"))
                 .when()
                 .port(port)
                 .post("/api/sign-in")
@@ -129,7 +128,7 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_잘못된_MediaType")
     void signin_실패_잘못된_헤더() throws Exception {
 
-        accountTestUtils.signUpUser(username, password, nickname);
+        accountTestUtils.signUpUser(USERNAME, PASSWORD, NICKNAME);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -146,12 +145,12 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_잘못된_Method")
     void signin_실패_잘못된_Method() throws Exception {
 
-        accountTestUtils.signUpUser(username, password, nickname);
+        accountTestUtils.signUpUser(USERNAME, PASSWORD, NICKNAME);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new UsernamePasswordDto(username, password))
+                .body(new UsernamePasswordDto(USERNAME, PASSWORD))
                 .when()
                 .port(port)
                 .get("/api/sign-in")
