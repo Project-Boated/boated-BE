@@ -21,6 +21,9 @@ public enum ErrorCode {
     PROJECT_CAPTAIN_UPDATE_ACCESS_DENIED(400, "P003", "Captain을 Update할 수 없습니다. 권한 부족"),
     PROJECT_NAME_EXISTS_IN_ACCOUNT(400, "P001", "Account에 같은 이름의 프로젝트가 존재합니다."),
 
+    // Kakao
+    KAKAO_SERVER_EXCEPTION(400, "K001", "카카오 서버 오류입니다."),
+
     // For Testing
     FOR_TESTING(507, "T001", "테스트용입니다.")
     ;

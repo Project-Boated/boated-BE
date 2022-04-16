@@ -5,7 +5,6 @@ import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Role;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
 import my.sleepydeveloper.projectcompass.domain.account.service.condition.AccountUpdateCond;
-import my.sleepydeveloper.projectcompass.security.dto.IdDto;
 import my.sleepydeveloper.projectcompass.web.account.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -41,13 +40,13 @@ public class AccountController {
     }
 
     @PatchMapping("/profile")
-    public void updateAccountProfile(@AuthenticationPrincipal Account account, @RequestBody @Validated AccountUpdateRequest accountUpdateRequest) {
+    public void updateAccountProfile(@AuthenticationPrincipal Account account, @RequestBody @Validated UpdateAccountProfileRequest updateAccountProfileRequest) {
 
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
-                .originalPassword(accountUpdateRequest.getOriginalPassword())
-                .newPassword(accountUpdateRequest.getNewPassword())
-                .nickname(accountUpdateRequest.getNickname())
-                .profileImageUrl(accountUpdateRequest.getProfileImageUrl())
+                .originalPassword(updateAccountProfileRequest.getOriginalPassword())
+                .newPassword(updateAccountProfileRequest.getNewPassword())
+                .nickname(updateAccountProfileRequest.getNickname())
+                .profileImageUrl(updateAccountProfileRequest.getProfileImageUrl())
                 .build();
 
         accountService.updateProfile(account, updateCondition);

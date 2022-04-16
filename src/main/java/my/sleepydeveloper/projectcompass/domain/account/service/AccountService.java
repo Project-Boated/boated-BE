@@ -57,14 +57,14 @@ public class AccountService {
     @Transactional
     public void updateProfile(Account account, AccountUpdateCond accountUpdateCondition) {
 
+        Account findAccount = accountRepository.findById(account.getId())
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+
         if (!(account instanceof KakaoAccount)) {
-            if (!checkVaildPassword(account, accountUpdateCondition.getOriginalPassword())) {
+            if (!checkVaildPassword(findAccount, accountUpdateCondition.getOriginalPassword())) {
                 throw new AccountPasswordWrong(ErrorCode.ACCOUNT_PASSWORD_WRONG);
             }
         }
-
-        Account findAccount = accountRepository.findById(account.getId())
-                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
         if (!hasSameNickname(accountUpdateCondition, findAccount) &&
                 checkDuplicatedNickname(accountUpdateCondition.getNickname())) {

@@ -14,10 +14,12 @@ import my.sleepydeveloper.projectcompass.domain.project.exception.SameProjectNam
 import my.sleepydeveloper.projectcompass.domain.project.exception.UpdateCaptainAccessDenied;
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.project.vo.ProjectUpdateCondition;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ import static org.springframework.context.annotation.ComponentScan.Filter;
         includeFilters = {
                 @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ProjectService.class),
                 @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = AccountService.class),
+                @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = PasswordEncoder.class),
                 @Filter(type = FilterType.ANNOTATION, classes = Repository.class)
         }
 )
@@ -57,7 +60,7 @@ class ProjectServiceTest extends BaseTest {
     @Test
     void save_project하나저장_저장성공() throws Exception {
         // Given
-        Account account = createAccount();
+        Account account = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
         Project project = new Project(projectName, projectDescription, account);
 
@@ -209,10 +212,8 @@ class ProjectServiceTest extends BaseTest {
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER", ROLES);
-        accountRepository.save(newCaptain);
-        Account captain = createAccount();
-        accountRepository.save(captain);
+        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_URL, ROLES));
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
         Project project = new Project(projectName, projectDescription, captain);
         projectRepository.save(project);
@@ -232,10 +233,8 @@ class ProjectServiceTest extends BaseTest {
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER", ROLES);
-        accountRepository.save(newCaptain);
-        Account captain = createAccount();
-        accountRepository.save(captain);
+        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_URL, ROLES));
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
         Project project = new Project(projectName, projectDescription, captain);
         projectRepository.save(project);
@@ -255,10 +254,8 @@ class ProjectServiceTest extends BaseTest {
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER", ROLES);
-        accountRepository.save(newCaptain);
-        Account captain = createAccount();
-        accountRepository.save(captain);
+        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_URL, ROLES));
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
         Project project = new Project(projectName, projectDescription, captain);
         projectRepository.save(project);
@@ -277,10 +274,9 @@ class ProjectServiceTest extends BaseTest {
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Account newCaptain = new Account(newUsername, newPassword, newNickname, "ROLE_USER", ROLES);
-        accountService.save(newCaptain);
-        Account captain = createAccount();
-        accountService.save(captain);
+
+        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_URL, ROLES));
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
         Project project = new Project(projectName, projectDescription, captain);
         projectRepository.save(project);

@@ -5,11 +5,10 @@ import io.restassured.http.Cookie;
 import my.sleepydeveloper.projectcompass.common.basetest.AcceptanceTest;
 import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
 import my.sleepydeveloper.projectcompass.web.account.dto.SignUpRequest;
-import my.sleepydeveloper.projectcompass.web.account.dto.AccountUpdateRequest;
+import my.sleepydeveloper.projectcompass.web.account.dto.UpdateAccountProfileRequest;
 import my.sleepydeveloper.projectcompass.web.account.dto.NicknameUniqueValidationRequest;
 import my.sleepydeveloper.projectcompass.web.account.dto.PutNicknameRequest;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import static io.restassured.RestAssured.given;
@@ -72,7 +71,7 @@ class AccountControllerTest extends AcceptanceTest {
                 .cookie(cookie)
         .when()
                 .port(port)
-                .body(new AccountUpdateRequest(updateNickname, PASSWORD, updatePassword, updateProfileImageUrl))
+                .body(new UpdateAccountProfileRequest(updateNickname, PASSWORD, updatePassword, updateProfileImageUrl))
                 .patch("/api/account/profile")
         .then()
                 .statusCode(HttpStatus.OK.value());

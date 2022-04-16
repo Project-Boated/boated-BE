@@ -21,7 +21,7 @@ public class AccountDocument {
                         fieldWithPath("username").type(JsonFieldType.STRING).description("유저이름"),
                         fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
                         fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
-                        fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).description("프로필 이미지 URL").optional()
+                        fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).description("프로필 이미지 URL (생략가능)").optional()
                 )
         );
     }
@@ -48,10 +48,10 @@ public class AccountDocument {
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낼 Media Type")
                 ),
                 requestFields(
-                        fieldWithPath("nickname").type(JsonFieldType.STRING).description("바꿀 닉네임").optional(),
+                        fieldWithPath("nickname").type(JsonFieldType.STRING).description("바꿀 닉네임 (생략가능)").optional(),
                         fieldWithPath("originalPassword").type(JsonFieldType.STRING).description("원래 패스워드, 유저 검증을 위한 값(카카오 로그인시 생략가능)"),
-                        fieldWithPath("newPassword").type(JsonFieldType.STRING).description("바꿀 패스워드, 단 카카오계정이면 적어도 아무일도 안일어남").optional(),
-                        fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).description("Profile 이미지 URL").optional()
+                        fieldWithPath("newPassword").type(JsonFieldType.STRING).description("바꿀 패스워드, 단 카카오계정이면 적어도 아무일도 안일어남 (생략가능)").optional(),
+                        fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).description("Profile 이미지 URL (생략가능)").optional()
                 )
         );
     }
