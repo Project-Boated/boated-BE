@@ -20,11 +20,9 @@ import java.util.stream.Collectors;
 public class WithMockJsonUserSecurityContextFactory implements WithSecurityContextFactory<WithMockJsonUser> {
 
     private final AccountService accountService;
-    private final PasswordEncoder passwordEncoder;
 
-    public WithMockJsonUserSecurityContextFactory(AccountService accountService, PasswordEncoder passwordEncoder) {
+    public WithMockJsonUserSecurityContextFactory(AccountService accountService) {
         this.accountService = accountService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override

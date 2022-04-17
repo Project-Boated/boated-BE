@@ -1,7 +1,16 @@
 package my.sleepydeveloper.projectcompass.domain.exception;
 
-import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
+public class BusinessException extends RuntimeException implements ErrorCodeException {
 
-public interface BusinessException {
-	ErrorCode getErrorCode();
+    private ErrorCode errorCode;
+
+    public BusinessException(ErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.errorCode = errorCode;
+    }
+
+    @Override
+    public ErrorCode getErrorCode() {
+        return errorCode;
+    }
 }

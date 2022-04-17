@@ -3,22 +3,28 @@ package my.sleepydeveloper.projectcompass.domain.account.service;
 import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.entity.KakaoAccount;
-import my.sleepydeveloper.projectcompass.domain.account.exception.*;
+import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNicknameAlreadyExistsException;
+import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNotFoundException;
+import my.sleepydeveloper.projectcompass.domain.account.exception.AccountPasswordWrong;
+import my.sleepydeveloper.projectcompass.domain.account.exception.AccountUsernameAlreadyExistsException;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.account.repository.KakaoAccountRepository;
 import my.sleepydeveloper.projectcompass.domain.account.service.condition.AccountUpdateCond;
 import org.assertj.core.api.AssertionsForClassTypes;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.springframework.context.annotation.ComponentScan.Filter;
 
-@DataJpaTest
+@DataJpaTest(includeFilters = {
+        @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = PasswordEncoder.class)
+})
 class AccountServiceTest extends BaseTest {
 
     @Autowired
@@ -29,11 +35,11 @@ class AccountServiceTest extends BaseTest {
 
     private AccountService accountService;
 
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void beforeEach() {
-        passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         accountService = new AccountService(accountRepository, passwordEncoder);
     }
 

@@ -1,6 +1,6 @@
 package my.sleepydeveloper.projectcompass.web.common.exception.codes;
 
-import my.sleepydeveloper.projectcompass.domain.exception.DefaultBusinessException;
+import my.sleepydeveloper.projectcompass.domain.exception.BusinessException;
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ public class ExceptionHandlerTestHandler {
 
     @GetMapping("/BaseBusinessException")
     public void baseBusinessException() {
-        throw new DefaultBusinessException(ErrorCode.FOR_TESTING);
+        throw new BusinessException(ErrorCode.FOR_TESTING);
     }
 
     @PostMapping("/HttpMessageNotReadableException")
