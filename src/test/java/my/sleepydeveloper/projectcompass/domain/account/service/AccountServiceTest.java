@@ -3,6 +3,7 @@ package my.sleepydeveloper.projectcompass.domain.account.service;
 import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.entity.KakaoAccount;
+import my.sleepydeveloper.projectcompass.domain.account.entity.Role;
 import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNicknameAlreadyExistsException;
 import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNotFoundException;
 import my.sleepydeveloper.projectcompass.domain.account.exception.AccountPasswordWrong;
@@ -10,21 +11,32 @@ import my.sleepydeveloper.projectcompass.domain.account.exception.AccountUsernam
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.account.repository.KakaoAccountRepository;
 import my.sleepydeveloper.projectcompass.domain.account.service.condition.AccountUpdateCond;
+import my.sleepydeveloper.projectcompass.security.service.KakaoWebService;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Set;
+
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
+import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.springframework.context.annotation.ComponentScan.Filter;
 
 @DataJpaTest(includeFilters = {
         @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = PasswordEncoder.class)
 })
+@ExtendWith(MockitoExtension.class)
 class AccountServiceTest extends BaseTest {
 
     @Autowired
@@ -38,9 +50,12 @@ class AccountServiceTest extends BaseTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Mock
+    KakaoWebService kakaoWebService;
+
     @BeforeEach
     void beforeEach() {
-        accountService = new AccountService(accountRepository, passwordEncoder);
+        accountService = new AccountService(accountRepository, passwordEncoder, kakaoWebService);
     }
 
     @Test
@@ -300,6 +315,21 @@ class AccountServiceTest extends BaseTest {
     void delete_Account삭제_성공() throws Exception {
         // Given
         Account account = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+
+        // When
+        accountService.delete(account);
+
+        // Then
+        // delete후 find하면 없어야 정상
+        assertThatThrownBy(() -> accountService.findById(account.getId()))
+                .isInstanceOf(AccountNotFoundException.class);
+    }
+
+    @Test
+    void delete_KakaoAccount삭제_성공() throws Exception {
+        // Given
+        Mockito.doNothing().when(kakaoWebService).disconnect(any());
+        Account account = accountRepository.save(new KakaoAccount(123L, Set.of(Role.USER), PROFILE_IMAGE_URL));
 
         // When
         accountService.delete(account);

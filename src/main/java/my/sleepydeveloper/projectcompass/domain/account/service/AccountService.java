@@ -7,6 +7,7 @@ import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.exception.*;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.account.service.condition.AccountUpdateCond;
+import my.sleepydeveloper.projectcompass.security.service.KakaoWebService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
+    private final KakaoWebService kakaoWebService;
 
     public Account findById(Long accountId) {
         return accountRepository.findById(accountId)
@@ -94,6 +96,10 @@ public class AccountService {
 
     @Transactional
     public void delete(Account account) {
+        if (account instanceof KakaoAccount kakaoAccount) {
+            kakaoWebService.disconnect(kakaoAccount.getKakaoId());
+        }
+
         accountRepository.delete(account);
     }
 
