@@ -620,7 +620,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/sign-in HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Host: localhost:34731
+Host: localhost:43953
 Content-Length: 45
 
 {"username":"username","password":"password"}</code></pre>
@@ -666,10 +666,10 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: JSESSIONID=25C0A5775B9189145B59E85C7A0F586A; Path=/; HttpOnly; SameSite=Lax
+Set-Cookie: JSESSIONID=27D843339B1C17A0D5F2580328C4F0B9; Path=/; HttpOnly; SameSite=Lax
 Content-Type: application/json;charset=UTF-8
 Content-Length: 8
-Date: Sat, 16 Apr 2022 11:27:16 GMT
+Date: Sun, 17 Apr 2022 10:10:53 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 
@@ -775,7 +775,7 @@ Connection: keep-alive
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/account/sign-up HTTP/1.1
 Content-Type: application/json
-Host: localhost:34731
+Host: localhost:43953
 Content-Length: 103
 
 {"username":"username","password":"password","nickname":"nickname","profileImageUrl":"profileImageUrl"}</code></pre>
@@ -837,7 +837,7 @@ Content-Length: 103
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>profileImageUrl</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">프로필 이미지 URL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">프로필 이미지 URL (생략가능)</p></td>
 </tr>
 </tbody>
 </table>
@@ -860,39 +860,11 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Date: Sat, 16 Apr 2022 11:27:19 GMT
+Date: Sun, 17 Apr 2022 10:10:56 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
 </div>
-</div>
-<div class="sect4">
-<h5 id="_response_headers_2"><a class="link" href="#_response_headers_2">response-headers</a></h5>
-
-</div>
-<div class="sect4">
-<h5 id="_response_fields_2"><a class="link" href="#_response_fields_2">response-fields</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">회원가입된 id</p></td>
-</tr>
-</tbody>
-</table>
 </div>
 </div>
 </div>
@@ -909,8 +881,8 @@ Connection: keep-alive</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/account/profile HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Host: localhost:34731
-Cookie: JSESSIONID=43A90BD8DDFAA435CEDC45255C532204</code></pre>
+Host: localhost:43953
+Cookie: JSESSIONID=F45655AD9F1C971B8CA22DBACF2B6248</code></pre>
 </div>
 </div>
 </div>
@@ -954,7 +926,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Sat, 16 Apr 2022 11:27:18 GMT
+Date: Sun, 17 Apr 2022 10:10:54 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 103
@@ -964,7 +936,7 @@ Content-Length: 103
 </div>
 </div>
 <div class="sect4">
-<h5 id="_response_headers_3"><a class="link" href="#_response_headers_3">response-headers</a></h5>
+<h5 id="_response_headers_2"><a class="link" href="#_response_headers_2">response-headers</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -985,7 +957,7 @@ Content-Length: 103
 </table>
 </div>
 <div class="sect4">
-<h5 id="_response_fields_3"><a class="link" href="#_response_fields_3">response-fields</a></h5>
+<h5 id="_response_fields_2"><a class="link" href="#_response_fields_2">response-fields</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1039,9 +1011,9 @@ Content-Length: 103
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/account/profile HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:34731
+Host: localhost:43953
 Content-Length: 132
-Cookie: JSESSIONID=17F6ACFAFDB309D083F20E5777C5EF2A
+Cookie: JSESSIONID=696C7B09E0D5E936121223D329D1698C
 
 {"nickname":"updateNickname","originalPassword":"password","newPassword":"updatePassword","profileImageUrl":"updateProfileImageUrl"}</code></pre>
 </div>
@@ -1087,7 +1059,7 @@ Cookie: JSESSIONID=17F6ACFAFDB309D083F20E5777C5EF2A
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>nickname</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">바꿀 닉네임</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">바꿀 닉네임 (생략가능)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>originalPassword</code></p></td>
@@ -1097,12 +1069,12 @@ Cookie: JSESSIONID=17F6ACFAFDB309D083F20E5777C5EF2A
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>newPassword</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">바꿀 패스워드, 단 카카오계정이면 적어도 아무일도 안일어남</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">바꿀 패스워드, 단 카카오계정이면 적어도 아무일도 안일어남 (생략가능)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>profileImageUrl</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Profile 이미지 URL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Profile 이미지 URL (생략가능)</p></td>
 </tr>
 </tbody>
 </table>
@@ -1124,56 +1096,11 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Date: Sat, 16 Apr 2022 11:27:19 GMT
+Date: Sun, 17 Apr 2022 10:10:56 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
 </div>
-</div>
-<div class="sect4">
-<h5 id="_response_headers_4"><a class="link" href="#_response_headers_4">response-headers</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Media Type</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_response_fields_4"><a class="link" href="#_response_fields_4">response-fields</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">바꾼 Account id</p></td>
-</tr>
-</tbody>
-</table>
 </div>
 </div>
 </div>
@@ -1190,8 +1117,8 @@ Connection: keep-alive</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/account/profile HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Host: localhost:34731
-Cookie: JSESSIONID=D554218BF346B581EFE3B6247DB65E7E</code></pre>
+Host: localhost:43953
+Cookie: JSESSIONID=8836F28FFDCCDC4EAFBF1E15A22C6EFA</code></pre>
 </div>
 </div>
 </div>
@@ -1233,56 +1160,11 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Date: Sat, 16 Apr 2022 11:27:19 GMT
+Date: Sun, 17 Apr 2022 10:10:56 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
 </div>
-</div>
-<div class="sect4">
-<h5 id="_response_headers_5"><a class="link" href="#_response_headers_5">response-headers</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Media Type</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_response_fields_5"><a class="link" href="#_response_fields_5">response-fields</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Delete된 Account id</p></td>
-</tr>
-</tbody>
-</table>
 </div>
 </div>
 </div>
@@ -1300,9 +1182,9 @@ Connection: keep-alive</code></pre>
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/account/profile/nickname/unique-validation HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:34731
+Host: localhost:43953
 Content-Length: 36
-Cookie: JSESSIONID=8FFB458EEF777279B039E54CAE77B9CB
+Cookie: JSESSIONID=5B956F138772B55473A4E6DD34FDF0B8
 
 {"nickname":"notDuplicatedNickname"}</code></pre>
 </div>
@@ -1376,7 +1258,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Sat, 16 Apr 2022 11:27:19 GMT
+Date: Sun, 17 Apr 2022 10:10:56 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 20
@@ -1386,7 +1268,7 @@ Content-Length: 20
 </div>
 </div>
 <div class="sect4">
-<h5 id="_response_headers_6"><a class="link" href="#_response_headers_6">response-headers</a></h5>
+<h5 id="_response_headers_3"><a class="link" href="#_response_headers_3">response-headers</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1407,7 +1289,7 @@ Content-Length: 20
 </table>
 </div>
 <div class="sect4">
-<h5 id="_response_fields_6"><a class="link" href="#_response_fields_6">response-fields</a></h5>
+<h5 id="_response_fields_3"><a class="link" href="#_response_fields_3">response-fields</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1446,9 +1328,9 @@ Content-Length: 20
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/account/profile/nickname HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:34731
+Host: localhost:43953
 Content-Length: 24
-Cookie: JSESSIONID=74B986DC10035793D3D80BA7082EA9E3
+Cookie: JSESSIONID=CD856C78D36E1DC849EEA6501C31D128
 
 {"nickname":"nickname2"}</code></pre>
 </div>
@@ -1516,7 +1398,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Date: Sat, 16 Apr 2022 11:27:18 GMT
+Date: Sun, 17 Apr 2022 10:10:54 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -1543,9 +1425,9 @@ Connection: keep-alive</code></pre>
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/projects HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:40281
+Host: localhost:35367
 Content-Length: 43
-Cookie: JSESSIONID=FEE0DDCC11F470555827E075DA34E322
+Cookie: JSESSIONID=587D397B72BE8D6B931D673103A80D53
 
 {"name":"name","description":"description"}</code></pre>
 </div>
@@ -1595,7 +1477,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Sat, 16 Apr 2022 11:27:25 GMT
+Date: Sun, 17 Apr 2022 10:11:00 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 8
@@ -1605,7 +1487,7 @@ Content-Length: 8
 </div>
 </div>
 <div class="sect4">
-<h5 id="_response_headers_7"><a class="link" href="#_response_headers_7">response-headers</a></h5>
+<h5 id="_response_headers_4"><a class="link" href="#_response_headers_4">response-headers</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1626,7 +1508,7 @@ Content-Length: 8
 </table>
 </div>
 <div class="sect4">
-<h5 id="_response_fields_7"><a class="link" href="#_response_fields_7">response-fields</a></h5>
+<h5 id="_response_fields_4"><a class="link" href="#_response_fields_4">response-fields</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1665,9 +1547,9 @@ Content-Length: 8
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/projects/5 HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:40281
+Host: localhost:35367
 Content-Length: 55
-Cookie: JSESSIONID=3A4E0B1FCF726BBAF95678413D8F1DF0
+Cookie: JSESSIONID=D5F2193681B5999F495FA3357FDB4696
 
 {"name":"updateName","description":"updateDescription"}</code></pre>
 </div>
@@ -1699,7 +1581,7 @@ Cookie: JSESSIONID=3A4E0B1FCF726BBAF95678413D8F1DF0
 </table>
 </div>
 <div class="sect4">
-<h5 id="_response_fields_8"><a class="link" href="#_response_fields_8">response-fields</a></h5>
+<h5 id="_response_fields_5"><a class="link" href="#_response_fields_5">response-fields</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1746,7 +1628,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Sat, 16 Apr 2022 11:27:26 GMT
+Date: Sun, 17 Apr 2022 10:11:01 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 8
@@ -1756,7 +1638,7 @@ Content-Length: 8
 </div>
 </div>
 <div class="sect4">
-<h5 id="_response_headers_8"><a class="link" href="#_response_headers_8">response-headers</a></h5>
+<h5 id="_response_headers_5"><a class="link" href="#_response_headers_5">response-headers</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1777,7 +1659,7 @@ Content-Length: 8
 </table>
 </div>
 <div class="sect4">
-<h5 id="_response_fields_9"><a class="link" href="#_response_fields_9">response-fields</a></h5>
+<h5 id="_response_fields_6"><a class="link" href="#_response_fields_6">response-fields</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1815,8 +1697,8 @@ Content-Length: 8
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/projects/my HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Host: localhost:40281
-Cookie: JSESSIONID=721E2B236DE88F59A4E038470C15D632</code></pre>
+Host: localhost:35367
+Cookie: JSESSIONID=4A375D80F613AE497D6BC28A11EF1800</code></pre>
 </div>
 </div>
 </div>
@@ -1860,7 +1742,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Sat, 16 Apr 2022 11:27:26 GMT
+Date: Sun, 17 Apr 2022 10:11:00 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 58
@@ -1870,7 +1752,7 @@ Content-Length: 58
 </div>
 </div>
 <div class="sect4">
-<h5 id="_response_headers_9"><a class="link" href="#_response_headers_9">response-headers</a></h5>
+<h5 id="_response_headers_6"><a class="link" href="#_response_headers_6">response-headers</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1891,7 +1773,7 @@ Content-Length: 58
 </table>
 </div>
 <div class="sect4">
-<h5 id="_response_fields_10"><a class="link" href="#_response_fields_10">response-fields</a></h5>
+<h5 id="_response_fields_7"><a class="link" href="#_response_fields_7">response-fields</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1940,9 +1822,9 @@ Content-Length: 58
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/projects/2/crews HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:40281
+Host: localhost:35367
 Content-Length: 19
-Cookie: JSESSIONID=D13EC668E0E05A95680D8B626C1EE4F7
+Cookie: JSESSIONID=48FA08BF75AEC5C8B707C70FE1FAEE9C
 
 {"username":"crew"}</code></pre>
 </div>
@@ -2038,7 +1920,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Sat, 16 Apr 2022 11:27:25 GMT
+Date: Sun, 17 Apr 2022 10:11:00 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 8
@@ -2048,7 +1930,7 @@ Content-Length: 8
 </div>
 </div>
 <div class="sect4">
-<h5 id="_response_headers_10"><a class="link" href="#_response_headers_10">response-headers</a></h5>
+<h5 id="_response_headers_7"><a class="link" href="#_response_headers_7">response-headers</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -2069,7 +1951,7 @@ Content-Length: 8
 </table>
 </div>
 <div class="sect4">
-<h5 id="_response_fields_11"><a class="link" href="#_response_fields_11">response-fields</a></h5>
+<h5 id="_response_fields_8"><a class="link" href="#_response_fields_8">response-fields</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2100,7 +1982,7 @@ Content-Length: 8
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-04-12 21:37:58 +0900
+Last updated 2022-04-16 20:31:33 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
