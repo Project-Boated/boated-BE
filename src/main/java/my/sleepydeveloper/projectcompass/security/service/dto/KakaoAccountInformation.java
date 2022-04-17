@@ -20,6 +20,12 @@ public class KakaoAccountInformation {
     private KakaoAccount kakaoAccount;
 
     public String getProfileImageUrl() {
-        return kakaoAccount.getProfile().getIsDefaultImage().equals("true") ? null : getKakaoAccount().getProfile().getProfileImageUrl();
+        if(kakaoAccount.getProfile() == null || kakaoAccount.getProfile().getIsDefaultImage() == null) {
+            return null;
+        }
+        if(kakaoAccount.getProfile().getIsDefaultImage().equals("true")) {
+            return null;
+        }
+        return getKakaoAccount().getProfile().getProfileImageUrl();
     }
 }
