@@ -14,6 +14,7 @@ import my.sleepydeveloper.projectcompass.domain.project.exception.SameProjectNam
 import my.sleepydeveloper.projectcompass.domain.project.exception.UpdateCaptainAccessDenied;
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.project.vo.ProjectUpdateCondition;
+import my.sleepydeveloper.projectcompass.security.service.KakaoWebService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -36,6 +37,7 @@ import static org.springframework.context.annotation.ComponentScan.Filter;
                 @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ProjectService.class),
                 @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = AccountService.class),
                 @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = PasswordEncoder.class),
+                @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = KakaoWebService.class),
                 @Filter(type = FilterType.ANNOTATION, classes = Repository.class)
         }
 )
