@@ -8,13 +8,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import my.sleepydeveloper.projectcompass.domain.exception.BusinessException;
+import my.sleepydeveloper.projectcompass.domain.exception.ErrorCodeException;
 import my.sleepydeveloper.projectcompass.web.exception.dto.BasicErrorResponse;
 import my.sleepydeveloper.projectcompass.web.exception.dto.ExceptionMessageResponse;
 
@@ -28,8 +27,8 @@ public class JsonAccessDeniedHandler implements AccessDeniedHandler {
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=utf-8");
         
-        if(accessDeniedException instanceof BusinessException) {
-            BasicErrorResponse basicErrorResponse = new BasicErrorResponse(((BusinessException)accessDeniedException).getErrorCode());
+        if(accessDeniedException instanceof ErrorCodeException) {
+            BasicErrorResponse basicErrorResponse = new BasicErrorResponse(((ErrorCodeException)accessDeniedException).getErrorCode());
             objectMapper.writeValue(response.getWriter(), basicErrorResponse);
             return;
         }

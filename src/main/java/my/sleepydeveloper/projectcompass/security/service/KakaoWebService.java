@@ -24,6 +24,11 @@ public class KakaoWebService {
 	
 	@Value("${kakao.clientSecret}")
 	String clientSecret;
+
+	@Value("${kakao.adminKey}")
+	String adminKey;
+
+	private Long timeoutMills = 2000L;
 	
 	private final WebClient authClient;
 	private final WebClient apiClient;
@@ -52,7 +57,7 @@ public class KakaoWebService {
 						 .body(BodyInserters.fromFormData(bodyMap))
 						 .retrieve()
 						 .bodyToMono(String.class)
-						 .timeout(Duration.ofMillis(2000), Mono.error(new KakaoTimeoutException("timeout")))
+						 .timeout(Duration.ofMillis(timeoutMills), Mono.error(new KakaoTimeoutException("timeout")))
 						 .block();
 	}
 	
@@ -62,7 +67,7 @@ public class KakaoWebService {
 						.header("Authorization", "Bearer " + token)
 						.retrieve()
 						.bodyToMono(String.class)
-						.timeout(Duration.ofMillis(2000), Mono.error(new KakaoTimeoutException("timeout")))
+						.timeout(Duration.ofMillis(timeoutMills), Mono.error(new KakaoTimeoutException("timeout")))
 						.block();
 	}
 	
@@ -72,8 +77,18 @@ public class KakaoWebService {
 				 .header("Authorization", "Bearer " + token)
 				 .retrieve()
 				 .bodyToMono(String.class)
-				 .timeout(Duration.ofMillis(2000), Mono.error(new KakaoTimeoutException("timeout")))
+				 .timeout(Duration.ofMillis(timeoutMills), Mono.error(new KakaoTimeoutException("timeout")))
 				 .block();
+	}
+
+	public void disconnect(Long kakaoId) {
+		apiClient.post()
+				.uri("/v1/user/unlink?target_id_type=user_id&target_id=" + kakaoId)
+				.header("Authorization", "KakaoAK " + adminKey)
+				.retrieve()
+				.bodyToMono(String.class)
+				.timeout(Duration.ofMillis(timeoutMills), Mono.error(new KakaoTimeoutException("timeout")))
+				.block();
 	}
 	
 }

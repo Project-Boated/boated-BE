@@ -2,11 +2,11 @@ package my.sleepydeveloper.projectcompass.domain.project.service;
 
 import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
+import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNotFoundException;
+import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
 import my.sleepydeveloper.projectcompass.domain.accountproject.entity.AccountProject;
-import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNotFoundException;
 import my.sleepydeveloper.projectcompass.domain.accountproject.repository.AccountProjectRepository;
-import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectNotFoundException;
 import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectUpdateAccessDenied;
@@ -14,7 +14,7 @@ import my.sleepydeveloper.projectcompass.domain.project.exception.SameProjectNam
 import my.sleepydeveloper.projectcompass.domain.project.exception.UpdateCaptainAccessDenied;
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.project.vo.ProjectUpdateCondition;
-import org.checkerframework.checker.units.qual.A;
+import my.sleepydeveloper.projectcompass.security.service.KakaoWebService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -37,6 +37,7 @@ import static org.springframework.context.annotation.ComponentScan.Filter;
                 @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ProjectService.class),
                 @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = AccountService.class),
                 @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = PasswordEncoder.class),
+                @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = KakaoWebService.class),
                 @Filter(type = FilterType.ANNOTATION, classes = Repository.class)
         }
 )

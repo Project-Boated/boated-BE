@@ -29,7 +29,7 @@ public class KakaoAuthenticationProvider implements AuthenticationProvider {
 
     private final KakaoAccountDetailsService kakaoUserDetailsService;
     private final KakaoWebService kakaoWebService;
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {

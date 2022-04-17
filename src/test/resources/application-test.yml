@@ -17,3 +17,4 @@ kakao:
   clientId: testClientId
   redirectUri: testUri
   clientSecret: testClientSecret
+  adminKey: testAdminKey
