@@ -9,13 +9,15 @@ import my.sleepydeveloper.projectcompass.domain.accountproject.entity.AccountPro
 import my.sleepydeveloper.projectcompass.domain.accountproject.repository.AccountProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectNotFoundException;
-import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectUpdateAccessDenied;
-import my.sleepydeveloper.projectcompass.domain.project.exception.SameProjectNameInAccountExists;
+import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectUpdateAccessDeniedException;
+import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectNameSameInAccountException;
 import my.sleepydeveloper.projectcompass.domain.project.exception.UpdateCaptainAccessDenied;
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.project.vo.ProjectUpdateCondition;
 import my.sleepydeveloper.projectcompass.security.service.KakaoWebService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.FilterType;
@@ -26,8 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
-import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.projectDescription;
-import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.projectName;
+import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.PROJECT_DESCRIPTION;
+import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.PROJECT_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.context.annotation.ComponentScan.Filter;
@@ -59,11 +61,11 @@ class ProjectServiceTest extends BaseTest {
     AccountProjectRepository accountProjectRepository;
 
     @Test
-    void save_project하나저장_저장성공() throws Exception {
+    void save_project저장_성공() throws Exception {
         // Given
         Account account = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
-        Project project = new Project(projectName, projectDescription, account);
+        Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, account);
 
         // When
         Project saveProject = projectService.save(project);
@@ -71,35 +73,36 @@ class ProjectServiceTest extends BaseTest {
         // Then
         assertThat(saveProject.getName()).isEqualTo(project.getName());
         assertThat(saveProject.getDescription()).isEqualTo(project.getDescription());
-        assertThat(saveProject.getCaptain().getUsername()).isEqualTo(project.getCaptain().getUsername());
+        assertThat(saveProject.getCaptain().getId()).isEqualTo(project.getCaptain().getId());
     }
 
     @Test
     void save_이미존재하는Name으로생성_오류발생() throws Exception {
         // Given
-        Account account = createAccount();
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
 
-        Project project = new Project(projectName, projectDescription, account);
         projectRepository.save(project);
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.save(new Project(projectName, "newDescription", account)))
-                .isInstanceOf(SameProjectNameInAccountExists.class);
+        String newDescription = "newDescription";
+        assertThatThrownBy(() -> projectService.save(new Project(PROJECT_NAME, newDescription, captain)))
+                .isInstanceOf(ProjectNameSameInAccountException.class);
     }
 
     @Test
     void update_모든정보Update_업데이트성공() throws Exception {
         // Given
-        Account account = createAccount();
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
-        Project project = new Project(projectName, projectDescription, account);
+        Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
         projectRepository.save(project);
 
         // When
         String newProjectName = "newProjectName";
         String newProjectDescription = "newProjectDescription";
-        projectService.update(account, project.getId(), new ProjectUpdateCondition(newProjectName, newProjectDescription));
+        projectService.update(captain, project.getId(), new ProjectUpdateCondition(newProjectName, newProjectDescription));
 
         // Then
         assertThat(project.getName()).isEqualTo(newProjectName);
@@ -107,20 +110,35 @@ class ProjectServiceTest extends BaseTest {
     }
 
     @Test
-    void update_같은Account에같은Name존재_오류발생() throws Exception {
+    void update_모든정보NULL_업데이트안됨() throws Exception {
         // Given
-        Account account = createAccount();
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
-        Project project = new Project(projectName, projectDescription, account);
+        Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
         projectRepository.save(project);
 
-        Project project2 = new Project("projectName2", "projectDescription2", account);
-        projectRepository.save(project2);
+        // When
+        projectService.update(captain, project.getId(), new ProjectUpdateCondition());
+
+        // Then
+        assertThat(project.getName()).isEqualTo(PROJECT_NAME);
+        assertThat(project.getDescription()).isEqualTo(PROJECT_DESCRIPTION);
+    }
+
+    @Test
+    void update_같은정보로업데이트_성공() throws Exception {
+        // Given
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+
+        Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
+        projectRepository.save(project);
 
         // When
+        projectService.update(captain, project.getId(), new ProjectUpdateCondition(PROJECT_NAME, PROJECT_DESCRIPTION));
+
         // Then
-        assertThatThrownBy(() -> projectService.update(account, project2.getId(), new ProjectUpdateCondition(projectName, projectDescription)))
-                .isInstanceOf(SameProjectNameInAccountExists.class);
+        assertThat(project.getName()).isEqualTo(PROJECT_NAME);
+        assertThat(project.getDescription()).isEqualTo(PROJECT_DESCRIPTION);
     }
 
     @Test
@@ -130,59 +148,66 @@ class ProjectServiceTest extends BaseTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.update(account, 123L, new ProjectUpdateCondition(projectName, projectDescription)))
+        assertThatThrownBy(() -> projectService.update(account, 123L, new ProjectUpdateCondition(PROJECT_NAME, PROJECT_DESCRIPTION)))
                 .isInstanceOf(ProjectNotFoundException.class);
     }
 
     @Test
     void update_captain이아닌Account가요청_오류발생() throws Exception {
         // Given
-        Account account = createAccount();
-        Account account2 = new Account("username2", PASSWORD, "nickname2", "ROLE_USER", ROLES);
-        accountRepository.save(account2);
+        Account account1 = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Account account2 = accountService.save(new Account("username2", PASSWORD, "nickname2", PROFILE_IMAGE_URL, ROLES));
 
-        Project project = new Project(projectName, projectDescription, account);
+        Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, account1);
         projectRepository.save(project);
 
         // When
         // Then
         assertThatThrownBy(() -> projectService.update(account2, project.getId(), new ProjectUpdateCondition("newProjectName", "newProjectDescription")))
-                .isInstanceOf(ProjectUpdateAccessDenied.class);
+                .isInstanceOf(ProjectUpdateAccessDeniedException.class);
     }
 
     @Test
-    void findAllByAccount_Account의Project가없을때_빈리스트() throws Exception {
+    void update_같은Account에같은Name존재_오류발생() throws Exception {
         // Given
-        Account account = createAccount();
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+
+        Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
+        projectRepository.save(project);
+
+        Project project2 = new Project("projectName2", "projectDescription2", captain);
+        projectRepository.save(project2);
 
         // When
         // Then
-        assertThat(projectService.findAllByAccount(account)).isEmpty();
+        assertThatThrownBy(() -> projectService.update(captain, project2.getId(), new ProjectUpdateCondition(PROJECT_NAME, PROJECT_DESCRIPTION)))
+                .isInstanceOf(ProjectNameSameInAccountException.class);
     }
 
-    @Test
-    void findAllByAccount_Account의Project가10개존재_리스트안에10개() throws Exception {
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 10})
+    void findAllByCaptain_Account의Project존재_리스트개수(int count) throws Exception {
         // Given
-        Account account = createAccount();
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
         List<Project> projects = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            Project project = new Project(projectName + i, projectDescription, account);
+        for (int i = 0; i < count; i++) {
+            Project project = new Project(PROJECT_NAME + i, PROJECT_DESCRIPTION, captain);
             projectRepository.save(project);
             projects.add(project);
         }
 
         // When
-        int result = projectService.findAllByAccount(account).size();
+        int result = projectService.findAllByCaptain(captain).size();
 
         // Then
-        assertThat(result).isEqualTo(projects.size());
+        assertThat(result).isEqualTo(count);
     }
 
     @Test
     void findAllCrew_한명의crew가있을때_한명의crew조회() throws Exception {
         // Given
         Account captain = createAccount();
-        Project project = new Project(projectName, projectDescription, captain);
+        Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
         projectRepository.save(project);
 
         Account crew = new Account("crew", PASSWORD, "crew", "ROLE_USER", ROLES);
@@ -216,7 +241,7 @@ class ProjectServiceTest extends BaseTest {
         Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_URL, ROLES));
         Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
-        Project project = new Project(projectName, projectDescription, captain);
+        Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
         projectRepository.save(project);
 
         accountProjectRepository.save(new AccountProject(newCaptain, project));
@@ -237,7 +262,7 @@ class ProjectServiceTest extends BaseTest {
         Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_URL, ROLES));
         Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
-        Project project = new Project(projectName, projectDescription, captain);
+        Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
         projectRepository.save(project);
 
         accountProjectRepository.save(new AccountProject(newCaptain, project));
@@ -258,7 +283,7 @@ class ProjectServiceTest extends BaseTest {
         Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_URL, ROLES));
         Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
-        Project project = new Project(projectName, projectDescription, captain);
+        Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
         projectRepository.save(project);
 
         accountProjectRepository.save(new AccountProject(newCaptain, project));
@@ -279,7 +304,7 @@ class ProjectServiceTest extends BaseTest {
         Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_URL, ROLES));
         Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
 
-        Project project = new Project(projectName, projectDescription, captain);
+        Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
         projectRepository.save(project);
 
         accountProjectRepository.save(new AccountProject(newCaptain, project));

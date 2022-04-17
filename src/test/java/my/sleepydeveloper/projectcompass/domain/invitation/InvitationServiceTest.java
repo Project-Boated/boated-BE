@@ -15,8 +15,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.FilterType;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
-import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.projectDescription;
-import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.projectName;
+import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.PROJECT_DESCRIPTION;
+import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.PROJECT_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.context.annotation.ComponentScan.Filter;
@@ -40,7 +40,7 @@ class InvitationServiceTest extends BaseTest {
     void inviteCrew_초대1개생성_정상() throws Exception {
         // Given
         Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
-        Project project = projectRepository.save(new Project(projectName, projectDescription, captain));
+        Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain));
         String crewNickname = "crew";
         String crewUsername = "crew";
         Account crew = accountRepository.save(new Account(crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL, ROLES));
@@ -58,7 +58,7 @@ class InvitationServiceTest extends BaseTest {
     void inviteCrew_존재하지않는ProjectId_오류발생() throws Exception {
         // Given
         Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
-        Project project = projectRepository.save(new Project(projectName, projectDescription, captain));
+        Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain));
         String crewNickname = "crew";
         String crewUsername = "crew";
         Account crew = accountRepository.save(new Account(crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL, ROLES));
@@ -73,7 +73,7 @@ class InvitationServiceTest extends BaseTest {
     void inviteCrew_captain이아닌account가초대생성_오류발생() throws Exception {
         // Given
         Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
-        Project project = projectRepository.save(new Project(projectName, projectDescription, captain));
+        Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain));
         String crewNickname = "crew";
         String crewUsername = "crew";
         Account crew = accountRepository.save(new Account(crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL, ROLES));
@@ -88,7 +88,7 @@ class InvitationServiceTest extends BaseTest {
     void inviteCrew_없는username으로초대_오류발생() throws Exception {
         // Given
         Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
-        Project project = projectRepository.save(new Project(projectName, projectDescription, captain));
+        Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain));
         String crewNickname = "crew";
         String crewUsername = "crew";
         Account crew = accountRepository.save(new Account(crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL, ROLES));

@@ -7,12 +7,12 @@ import javax.validation.constraints.NotEmpty;
 
 @NoArgsConstructor
 @Getter
-public class NicknameUniqueValidationRequest {
+public class ValidationNicknameUniqueRequest {
 
 	@NotEmpty
 	private String nickname;
 
-	public NicknameUniqueValidationRequest(String nickname) {
+	public ValidationNicknameUniqueRequest(String nickname) {
 		this.nickname = nickname;
 	}
 }

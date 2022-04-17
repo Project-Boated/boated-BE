@@ -5,8 +5,8 @@ import io.restassured.http.Cookie;
 import my.sleepydeveloper.projectcompass.common.basetest.AcceptanceTest;
 import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
 import my.sleepydeveloper.projectcompass.web.account.dto.SignUpRequest;
-import my.sleepydeveloper.projectcompass.web.account.dto.UpdateAccountProfileRequest;
-import my.sleepydeveloper.projectcompass.web.account.dto.NicknameUniqueValidationRequest;
+import my.sleepydeveloper.projectcompass.web.account.dto.PatchAccountProfileRequest;
+import my.sleepydeveloper.projectcompass.web.account.dto.ValidationNicknameUniqueRequest;
 import my.sleepydeveloper.projectcompass.web.account.dto.PutNicknameRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -71,7 +71,7 @@ class AccountControllerTest extends AcceptanceTest {
                 .cookie(cookie)
         .when()
                 .port(port)
-                .body(new UpdateAccountProfileRequest(updateNickname, PASSWORD, updatePassword, updateProfileImageUrl))
+                .body(new PatchAccountProfileRequest(updateNickname, PASSWORD, updatePassword, updateProfileImageUrl))
                 .patch("/api/account/profile")
         .then()
                 .statusCode(HttpStatus.OK.value());
@@ -119,7 +119,7 @@ class AccountControllerTest extends AcceptanceTest {
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
                 .cookie(cookie)
-                .body(new NicknameUniqueValidationRequest("notDuplicatedNickname"))
+                .body(new ValidationNicknameUniqueRequest("notDuplicatedNickname"))
         .when()
                 .port(port)
                 .post("/api/account/profile/nickname/unique-validation")

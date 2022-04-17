@@ -9,8 +9,8 @@ import my.sleepydeveloper.projectcompass.domain.accountproject.repository.Accoun
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectNotFoundException;
-import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectUpdateAccessDenied;
-import my.sleepydeveloper.projectcompass.domain.project.exception.SameProjectNameInAccountExists;
+import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectUpdateAccessDeniedException;
+import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectNameSameInAccountException;
 import my.sleepydeveloper.projectcompass.domain.project.exception.UpdateCaptainAccessDenied;
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.project.vo.ProjectUpdateCondition;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional(readOnly = true)
@@ -31,7 +32,7 @@ public class ProjectService {
     @Transactional
     public Project save(Project project) {
         if (projectRepository.existsByNameAndCaptain(project.getName(), project.getCaptain())) {
-            throw new SameProjectNameInAccountExists(ErrorCode.PROJECT_NAME_EXISTS_IN_ACCOUNT);
+            throw new ProjectNameSameInAccountException(ErrorCode.PROJECT_NAME_EXISTS_IN_ACCOUNT);
         }
 
         return projectRepository.save(project);
@@ -43,18 +44,23 @@ public class ProjectService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if (project.getCaptain().getId() != account.getId()) {
-            throw new ProjectUpdateAccessDenied(ErrorCode.COMMON_ACCESS_DENIED);
+        if (!Objects.equals(project.getCaptain().getId(), account.getId())) {
+            throw new ProjectUpdateAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
-        if (projectRepository.countByNameAndCaptainAndNotProject(projectUpdateCondition.getName(), account, project) > 0) {
-            throw new SameProjectNameInAccountExists(ErrorCode.PROJECT_NAME_EXISTS_IN_ACCOUNT);
+        if(isSameProjectNameInAccount(projectUpdateCondition, project)) {
+            throw new ProjectNameSameInAccountException(ErrorCode.PROJECT_NAME_EXISTS_IN_ACCOUNT);
         }
 
         project.changeProjectInform(projectUpdateCondition.getName(), projectUpdateCondition.getDescription());
     }
 
-    public List<Project> findAllByAccount(Account account) {
+    private boolean isSameProjectNameInAccount(ProjectUpdateCondition projectUpdateCondition, Project project) {
+        return !Objects.equals(project.getName(), projectUpdateCondition.getName()) &&
+                projectRepository.existsByName(projectUpdateCondition.getName());
+    }
+
+    public List<Project> findAllByCaptain(Account account) {
         return projectRepository.findAllByCaptain(account);
     }
 

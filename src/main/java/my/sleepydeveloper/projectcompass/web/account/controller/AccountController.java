@@ -40,13 +40,16 @@ public class AccountController {
     }
 
     @PatchMapping("/profile")
-    public void updateAccountProfile(@AuthenticationPrincipal Account account, @RequestBody @Validated UpdateAccountProfileRequest updateAccountProfileRequest) {
+    public void patchAccountProfile(
+            @AuthenticationPrincipal Account account,
+            @RequestBody @Validated PatchAccountProfileRequest patchAccountProfileRequest
+    ) {
 
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
-                .originalPassword(updateAccountProfileRequest.getOriginalPassword())
-                .newPassword(updateAccountProfileRequest.getNewPassword())
-                .nickname(updateAccountProfileRequest.getNickname())
-                .profileImageUrl(updateAccountProfileRequest.getProfileImageUrl())
+                .originalPassword(patchAccountProfileRequest.getOriginalPassword())
+                .newPassword(patchAccountProfileRequest.getNewPassword())
+                .nickname(patchAccountProfileRequest.getNickname())
+                .profileImageUrl(patchAccountProfileRequest.getProfileImageUrl())
                 .build();
 
         accountService.updateProfile(account, updateCondition);
@@ -59,10 +62,10 @@ public class AccountController {
     }
 
     @PostMapping("/profile/nickname/unique-validation")
-    public ResponseEntity<NicknameUniqueValidationResponse> nicknameUniqueValidation(
-            @Validated @RequestBody NicknameUniqueValidationRequest request) {
+    public ValidationNicknameUniqueResponse validationNicknameUnique(
+            @Validated @RequestBody ValidationNicknameUniqueRequest request) {
 
-        return ResponseEntity.ok(new NicknameUniqueValidationResponse(accountService.isExistsNickname(request.getNickname())));
+        return new ValidationNicknameUniqueResponse(accountService.isExistsNickname(request.getNickname()));
     }
 
     @PutMapping("/profile/nickname")

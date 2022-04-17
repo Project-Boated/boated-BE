@@ -7,6 +7,7 @@ import my.sleepydeveloper.projectcompass.domain.account.entity.QAccount;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.entity.QProject;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -15,6 +16,7 @@ import static my.sleepydeveloper.projectcompass.domain.accountproject.entity.QAc
 import static my.sleepydeveloper.projectcompass.domain.account.entity.QAccount.account;
 
 @Repository
+@Transactional
 public class AccountProjectRepository {
 
     private final EntityManager em;

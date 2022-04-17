@@ -1,5 +1,6 @@
 package my.sleepydeveloper.projectcompass.domain.project.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Project extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,13 +27,10 @@ public class Project extends BaseTimeEntity {
     @JoinColumn(name = "account_id_captain")
     private Account captain;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
-    private List<AccountProject> accountProjects;
-
-    public Project(String name, String description, Account account) {
+    public Project(String name, String description, Account captain) {
         this.name = name;
         this.description = description;
-        this.captain = account;
+        this.captain = captain;
     }
 
     public void changeProjectInform(String name, String description) {

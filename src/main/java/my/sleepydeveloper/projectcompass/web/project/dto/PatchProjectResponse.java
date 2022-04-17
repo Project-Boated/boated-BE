@@ -7,11 +7,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class ProjectResponse {
+public class PatchProjectResponse {
 
-    private String name;
-    private String description;
+    private Long id;
 
+    public PatchProjectResponse(Long id) {
+        this.id = id;
+    }
 }

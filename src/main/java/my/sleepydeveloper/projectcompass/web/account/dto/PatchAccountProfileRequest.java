@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateAccountProfileRequest {
+public class PatchAccountProfileRequest {
 
     private String nickname;
 

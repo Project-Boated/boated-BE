@@ -13,7 +13,6 @@ public enum ErrorCode {
     ACCOUNT_NICKNAME_EXISTS(400, "U002", "이미 존재하는 닉네임입니다."),
     ACCOUNT_NOT_FOUND(400, "U003", "찾을 수 없는 account입니다"),
     ACCOUNT_PASSWORD_WRONG(400, "U004", "잘못된 password입니다"),
-    ACCOUNT_UPDATE_ACCESS_DENIED(400, "U006", "Update불가, 권한없음."),
     ACCOUNT_NICKNAME_REQUIRED(403, "U007", "닉네임이 필요합니다."),
 
     // Project
