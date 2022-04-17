@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProjectSaveRequest {
+public class CreateProjectRequest {
 
     @NotEmpty
     private String name;

@@ -5,6 +5,8 @@ import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -12,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
-import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.projectDescription;
-import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.projectName;
+import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.PROJECT_DESCRIPTION;
+import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.PROJECT_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -28,11 +30,11 @@ class ProjectRepositoryTest extends BaseTest {
     @Test
     void existsByNameAndCaptain_projectName이Captain에있음_true() throws Exception {
         // Given
-        Account account = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
-        Project project = projectRepository.save(new Project(projectName, projectDescription, account));
+        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain));
 
         // When
-        boolean result = projectRepository.existsByNameAndCaptain(project.getName(), account);
+        boolean result = projectRepository.existsByNameAndCaptain(project.getName(), captain);
 
         // Then
         assertThat(result).isTrue();
@@ -42,7 +44,7 @@ class ProjectRepositoryTest extends BaseTest {
     void existsByNameAndCaptain_projectName이Captain에없음_false() throws Exception {
         // Given
         Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
-        Project project = projectRepository.save(new Project(projectName, projectDescription, captain));
+        Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain));
         Account newAccount = accountRepository.save(new Account("newUsername", PASSWORD, "newNickname", PROFILE_IMAGE_URL, ROLES));
 
         // When
@@ -53,45 +55,42 @@ class ProjectRepositoryTest extends BaseTest {
     }
 
     @Test
-    void existsByNameAndCaptainAndNotProject_projectName이Captain에있는데Project와동일_false() throws Exception {
+    void existsByName_존재하는name으로조회_true() throws Exception {
         // Given
         Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
-        Project project = projectRepository.save(new Project(projectName, projectDescription, captain));
+        Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain));
 
         // When
-        Long result = projectRepository.countByNameAndCaptainAndNotProject(project.getName(), captain, project);
+        boolean result = projectRepository.existsByName(PROJECT_NAME);
 
         // Then
-        assertThat(result).isEqualTo(0);
+        assertThat(result).isTrue();
     }
 
     @Test
-    void existsByNameAndCaptainAndNotProject_projectName이Captain에있는데다른Project_false() throws Exception {
+    void existsByName_존재하지않는name으로조회_false() throws Exception {
         // Given
-        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
-        Project project = projectRepository.save(new Project(projectName, projectDescription, captain));
-        Project project2 = projectRepository.save(new Project("projectName2", "projectDescription2", captain));
-
         // When
-        Long result = projectRepository.countByNameAndCaptainAndNotProject(project.getName(), captain, project2);
+        boolean result = projectRepository.existsByName(PROJECT_NAME);
 
         // Then
-        assertThat(result).isEqualTo(1);
+        assertThat(result).isFalse();
     }
 
-    @Test
-    void findAllByAccount_account에project저장됨_account가소유한project개수() throws Exception {
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 10})
+    void findAllByCaptain_account에project저장됨_account가소유한project개수(int count) throws Exception {
         // Given
         Account account = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
         List<Project> projects = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            projectRepository.save(new Project(projectName + "i", projectDescription, account));
+        for (int i = 0; i < count; i++) {
+            projectRepository.save(new Project(PROJECT_NAME + "i", PROJECT_DESCRIPTION, account));
         }
 
         // When
         List<Project> findByAll = projectRepository.findAllByCaptain(account);
 
         // Then
-        assertThat(findByAll.size()).isEqualTo(10);
+        assertThat(findByAll.size()).isEqualTo(count);
     }
 }

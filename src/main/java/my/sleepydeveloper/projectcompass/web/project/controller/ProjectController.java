@@ -26,38 +26,37 @@ public class ProjectController {
     private final InvitationService invitationService;
 
     @PostMapping
-    public ResponseEntity<IdDto> save(
+    public CreateProjectResponse createProject(
             @AuthenticationPrincipal Account account,
-            @RequestBody @Validated ProjectSaveRequest projectSaveRequest) {
-
-        Project project = projectService.save(new Project(projectSaveRequest.getName(), projectSaveRequest.getDescription(), account));
-
-        return ResponseEntity.ok(new IdDto(project.getId()));
+            @RequestBody @Validated CreateProjectRequest createProjectRequest
+    ) {
+        Project project = projectService.save(new Project(createProjectRequest.getName(), createProjectRequest.getDescription(), account));
+        return new CreateProjectResponse(project);
     }
 
     @PatchMapping("/{projectId}")
-    public ResponseEntity<IdDto> update(
+    public PatchProjectResponse patchProject(
             @AuthenticationPrincipal Account account,
-            @RequestBody @Validated ProjectUpdateRequest projectUpdateRequest,
+            @RequestBody @Validated PatchProjectRequest patchProjectRequest,
             @PathVariable Long projectId
     ) {
         ProjectUpdateCondition projectUpdateCondition = ProjectUpdateCondition.builder()
-                .name(projectUpdateRequest.getName())
-                .description(projectUpdateRequest.getDescription())
+                .name(patchProjectRequest.getName())
+                .description(patchProjectRequest.getDescription())
                 .build();
 
         projectService.update(account, projectId, projectUpdateCondition);
 
-        return ResponseEntity.ok(new IdDto(projectId));
+        return new PatchProjectResponse(projectId);
     }
 
-    @GetMapping("/my")
-    public ResponseEntity<MyProjectResponse> myProject(@AuthenticationPrincipal Account account) {
-        List<ProjectResponse> projectResponses = projectService.findAllByAccount(account).stream()
-                .map(p -> new ProjectResponse(p.getName(), p.getDescription()))
+    @GetMapping("/my/captain")
+    public GetMyCaptainProjectResponse getMyCaptainProject(@AuthenticationPrincipal Account account) {
+        List<GetMyCaptainProjectResponse.ProjectResponse> projectResponses = projectService.findAllByCaptain(account).stream()
+                .map(GetMyCaptainProjectResponse.ProjectResponse::new)
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(new MyProjectResponse(projectResponses));
+        return new GetMyCaptainProjectResponse(projectResponses);
     }
 
     @GetMapping("/{projectId}/crews")

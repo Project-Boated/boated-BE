@@ -209,9 +209,6 @@ include::{snippets}/account-profile-update/http-response.adoc[]
 ===== http-request
 include::{snippets}/account-profile-delete/http-request.adoc[]
 
-===== request-headers
-include::{snippets}/account-profile-delete/request-headers.adoc[]
-
 ==== Response
 
 ===== http-response
@@ -301,7 +298,7 @@ include::{snippets}/project-update/http-request.adoc[]
 ===== request-headers
 include::{snippets}/project-update/request-headers.adoc[]
 
-===== response-fields
+===== request-fields
 include::{snippets}/project-update/request-fields.adoc[]
 
 ==== Response
@@ -315,28 +312,28 @@ include::{snippets}/project-update/response-headers.adoc[]
 ===== response-fields
 include::{snippets}/project-update/response-fields.adoc[]
 
-[[resources-project-my-retrieve]]
-=== 내 프로젝트 목록
-`GET` 요청을 사용해서 내 프로젝트의 목록을 확인할 수 있습니다.
+[[resources-project-my-captain-retrieve]]
+=== 내가 captain인 프로젝트 목록
+`GET` 요청을 사용해서 내가 captain인 프로젝트의 목록을 확인할 수 있습니다.
 
 ==== Request
 
 ===== http-request
-include::{snippets}/project-my-retrieve/http-request.adoc[]
+include::{snippets}/project-my-captain-retrieve/http-request.adoc[]
 
 ===== request-headers
-include::{snippets}/project-my-retrieve/request-headers.adoc[]
+include::{snippets}/project-my-captain-retrieve/request-headers.adoc[]
 
 ==== Response
 
 ===== http-response
-include::{snippets}/project-my-retrieve/http-response.adoc[]
+include::{snippets}/project-my-captain-retrieve/http-response.adoc[]
 
 ===== response-headers
-include::{snippets}/project-my-retrieve/response-headers.adoc[]
+include::{snippets}/project-my-captain-retrieve/response-headers.adoc[]
 
 ===== response-fields
-include::{snippets}/project-my-retrieve/response-fields.adoc[]
+include::{snippets}/project-my-captain-retrieve/response-fields.adoc[]
 //
 //[[resources-project-crews-retrieve]]
 //=== 프로젝트에 참여한 유저
@@ -389,6 +386,9 @@ include::{snippets}/project-my-retrieve/response-fields.adoc[]
 //
 //===== response-fields
 //include::{snippets}/project-captain-update/response-fields.adoc[]
+
+[[resources-project-invitation]]
+== 프로젝트 초대
 
 [[resources-project-crew-invite]]
 === 프로젝트 초대하기

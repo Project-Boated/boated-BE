@@ -2,9 +2,8 @@ package my.sleepydeveloper.projectcompass.common.utils;
 
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
-import io.restassured.response.ResponseBody;
 import my.sleepydeveloper.projectcompass.domain.project.service.ProjectService;
-import my.sleepydeveloper.projectcompass.web.project.dto.ProjectSaveRequest;
+import my.sleepydeveloper.projectcompass.web.project.dto.CreateProjectRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,15 +20,16 @@ public class ProjectTestUtils {
         this.projectService = projectService;
     }
 
-    public static ResponseBody createProject(int port, Cookie cookie, String projectName, String projectDescription) {
+    public static int createProject(int port, Cookie cookie, String projectName, String projectDescription) {
         return given()
                     .accept(ContentType.JSON)
                     .contentType(ContentType.JSON)
                     .cookie(cookie)
-                    .body(new ProjectSaveRequest(projectName, projectDescription))
+                    .body(new CreateProjectRequest(projectName, projectDescription))
                 .when()
                     .port(port)
                     .post("/api/projects")
-                .thenReturn().getBody();
+                .thenReturn()
+                    .body().jsonPath().getInt("id");
     }
 }

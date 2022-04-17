@@ -9,9 +9,11 @@ import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
 import my.sleepydeveloper.projectcompass.common.utils.ProjectTestUtils;
 import my.sleepydeveloper.projectcompass.domain.project.service.ProjectService;
 import my.sleepydeveloper.projectcompass.web.project.dto.InviteCrewRequest;
-import my.sleepydeveloper.projectcompass.web.project.dto.ProjectSaveRequest;
-import my.sleepydeveloper.projectcompass.web.project.dto.ProjectUpdateRequest;
+import my.sleepydeveloper.projectcompass.web.project.dto.CreateProjectRequest;
+import my.sleepydeveloper.projectcompass.web.project.dto.PatchProjectRequest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
@@ -41,7 +43,7 @@ class ProjectControllerTest extends AcceptanceTest {
     final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void save_프로젝트생성_정상() throws Exception {
+    void createProject_프로젝트생성_정상() throws Exception {
         // Given
         AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
@@ -53,7 +55,7 @@ class ProjectControllerTest extends AcceptanceTest {
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
                 .cookie(cookie)
-                .body(new ProjectSaveRequest(projectName, projectDescription))
+                .body(new CreateProjectRequest(PROJECT_NAME, PROJECT_DESCRIPTION))
         .when()
                 .port(port)
                 .post("/api/projects")
@@ -62,57 +64,40 @@ class ProjectControllerTest extends AcceptanceTest {
                 .assertThat().body("id", notNullValue());
     }
 
+
     @Test
-    void save_같은account에같은projectname_오류발생() throws Exception {
+    void patchProject_모든필드업데이트_정상() throws Exception {
         // Given
         AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        ProjectTestUtils.createProject(port, cookie, projectName, projectDescription);
+        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION);
 
-        // When
-        // Then
-        given(this.spec)
-            .accept(ContentType.JSON)
-            .contentType(ContentType.JSON)
-            .cookie(cookie)
-            .body(new ProjectSaveRequest(projectName, projectDescription))
-        .when()
-            .port(port)
-            .post("/api/projects")
-        .then()
-            .statusCode(HttpStatus.BAD_REQUEST.value());
-    }
-
-
-    @Test
-    void update_모든필드업데이트_정상() throws Exception {
-        // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
-        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, cookie, projectName, projectDescription).jsonPath().get("id");
+        String projectUpdateName = "updatedProjectName";
+        String projectUpdateDescription = "updateDescription";
 
         // When
         // Then
         given(this.spec)
                 .filter(documentProjectUpdate())
-                .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
                 .cookie(cookie)
-                .body(new ProjectUpdateRequest(updateProjectName, updateProjectDescription))
+                .body(new PatchProjectRequest(projectUpdateName, projectUpdateDescription))
         .when()
                 .port(port)
                 .patch("/api/projects/" + projectId)
         .then()
-                .statusCode(HttpStatus.OK.value());
+                .statusCode(HttpStatus.OK.value())
+                .assertThat().body("id", notNullValue());
     }
 
-    @Test
-    void myProject_내프로젝트조회_정상() throws Exception {
+    @ParameterizedTest
+    @ValueSource(ints = {10})
+    void getMyCaptainProject_내가Captain인프로젝트조회_정상(int count) throws Exception {
         // Given
         AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        for (int i = 0; i < 3; i++) {
-            ProjectTestUtils.createProject(port, cookie, projectName, projectDescription);
+        for (int i = 0; i < count; i++) {
+            ProjectTestUtils.createProject(port, cookie, PROJECT_NAME + i, PROJECT_DESCRIPTION);
         }
 
         // When
@@ -123,7 +108,7 @@ class ProjectControllerTest extends AcceptanceTest {
             .cookie(cookie)
         .when()
             .port(port)
-            .get("/api/projects/my")
+            .get("/api/projects/my/captain")
         .then()
             .statusCode(HttpStatus.OK.value());
     }
@@ -178,7 +163,7 @@ class ProjectControllerTest extends AcceptanceTest {
         String crewNickname = "crew";
         AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, cookie, projectName, projectDescription).jsonPath().get("id");
+        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION);
 
         // When
         // Then

@@ -30,7 +30,7 @@ public class ProjectDocument {
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
                 ),
                 responseFields(
-                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("생성된 프로젝트의 id")
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("만들어진 project의 id")
                 )
         );
     }
@@ -38,7 +38,6 @@ public class ProjectDocument {
     public static RestDocumentationFilter documentProjectUpdate() {
         return document("project-update",
                 requestHeaders(
-                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType"),
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
                 ),
                 requestFields(
@@ -49,13 +48,13 @@ public class ProjectDocument {
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
                 ),
                 responseFields(
-                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("업데이트된 프로젝트의 id")
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("수정한 project의 id")
                 )
         );
     }
 
     public static RestDocumentationFilter documentProjectMy() {
-        return document("project-my-retrieve",
+        return document("project-my-captain-retrieve",
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
                 ),
@@ -63,7 +62,8 @@ public class ProjectDocument {
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
                 ),
                 responseFields(
-                        fieldWithPath("projects").type(JsonFieldType.ARRAY).description("내 project목록"),
+                        fieldWithPath("projects").type(JsonFieldType.ARRAY).description("project목록"),
+                        fieldWithPath("projects[].id").type(JsonFieldType.NUMBER).description("프로젝트 id"),
                         fieldWithPath("projects[].name").type(JsonFieldType.STRING).description("프로젝트 이름"),
                         fieldWithPath("projects[].description").type(JsonFieldType.STRING).description("프로젝트 설명")
                 )

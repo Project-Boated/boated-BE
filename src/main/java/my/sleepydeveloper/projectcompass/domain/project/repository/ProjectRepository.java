@@ -12,8 +12,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     boolean existsByNameAndCaptain(String name, Account captain);
 
-    @Query("select count(p) from Project p where p.captain=:captain and p.name=:name and not p=:project")
-    Long countByNameAndCaptainAndNotProject(@Param("name") String name, @Param("captain") Account captain, @Param("project") Project project);
+    boolean existsByName(String name);
 
     List<Project> findAllByCaptain(Account captain);
 }

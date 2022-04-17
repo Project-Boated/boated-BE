@@ -3,10 +3,10 @@ package my.sleepydeveloper.projectcompass.web.account.dto;
 import lombok.Getter;
 
 @Getter
-public class NicknameUniqueValidationResponse {
+public class ValidationNicknameUniqueResponse {
 	private boolean isDuplicated;
 	
-	public NicknameUniqueValidationResponse(boolean isDuplicated) {
+	public ValidationNicknameUniqueResponse(boolean isDuplicated) {
 		this.isDuplicated = isDuplicated;
 	}
 }
