@@ -10,8 +10,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
 public class ProjectDocument {
@@ -112,12 +111,11 @@ public class ProjectDocument {
                 pathParameters(
                         parameterWithName("projectId").description("target 프로젝트의 id")
                 ),
-                requestHeaders(
-                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType"),
-                        headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
+                requestParameters(
+                        parameterWithName("nickname").description("초대할 Account의 닉네임")
                 ),
-                requestFields(
-                        fieldWithPath("username").type(JsonFieldType.STRING).description("초대하고 싶은 Account의 username")
+                requestHeaders(
+                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
                 ),
                 responseHeaders(
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")

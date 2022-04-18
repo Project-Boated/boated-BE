@@ -23,7 +23,7 @@ public class InvitationService {
     private final InvitationRepository invitationRepository;
 
     @Transactional
-    public Invitation inviteCrew(Account captain, String username, Long projectId) {
+    public Invitation inviteCrew(Long projectId, String nickname, Account captain) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
@@ -31,7 +31,7 @@ public class InvitationService {
             throw new InviteCrewAccessDenied(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
-        Account account = accountRepository.findByUsername(username)
+        Account account = accountRepository.findByNickname(nickname)
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
         return invitationRepository.save(new Invitation(account, project));

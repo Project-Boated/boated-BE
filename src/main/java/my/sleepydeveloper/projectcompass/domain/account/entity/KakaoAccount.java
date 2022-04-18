@@ -16,7 +16,7 @@ import java.util.Set;
 @DiscriminatorValue("KAKAO")
 public class KakaoAccount extends Account{
 
-	@Column(unique = true)
+	@Column(name = "oauth_id", unique = true)
 	private Long kakaoId;
 
 	@Builder

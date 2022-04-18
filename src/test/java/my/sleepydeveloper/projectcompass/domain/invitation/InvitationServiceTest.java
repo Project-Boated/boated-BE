@@ -46,7 +46,7 @@ class InvitationServiceTest extends BaseTest {
         Account crew = accountRepository.save(new Account(crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL, ROLES));
 
         // When
-        Invitation invitation = invitationService.inviteCrew(captain, crewUsername, project.getId());
+        Invitation invitation = invitationService.inviteCrew(project.getId(), crewUsername, captain);
 
         // Then
         assertThat(invitation.getId()).isNotNull();
@@ -65,7 +65,7 @@ class InvitationServiceTest extends BaseTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> invitationService.inviteCrew(captain, crewUsername, 91239L))
+        assertThatThrownBy(() -> invitationService.inviteCrew(91239L, crewUsername, captain))
                 .isInstanceOf(ProjectNotFoundException.class);
     }
 
@@ -80,7 +80,7 @@ class InvitationServiceTest extends BaseTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> invitationService.inviteCrew(crew, crewUsername, project.getId()))
+        assertThatThrownBy(() -> invitationService.inviteCrew(project.getId(), crewUsername, crew))
                 .isInstanceOf(InviteCrewAccessDenied.class);
     }
 
@@ -95,7 +95,7 @@ class InvitationServiceTest extends BaseTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> invitationService.inviteCrew(captain, "failusername", project.getId()))
+        assertThatThrownBy(() -> invitationService.inviteCrew(project.getId(), "failusername", captain))
                 .isInstanceOf(AccountNotFoundException.class);
     }
 }

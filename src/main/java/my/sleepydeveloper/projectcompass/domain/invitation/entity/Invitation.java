@@ -1,5 +1,6 @@
 package my.sleepydeveloper.projectcompass.domain.invitation.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
@@ -9,7 +10,7 @@ import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import javax.persistence.*;
 
 @Entity
-@NoArgsConstructor @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED) @Getter
 public class Invitation extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
