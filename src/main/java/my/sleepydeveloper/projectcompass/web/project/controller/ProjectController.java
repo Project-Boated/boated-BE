@@ -79,14 +79,4 @@ public class ProjectController {
 
         return ResponseEntity.ok(new IdDto(newCaptain.getId()));
     }
-
-    @PostMapping("/{projectId}/crews")
-    public ResponseEntity<IdDto> inviteCrew(
-            @AuthenticationPrincipal Account account,
-            @PathVariable Long projectId,
-            @RequestBody InviteCrewRequest inviteCrewRequest
-    ) {
-        Invitation invitation = invitationService.inviteCrew(account, inviteCrewRequest.getUsername(), projectId);
-        return ResponseEntity.ok(new IdDto(invitation.getId()));
-    }
 }
