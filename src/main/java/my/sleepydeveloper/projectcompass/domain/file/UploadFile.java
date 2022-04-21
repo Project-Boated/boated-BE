@@ -10,7 +10,7 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Setter @Getter
-public class File {
+public class UploadFile {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
