@@ -8,9 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-@Setter @Getter
-@RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter @Getter
 public class File {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

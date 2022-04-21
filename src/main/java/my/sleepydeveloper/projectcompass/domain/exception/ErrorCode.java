@@ -23,9 +23,11 @@ public enum ErrorCode {
     // Kakao
     KAKAO_SERVER_EXCEPTION(400, "K001", "카카오 서버 오류입니다."),
 
+    // File
+    FILE_UPLOAD_INTERRUPT(400, "F001", "파일 업로드 인터럽트 오류"),
+
     // For Testing
-    FOR_TESTING(507, "T001", "테스트용입니다.")
-    ;
+    FOR_TESTING(507, "T001", "테스트용입니다.");
 
     private int status;
     private String statusCode;
