@@ -1,7 +1,7 @@
 package my.sleepydeveloper.projectcompass.domain.account.service.condition;
 
 import lombok.*;
-import my.sleepydeveloper.projectcompass.domain.uploadfile.UploadFile;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
 
 @Getter @Setter
 @NoArgsConstructor

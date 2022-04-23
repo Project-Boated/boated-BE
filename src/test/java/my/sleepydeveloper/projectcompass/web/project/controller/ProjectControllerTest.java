@@ -44,7 +44,7 @@ class ProjectControllerTest extends AcceptanceTest {
     @Test
     void createProject_프로젝트생성_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
 
         // When
@@ -67,7 +67,7 @@ class ProjectControllerTest extends AcceptanceTest {
     @Test
     void patchProject_모든필드업데이트_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION);
 
@@ -93,7 +93,7 @@ class ProjectControllerTest extends AcceptanceTest {
     @ValueSource(ints = {10})
     void getMyCaptainProject_내가Captain인프로젝트조회_정상(int count) throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         for (int i = 0; i < count; i++) {
             ProjectTestUtils.createProject(port, cookie, PROJECT_NAME + i, PROJECT_DESCRIPTION);

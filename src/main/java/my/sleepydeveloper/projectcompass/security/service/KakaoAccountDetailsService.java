@@ -1,8 +1,7 @@
 package my.sleepydeveloper.projectcompass.security.service;
 
 import my.sleepydeveloper.projectcompass.domain.account.entity.Role;
-import my.sleepydeveloper.projectcompass.domain.uploadfile.UploadFile;
-import my.sleepydeveloper.projectcompass.domain.uploadfile.UploadFileService;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,14 +33,12 @@ public class KakaoAccountDetailsService {
         String accountInformation = kakaoWebService.getAccountInformation(accessToken);
         kakaoWebService.logout(accessToken);
 
-        System.out.println("accountInformation = " + accountInformation);
-
         KakaoAccountInformation kakaoAccountResponse = objectMapper.readValue(accountInformation,
                 KakaoAccountInformation.class);
 
         return kakaoAccountRepository.findByKakaoId(kakaoAccountResponse.getId())
                 .orElseGet(() -> kakaoAccountRepository.save(KakaoAccount.builder()
-                        .profileImageFile(new UploadFile(null, null, kakaoAccountResponse.getProfileImageUrl()))
+                        .profileImageFile(new UploadFile(kakaoAccountResponse.getProfileImageUrl()))
                         .roles(Set.of(Role.USER))
                         .kakaoId(
                                 kakaoAccountResponse.getId())

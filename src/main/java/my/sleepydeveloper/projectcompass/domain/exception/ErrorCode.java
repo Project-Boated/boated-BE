@@ -7,6 +7,7 @@ public enum ErrorCode {
     COMMON_INVALID_VALUE(400, "C002", "Not Found Exception"),
     COMMON_VALIDATION_FAIL(400, "C003", "Fail Validation"),
     COMMON_ACCESS_DENIED(400, "C004", "권한이 없습니다."),
+    COMMON_IO_EXCEPTION(400, "C005", "IOException"),
 
     // Account Exception
     ACCOUNT_USERNAME_EXISTS(400, "U001", "이미 존재하는 아이디입니다."),

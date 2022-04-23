@@ -22,6 +22,6 @@ class AwsS3ServiceTest extends BaseTest {
     @Test
     void uploadFile_파일업로드_성공() throws IOException {
         ClassPathResource resource = new ClassPathResource("application.yml");
-        awsS3Service.uploadFile(resource.getFile(), "application2.yml");
+        awsS3Service.uploadFile("path2/file2", resource.getFile());
     }
 }

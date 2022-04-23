@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.common.entity.BaseTimeEntity;
-import my.sleepydeveloper.projectcompass.domain.uploadfile.UploadFile;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
@@ -30,7 +30,7 @@ public class Account extends BaseTimeEntity {
     @Column(unique = true)
     private String nickname;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "profile_image_file_id")
     private UploadFile profileImageFile;
 

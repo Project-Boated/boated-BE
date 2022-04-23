@@ -3,16 +3,15 @@ package my.sleepydeveloper.projectcompass.security.mock;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Role;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
 import my.sleepydeveloper.projectcompass.security.token.JsonAuthenticationToken;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,7 +32,7 @@ public class WithMockJsonUserSecurityContextFactory implements WithSecurityConte
         Account account = new Account(annotation.username(),
                 annotation.password(),
                 annotation.nickname(),
-                annotation.profileImageUrl(), Set.of(Role.USER));
+                new UploadFile(annotation.profileImageUrl()), Set.of(Role.USER));
 
         JsonAuthenticationToken jsonAuthenticationToken = new JsonAuthenticationToken(accountService.save(account),
                 null,

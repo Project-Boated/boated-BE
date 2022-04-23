@@ -9,6 +9,7 @@ import my.sleepydeveloper.projectcompass.domain.invitation.exception.InviteCrewA
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectNotFoundException;
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -36,14 +37,19 @@ class InvitationServiceTest extends BaseTest {
     @Autowired
     InvitationRepository invitationRepository;
 
+    @AfterEach
+    void afterEach() {
+        PROFILE_IMAGE_FILE.setId(null);
+    }
+
     @Test
     void inviteCrew_초대1개생성_정상() throws Exception {
         // Given
-        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE, ROLES));
+        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
         Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain));
         String crewNickname = "crew";
         String crewUsername = "crew";
-        Account crew = accountRepository.save(new Account(crewUsername, PASSWORD, crewNickname, PROFILE_UPLOAD_FILE, ROLES));
+        Account crew = accountRepository.save(new Account(crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_FILE, ROLES));
 
         // When
         Invitation invitation = invitationService.inviteCrew(project.getId(), crewUsername, captain);
@@ -57,11 +63,11 @@ class InvitationServiceTest extends BaseTest {
     @Test
     void inviteCrew_존재하지않는ProjectId_오류발생() throws Exception {
         // Given
-        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE, ROLES));
+        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
         Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain));
         String crewNickname = "crew";
         String crewUsername = "crew";
-        Account crew = accountRepository.save(new Account(crewUsername, PASSWORD, crewNickname, PROFILE_UPLOAD_FILE, ROLES));
+        Account crew = accountRepository.save(new Account(crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_FILE, ROLES));
 
         // When
         // Then
@@ -72,11 +78,11 @@ class InvitationServiceTest extends BaseTest {
     @Test
     void inviteCrew_captain이아닌account가초대생성_오류발생() throws Exception {
         // Given
-        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE, ROLES));
+        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
         Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain));
         String crewNickname = "crew";
         String crewUsername = "crew";
-        Account crew = accountRepository.save(new Account(crewUsername, PASSWORD, crewNickname, PROFILE_UPLOAD_FILE, ROLES));
+        Account crew = accountRepository.save(new Account(crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_FILE, ROLES));
 
         // When
         // Then
@@ -87,11 +93,11 @@ class InvitationServiceTest extends BaseTest {
     @Test
     void inviteCrew_없는username으로초대_오류발생() throws Exception {
         // Given
-        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE, ROLES));
+        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
         Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain));
         String crewNickname = "crew";
         String crewUsername = "crew";
-        Account crew = accountRepository.save(new Account(crewUsername, PASSWORD, crewNickname, PROFILE_UPLOAD_FILE, ROLES));
+        Account crew = accountRepository.save(new Account(crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_FILE, ROLES));
 
         // When
         // Then

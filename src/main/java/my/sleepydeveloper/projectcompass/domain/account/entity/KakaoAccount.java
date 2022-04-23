@@ -8,7 +8,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import my.sleepydeveloper.projectcompass.domain.uploadfile.UploadFile;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
 
 import java.util.Set;
 

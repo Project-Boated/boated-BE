@@ -8,6 +8,7 @@ import my.sleepydeveloper.projectcompass.web.account.dto.SignUpRequest;
 import my.sleepydeveloper.projectcompass.web.account.dto.PatchAccountProfileRequest;
 import my.sleepydeveloper.projectcompass.web.account.dto.ValidationNicknameUniqueRequest;
 import my.sleepydeveloper.projectcompass.web.account.dto.PutNicknameRequest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
@@ -24,7 +25,7 @@ class AccountControllerTest extends AcceptanceTest {
         given(this.spec)
                 .filter(documentSignUp())
                 .contentType(ContentType.JSON)
-                .body(new SignUpRequest(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE))
+                .body(new SignUpRequest(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL))
         .when()
                 .port(port)
                 .post("/api/account/sign-up")
@@ -35,7 +36,7 @@ class AccountControllerTest extends AcceptanceTest {
     @Test
     void getAccountProfile_자신의profile가져오기_성공() throws Exception {
 
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
 
         given(this.spec)
@@ -49,14 +50,14 @@ class AccountControllerTest extends AcceptanceTest {
                 .statusCode(HttpStatus.OK.value())
                 .assertThat().body("username", equalTo(USERNAME))
                 .assertThat().body("nickname", equalTo(NICKNAME))
-                .assertThat().body("profileImageUrl", equalTo(PROFILE_UPLOAD_FILE))
+                .assertThat().body("profileImageUrl", equalTo(PROFILE_IMAGE_URL))
                 .assertThat().body("roles", notNullValue());
     }
 
     @Test
     void updateAccountProfile_프로필update_성공() throws Exception {
 
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
 
         String updateNickname = "updateNickname";
@@ -94,7 +95,7 @@ class AccountControllerTest extends AcceptanceTest {
     @Test
     void deleteAccount_회원탈퇴_성공() throws Exception {
 
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
 
         given(this.spec)
@@ -111,7 +112,7 @@ class AccountControllerTest extends AcceptanceTest {
     @Test
     void nicknameUniqueValidation_중복되지않는닉네임조회_notDupliated() throws Exception {
 
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
 
         given(this.spec)
@@ -131,7 +132,7 @@ class AccountControllerTest extends AcceptanceTest {
     @Test
     void putNickname_닉네임변경_성공() throws Exception {
 
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
 
         given(this.spec)

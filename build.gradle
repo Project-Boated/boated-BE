@@ -115,7 +115,8 @@ jacocoTestReport {
                     "my/sleepydeveloper/projectcompass/domain/**/entity/Q*.class",
                     "my/sleepydeveloper/projectcompass/security/**/*",
                     "my/sleepydeveloper/projectcompass/TestController.class",
-                    "my/sleepydeveloper/projectcompass/domain/account/entity/KakaoAccount.class"
+                    "my/sleepydeveloper/projectcompass/domain/account/entity/KakaoAccount.class",
+                    "my/sleepydeveloper/projectcompass/aws/**/*"
             ])
         }))
     }
