@@ -4,7 +4,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.common.entity.BaseTimeEntity;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.UploadFile;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,8 +29,10 @@ public class Account extends BaseTimeEntity {
 
     @Column(unique = true)
     private String nickname;
-    
-    private String profileImageUrl;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_image_file_id")
+    private UploadFile profileImageFile;
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
@@ -38,33 +42,33 @@ public class Account extends BaseTimeEntity {
     )
     private Set<Role> roles = new HashSet<>();
 
-    public Account(String username, String password, String nickname, String profileImageUrl, Set<Role> roles) {
+    public Account(String username, String password, String nickname, UploadFile profileImageFile, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
-        this.profileImageUrl = profileImageUrl;
+        this.profileImageFile = profileImageFile;
         this.roles = roles;
     }
 
-    public void updateProfile(String nickname, String password, String profileImageUrl) {
+    public void updateProfile(@Nullable String nickname, @Nullable String password, UploadFile uploadFile) {
         updateNickname(nickname);
         updatePassword(password);
-        updateProfileImageUrl(profileImageUrl);
+        updateProfileImageFile(uploadFile);
     }
 
-    public void updateProfileImageUrl(String profileImageUrl) {
-        if (profileImageUrl != null) {
-            this.profileImageUrl = profileImageUrl;
+    public void updateProfileImageFile(@Nullable UploadFile profileImageFile) {
+        if (profileImageFile != null) {
+            this.profileImageFile = profileImageFile;
         }
     }
 
-    public void updatePassword(String password) {
+    public void updatePassword(@Nullable String password) {
         if (password != null) {
             this.password = password;
         }
     }
 
-    public void updateNickname(String nickname) {
+    public void updateNickname(@Nullable String nickname) {
         if (nickname != null) {
             this.nickname = nickname;
         }

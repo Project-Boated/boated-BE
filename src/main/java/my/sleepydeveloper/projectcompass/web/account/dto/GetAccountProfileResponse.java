@@ -23,7 +23,7 @@ public class GetAccountProfileResponse {
     public GetAccountProfileResponse(Account account) {
         this.username = account.getUsername();
         this.nickname = account.getNickname();
-        this.profileImageUrl = account.getProfileImageUrl();
+        this.profileImageUrl = account.getProfileImageFile().getUrl();
         this.roles = account.getRoles().stream().map(Role::getName).collect(Collectors.toList());
     }
 }

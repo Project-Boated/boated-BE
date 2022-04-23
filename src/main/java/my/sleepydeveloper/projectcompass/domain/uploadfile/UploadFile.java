@@ -1,4 +1,4 @@
-package my.sleepydeveloper.projectcompass.domain.file;
+package my.sleepydeveloper.projectcompass.domain.uploadfile;
 
 import lombok.*;
 
@@ -20,4 +20,10 @@ public class UploadFile {
     private String saveFileName;
 
     private String url;
+
+    public UploadFile(String originalFileName, String saveFileName, String url) {
+        this.originalFileName = originalFileName;
+        this.saveFileName = saveFileName;
+        this.url = url;
+    }
 }

@@ -20,7 +20,7 @@ class ProjectTest extends BaseTest {
     @Test
     void constructor_Project생성_성공() {
         // Given
-        Account captain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account captain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE, ROLES);
 
         // When
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
@@ -34,7 +34,7 @@ class ProjectTest extends BaseTest {
     @Test
     void changeProjectInform_모든정보업데이트_업데이트성공() throws Exception {
         // Given
-        Account captain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account captain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE, ROLES);
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
         
         // When
@@ -48,7 +48,7 @@ class ProjectTest extends BaseTest {
     @Test
     void changeProjectInform_모든요청NULL_기존정보유지() throws Exception {
         // Given
-        Account captain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account captain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE, ROLES);
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
 
         // When
@@ -62,11 +62,11 @@ class ProjectTest extends BaseTest {
     @Test
     void changeCaptain_captain바꾸기_바꾸기성공() throws Exception {
         // Given
-        Account existingCaptain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account existingCaptain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE, ROLES);
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, existingCaptain);
 
         // When
-        Account newCaptain = new Account(newCaptainUsername, PASSWORD, newCaptainNickname, PROFILE_IMAGE_URL, ROLES);
+        Account newCaptain = new Account(newCaptainUsername, PASSWORD, newCaptainNickname, PROFILE_UPLOAD_FILE, ROLES);
         project.changeCaptain(newCaptain);
 
         // Then

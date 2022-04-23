@@ -38,7 +38,7 @@ class AccountProjectRepositoryTest extends BaseTest {
     @Test
     void findCrewsFromProject_crew찾기_정상() throws Exception {
         // Given
-        Account captain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account captain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE, ROLES);
         accountRepository.save(captain);
 
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
@@ -46,7 +46,7 @@ class AccountProjectRepositoryTest extends BaseTest {
 
         int crewsNumber = 3;
         for(int i = 0; i< crewsNumber; i++) {
-            Account crew = new Account(USERNAME + i, PASSWORD, NICKNAME + i, PROFILE_IMAGE_URL, ROLES);
+            Account crew = new Account(USERNAME + i, PASSWORD, NICKNAME + i, PROFILE_UPLOAD_FILE, ROLES);
             accountRepository.save(crew);
             AccountProject accountProject = new AccountProject(crew, project);
             accountProjectRepository.save(accountProject);
@@ -62,7 +62,7 @@ class AccountProjectRepositoryTest extends BaseTest {
     @Test
     void delete_accountProject삭제_삭제됨() throws Exception {
         // Given
-        Account captain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account captain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE, ROLES);
         accountRepository.save(captain);
 
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);

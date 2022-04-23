@@ -1,17 +1,20 @@
 package my.sleepydeveloper.projectcompass.domain.account.service;
 
 import lombok.RequiredArgsConstructor;
+import my.sleepydeveloper.projectcompass.aws.AwsS3Service;
 import my.sleepydeveloper.projectcompass.domain.account.entity.KakaoAccount;
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.exception.*;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.account.service.condition.AccountUpdateCond;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.UploadFileService;
 import my.sleepydeveloper.projectcompass.security.service.KakaoWebService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.Objects;
 
 @Service
@@ -20,8 +23,10 @@ import java.util.Objects;
 public class AccountService {
 
     private final AccountRepository accountRepository;
+    private final UploadFileService uploadFileService;
     private final PasswordEncoder passwordEncoder;
     private final KakaoWebService kakaoWebService;
+    private final AwsS3Service awsS3Service;
 
     public Account findById(Long accountId) {
         return accountRepository.findById(accountId)
@@ -77,9 +82,11 @@ public class AccountService {
             accountUpdateCondition.setNewPassword(passwordEncoder.encode(accountUpdateCondition.getNewPassword()));
         }
 
+        uploadFileService.save(accountUpdateCondition.getProfileImageFile());
+
         findAccount.updateProfile(accountUpdateCondition.getNickname(),
                 accountUpdateCondition.getNewPassword(),
-                accountUpdateCondition.getProfileImageUrl());
+                accountUpdateCondition.getProfileImageFile());
     }
 
     private boolean hasSameNickname(AccountUpdateCond accountUpdateCondition, Account findAccount) {

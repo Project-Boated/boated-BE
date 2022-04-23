@@ -30,7 +30,7 @@ class ProjectRepositoryTest extends BaseTest {
     @Test
     void existsByNameAndCaptain_projectName이Captain에있음_true() throws Exception {
         // Given
-        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE, ROLES));
         Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain));
 
         // When
@@ -43,9 +43,9 @@ class ProjectRepositoryTest extends BaseTest {
     @Test
     void existsByNameAndCaptain_projectName이Captain에없음_false() throws Exception {
         // Given
-        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE, ROLES));
         Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain));
-        Account newAccount = accountRepository.save(new Account("newUsername", PASSWORD, "newNickname", PROFILE_IMAGE_URL, ROLES));
+        Account newAccount = accountRepository.save(new Account("newUsername", PASSWORD, "newNickname", PROFILE_UPLOAD_FILE, ROLES));
 
         // When
         boolean result = projectRepository.existsByNameAndCaptain(project.getName(), newAccount);
@@ -57,7 +57,7 @@ class ProjectRepositoryTest extends BaseTest {
     @Test
     void existsByName_존재하는name으로조회_true() throws Exception {
         // Given
-        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE, ROLES));
         Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain));
 
         // When
@@ -81,7 +81,7 @@ class ProjectRepositoryTest extends BaseTest {
     @ValueSource(ints = {0, 1, 10})
     void findAllByCaptain_account에project저장됨_account가소유한project개수(int count) throws Exception {
         // Given
-        Account account = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Account account = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE, ROLES));
         List<Project> projects = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             projectRepository.save(new Project(PROJECT_NAME + "i", PROJECT_DESCRIPTION, account));

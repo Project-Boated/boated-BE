@@ -5,6 +5,7 @@ import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Role;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
 import my.sleepydeveloper.projectcompass.domain.account.service.condition.AccountUpdateCond;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.UploadFile;
 import my.sleepydeveloper.projectcompass.web.account.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,7 +30,7 @@ public class AccountController {
         String nickname = accountDto.getNickname();
         String profileImageUrl = accountDto.getProfileImageUrl();
 
-        Account savedAccount = accountService.save(new Account(username, password, nickname, profileImageUrl, Set.of(Role.USER)));
+        Account savedAccount = accountService.save(new Account(username, password, nickname, null, Set.of(Role.USER)));
 
         return ResponseEntity.created(URI.create("/api/account/profile" + savedAccount.getId())).build();
     }
@@ -49,7 +50,7 @@ public class AccountController {
                 .originalPassword(patchAccountProfileRequest.getOriginalPassword())
                 .newPassword(patchAccountProfileRequest.getNewPassword())
                 .nickname(patchAccountProfileRequest.getNickname())
-                .profileImageUrl(patchAccountProfileRequest.getProfileImageUrl())
+                .profileImageFile(new UploadFile(null, null, patchAccountProfileRequest.getProfileImageUrl()))
                 .build();
 
         accountService.updateProfile(account, updateCondition);

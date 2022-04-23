@@ -21,7 +21,7 @@ class AccountRepositoryTest extends BaseTest {
     @Test
     void findByUsername_가입된유저찾기_성공() throws Exception {
         // Given
-        accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE, ROLES));
 
         // When
         Optional<Account> account = accountRepository.findByUsername(USERNAME);
@@ -31,7 +31,7 @@ class AccountRepositoryTest extends BaseTest {
         AssertionsForClassTypes.assertThat(account.get().getUsername()).isEqualTo(USERNAME);
         AssertionsForClassTypes.assertThat(account.get().getPassword()).isEqualTo(PASSWORD);
         AssertionsForClassTypes.assertThat(account.get().getNickname()).isEqualTo(NICKNAME);
-        AssertionsForClassTypes.assertThat(account.get().getProfileImageUrl()).isEqualTo(PROFILE_IMAGE_URL);
+        AssertionsForClassTypes.assertThat(account.get().getProfileImageUrl()).isEqualTo(PROFILE_UPLOAD_FILE);
         AssertionsForClassTypes.assertThat(account.get().getRoles()).isEqualTo(ROLES);
     }
 
@@ -48,7 +48,7 @@ class AccountRepositoryTest extends BaseTest {
     @Test
     void existsByUsername_가입된유저찾기_true() throws Exception {
         // Given
-        accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE, ROLES));
 
         // When
         boolean existsByUsername = accountRepository.existsByUsername(USERNAME);
@@ -71,7 +71,7 @@ class AccountRepositoryTest extends BaseTest {
     @Test
     void existsById_가입된유저찾기_true() throws Exception {
         // Given
-        Account account = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Account account = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE, ROLES));
 
         // When
         boolean result = accountRepository.existsById(account.getId());
@@ -93,7 +93,7 @@ class AccountRepositoryTest extends BaseTest {
     @Test
     void findById_가입된유저찾기_조회성공() throws Exception {
         // Given
-        Account account = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Account account = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE, ROLES));
 
         // When
         Optional<Account> findAccount = accountRepository.findById(account.getId());

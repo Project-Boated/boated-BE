@@ -1,6 +1,7 @@
 package my.sleepydeveloper.projectcompass.domain.account.service.condition;
 
 import lombok.*;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.UploadFile;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -11,5 +12,5 @@ public class AccountUpdateCond {
     private String nickname;
     private String originalPassword;
     private String newPassword;
-    private String profileImageUrl;
+    private UploadFile profileImageFile;
 }

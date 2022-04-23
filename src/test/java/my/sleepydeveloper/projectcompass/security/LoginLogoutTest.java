@@ -5,7 +5,6 @@ import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
 import my.sleepydeveloper.projectcompass.security.dto.UsernamePasswordDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -20,7 +19,7 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_정상")
     void signin_정상() throws Exception {
 
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE);
 
         given(this.spec)
             .filter(documentSignIn())
@@ -39,7 +38,7 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_username_없음")
     void signin_실패_username_없음() throws Exception {
 
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -56,7 +55,7 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_password_없음")
     void signin_실패_password_없음() throws Exception {
 
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -73,7 +72,7 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_아무것도_없음")
     void signin_실패_아무것도_없음() throws Exception {
 
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -90,7 +89,7 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_username_틀림")
     void signin_실패_username_틀림() throws Exception {
 
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -108,7 +107,7 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_password_틀림")
     void signin_실패_password_틀림() throws Exception {
 
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -125,7 +124,7 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_잘못된_MediaType")
     void signin_실패_잘못된_헤더() throws Exception {
 
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -142,7 +141,7 @@ public class LoginLogoutTest extends AcceptanceTest {
     @DisplayName("로그인_실패_잘못된_Method")
     void signin_실패_잘못된_Method() throws Exception {
 
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_UPLOAD_FILE);
 
         given(this.spec)
                 .accept(MediaType.APPLICATION_JSON_VALUE)

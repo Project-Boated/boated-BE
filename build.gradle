@@ -5,11 +5,20 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot' version '2.6.6'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id "org.asciidoctor.jvm.convert" version "3.3.2"
+    // Java
     id 'java'
+
+    // Spring
+    id 'org.springframework.boot' version '2.6.7'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+
+    // Ascii Doctor
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
+
+    // Jacoco
     id 'jacoco'
+
+    // QueryDsl
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 

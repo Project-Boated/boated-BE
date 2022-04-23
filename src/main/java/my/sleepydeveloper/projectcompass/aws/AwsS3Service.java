@@ -24,8 +24,8 @@ public class AwsS3Service {
                 .build();
     }
 
-    public void uploadFile(File file, String s3FilePath) {
-        Upload upload = transferManager.upload("boated", s3FilePath, file);
+    public void uploadFile(String path, File file) {
+        Upload upload = transferManager.upload("boated", path, file);
         try {
             upload.waitForUploadResult();
         } catch (InterruptedException e) {
