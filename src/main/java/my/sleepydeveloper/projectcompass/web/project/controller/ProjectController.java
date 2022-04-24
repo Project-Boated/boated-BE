@@ -69,6 +69,13 @@ public class ProjectController {
         return ResponseEntity.ok(new GetCrewsResponse(crewResponses));
     }
 
+    @DeleteMapping("/{projectId}/crews/{crewNickname}")
+    public void deleteCrew(@AuthenticationPrincipal Account account,
+                           @PathVariable Long projectId,
+                           @PathVariable String crewNickname) {
+        projectService.deleteCrew(account, projectId, crewNickname);
+    }
+
     @PutMapping("/{projectId}/captain")
     public ResponseEntity<IdDto> updateCaptain(
             @AuthenticationPrincipal Account account,
