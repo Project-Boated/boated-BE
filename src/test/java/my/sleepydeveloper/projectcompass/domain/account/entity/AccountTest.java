@@ -108,22 +108,6 @@ class AccountTest extends BaseTest {
     }
 
     @Test
-    void updateProfileUrl_NULL로업데이트_업데이트안함() throws Exception {
-        // Given
-        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
-
-        // When
-        account.updateProfileImageFile(null);
-
-        // Then
-        assertThat(account.getUsername()).isEqualTo(USERNAME);
-        assertThat(account.getPassword()).isEqualTo(PASSWORD);
-        assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
-        assertThat(account.getRoles()).isEqualTo(ROLES);
-    }
-
-    @Test
     void updateId_Id업데이트_성공() throws Exception {
         // Given
         Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
@@ -168,13 +152,12 @@ class AccountTest extends BaseTest {
         String updateNickname = "updateNickname";
         String updateProfileUrl = "updateProfileUrl";
         UploadFile updateProfileFile = new UploadFile(updateProfileUrl);
-        account.updateProfile(updateNickname, updatePassword, updateProfileFile);
+        account.updateProfile(updateNickname, updatePassword);
 
         // Then
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(updatePassword);
         assertThat(account.getNickname()).isEqualTo(updateNickname);
-        assertThat(account.getProfileImageFile()).isEqualTo(updateProfileFile);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
@@ -184,7 +167,7 @@ class AccountTest extends BaseTest {
         Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
 
         // When
-        account.updateProfile(null, null, null);
+        account.updateProfile(null, null);
 
         // Then
         assertThat(account.getUsername()).isEqualTo(USERNAME);

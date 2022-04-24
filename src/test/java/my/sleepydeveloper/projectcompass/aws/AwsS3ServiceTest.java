@@ -14,12 +14,14 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Disabled
 class AwsS3ServiceTest extends BaseTest {
 
     @Autowired
     private AwsS3Service awsS3Service;
 
     @Test
+    @Disabled
     void uploadFile_파일업로드_성공() throws IOException {
         ClassPathResource resource = new ClassPathResource("application.yml");
         awsS3Service.uploadFile("path2/file2", resource.getFile());

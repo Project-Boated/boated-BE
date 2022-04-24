@@ -12,6 +12,7 @@ import my.sleepydeveloper.projectcompass.domain.account.repository.AccountReposi
 import my.sleepydeveloper.projectcompass.domain.account.repository.KakaoAccountRepository;
 import my.sleepydeveloper.projectcompass.domain.account.service.condition.AccountUpdateCond;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.repository.UploadFileRepository;
 import my.sleepydeveloper.projectcompass.security.service.KakaoWebService;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.AfterEach;
@@ -46,6 +47,9 @@ class AccountServiceTest extends BaseTest {
     @Autowired
     private KakaoAccountRepository kakaoAccountRepository;
 
+    @Autowired
+    private UploadFileRepository uploadFileRepository;
+
     private AccountService accountService;
 
     @Autowired
@@ -56,7 +60,7 @@ class AccountServiceTest extends BaseTest {
 
     @BeforeEach
     void beforeEach() {
-        accountService = new AccountService(accountRepository, passwordEncoder, kakaoWebService);
+        accountService = new AccountService(accountRepository,uploadFileRepository, passwordEncoder, kakaoWebService);
     }
 
     @AfterEach
@@ -140,7 +144,6 @@ class AccountServiceTest extends BaseTest {
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(newNickname)
                 .newPassword(newPassword)
-                .profileImageFile(newProfileImageFile)
                 .originalPassword(PASSWORD)
                 .build();
 
@@ -151,7 +154,6 @@ class AccountServiceTest extends BaseTest {
         AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(USERNAME);
         AssertionsForClassTypes.assertThat(passwordEncoder.matches(newPassword, account.getPassword())).isTrue();
         AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(newNickname);
-        AssertionsForClassTypes.assertThat(account.getProfileImageFile()).isEqualTo(newProfileImageFile);
         AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
@@ -167,7 +169,6 @@ class AccountServiceTest extends BaseTest {
         UploadFile newProfileImageFile = new UploadFile(newProfileImageUrl);
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(newNickname)
-                .profileImageFile(newProfileImageFile)
                 .build();
 
         // When
@@ -177,7 +178,6 @@ class AccountServiceTest extends BaseTest {
         AssertionsForClassTypes.assertThat(kakaoAccount.getUsername()).isNull();
         AssertionsForClassTypes.assertThat(kakaoAccount.getPassword()).isNull();
         AssertionsForClassTypes.assertThat(kakaoAccount.getNickname()).isEqualTo(newNickname);
-        AssertionsForClassTypes.assertThat(kakaoAccount.getProfileImageFile()).isEqualTo(newProfileImageFile);
         AssertionsForClassTypes.assertThat(kakaoAccount.getRoles()).isEqualTo(ROLES);
     }
 
@@ -188,7 +188,6 @@ class AccountServiceTest extends BaseTest {
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(null)
                 .newPassword(null)
-                .profileImageFile(null)
                 .originalPassword(PASSWORD)
                 .build();
 
@@ -199,7 +198,6 @@ class AccountServiceTest extends BaseTest {
         AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(USERNAME);
         AssertionsForClassTypes.assertThat(passwordEncoder.matches(PASSWORD, account.getPassword())).isTrue();
         AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        AssertionsForClassTypes.assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
         AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
@@ -215,7 +213,6 @@ class AccountServiceTest extends BaseTest {
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(newNickname)
                 .newPassword(newPassword)
-                .profileImageFile(newProfileImageFile)
                 .originalPassword(null)
                 .build();
 
@@ -237,7 +234,6 @@ class AccountServiceTest extends BaseTest {
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(newNickname)
                 .newPassword(newPassword)
-                .profileImageFile(newProfileImageFile)
                 .originalPassword("failurePassword")
                 .build();
 
@@ -259,7 +255,6 @@ class AccountServiceTest extends BaseTest {
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(newNickname)
                 .newPassword(newPassword)
-                .profileImageFile(newProfileImageFile)
                 .originalPassword(PASSWORD)
                 .build();
 
@@ -282,7 +277,6 @@ class AccountServiceTest extends BaseTest {
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(NICKNAME)
                 .newPassword(newPassword)
-                .profileImageFile(newProfileImageFile)
                 .originalPassword(PASSWORD)
                 .build();
 
@@ -293,7 +287,6 @@ class AccountServiceTest extends BaseTest {
         AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(USERNAME);
         AssertionsForClassTypes.assertThat(passwordEncoder.matches(newPassword, account.getPassword())).isTrue();
         AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        AssertionsForClassTypes.assertThat(account.getProfileImageFile()).isEqualTo(newProfileImageFile);
         AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
@@ -314,7 +307,6 @@ class AccountServiceTest extends BaseTest {
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(account1Nickname)
                 .newPassword(newPassword)
-                .profileImageFile(newProfileImageFile)
                 .originalPassword(PASSWORD)
                 .build();
 

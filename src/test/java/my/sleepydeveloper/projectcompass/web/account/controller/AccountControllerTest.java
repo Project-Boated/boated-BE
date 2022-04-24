@@ -88,7 +88,6 @@ class AccountControllerTest extends AcceptanceTest {
             .statusCode(HttpStatus.OK.value())
             .assertThat().body("username", equalTo(USERNAME))
             .assertThat().body("nickname", equalTo(updateNickname))
-            .assertThat().body("profileImageUrl", equalTo(updateProfileImageUrl))
             .assertThat().body("roles", notNullValue());
     }
 
