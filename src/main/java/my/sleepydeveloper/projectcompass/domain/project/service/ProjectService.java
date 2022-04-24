@@ -90,4 +90,18 @@ public class ProjectService {
         return newCaptain;
     }
 
+    @Transactional
+    public void deleteCrew(Account account, Long projectId, String crewNickname) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+
+        if (project.getCaptain().getId() != account.getId()) {
+            throw new UpdateCaptainAccessDenied(ErrorCode.COMMON_ACCESS_DENIED);
+        }
+
+        Account crew = accountRepository.findByNickname(crewNickname)
+                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+
+        accountProjectRepository.delete(project, crew);
+    }
 }
