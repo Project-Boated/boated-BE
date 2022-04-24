@@ -11,7 +11,7 @@ import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.service.UploadFileService;
 import my.sleepydeveloper.projectcompass.web.account.dto.*;
-import my.sleepydeveloper.projectcompass.web.common.exception.CommonIOException;
+import my.sleepydeveloper.projectcompass.domain.common.exception.CommonIOException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URLEncoder;
 import java.util.Set;
 import java.util.UUID;
 

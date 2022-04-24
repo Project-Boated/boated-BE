@@ -13,7 +13,7 @@ import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNotFoun
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
-import my.sleepydeveloper.projectcompass.web.common.exception.CommonIOException;
+import my.sleepydeveloper.projectcompass.domain.common.exception.CommonIOException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
