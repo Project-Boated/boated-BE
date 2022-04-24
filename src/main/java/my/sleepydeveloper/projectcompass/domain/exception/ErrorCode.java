@@ -15,6 +15,7 @@ public enum ErrorCode {
     ACCOUNT_NOT_FOUND(400, "U003", "찾을 수 없는 account입니다"),
     ACCOUNT_PASSWORD_WRONG(400, "U004", "잘못된 password입니다"),
     ACCOUNT_NICKNAME_REQUIRED(403, "U007", "닉네임이 필요합니다."),
+    ACCOUNT_PROFILE_IMAGE_FILE_NOT_EXIST(400, "U008", "Account의 프로필 이미지 파일이 없습니다."),
 
     // Project
     PROJECT_NOT_FOUND(400, "P002", "Project를 찾을 수 없습니다"),

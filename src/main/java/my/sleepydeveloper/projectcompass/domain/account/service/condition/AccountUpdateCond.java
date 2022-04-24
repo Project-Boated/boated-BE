@@ -12,5 +12,4 @@ public class AccountUpdateCond {
     private String nickname;
     private String originalPassword;
     private String newPassword;
-    private UploadFile profileImageFile;
 }

@@ -38,7 +38,7 @@ public class KakaoAccountDetailsService {
 
         return kakaoAccountRepository.findByKakaoId(kakaoAccountResponse.getId())
                 .orElseGet(() -> kakaoAccountRepository.save(KakaoAccount.builder()
-                        .profileImageFile(new UploadFile(kakaoAccountResponse.getProfileImageUrl()))
+                        .profileImageFile(kakaoAccountResponse.getProfileImageUrl()==null ? null : new UploadFile(kakaoAccountResponse.getProfileImageUrl()))
                         .roles(Set.of(Role.USER))
                         .kakaoId(
                                 kakaoAccountResponse.getId())

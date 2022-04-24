@@ -82,8 +82,20 @@ public class AccountService {
         }
 
         findAccount.updateProfile(accountUpdateCondition.getNickname(),
-                accountUpdateCondition.getNewPassword(),
-                accountUpdateCondition.getProfileImageFile());
+                accountUpdateCondition.getNewPassword());
+    }
+
+    @Transactional
+    public void deleteProfileImageFile(Account account) {
+        Account findAccount = accountRepository.findById(account.getId())
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        if(findAccount.getProfileImageFile() == null)
+            throw new AccountProfileImageFileNotExist(ErrorCode.ACCOUNT_PROFILE_IMAGE_FILE_NOT_EXIST);
+
+        UploadFile uploadFile = findAccount.getProfileImageFile();
+        findAccount.updateProfileImageFile(null);
+        uploadFileRepository.delete(uploadFile);
     }
 
     private boolean hasSameNickname(AccountUpdateCond accountUpdateCondition, Account findAccount) {

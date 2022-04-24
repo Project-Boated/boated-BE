@@ -68,7 +68,6 @@ public class AccountController {
                 .originalPassword(patchAccountProfileRequest.getOriginalPassword())
                 .newPassword(patchAccountProfileRequest.getNewPassword())
                 .nickname(patchAccountProfileRequest.getNickname())
-                .profileImageFile(new UploadFile(patchAccountProfileRequest.getProfileImageUrl()))
                 .build();
 
         accountService.updateProfile(account, updateCondition);
@@ -107,7 +106,7 @@ public class AccountController {
     }
 
     @GetMapping("/profile/profile-image")
-    public ResponseEntity<byte[]> getAccountProfileImage(@AuthenticationPrincipal Account account) throws IOException {
+    public ResponseEntity<byte[]> getAccountProfileImage(@AuthenticationPrincipal Account account) {
         AwsS3File awsS3File = awsS3Service.getProfileImageBytes(account);
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -116,5 +115,10 @@ public class AccountController {
         httpHeaders.setContentDispositionFormData("attachment", awsS3File.getFileName());
 
         return new ResponseEntity<>(awsS3File.getBytes(), httpHeaders, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/profile/profile-image")
+    public void deleteAccountProfileImage(@AuthenticationPrincipal Account account) {
+        accountService.deleteProfileImageFile(account);
     }
 }

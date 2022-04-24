@@ -13,6 +13,7 @@ import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNotFoun
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
+import my.sleepydeveloper.projectcompass.web.common.exception.CommonIOException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -76,14 +77,18 @@ public class AwsS3Service {
         return name.substring(name.lastIndexOf('.')+1);
     }
 
-    public AwsS3File getProfileImageBytes(Account account) throws IOException {
+    public AwsS3File getProfileImageBytes(Account account) {
         Account findAccount = accountRepository.findById(account.getId())
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-        byte[] bytes = getFile("profile/" + findAccount.getId() + "/" + findAccount.getProfileImageFile().getSaveFileName() + "." + findAccount.getProfileImageFile().getExt());
+        try {
+            byte[] bytes = getFile("profile/" + findAccount.getId() + "/" + findAccount.getProfileImageFile().getSaveFileName() + "." + findAccount.getProfileImageFile().getExt());
 
-        String fileName = URLEncoder.encode(findAccount.getProfileImageFile().getOriginalFileName() + "." +findAccount.getProfileImageFile().getExt(), "UTF-8").replaceAll("\\+", "%20");
+            String fileName = URLEncoder.encode(findAccount.getProfileImageFile().getOriginalFileName() + "." + findAccount.getProfileImageFile().getExt(), "UTF-8").replaceAll("\\+", "%20");
 
-        return new AwsS3File(bytes, findAccount.getProfileImageFile().getMediaType(), fileName);
+            return new AwsS3File(bytes, findAccount.getProfileImageFile().getMediaType(), fileName);
+        } catch (IOException e) {
+            throw new CommonIOException(ErrorCode.COMMON_IO_EXCEPTION, e);
+        }
     }
 }

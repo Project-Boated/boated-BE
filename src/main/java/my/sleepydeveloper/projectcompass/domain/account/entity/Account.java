@@ -30,7 +30,7 @@ public class Account extends BaseTimeEntity {
     @Column(unique = true)
     private String nickname;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_image_file_id")
     private UploadFile profileImageFile;
 
@@ -50,16 +50,13 @@ public class Account extends BaseTimeEntity {
         this.roles = roles;
     }
 
-    public void updateProfile(@Nullable String nickname, @Nullable String password, UploadFile uploadFile) {
+    public void updateProfile(@Nullable String nickname, @Nullable String password) {
         updateNickname(nickname);
         updatePassword(password);
-        updateProfileImageFile(uploadFile);
     }
 
     public void updateProfileImageFile(@Nullable UploadFile profileImageFile) {
-        if (profileImageFile != null) {
-            this.profileImageFile = profileImageFile;
-        }
+        this.profileImageFile = profileImageFile;
     }
 
     public void updatePassword(@Nullable String password) {
