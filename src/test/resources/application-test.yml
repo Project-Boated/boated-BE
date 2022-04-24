@@ -18,3 +18,13 @@ kakao:
   redirectUri: testUri
   clientSecret: testClientSecret
   adminKey: testAdminKey
+
+cloud:
+  aws:
+    stack:
+      auto: false
+    credentials:
+      access-key: AKIA5234DELQTSB6FNFL
+      secret-key: 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
+    region:
+      static: ap-northeast-2

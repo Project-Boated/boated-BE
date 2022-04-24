@@ -1,6 +1,7 @@
 package my.sleepydeveloper.projectcompass.domain.account.entity;
 
 import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
 import org.junit.jupiter.api.Test;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
@@ -12,20 +13,20 @@ class AccountTest extends BaseTest {
     void constructor_Account생성_정상() {
         // Given
         // When
-        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
 
         // Then
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(PASSWORD);
         assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        assertThat(account.getProfileImageUrl()).isEqualTo(PROFILE_IMAGE_URL);
+        assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
     @Test
     void updateNickname_닉네임업데이트_성공() throws Exception {
         // Given
-        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
 
         // When
         String newNickname = "newNickname";
@@ -35,14 +36,14 @@ class AccountTest extends BaseTest {
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(PASSWORD);
         assertThat(account.getNickname()).isEqualTo(newNickname);
-        assertThat(account.getProfileImageUrl()).isEqualTo(PROFILE_IMAGE_URL);
+        assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
     @Test
     void updateNickname_NULL로업데이트_업데이트안함() throws Exception {
         // Given
-        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
 
         // When
         account.updateNickname(null);
@@ -51,14 +52,14 @@ class AccountTest extends BaseTest {
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(PASSWORD);
         assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        assertThat(account.getProfileImageUrl()).isEqualTo(PROFILE_IMAGE_URL);
+        assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
     @Test
     void updatePassword_패스워드업데이트_성공() throws Exception {
         // Given
-        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
 
         // When
         String newPassword = "newPassword";
@@ -68,14 +69,14 @@ class AccountTest extends BaseTest {
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(newPassword);
         assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        assertThat(account.getProfileImageUrl()).isEqualTo(PROFILE_IMAGE_URL);
+        assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
     @Test
     void updatePassword_NULL로업데이트_업데이트안함() throws Exception {
         // Given
-        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
 
         // When
         account.updatePassword(null);
@@ -84,47 +85,48 @@ class AccountTest extends BaseTest {
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(PASSWORD);
         assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        assertThat(account.getProfileImageUrl()).isEqualTo(PROFILE_IMAGE_URL);
+        assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
     @Test
     void updateProfileUrl_ProfileUrl업데이트_성공() throws Exception {
         // Given
-        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
 
         // When
         String newProfileUrl = "newProfileUrl";
-        account.updateProfileImageUrl(newProfileUrl);
+        UploadFile newProfileImageFile = new UploadFile(newProfileUrl);
+        account.updateProfileImageFile(newProfileImageFile);
 
         // Then
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(PASSWORD);
         assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        assertThat(account.getProfileImageUrl()).isEqualTo(newProfileUrl);
+        assertThat(account.getProfileImageFile()).isEqualTo(newProfileImageFile);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
     @Test
     void updateProfileUrl_NULL로업데이트_업데이트안함() throws Exception {
         // Given
-        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
 
         // When
-        account.updateProfileImageUrl(null);
+        account.updateProfileImageFile(null);
 
         // Then
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(PASSWORD);
         assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        assertThat(account.getProfileImageUrl()).isEqualTo(PROFILE_IMAGE_URL);
+        assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
     @Test
     void updateId_Id업데이트_성공() throws Exception {
         // Given
-        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
 
         // When
         Long newId = 123L;
@@ -135,14 +137,14 @@ class AccountTest extends BaseTest {
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(PASSWORD);
         assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        assertThat(account.getProfileImageUrl()).isEqualTo(PROFILE_IMAGE_URL);
+        assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
     @Test
     void updateId_NULL로업데이트_업데이트안함() throws Exception {
         // Given
-        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
 
         // When
         account.updateId(null);
@@ -152,33 +154,34 @@ class AccountTest extends BaseTest {
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(PASSWORD);
         assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        assertThat(account.getProfileImageUrl()).isEqualTo(PROFILE_IMAGE_URL);
+        assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
     @Test
     void updateProfile_모든정보업데이트_업데이트성공() throws Exception {
         // Given
-        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
 
         // When
         String updatePassword = "updatePassword";
         String updateNickname = "updateNickname";
         String updateProfileUrl = "updateProfileUrl";
-        account.updateProfile(updateNickname, updatePassword, updateProfileUrl);
+        UploadFile updateProfileFile = new UploadFile(updateProfileUrl);
+        account.updateProfile(updateNickname, updatePassword, updateProfileFile);
 
         // Then
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(updatePassword);
         assertThat(account.getNickname()).isEqualTo(updateNickname);
-        assertThat(account.getProfileImageUrl()).isEqualTo(updateProfileUrl);
+        assertThat(account.getProfileImageFile()).isEqualTo(updateProfileFile);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
     @Test
     void updateProfile_모든정보NULL_기존정보유지() throws Exception {
         // Given
-        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
 
         // When
         account.updateProfile(null, null, null);
@@ -187,7 +190,7 @@ class AccountTest extends BaseTest {
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(PASSWORD);
         assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        assertThat(account.getProfileImageUrl()).isEqualTo(PROFILE_IMAGE_URL);
+        assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 

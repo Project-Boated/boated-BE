@@ -31,9 +31,9 @@ public class InvitationService {
             throw new InviteCrewAccessDenied(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
-        Account account = accountRepository.findByNickname(nickname)
+        Account crew = accountRepository.findByNickname(nickname)
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-        return invitationRepository.save(new Invitation(account, project));
+        return invitationRepository.save(new Invitation(crew, project));
     }
 }

@@ -6,6 +6,7 @@ import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.accountproject.entity.AccountProject;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -35,10 +36,15 @@ class AccountProjectRepositoryTest extends BaseTest {
     @Autowired
     AccountProjectRepository accountProjectRepository;
 
+    @AfterEach
+    void afterEach() {
+        PROFILE_IMAGE_FILE.setId(null);
+    }
+
     @Test
     void findCrewsFromProject_crew찾기_정상() throws Exception {
         // Given
-        Account captain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account captain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
         accountRepository.save(captain);
 
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
@@ -46,7 +52,7 @@ class AccountProjectRepositoryTest extends BaseTest {
 
         int crewsNumber = 3;
         for(int i = 0; i< crewsNumber; i++) {
-            Account crew = new Account(USERNAME + i, PASSWORD, NICKNAME + i, PROFILE_IMAGE_URL, ROLES);
+            Account crew = new Account(USERNAME + i, PASSWORD, NICKNAME + i, PROFILE_IMAGE_FILE, ROLES);
             accountRepository.save(crew);
             AccountProject accountProject = new AccountProject(crew, project);
             accountProjectRepository.save(accountProject);
@@ -62,7 +68,7 @@ class AccountProjectRepositoryTest extends BaseTest {
     @Test
     void delete_accountProject삭제_삭제됨() throws Exception {
         // Given
-        Account captain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account captain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
         accountRepository.save(captain);
 
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);

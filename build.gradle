@@ -5,11 +5,20 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot' version '2.6.6'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id "org.asciidoctor.jvm.convert" version "3.3.2"
+    // Java
     id 'java'
+
+    // Spring
+    id 'org.springframework.boot' version '2.6.7'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+
+    // Ascii Doctor
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
+
+    // Jacoco
     id 'jacoco'
+
+    // QueryDsl
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
@@ -38,6 +47,7 @@ dependencies {
     // Spring Boot
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
     // WebFlux
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
@@ -105,7 +115,8 @@ jacocoTestReport {
                     "my/sleepydeveloper/projectcompass/domain/**/entity/Q*.class",
                     "my/sleepydeveloper/projectcompass/security/**/*",
                     "my/sleepydeveloper/projectcompass/TestController.class",
-                    "my/sleepydeveloper/projectcompass/domain/account/entity/KakaoAccount.class"
+                    "my/sleepydeveloper/projectcompass/domain/account/entity/KakaoAccount.class",
+                    "my/sleepydeveloper/projectcompass/aws/**/*"
             ])
         }))
     }

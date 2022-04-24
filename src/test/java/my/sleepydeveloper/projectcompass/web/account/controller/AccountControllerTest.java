@@ -8,6 +8,7 @@ import my.sleepydeveloper.projectcompass.web.account.dto.SignUpRequest;
 import my.sleepydeveloper.projectcompass.web.account.dto.PatchAccountProfileRequest;
 import my.sleepydeveloper.projectcompass.web.account.dto.ValidationNicknameUniqueRequest;
 import my.sleepydeveloper.projectcompass.web.account.dto.PutNicknameRequest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 

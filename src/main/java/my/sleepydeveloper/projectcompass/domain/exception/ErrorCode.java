@@ -7,6 +7,7 @@ public enum ErrorCode {
     COMMON_INVALID_VALUE(400, "C002", "Not Found Exception"),
     COMMON_VALIDATION_FAIL(400, "C003", "Fail Validation"),
     COMMON_ACCESS_DENIED(400, "C004", "권한이 없습니다."),
+    COMMON_IO_EXCEPTION(400, "C005", "IOException"),
 
     // Account Exception
     ACCOUNT_USERNAME_EXISTS(400, "U001", "이미 존재하는 아이디입니다."),
@@ -14,6 +15,7 @@ public enum ErrorCode {
     ACCOUNT_NOT_FOUND(400, "U003", "찾을 수 없는 account입니다"),
     ACCOUNT_PASSWORD_WRONG(400, "U004", "잘못된 password입니다"),
     ACCOUNT_NICKNAME_REQUIRED(403, "U007", "닉네임이 필요합니다."),
+    ACCOUNT_PROFILE_IMAGE_FILE_NOT_EXIST(400, "U008", "Account의 프로필 이미지 파일이 없습니다."),
 
     // Project
     PROJECT_NOT_FOUND(400, "P002", "Project를 찾을 수 없습니다"),
@@ -23,9 +25,11 @@ public enum ErrorCode {
     // Kakao
     KAKAO_SERVER_EXCEPTION(400, "K001", "카카오 서버 오류입니다."),
 
+    // File
+    FILE_UPLOAD_INTERRUPT(400, "F001", "파일 업로드 인터럽트 오류"),
+
     // For Testing
-    FOR_TESTING(507, "T001", "테스트용입니다.")
-    ;
+    FOR_TESTING(507, "T001", "테스트용입니다.");
 
     private int status;
     private String statusCode;

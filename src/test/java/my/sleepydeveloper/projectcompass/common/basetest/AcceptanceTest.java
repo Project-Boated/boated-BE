@@ -14,6 +14,7 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.ActiveProfiles;
 
+import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.PROFILE_IMAGE_FILE;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -41,5 +42,6 @@ public class AcceptanceTest {
     public void afterEach() {
         databaseCleanUp.init();
         databaseCleanUp.execute();
+        PROFILE_IMAGE_FILE.setId(null);
     }
 }

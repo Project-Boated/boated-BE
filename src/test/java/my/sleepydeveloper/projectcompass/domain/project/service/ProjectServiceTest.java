@@ -15,6 +15,7 @@ import my.sleepydeveloper.projectcompass.domain.project.exception.UpdateCaptainA
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.project.vo.ProjectUpdateCondition;
 import my.sleepydeveloper.projectcompass.security.service.KakaoWebService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -60,10 +61,15 @@ class ProjectServiceTest extends BaseTest {
     @Autowired
     AccountProjectRepository accountProjectRepository;
 
+    @AfterEach
+    void afterEach() {
+        PROFILE_IMAGE_FILE.setId(null);
+    }
+
     @Test
     void save_project저장_성공() throws Exception {
         // Given
-        Account account = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Account account = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
 
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, account);
 
@@ -79,7 +85,7 @@ class ProjectServiceTest extends BaseTest {
     @Test
     void save_이미존재하는Name으로생성_오류발생() throws Exception {
         // Given
-        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
 
         projectRepository.save(project);
@@ -94,7 +100,7 @@ class ProjectServiceTest extends BaseTest {
     @Test
     void update_모든정보Update_업데이트성공() throws Exception {
         // Given
-        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
 
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
         projectRepository.save(project);
@@ -112,7 +118,7 @@ class ProjectServiceTest extends BaseTest {
     @Test
     void update_모든정보NULL_업데이트안됨() throws Exception {
         // Given
-        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
 
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
         projectRepository.save(project);
@@ -128,7 +134,7 @@ class ProjectServiceTest extends BaseTest {
     @Test
     void update_같은정보로업데이트_성공() throws Exception {
         // Given
-        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
 
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
         projectRepository.save(project);
@@ -155,8 +161,8 @@ class ProjectServiceTest extends BaseTest {
     @Test
     void update_captain이아닌Account가요청_오류발생() throws Exception {
         // Given
-        Account account1 = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
-        Account account2 = accountService.save(new Account("username2", PASSWORD, "nickname2", PROFILE_IMAGE_URL, ROLES));
+        Account account1 = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
+        Account account2 = accountService.save(new Account("username2", PASSWORD, "nickname2", PROFILE_IMAGE_FILE, ROLES));
 
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, account1);
         projectRepository.save(project);
@@ -170,7 +176,7 @@ class ProjectServiceTest extends BaseTest {
     @Test
     void update_같은Account에같은Name존재_오류발생() throws Exception {
         // Given
-        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
 
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
         projectRepository.save(project);
@@ -188,7 +194,7 @@ class ProjectServiceTest extends BaseTest {
     @ValueSource(ints = {0, 1, 10})
     void findAllByCaptain_Account의Project존재_리스트개수(int count) throws Exception {
         // Given
-        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
         List<Project> projects = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             Project project = new Project(PROJECT_NAME + i, PROJECT_DESCRIPTION, captain);
@@ -210,7 +216,7 @@ class ProjectServiceTest extends BaseTest {
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
         projectRepository.save(project);
 
-        Account crew = new Account("crew", PASSWORD, "crew", "ROLE_USER", ROLES);
+        Account crew = new Account("crew", PASSWORD, "crew", PROFILE_IMAGE_FILE, ROLES);
         accountRepository.save(crew);
 
         AccountProject accountProject = new AccountProject(crew, project);
@@ -238,8 +244,8 @@ class ProjectServiceTest extends BaseTest {
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_URL, ROLES));
-        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_FILE, ROLES));
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
 
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
         projectRepository.save(project);
@@ -259,8 +265,8 @@ class ProjectServiceTest extends BaseTest {
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_URL, ROLES));
-        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_FILE, ROLES));
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
 
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
         projectRepository.save(project);
@@ -280,8 +286,8 @@ class ProjectServiceTest extends BaseTest {
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_URL, ROLES));
-        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_FILE, ROLES));
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
 
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
         projectRepository.save(project);
@@ -301,8 +307,8 @@ class ProjectServiceTest extends BaseTest {
         String newNickname = "newNickname";
         String newPassword = "newPassword";
 
-        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_URL, ROLES));
-        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES));
+        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, PROFILE_IMAGE_FILE, ROLES));
+        Account captain = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
 
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
         projectRepository.save(project);
@@ -317,7 +323,7 @@ class ProjectServiceTest extends BaseTest {
 
 
     private Account createAccount() {
-        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL, ROLES);
+        Account account = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
         accountRepository.save(account);
         return account;
     }
