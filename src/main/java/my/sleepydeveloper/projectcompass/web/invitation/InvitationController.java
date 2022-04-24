@@ -5,6 +5,8 @@ import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.invitation.InvitationService;
 import my.sleepydeveloper.projectcompass.domain.invitation.entity.Invitation;
 import my.sleepydeveloper.projectcompass.security.dto.IdDto;
+import my.sleepydeveloper.projectcompass.web.invitation.dto.CreateInvitationResponse;
+import my.sleepydeveloper.projectcompass.web.invitation.dto.GetMyInvitationResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +18,31 @@ public class InvitationController {
 
     private final InvitationService invitationService;
 
-    @PostMapping("/projects/{projectId}/crews?nickname={nickname}")
-    public ResponseEntity<IdDto> inviteCrew(
+    @PostMapping("/projects/{projectId}/crews")
+    public CreateInvitationResponse createInvitation(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
-            @PathVariable String nickname
+            @RequestParam String nickname
     ) {
         Invitation invitation = invitationService.inviteCrew(projectId, nickname, account);
-        return ResponseEntity.ok(new IdDto(invitation.getId()));
+        return new CreateInvitationResponse(invitation.getId());
+    }
+
+    @GetMapping("/account/invitations")
+    public GetMyInvitationResponse getMyInvitation(@AuthenticationPrincipal Account account) {
+        return new GetMyInvitationResponse(invitationService.findByAccount(account));
+    }
+
+    @PostMapping("/account/invitations/{invitationId}/accept")
+    public void acceptInvitation(@AuthenticationPrincipal Account account,
+                                   @PathVariable Long invitationId) {
+        invitationService.accept(account, invitationId);
+    }
+
+    @PostMapping("/account/invitations/{invitationId}/reject")
+    public void rejectInvitation(@AuthenticationPrincipal Account account,
+                                   @PathVariable Long invitationId) {
+        invitationService.reject(account, invitationId);
     }
 
 }

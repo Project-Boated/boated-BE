@@ -46,4 +46,10 @@ public class AccountProjectRepository {
                 .where(QProject.project.eq(project).and(QAccount.account.eq(account)))
                 .execute();
     }
+
+    public boolean existsAccountInProject(Account crew, Project project) {
+        return queryFactory
+                .selectFrom(accountProject)
+                .where(accountProject.project.eq(project).and(accountProject.account.eq(crew))) != null;
+    }
 }
