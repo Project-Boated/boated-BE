@@ -28,6 +28,12 @@ public enum ErrorCode {
     // File
     FILE_UPLOAD_INTERRUPT(400, "F001", "파일 업로드 인터럽트 오류"),
 
+    // Invite
+    INVITATION_DO_NOT_INVITE_CAPTAIN(400, "IV001", "Captain을 invite할 수 없습니다"),
+    INVITATION_ACCOUNT_EXISTS(400, "IV002", "이미 초대를 보낸 Account입니다."),
+    INVITATION_ACCOUNT_EXISTS_IN_PROJECT(400, "IV003", "이미 Crew인 Account입니다."),
+    INVITATION_NOT_FOUND(400, "IV004", "찾을 수 없는 초대입니다."),
+
     // For Testing
     FOR_TESTING(507, "T001", "테스트용입니다.");
 

@@ -8,6 +8,7 @@ import my.sleepydeveloper.projectcompass.domain.accountproject.entity.AccountPro
 import my.sleepydeveloper.projectcompass.domain.common.entity.BaseTimeEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
