@@ -53,7 +53,7 @@ public class AccountDocument {
                         partWithName("nickname").description("바꿀 닉네임 (생략가능)"),
                         partWithName("originalPassword").description("원래 패스워드, 유저 검증을 위한 값(Oauth 로그인시 아무일도 안함)"),
                         partWithName("newPassword").description("바꿀 패스워드 (Oauth 로그인시 아무일도 안함) (생략가능)"),
-                        partWithName("profileImageFile").description("Profile 이미지 URL (생략가능)")
+                        partWithName("profileImageFile").description("바꿀 프로필 이미지 파일(생략가능)")
                 )
         );
     }
