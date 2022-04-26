@@ -192,8 +192,8 @@ include::{snippets}/account-profile-update/http-request.adoc[]
 ===== request-headers
 include::{snippets}/account-profile-update/request-headers.adoc[]
 
-===== request-fields
-include::{snippets}/account-profile-update/request-fields.adoc[]
+===== request-parts
+include::{snippets}/account-profile-update/request-parts.adoc[]
 
 ==== Response
 
@@ -387,34 +387,34 @@ include::{snippets}/project-my-captain-retrieve/response-fields.adoc[]
 //===== response-fields
 //include::{snippets}/project-captain-update/response-fields.adoc[]
 
-[[resources-project-invitation]]
-== 프로젝트 초대
-
-[[resources-project-crew-invite]]
-=== 프로젝트 초대하기
-`POST` 요청을 사용해서 프로젝트에 초대할 수 있습니다.
-
-==== Request
-
-===== http-request
-include::{snippets}/project-crew-invite/http-request.adoc[]
-
-===== request-path-parameters
-include::{snippets}/project-crew-invite/path-parameters.adoc[]
-
-===== request-headers
-include::{snippets}/project-crew-invite/request-headers.adoc[]
-
-===== request-fields
-include::{snippets}/project-crew-invite/request-fields.adoc[]
-
-==== Response
-
-===== http-response
-include::{snippets}/project-crew-invite/http-response.adoc[]
-
-===== response-headers
-include::{snippets}/project-crew-invite/response-headers.adoc[]
-
-===== response-fields
-include::{snippets}/project-crew-invite/response-fields.adoc[]
+//[[resources-project-invitation]]
+//== 프로젝트 초대
+//
+//[[resources-project-crew-invite]]
+//=== 프로젝트 초대하기
+//`POST` 요청을 사용해서 프로젝트에 초대할 수 있습니다.
+//
+//==== Request
+//
+//===== http-request
+//include::{snippets}/project-crew-invite/http-request.adoc[]
+//
+//===== request-path-parameters
+//include::{snippets}/project-crew-invite/path-parameters.adoc[]
+//
+//===== request-headers
+//include::{snippets}/project-crew-invite/request-headers.adoc[]
+//
+//===== request-fields
+//include::{snippets}/project-crew-invite/request-fields.adoc[]
+//
+//==== Response
+//
+//===== http-response
+//include::{snippets}/project-crew-invite/http-response.adoc[]
+//
+//===== response-headers
+//include::{snippets}/project-crew-invite/response-headers.adoc[]
+//
+//===== response-fields
+//include::{snippets}/project-crew-invite/response-fields.adoc[]

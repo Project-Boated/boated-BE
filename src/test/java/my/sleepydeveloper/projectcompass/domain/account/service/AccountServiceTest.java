@@ -1,5 +1,6 @@
 package my.sleepydeveloper.projectcompass.domain.account.service;
 
+import my.sleepydeveloper.projectcompass.aws.AwsS3Service;
 import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.entity.KakaoAccount;
@@ -58,9 +59,12 @@ class AccountServiceTest extends BaseTest {
     @Mock
     KakaoWebService kakaoWebService;
 
+    @Mock
+    AwsS3Service awsS3Service;
+
     @BeforeEach
     void beforeEach() {
-        accountService = new AccountService(accountRepository,uploadFileRepository, passwordEncoder, kakaoWebService);
+        accountService = new AccountService(accountRepository,uploadFileRepository, passwordEncoder, kakaoWebService, awsS3Service);
     }
 
     @AfterEach

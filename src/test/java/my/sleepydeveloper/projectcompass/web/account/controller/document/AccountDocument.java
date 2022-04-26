@@ -8,6 +8,8 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
 public class AccountDocument {
@@ -47,11 +49,11 @@ public class AccountDocument {
                 requestHeaders(
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낼 Media Type")
                 ),
-                requestFields(
-                        fieldWithPath("nickname").type(JsonFieldType.STRING).description("바꿀 닉네임 (생략가능)").optional(),
-                        fieldWithPath("originalPassword").type(JsonFieldType.STRING).description("원래 패스워드, 유저 검증을 위한 값(카카오 로그인시 생략가능)"),
-                        fieldWithPath("newPassword").type(JsonFieldType.STRING).description("바꿀 패스워드, 단 카카오계정이면 적어도 아무일도 안일어남 (생략가능)").optional(),
-                        fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).description("Profile 이미지 URL (생략가능)").optional()
+                requestParts(
+                        partWithName("nickname").description("바꿀 닉네임 (생략가능)"),
+                        partWithName("originalPassword").description("원래 패스워드, 유저 검증을 위한 값(Oauth 로그인시 아무일도 안함)"),
+                        partWithName("newPassword").description("바꿀 패스워드 (Oauth 로그인시 아무일도 안함) (생략가능)"),
+                        partWithName("profileImageFile").description("Profile 이미지 URL (생략가능)")
                 )
         );
     }

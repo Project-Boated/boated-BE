@@ -11,6 +11,7 @@ import my.sleepydeveloper.projectcompass.web.account.dto.PutNicknameRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.ResourceUtils;
 
 import static io.restassured.RestAssured.given;
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
@@ -62,17 +63,19 @@ class AccountControllerTest extends AcceptanceTest {
 
         String updateNickname = "updateNickname";
         String updatePassword = "updatePassword";
-        String updateProfileImageUrl = "updateProfileImageUrl";
 
         // Account Update
         given(this.spec)
                 .filter(documentAccountProfileUpdate())
                 .accept(ContentType.JSON)
-                .contentType(ContentType.JSON)
+                .contentType(ContentType.MULTIPART)
                 .cookie(cookie)
         .when()
                 .port(port)
-                .body(new PatchAccountProfileRequest(updateNickname, PASSWORD, updatePassword, updateProfileImageUrl))
+                .multiPart("nickname", updateNickname)
+                .multiPart("originalPassword", PASSWORD)
+                .multiPart("newPassword", updatePassword)
+                .multiPart("profileImageFile", ResourceUtils.getFile("classpath:profile-image-test.png"))
                 .patch("/api/account/profile")
         .then()
                 .statusCode(HttpStatus.OK.value());
@@ -88,6 +91,7 @@ class AccountControllerTest extends AcceptanceTest {
             .statusCode(HttpStatus.OK.value())
             .assertThat().body("username", equalTo(USERNAME))
             .assertThat().body("nickname", equalTo(updateNickname))
+            .assertThat().body("profileImageUrl", equalTo("host"))
             .assertThat().body("roles", notNullValue());
     }
 

@@ -1,5 +1,7 @@
 package my.sleepydeveloper.projectcompass.domain.project.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import my.sleepydeveloper.projectcompass.aws.AwsS3Service;
 import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNotFoundException;
@@ -14,16 +16,23 @@ import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectNameSam
 import my.sleepydeveloper.projectcompass.domain.project.exception.UpdateCaptainAccessDenied;
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.project.vo.ProjectUpdateCondition;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.repository.UploadFileRepository;
 import my.sleepydeveloper.projectcompass.security.service.KakaoWebService;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,16 +44,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.context.annotation.ComponentScan.Filter;
 
-@DataJpaTest(
-        includeFilters = {
-                @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ProjectService.class),
-                @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = AccountService.class),
-                @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = PasswordEncoder.class),
-                @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = KakaoWebService.class),
-                @Filter(type = FilterType.ANNOTATION, classes = Repository.class)
-        }
-)
+@SpringBootTest
+@Transactional
+@ExtendWith(MockitoExtension.class)
 class ProjectServiceTest extends BaseTest {
+
+    @Autowired
+    AwsS3Service awsS3Service;
+
+    @Autowired
+    KakaoWebService kakaoWebService;
 
     @Autowired
     ProjectService projectService;
@@ -59,7 +68,14 @@ class ProjectServiceTest extends BaseTest {
     AccountService accountService;
 
     @Autowired
+    UploadFileRepository uploadFileRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
     AccountProjectRepository accountProjectRepository;
+
 
     @AfterEach
     void afterEach() {

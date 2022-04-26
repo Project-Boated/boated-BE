@@ -1,7 +1,9 @@
 package my.sleepydeveloper.projectcompass.domain.account.service;
 
 import lombok.RequiredArgsConstructor;
+import my.sleepydeveloper.projectcompass.aws.AwsS3Service;
 import my.sleepydeveloper.projectcompass.domain.account.entity.KakaoAccount;
+import my.sleepydeveloper.projectcompass.domain.common.exception.CommonIOException;
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.exception.*;
@@ -15,7 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +30,7 @@ public class AccountService {
     private final UploadFileRepository uploadFileRepository;
     private final PasswordEncoder passwordEncoder;
     private final KakaoWebService kakaoWebService;
+    private final AwsS3Service awsS3Service;
 
     public Account findById(Long accountId) {
         return accountRepository.findById(accountId)
@@ -79,6 +84,17 @@ public class AccountService {
 
         if (accountUpdateCondition.getNewPassword() != null) {
             accountUpdateCondition.setNewPassword(passwordEncoder.encode(accountUpdateCondition.getNewPassword()));
+        }
+
+        if (accountUpdateCondition.getProfileImageFile() != null) {
+            MultipartFile file = accountUpdateCondition.getProfileImageFile();
+            UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), UUID.randomUUID().toString(), file.getContentType(), "host");
+            try {
+                awsS3Service.uploadProfileImage(account, accountUpdateCondition.getProfileImageFile(), uploadFile);
+            } catch (IOException e) {
+                throw new CommonIOException(ErrorCode.COMMON_IO_EXCEPTION, e);
+            }
+            findAccount.updateProfileImageFile(uploadFile);
         }
 
         findAccount.updateProfile(accountUpdateCondition.getNickname(),
