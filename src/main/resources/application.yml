@@ -1,11 +1,11 @@
+# 데이터베이스, Aws, 카카오 접속 정보는 private하게 배포됩니다.
 spring:
   jpa:
-    hibernate:
-      ddl-auto: create
     properties:
       hibernate:
         default_batch_fetch_size: 100
-    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
 
   messages:
     basename: messages, errors
