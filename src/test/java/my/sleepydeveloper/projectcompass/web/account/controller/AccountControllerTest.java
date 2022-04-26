@@ -63,7 +63,7 @@ class AccountControllerTest extends AcceptanceTest {
     }
 
     @Test
-    void updateAccountProfile_프로필update_성공() throws Exception {
+    void patchAccountProfile_프로필update_성공() throws Exception {
 
         Mockito.when(awsS3Service.uploadProfileImage(Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn("http://test.com");
@@ -123,7 +123,7 @@ class AccountControllerTest extends AcceptanceTest {
     }
 
     @Test
-    void nicknameUniqueValidation_중복되지않는닉네임조회_notDupliated() throws Exception {
+    void validationNicknameUnique_중복되지않는닉네임조회_notDupliated() throws Exception {
 
         AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
@@ -160,5 +160,7 @@ class AccountControllerTest extends AcceptanceTest {
         .then()
                 .statusCode(HttpStatus.OK.value());
     }
+
+
 
 }
