@@ -469,6 +469,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#resources-accounts-delete-profile">유저 탈퇴</a></li>
 <li><a href="#resources-accounts-nickname-validation">닉네임 중복 조회</a></li>
 <li><a href="#resources-account-nickname-update">닉네임 업데이트</a></li>
+<li><a href="#resources-account-profile-image-update">프로필 이미지 생성, 업데이트</a></li>
+<li><a href="#resources-account-profile-image-delete">프로필 이미지 삭제</a></li>
 </ul>
 </li>
 <li><a href="#resources-project">프로젝트</a>
@@ -619,7 +621,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/sign-in HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Host: localhost:39517
+Host: localhost:40219
 Content-Length: 45
 
 {"username":"username","password":"password"}</code></pre>
@@ -665,10 +667,10 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Set-Cookie: JSESSIONID=9E3CB989064F6C6843C9D04776588E4C; Path=/; HttpOnly; SameSite=Lax
+Set-Cookie: JSESSIONID=5171F80961D0AB2F71DBD1B358BA0A49; Path=/; HttpOnly; SameSite=Lax
 Content-Type: application/json;charset=UTF-8
 Content-Length: 8
-Date: Tue, 26 Apr 2022 09:13:22 GMT
+Date: Tue, 26 Apr 2022 11:36:36 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 
@@ -774,7 +776,7 @@ Connection: keep-alive
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/account/sign-up HTTP/1.1
 Content-Type: application/json
-Host: localhost:39517
+Host: localhost:37307
 Content-Length: 105
 
 {"username":"username","password":"password","nickname":"nickname","profileImageUrl":"profile_image_url"}</code></pre>
@@ -859,7 +861,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Date: Tue, 26 Apr 2022 09:13:27 GMT
+Date: Tue, 26 Apr 2022 11:36:40 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -880,8 +882,8 @@ Connection: keep-alive</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/account/profile HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Host: localhost:39517
-Cookie: JSESSIONID=C230C0D63866622B6AB5C80B01C1B758</code></pre>
+Host: localhost:37307
+Cookie: JSESSIONID=22440C7F0572B04E32D0495B39B6130E</code></pre>
 </div>
 </div>
 </div>
@@ -925,7 +927,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 26 Apr 2022 09:13:25 GMT
+Date: Tue, 26 Apr 2022 11:36:40 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 105
@@ -1009,9 +1011,9 @@ Content-Length: 105
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/account/profile HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Content-Type: multipart/form-data; boundary="XUe0TTsjfKvahlMp1eijJ6gCmtFlIa4kUb3yo"; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
-Host: localhost:39517
-Cookie: JSESSIONID=1327DE5AA3DD5BA4813556243BC5D5D4</code></pre>
+Content-Type: multipart/form-data; boundary="biAAeu6MSYQHFi7Dc8vqUqPacTiwt7W9J"; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
+Host: localhost:37307
+Cookie: JSESSIONID=0BC1F27051D4CB84E5FA24DED10E63B6</code></pre>
 </div>
 </div>
 </div>
@@ -1064,7 +1066,7 @@ Cookie: JSESSIONID=1327DE5AA3DD5BA4813556243BC5D5D4</code></pre>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>profileImageFile</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Profile 이미지 URL (생략가능)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">바꿀 프로필 이미지 파일(생략가능)</p></td>
 </tr>
 </tbody>
 </table>
@@ -1086,7 +1088,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Date: Tue, 26 Apr 2022 09:13:26 GMT
+Date: Tue, 26 Apr 2022 11:36:41 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -1107,8 +1109,8 @@ Connection: keep-alive</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/account/profile HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Host: localhost:39517
-Cookie: JSESSIONID=F7A2BA7AF87D3C568980BE80B07621B1</code></pre>
+Host: localhost:37307
+Cookie: JSESSIONID=12E8B6FE896CA38F58B608A27C0F3E7D</code></pre>
 </div>
 </div>
 </div>
@@ -1129,7 +1131,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Date: Tue, 26 Apr 2022 09:13:27 GMT
+Date: Tue, 26 Apr 2022 11:36:40 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -1151,9 +1153,9 @@ Connection: keep-alive</code></pre>
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/account/profile/nickname/unique-validation HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:39517
+Host: localhost:37307
 Content-Length: 36
-Cookie: JSESSIONID=B9F0BAA170F1C1156C3B81CBDD0384C4
+Cookie: JSESSIONID=C257E74391E3F6F8F4E72A0174D09DC6
 
 {"nickname":"notDuplicatedNickname"}</code></pre>
 </div>
@@ -1227,7 +1229,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 26 Apr 2022 09:13:27 GMT
+Date: Tue, 26 Apr 2022 11:36:39 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 20
@@ -1297,9 +1299,9 @@ Content-Length: 20
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/account/profile/nickname HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:39517
+Host: localhost:37307
 Content-Length: 24
-Cookie: JSESSIONID=8823BAFBA118F9DAC6A9DE4509CB1C5B
+Cookie: JSESSIONID=E0D0258E4349A7E423AABA283B6937CC
 
 {"nickname":"nickname2"}</code></pre>
 </div>
@@ -1367,7 +1369,176 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Date: Tue, 26 Apr 2022 09:13:25 GMT
+Date: Tue, 26 Apr 2022 11:36:40 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="resources-account-profile-image-update"><a class="link" href="#resources-account-profile-image-update">프로필 이미지 생성, 업데이트</a></h3>
+<div class="paragraph">
+<p><code>PUT</code> 요청을 사용해서 프로필 이미지를 생성, 업데이트 할 수 있습니다.</p>
+</div>
+<div class="sect3">
+<h4 id="_request_9"><a class="link" href="#_request_9">Request</a></h4>
+<div class="sect4">
+<h5 id="_http_request_9"><a class="link" href="#_http_request_9">http-request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/account/profile/profile-image HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Content-Type: multipart/form-data; boundary="tACzIzHXMBuopTIN7OdoiZuGwomTD34DueqVPVHq"; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
+Host: localhost:37307
+Cookie: JSESSIONID=CFBA5E8F5E0969DB32F7F2BCB9B96BAC
+
+--6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
+Content-Disposition: form-data; name=file; filename=profile-image-test.png
+Content-Type: image/jpg
+
+�PNG
+
+   IHDR  8   m   5K}�   sBIT|d�   tEXtSoftware gnome-screenshot��&gt;   DiTXtCreation Time     2022년 04월 20일 (수) 오후 12시 21분 39초^!Q�    IDATx��P��?{;W�W�-]1ĊhE&gt;1�9k��	&amp;J�h�+`m��l&amp;�d��8e��f}��/H#)O�r@uZ�d;�Tv�X^ٍքF'�Z6�m�Mݸ����~
+�_���TML��������}��}�
+�BA���@0W'ba�A�b�lCOO�|�C f��	���O&amp;�E����.�@0�N �,��	��E8�@�'ba�A�"�@ �Y��1�0p� fN �,��	��E8�@�'ba�A�"�@ �Y��1ˤ}��ǋ�[h�VQ�����/6�(L��g5��@�~Z�l��c�׳+�2o�v����V@�a�FI��t�������m����T@�7���� W���j�%Լ5��Y(�:J��&gt;��P � �g=�y�1�c���TUԣX\4���l�q��������v����WA�UP&gt;��t.�(�j���d[��@��Bӳ�WT��}�euZ�x��5�&lt;P܂&gt;�DP����Ů���}ۉ�*�:�Q���&amp;�ʜ8�]D�&gt;ߜ;s����v�?��[�[��$�l�a�	 h`�$;#�o�o�m&gt;�5����`��C�ccߎ���_�e`�COP�Z��P�Q��ťs{ɻ{��~ڏ�S�ߕ���U87;�l����LR�9��&lt;r���"��
+_h��L2-�F_L��m�n�Q��|hqG�T��_���z�y���3?Μ�����S����rR�I&amp;������I��ȶ�%,O�H�Eﳹ,�/�����&lt;�J���Q���+IML�yT�C��DI~�%|�/5�9�~y9��\r7�~_*��#^��&amp;'����Eթ���/'���M`T�&lt;z�^ZNz�웨5f;���%��͹�=L��XD����Ź�#O�R��j\i#[���ӳ����t[��\O	��φ��:��0��&lt;\Y{(9�����+��[9��ֹش�á_5�l� ����nA1e�+W�2�����/�Sv����:��۩j���x&gt;ǝH�ľ#V��˩����EVH_�@m�ţȸ�/##��ҠB�{U�����Y�WK eP��VZ
+��M���@B���=��h��}���S�6;�6ҬgSV �?k��,�8E���������C��
+F��|��)J�O�������=ԛ,0����H�{�}���o�E�����|0_�d�3k��jZ�����L2��lő2rF���mt�����z,cdg @��.��.\ke$@��c�?�t�f,����_%l�[�[)M��S�Q߹@/KYu���Z}�C	�23h
+�u�~-y������ 	)��GݕC:�։zL�(�
+HI��f$tMC��p�CSPtHXl�)o�R�|���i�����&gt;�hv?�τ�s�!L�u]q��XG���u���L�PŹ��;B�t)$���t�W]!3��#���Q�=_ʐ��ǣ�})T�V
+��8��c�5���&gt;
+}t�"d3�&gt;y&amp;��ˡ�ǭ!�3B��~��\�M�P^���?W}��!TOȜbYL�0YB֕�bYi���!���y����&gt;:V2��6�Gk�xq���9j�ͮ�&gt;�I}�Z�XB@Ȳ�u����zE�?z�RZi���F~�τ�k-����uD�_z��F�7�!׫��e/ԅ
+�IQ�,���]��(#$AȒb���͒�{w�����P�jsH��!�"�̫+B��"�N��Ņ!��!�b	Y�	I)�#��^\j�N]���:���搜"����P����u�5d^dI&amp;BěC�E�%�&gt;��Յs�/�@
+I��!�"K���������3qp�J_��T�K|����餮/��g��`}�;d�hi���r����v��~Á�&gt;%��q0&lt;�?jaR���z_ �jg�JT�ӌ}g5.����T�s����T?6��m��Ħ'�ё*�p���C7,:9i�&gt;v��Hw���:��z����j�&gt;�t�&amp;�:K���Y:N��&amp;�N�N� �{�Q������r�:ז��w���OyP�$l[�8�k���:�י�����82�&lt;N�o/�E-?�5S�$Q�r�e���Ӥ̰���j��4���|.���j�Ƚ�������]��)7־cxޘ�np�!�+��U��:�Ź*�3���۟���Wٚ,���s\��e.�����8~�2��FZ���K����K��������+aY����Y�.�R�at��|���śq9�(���"��z���?�&amp;o�4��I�.��'��i��\җ'�$s#E�����ƘH����l-��(�*F�p�s��ͦ���d2�����k�}&amp;�"����e��H$��v�8��3k3Yq�TS�Ί$-EN� U酠���@�^z��62r]䥄�j��� �]�z�E��v
+��뤷�}C�x;��g�t��J	�:�5g =�8�E�:0��}'�L�l�{R���V�f�l�UhE;���50���A�	Xi�7�Umn���^�%�o��H�[.R;��s2{ǰ`+�d;�O��z�v��u�c�k��mP9u���o�?Βr���o�Q�`Ǒ�\�|��߸Ɏ���:���&amp;	�3��_�����k�-'��ɤ����3��!UL���_��T@���blC���~�P�j	K��S��|�&gt;�7�����?�lBHW� Yy�ɲ����0	�l&amp;�1Zo/X�"_�o�d�.������D,�R-	�721C8��ڷk]lZ���ZƕS��.{n�����-��bl8��W�f[G�'�h���A��&amp;*RU���0~��KH�jM�a�)�f��~���'�i�;��׻hx,�*��~�OƗ���U�Do�$)\V��z~/{_�|���E�0|-��$�{)�Z{����aV�D8*�� H�8�hh
+��;+r^��VE�SM#��1"��)QopS�o���l��v�N����73w% ��qt����Ҕ�Qc{F��ձo\�OՏ&lt;�g���;���"�b����o��n�C?�fP�[�ڃ����hW�N0yq�@�����C���0��}����ͨA��o���nm$�Ҥp��k�HX�H\��f�b����k�Ɇ&gt;��i�J������-������3��ᮚ%E��(o���X�E����(p��;#�kM�"�n�+ �;K�(A?U�N����΃�3P����EY�R�L�ǽx_�P��F
+~��UA����U�c.�?i��6��n�1��G"e�������� �w4Xlc�"4�Pߦ�^��r�����p�OG�!�o;�&gt;H���.d@Z��j���K۩�t�X���{�&gt;x��gR�[ ɂ%0ڨy$���b�LVV}��&gt;[H�ߖP�ym�9|� ��v�O�S�Lӌ���	�A�?WQR���� d6m��b�h9�Q��E���Qi�V�S%�S�����I�YT�`����HA��R�L����6��3N����9k��J�#���הA��2��&lt;�F���&amp;��|2p�e�f&amp;/��C���d?^�������46��q��&amp;\4O��ܱj6-���*������P��Ɗ�:N�S1ֱ7��|\@��8v̸{j۲����W]@փY������b)C-�oL'uM!�'%\�gpgD܋�l� ;ݔ^�4㨬�01@my#�VyC1��e� ��S�"a�v�dT��5��f&amp;�i7y�$�M�i}{䑶��.*�-�h9\�������,���
+�%��-4v�TT����+�b3�(��h:�O�"�A0٨��aJ��p���:IBI듯���?Mj��u ���Q�Ȥ��
+�a&amp;�ɽ�H�v���x���Y
+�&amp;��`9�C{i(Ϙى�)�B�������,��rr�&amp;P��}�ڸ��mm&amp;If�{gk�sϟ�B��D&gt;���99����� �)���d̓��x�R)8����p��v���Ѻ�MK�.3���:jO?,��[@�\a\Q�LՎ��֧b��Ȗ�@�S�'����u4̋�SL�h=,���KX�'�GPG��@J�\���}9d=뇇�pi6�A3򢉏~����0c�d��L����f򻎐w���@��1'[fwJ�R�7U�qkG��؁[fޝj�,cM��	�Z�j��7 	K�m|��dF�`eŝ��X��m��,�&lt;�9�&amp;�C�^J�+�yܐ^&gt;Gޫ�aLf,��)�e����2���dƒ&lt;��`��G���F��2�U�%y���V�S{����v�tM��x*~D��A�ϸB!&gt;ǘl�^&lt;�c�L�)	�B�]�]ę�Hq0aď��dl+�7��e��~�|3��&gt;�b��� �䅮�`j,d��-t%�a����m]�B3�cpS���ݎ��--j��@�BG�$!M���-�mf��`��3� fN �,1b�4|��d�Z�dUx�H3@��'e�;*m�@�ye�fQUZv��&gt;��)!	ye&amp;�od �p2Ak؆sw	붲#;�YH�3!��xdv����߮g�֗��hN*%&amp;a~\P���k��,X�MB
+j*��l�p/&gt;~�˛�N���9x����v2����?����3*�3�����N�Jv�&gt;}[Jm	1˼vQ��bΝ��o;��C�^��8����Gyt_��t��qX�D�B����ۣru�:F�R2�e 'g�X}{,o1��P���ֺ�=-T=UES�l�*6�R���}��a��$,�.���U*�ƿ{;�&amp;��4Tm�IrQ#���$��o�Z�)	8� ���2c����=�;��X��Z���wbu3�O�K^�I��o���4�﬜`�r��Έ)%�����O���&lt;���1r����d�Ϡ�&lt;KЏ�)0z[����T���J��\�V-'5�
+ߵWaO-9_L��̀�zr�$���I�� ���ݓȺ}c|����5�$��N�BG��h"_x�
+�a�{&amp;���D��Qs��ʷ�)���L�����{�r��	?�A{g|7��#�L���o� s�_���}č�R���C���cg�t��*�~P��8�/K�����aq�~�����Ȏ��l���]t�;�{���z{ޞ��{�a*XLa�Wh8�k¬�3Ÿ���&gt;�=FXn�-�f@8�2*m�qEA�2���WT������n�gL&amp;]c�A}��[8}���?��7�07��޷��ۃZ��I�	r���~|m�Qٕu���;���f{�"��v��u����b�k*��W���|�
+ڵ��h=�������5o�K�:��Q�W�.kQ�IZ����	u��_I�}�0ia�ݲ��#Cx�x:�q���sף��+�ܼ�I-�Z�z2� 2U.Z�^��wR�z6�wIȫ��_�H$}e=y�s�_���^�����o�P��l�J��7U��J���T�w�&gt;�E��Ӻ#�mq���y��	��&lt;����0�T=��@ZV��S#�������8sw�T;�"��)rR�$�^���A��_���ג(oc�����Vtc�a���=�+^*�ơ����5e�:A��UZv8��j`��@��nl�x�]{(x��̇�1��U���Ü8��e�흌U㤶'��Ji�[�+�}���O�1�`g��8$��wQ�+�ە��h?ú�q�����RƉ�u���m���]�E�h9� =�6��4g9�����Ĵ� �$�Q�9~� �C�|�&lt;����h~��2���q��\:�����{�òr�O�a�&amp;[��3�v��s]�{.�n�O�xs'���֜���Y:.���׺s*��q��M4]��]���&gt;\��{B=R¶7l8��_��T=�8�j'`�Źw�x��\�WQ��L�{��H�M)�'�un.�O�Ҳ����P7�
+�V��k��ؠ?��A�A`��N��&lt;4�nG�$�ޤ��X9�;�8�fd"���h�͌%�H��$�$���l#�?��:�S,:�_C��Nkأ������l�~�M���Gb-��"Z�Y����*Hd�9Hp�	]8 ���[���dǷ���p�f���~/"HX6��a/�A���D�=.�{:u0�:*1���G��Wq�E3��
+*����6֕���^Y1�B�'��Z�i0͠��e ��'5xN�L04X��G�ƒ�9aBJ��Q���kt��*J�A�k��=�C&gt;�E�Ć&gt;��˔D�"�������H6Ps�V�����Q��ڐ~�ǥ`��k$��X�ͻ��� �p��٫ɼQ�3a�&gt;t�O���gpyΰw��p�X�Q�WN�2��;Հ-�`UUx�	�S0�'�3O�#�tm�yIQ/A��Z �2l̦��0�Uig�{�Q��E����7����^���5���.r5M6�6X1�&lt;Ԟ��X���������&gt;��z�NW�/�L�c����~�`��w��t3n����5����d�I
+g�������s�A��.l��5�w~�պ�4ާ}��;����@��D��2�&amp;Y����r�{����V�;��zC��,6V�gg��c���Z~��s����r��XW��`j)G�Vֲ��8E��98����TQ;���T����)�˦-X2�L��O�᩟��;�B����gU��e�0�h
+��:�F�M�x�VP:�(:`�R\��ޚ���9F6-EN�m�P�t�x�ڶ�y�R����:t�u$|@^����inOY�Wn"lb�z��*�j��B��C�_7(�ﻐ�����^�!0�|Կ�_�����O���!�8^����������	��Q7F/m��CZ�����FY�[i�&lt;��ז�~�J�;v�0�\_Ue%���ɞçP���b+�OU�7�����&amp;�$�w;�]�J��/�C�4��z�4� �R�B�E*Mn'��:�yk)�&amp;�~m�+ق=7ː�����Üǎ�!�y(Y�N��G�1.�&lt;��H�x�	k�&amp;�YN����-w�m�A�V*���]����k��Q��J�$|e�$&amp;&amp;���=���	��n�,C�jM2�_u�l��Q/i�����|�'�K�@�[h��k�&amp;\���O�ח���%�{�����e)8��H��D*�K������_Gl'�[X�d9�&amp;	��12z���9�\�I�2�U6��#�!wFFߠ���K�)	벛�v�9@CG��e��1������$	��1�l�J@5H�P~P�P?��OU�Oc0�2�l���hA���z��&gt;gɧ���HIi����+h��i`�G��wT��Wml��i���"y��[n��^r��W6��M�H�?#�'�}	����*|c������{��&amp;���T�ajP�� ��l��}�1��,���ƔI�K�P&lt;n�4��&amp;�
+�J���%�'�M�o��e�0��c��1�m�U fa�A�"�@ �Y��1���/]��ih����zѤ��]��ʟ���+^jHz��´�E��c^=8�x	Y�P����q$�������5�+����٢���
+��8��i*N'�)︵��}ۨ�W�6�g~�+|��7N���'&lt;��WLá]�\�^t|��q(�4/��F��(=�s� ���T�/�ς�b�zl'}X��Urs�@f�����ŜǑ�;F�Ō}{����*��Rr���
+F8��e�ާ�$V�o��cDIJ׋��/�=n)i+�Qk_� �4~=�a`\ۗ�38`@ҧG��I&amp;	L`ɭ�l�d���QO��{3��"�^pg0?]Է~Ic7X�NWm�����T����&gt;���Y���ڷ�xEz��d
+T����ܷ��o���t�?XBӵ�n���|��e^��B��İ�߃���ys�B�S9,O�#gM*�:����S��L�����uג��D��&gt;:�吘�Cm�%,IL$11���;�Cj�o�ɡ7z�"�����ݎ��}���?�R����	lz����;8��'�T&gt;�(5�Sw&amp;�w#w��Y�@��ٖA\���3eRV�@u�&amp;����5�H:���7R�4LvU+�]����֤v*]O�2 HT&lt;�k���/�#�kM����ȅ��vRr�~����R��&gt;Ύo̢�3�h����_fh��c$�:j����,�_Q�tF��:���"Rw��a�GX�  �IDATn�{�^��J����&gt;��b&amp;�=���Z޲���&gt;��qI$��w��s����sɍ2=����i��^:��Ù��&amp;�ˋ����^���~*̡6Xʙ��ד*��H��-}g�.!}s3K���uKT���zr3w�?t�����*r�m0�~��Z9�6c;x���"F�G�{�pVg���Z���%���)HG8���N���.�6D��VN��^*.�e��,����`U�~���d&gt;��ǭv�P�3]�1�̑tF���)0C_E�&lt;�״�U�~����]O��3?]T� �"nl6݉�i&gt;�@r��}@�mf�:3���u�qi��`����޸����B5;���1�$�v�W�)�ƌ}g5.����T�s����T?6SC&gt;���ax�	:Ν��7�X�V����Ǒ��kk�����&gt;�?w��:�*�0�/����޻�k������.]:A�J	[�	.�!,�w� |}������2N�k��T]��"[7��3/.aQ����a�
+H�ZG�0c�j]VT��^��]���H���ۣ�P��L'��菓���CQcf����Z�/�QVU&lt;��ic�y86�`�[�+\�O���iK,��F�ٶH�a��6���v���4kC)�f���&amp;CD��F���j�@OdBe�Y$j���,��+V�`�NҦ���H�t�����d3+&amp;:+rvTWS'�V �$!}�3���LG�e�n��F��\E��W�!-,�'�[���S�}�����me���N�lҸcI��`�@�$X�ձ�_�P�f9�ֹ�ZR�k��,&lt;�b��kd�{i;ڈ�,��ۉH�|��~,�j��y��2�Nc,o�XX���y]���`�UQyԠ�`+�W!5;���zZ饵�N֔���|��77&gt;g$�v����G��[�Iq����k�p��h�d�c�t�ނrY4���w�������*-ϝ����.XX�gn��R��=��40��x�K��� �%�k���1m�&lt;^�Cy��E!!!�A�Qsٹ둇�8T矺Kk������,7_`�t�V�Cl!���?K ?g:��] ������7mV,+Wa�/E��e`K�[\�6��[�����q}r�eo�IB�Ø\cϜ�G���R�@��G�o�b��jI��� ���^G��J�z�n�������~v�S=�_�%u�J7R��	_�oC���$;;�6��* �}V,��z��E[ �ֹ����8�(램�������Z-%߭�Ľ�m��i��؅H�wP�xi;5gZAJ���?���(�~���)��P��^jn�R�wp�t���Zz�&gt;�Eu��L�`Gz��o�zG�M��Y�Cm;�_��pX	:�}�Ԝ�H�uԁAH�����g�֢�gPq���?Dyq�:)�nFO+��T�)��^�tHxw���
+�j	$���U�+o=�Bʮ��1+Zk%������SW ,֟���L��;)X�N�Y�&gt;������k�^@v�)�bb�QYMab���Fx_����P��,���Pt(2��(׶b�n�&amp;�j`��~�}9�%_L��zڣ�����&gt;��7��#Z"qeop�p�`�W�A͉�uۚT �$9��gְ|y*��Sy�3�]Ϲ�e�E ���IY��zz�7$dyB���?i��,�8�Wzu���&amp;��3��Tz%���Y"R��"����nu�*�P��%g�,����=�ϛ1�ߛL�O �g�&amp;�@ �YD�K�@�'ba�A�"�@ �Y��1�0p� fN �,��	��E8�@�'ba�A�"�@ �Y��1�0p� fN �,��	��e҄��@p�#&lt;8�@�'ba�A�"�@ �Y��1�0p� fN �,��	����VT�ϥ&lt;�y    IEND�B`�
+--6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm--</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_request_headers_8"><a class="link" href="#_request_headers_8">request-headers</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">보낼 Media Type</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_request_parts_2"><a class="link" href="#_request_parts_2">request-parts</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Part</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>file</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">바꿀 프로필 파일</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_8"><a class="link" href="#_response_8">Response</a></h4>
+<div class="sect4">
+<h5 id="_http_response_8"><a class="link" href="#_http_response_8">http-response</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Date: Tue, 26 Apr 2022 11:36:39 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="resources-account-profile-image-delete"><a class="link" href="#resources-account-profile-image-delete">프로필 이미지 삭제</a></h3>
+<div class="paragraph">
+<p><code>DELETE</code> 요청을 사용해서 프로필 이미지를 삭제 할 수 있습니다.</p>
+</div>
+<div class="sect3">
+<h4 id="_request_10"><a class="link" href="#_request_10">Request</a></h4>
+<div class="sect4">
+<h5 id="_http_request_10"><a class="link" href="#_http_request_10">http-request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/account/profile/profile-image HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Host: localhost:37307
+Cookie: JSESSIONID=16221E940B20B28B1C61FFB8CA0510D7</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_9"><a class="link" href="#_response_9">Response</a></h4>
+<div class="sect4">
+<h5 id="_http_response_9"><a class="link" href="#_http_response_9">http-response</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Date: Tue, 26 Apr 2022 11:36:40 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -1386,24 +1557,24 @@ Connection: keep-alive</code></pre>
 <p><code>POST</code> 요청을 사용해서 프로젝트를 생성할 수 있다.</p>
 </div>
 <div class="sect3">
-<h4 id="_request_9"><a class="link" href="#_request_9">Request</a></h4>
+<h4 id="_request_11"><a class="link" href="#_request_11">Request</a></h4>
 <div class="sect4">
-<h5 id="_http_request_9"><a class="link" href="#_http_request_9">http-request</a></h5>
+<h5 id="_http_request_11"><a class="link" href="#_http_request_11">http-request</a></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/projects HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:41775
+Host: localhost:40369
 Content-Length: 43
-Cookie: JSESSIONID=782F0ECACF3BB080B18D0AE54377CAD7
+Cookie: JSESSIONID=6A4760A905CE3FB4B2753ABDA2C5317C
 
 {"name":"name","description":"description"}</code></pre>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_request_headers_8"><a class="link" href="#_request_headers_8">request-headers</a></h5>
+<h5 id="_request_headers_9"><a class="link" href="#_request_headers_9">request-headers</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1429,9 +1600,9 @@ Cookie: JSESSIONID=782F0ECACF3BB080B18D0AE54377CAD7
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_8"><a class="link" href="#_response_8">Response</a></h4>
+<h4 id="_response_10"><a class="link" href="#_response_10">Response</a></h4>
 <div class="sect4">
-<h5 id="_http_response_8"><a class="link" href="#_http_response_8">http-response</a></h5>
+<h5 id="_http_response_10"><a class="link" href="#_http_response_10">http-response</a></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
@@ -1446,7 +1617,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 26 Apr 2022 09:13:33 GMT
+Date: Tue, 26 Apr 2022 11:36:44 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 9
@@ -1508,23 +1679,23 @@ Content-Length: 9
 <p><code>PATCH</code> 요청을 사용해서 프로젝트의 내용을 업데이트 할 수 있다.</p>
 </div>
 <div class="sect3">
-<h4 id="_request_10"><a class="link" href="#_request_10">Request</a></h4>
+<h4 id="_request_12"><a class="link" href="#_request_12">Request</a></h4>
 <div class="sect4">
-<h5 id="_http_request_10"><a class="link" href="#_http_request_10">http-request</a></h5>
+<h5 id="_http_request_12"><a class="link" href="#_http_request_12">http-request</a></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/projects/1 HTTP/1.1
 Content-Type: application/json
-Host: localhost:41775
+Host: localhost:40369
 Content-Length: 63
-Cookie: JSESSIONID=8FE99ED90CD38A59232BE9D41A4D4687
+Cookie: JSESSIONID=4AF50C5EC52052C5AB04252FBA71E0A7
 
 {"name":"updatedProjectName","description":"updateDescription"}</code></pre>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_request_headers_9"><a class="link" href="#_request_headers_9">request-headers</a></h5>
+<h5 id="_request_headers_10"><a class="link" href="#_request_headers_10">request-headers</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1575,9 +1746,9 @@ Cookie: JSESSIONID=8FE99ED90CD38A59232BE9D41A4D4687
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_9"><a class="link" href="#_response_9">Response</a></h4>
+<h4 id="_response_11"><a class="link" href="#_response_11">Response</a></h4>
 <div class="sect4">
-<h5 id="_http_response_9"><a class="link" href="#_http_response_9">http-response</a></h5>
+<h5 id="_http_response_11"><a class="link" href="#_http_response_11">http-response</a></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
@@ -1592,7 +1763,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 26 Apr 2022 09:13:32 GMT
+Date: Tue, 26 Apr 2022 11:36:44 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 8
@@ -1654,20 +1825,20 @@ Content-Length: 8
 <p><code>GET</code> 요청을 사용해서 내가 captain인 프로젝트의 목록을 확인할 수 있습니다.</p>
 </div>
 <div class="sect3">
-<h4 id="_request_11"><a class="link" href="#_request_11">Request</a></h4>
+<h4 id="_request_13"><a class="link" href="#_request_13">Request</a></h4>
 <div class="sect4">
-<h5 id="_http_request_11"><a class="link" href="#_http_request_11">http-request</a></h5>
+<h5 id="_http_request_13"><a class="link" href="#_http_request_13">http-request</a></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/projects/my/captain HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Host: localhost:41775
-Cookie: JSESSIONID=8FE313CB968F709B04C4E6BA4477DEF2</code></pre>
+Host: localhost:40369
+Cookie: JSESSIONID=F46AD6565DE06AE267B3004700EF9608</code></pre>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_request_headers_10"><a class="link" href="#_request_headers_10">request-headers</a></h5>
+<h5 id="_request_headers_11"><a class="link" href="#_request_headers_11">request-headers</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1689,9 +1860,9 @@ Cookie: JSESSIONID=8FE313CB968F709B04C4E6BA4477DEF2</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_10"><a class="link" href="#_response_10">Response</a></h4>
+<h4 id="_response_12"><a class="link" href="#_response_12">Response</a></h4>
 <div class="sect4">
-<h5 id="_http_response_10"><a class="link" href="#_http_response_10">http-response</a></h5>
+<h5 id="_http_response_12"><a class="link" href="#_http_response_12">http-response</a></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
@@ -1706,7 +1877,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Tue, 26 Apr 2022 09:13:32 GMT
+Date: Tue, 26 Apr 2022 11:36:44 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 536
@@ -1783,7 +1954,7 @@ Content-Length: 536
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-04-26 18:03:51 +0900
+Last updated 2022-04-26 20:36:15 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

@@ -171,7 +171,6 @@ class AccountControllerTest extends AcceptanceTest {
         AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
 
-        // Account Update
         given(this.spec)
             .filter(documentAccountProfileImageUpdate())
             .accept(ContentType.JSON)
@@ -181,6 +180,22 @@ class AccountControllerTest extends AcceptanceTest {
             .port(port)
             .multiPart("file", ResourceUtils.getFile("classpath:profile-image-test.png"), "image/jpg")
             .put("/api/account/profile/profile-image")
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void deleteAccountProfileImage_이미지삭제_성공() throws IOException {
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+
+        given(this.spec)
+            .filter(documentAccountProfileImageDelete())
+            .accept(ContentType.JSON)
+            .cookie(cookie)
+        .when()
+            .port(port)
+            .delete("/api/account/profile/profile-image")
         .then()
             .statusCode(HttpStatus.OK.value());
     }
