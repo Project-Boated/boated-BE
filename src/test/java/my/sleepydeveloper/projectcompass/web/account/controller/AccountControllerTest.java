@@ -16,6 +16,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.ResourceUtils;
 
+import java.io.IOException;
+
 import static io.restassured.RestAssured.given;
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static my.sleepydeveloper.projectcompass.web.account.controller.document.AccountDocument.*;
@@ -161,6 +163,27 @@ class AccountControllerTest extends AcceptanceTest {
                 .statusCode(HttpStatus.OK.value());
     }
 
+    @Test
+    void putAccountProfileImage_프로필이미지수정_성공() throws IOException {
+        Mockito.when(awsS3Service.uploadProfileImage(Mockito.any(), Mockito.any(), Mockito.any()))
+                .thenReturn("http://test.com");
+
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+
+        // Account Update
+        given(this.spec)
+            .filter(documentAccountProfileImageUpdate())
+            .accept(ContentType.JSON)
+            .contentType(ContentType.MULTIPART)
+            .cookie(cookie)
+        .when()
+            .port(port)
+            .multiPart("file", ResourceUtils.getFile("classpath:profile-image-test.png"), "image/jpg")
+            .put("/api/account/profile/profile-image")
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
 
 
 }

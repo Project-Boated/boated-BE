@@ -91,6 +91,17 @@ public class AccountDocument {
         );
     }
 
+    public static RestDocumentationFilter documentAccountProfileImageUpdate() {
+        return document("account-profile-image-update",
+                requestHeaders(
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description("보낼 Media Type")
+                ),
+                requestParts(
+                        partWithName("file").description("바꿀 프로필 파일")
+                )
+        );
+    }
+
 
 
 }

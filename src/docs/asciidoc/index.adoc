@@ -260,6 +260,26 @@ include::{snippets}/account-nickname-update/request-fields.adoc[]
 ===== http-response
 include::{snippets}/account-nickname-update/http-response.adoc[]
 
+[[resources-account-profile-image-update]]
+=== 프로필 이미지 업데이트
+`PUT` 요청을 사용해서 프로필 이미지를 업데이트 할 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/account-profile-image-update/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/account-profile-image-update/request-headers.adoc[]
+
+===== request-parts
+include::{snippets}/account-profile-image-update/request-parts.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/account-profile-image-update/http-response.adoc[]
+
 [[resources-project]]
 == 프로젝트
 
