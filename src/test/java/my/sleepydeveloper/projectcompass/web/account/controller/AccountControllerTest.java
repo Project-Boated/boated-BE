@@ -16,6 +16,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.ResourceUtils;
 
+import java.io.IOException;
+
 import static io.restassured.RestAssured.given;
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static my.sleepydeveloper.projectcompass.web.account.controller.document.AccountDocument.*;
@@ -63,7 +65,7 @@ class AccountControllerTest extends AcceptanceTest {
     }
 
     @Test
-    void updateAccountProfile_프로필update_성공() throws Exception {
+    void patchAccountProfile_프로필update_성공() throws Exception {
 
         Mockito.when(awsS3Service.uploadProfileImage(Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn("http://test.com");
@@ -123,7 +125,7 @@ class AccountControllerTest extends AcceptanceTest {
     }
 
     @Test
-    void nicknameUniqueValidation_중복되지않는닉네임조회_notDupliated() throws Exception {
+    void validationNicknameUnique_중복되지않는닉네임조회_notDupliated() throws Exception {
 
         AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
@@ -160,5 +162,43 @@ class AccountControllerTest extends AcceptanceTest {
         .then()
                 .statusCode(HttpStatus.OK.value());
     }
+
+    @Test
+    void putAccountProfileImage_프로필이미지수정_성공() throws IOException {
+        Mockito.when(awsS3Service.uploadProfileImage(Mockito.any(), Mockito.any(), Mockito.any()))
+                .thenReturn("http://test.com");
+
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+
+        given(this.spec)
+            .filter(documentAccountProfileImageUpdate())
+            .accept(ContentType.JSON)
+            .contentType(ContentType.MULTIPART)
+            .cookie(cookie)
+        .when()
+            .port(port)
+            .multiPart("file", ResourceUtils.getFile("classpath:profile-image-test.png"), "image/jpg")
+            .put("/api/account/profile/profile-image")
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void deleteAccountProfileImage_이미지삭제_성공() throws IOException {
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+
+        given(this.spec)
+            .filter(documentAccountProfileImageDelete())
+            .accept(ContentType.JSON)
+            .cookie(cookie)
+        .when()
+            .port(port)
+            .delete("/api/account/profile/profile-image")
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
+
 
 }
