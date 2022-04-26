@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.util.MimeType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -63,12 +65,18 @@ public class AccountController {
             @ModelAttribute @Validated PatchAccountProfileRequest patchAccountProfileRequest
     ) {
 
+        MimeType mimeType = MimeType.valueOf(Objects.requireNonNull(patchAccountProfileRequest.getProfileImageFile().getContentType()));
+        if(!mimeType.getType().equals("image")) {
+            throw new NotImageFileException(ErrorCode.COMMON_NOT_IMAGE_FILE_EXCEPTION);
+        }
+
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .originalPassword(patchAccountProfileRequest.getOriginalPassword())
                 .newPassword(patchAccountProfileRequest.getNewPassword())
                 .nickname(patchAccountProfileRequest.getNickname())
                 .profileImageFile(patchAccountProfileRequest.getProfileImageFile())
                 .build();
+
 
         accountService.updateProfile(account, updateCondition);
     }
@@ -94,6 +102,11 @@ public class AccountController {
     @PutMapping("/profile/profile-image")
     public void putAccountProfileImage(@AuthenticationPrincipal Account account,
                                            @RequestParam(name = "file") MultipartFile file) {
+        MimeType mimeType = MimeType.valueOf(Objects.requireNonNull(file.getContentType()));
+        if(!mimeType.getType().equals("image")) {
+            throw new NotImageFileException(ErrorCode.COMMON_NOT_IMAGE_FILE_EXCEPTION);
+        }
+
         try {
             UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), UUID.randomUUID().toString(), file.getContentType(), "host");
             uploadFileService.save(uploadFile);
