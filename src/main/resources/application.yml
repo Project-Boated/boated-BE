@@ -1,18 +1,11 @@
 spring:
-  datasource:
-    url: jdbc:mysql://boated2.c68lplzddyon.ap-northeast-2.rds.amazonaws.com:3306/boated
-    username: admin
-    password: boatedboated
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
   jpa:
     hibernate:
       ddl-auto: create
     properties:
       hibernate:
-        format_sql: true
         default_batch_fetch_size: 100
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.H2Dialect
 
   messages:
     basename: messages, errors
@@ -31,11 +24,3 @@ server:
       enabled: true
       charset: UTF-8
       force: true
-
-logging.level:
-  org.hibernate.SQL: debug
-
-kakao:
-  clientId: c4b1acae114723b9d0071de88a8f8b08
-  redirectUri: http://localhost:8080/test/kakaologin/redirection
-  clientSecret: owtBVoTeQtRntB5JOQG8w2qBnbZnrZLJ
