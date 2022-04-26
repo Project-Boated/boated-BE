@@ -2,14 +2,17 @@ package my.sleepydeveloper.projectcompass.web.account.controller;
 
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
+import my.sleepydeveloper.projectcompass.aws.AwsS3Service;
 import my.sleepydeveloper.projectcompass.common.basetest.AcceptanceTest;
 import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
-import my.sleepydeveloper.projectcompass.web.account.dto.SignUpRequest;
-import my.sleepydeveloper.projectcompass.web.account.dto.PatchAccountProfileRequest;
-import my.sleepydeveloper.projectcompass.web.account.dto.ValidationNicknameUniqueRequest;
 import my.sleepydeveloper.projectcompass.web.account.dto.PutNicknameRequest;
-import org.junit.jupiter.api.AfterEach;
+import my.sleepydeveloper.projectcompass.web.account.dto.SignUpRequest;
+import my.sleepydeveloper.projectcompass.web.account.dto.ValidationNicknameUniqueRequest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.ResourceUtils;
 
@@ -18,7 +21,11 @@ import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static my.sleepydeveloper.projectcompass.web.account.controller.document.AccountDocument.*;
 import static org.hamcrest.Matchers.*;
 
+@ExtendWith(MockitoExtension.class)
 class AccountControllerTest extends AcceptanceTest {
+
+    @MockBean
+    AwsS3Service awsS3Service;
 
     @Test
     void signUp_회원가입_성공() throws Exception {
@@ -58,6 +65,9 @@ class AccountControllerTest extends AcceptanceTest {
     @Test
     void updateAccountProfile_프로필update_성공() throws Exception {
 
+        Mockito.when(awsS3Service.uploadProfileImage(Mockito.any(), Mockito.any(), Mockito.any()))
+                .thenReturn("http://test.com");
+
         AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
 
@@ -75,7 +85,7 @@ class AccountControllerTest extends AcceptanceTest {
                 .multiPart("nickname", updateNickname)
                 .multiPart("originalPassword", PASSWORD)
                 .multiPart("newPassword", updatePassword)
-                .multiPart("profileImageFile", ResourceUtils.getFile("classpath:profile-image-test.png"))
+                .multiPart("profileImageFile", ResourceUtils.getFile("classpath:profile-image-test.png"), "image/jpg")
                 .patch("/api/account/profile")
         .then()
                 .statusCode(HttpStatus.OK.value());
