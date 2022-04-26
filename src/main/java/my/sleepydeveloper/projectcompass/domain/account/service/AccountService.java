@@ -140,7 +140,7 @@ public class AccountService {
         Account findAccount = accountRepository.findById(account.getId())
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-        if (!Objects.equals(account.getNickname(), nickname)
+        if (!Objects.equals(findAccount.getNickname(), nickname)
                 && checkDuplicatedNickname(nickname)) {
             throw new AccountNicknameAlreadyExistsException(ErrorCode.ACCOUNT_NICKNAME_EXISTS);
         }

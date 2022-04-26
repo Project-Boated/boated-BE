@@ -28,7 +28,8 @@ public class Account extends BaseTimeEntity {
     private String password;
 
     @Column(unique = true)
-    private String nickname;
+    private String
+            nickname;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_image_file_id")
