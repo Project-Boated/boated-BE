@@ -60,13 +60,14 @@ public class AccountController {
     @PatchMapping("/profile")
     public void patchAccountProfile(
             @AuthenticationPrincipal Account account,
-            @RequestBody @Validated PatchAccountProfileRequest patchAccountProfileRequest
+            @ModelAttribute @Validated PatchAccountProfileRequest patchAccountProfileRequest
     ) {
 
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .originalPassword(patchAccountProfileRequest.getOriginalPassword())
                 .newPassword(patchAccountProfileRequest.getNewPassword())
                 .nickname(patchAccountProfileRequest.getNickname())
+                .profileImageFile(patchAccountProfileRequest.getProfileImageFile())
                 .build();
 
         accountService.updateProfile(account, updateCondition);

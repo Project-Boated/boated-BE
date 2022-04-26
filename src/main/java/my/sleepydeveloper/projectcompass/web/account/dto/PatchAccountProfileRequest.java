@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -16,5 +17,5 @@ public class PatchAccountProfileRequest {
 
     private String newPassword;
 
-    private String profileImageUrl;
+    private MultipartFile profileImageFile;
 }
