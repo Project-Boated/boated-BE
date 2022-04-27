@@ -17,6 +17,11 @@ pipeline {
                 sh './gradlew clean'
             }
         }
+        stage('Copy Credential') {
+            steps {
+                sh 'cp /home/ubuntu/boated-be/application-deploy.properties src/main/resources/application-deploy.properties'
+            }
+        }
         stage('Test') {
             steps {
                 sh './gradlew test -Dorg.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64'
