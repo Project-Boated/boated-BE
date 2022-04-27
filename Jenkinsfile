@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Copy Credential') {
             steps {
-                sh 'cp /home/ubuntu/boated-be/application-deploy.properties src/main/resources/application-deploy.properties'
+                sh 'cp /var/jenkins_home/boated-be/application-deploy.properties src/main/resources/application-deploy.properties'
             }
         }
         stage('Test') {
