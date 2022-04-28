@@ -12,6 +12,7 @@ import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.service.UploadFileService;
 import my.sleepydeveloper.projectcompass.web.account.dto.*;
 import my.sleepydeveloper.projectcompass.domain.common.exception.CommonIOException;
+import my.sleepydeveloper.projectcompass.web.account.exception.AccountProfileImageFileNotHostException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -120,6 +121,10 @@ public class AccountController {
 
     @GetMapping("/profile/profile-image")
     public ResponseEntity<byte[]> getAccountProfileImage(@AuthenticationPrincipal Account account) {
+        if(!accountService.checkProfileImageHost(account)) {
+            throw new AccountProfileImageFileNotHostException(ErrorCode.ACCOUNT_PROFILE_IMAGE_FILE_NOT_HOST);
+        }
+
         AwsS3File awsS3File = awsS3Service.getProfileImageBytes(account);
 
         HttpHeaders httpHeaders = new HttpHeaders();
