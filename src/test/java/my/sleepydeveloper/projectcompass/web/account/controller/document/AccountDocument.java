@@ -106,5 +106,9 @@ public class AccountDocument {
         return document("account-profile-image-delete");
     }
 
+    public static RestDocumentationFilter documentAccountProfileImageRetrieve() {
+        return document("account-profile-image-retrieve");
+    }
+
 
 }

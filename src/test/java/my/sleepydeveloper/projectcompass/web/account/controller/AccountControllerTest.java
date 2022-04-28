@@ -2,6 +2,7 @@ package my.sleepydeveloper.projectcompass.web.account.controller;
 
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
+import my.sleepydeveloper.projectcompass.aws.AwsS3File;
 import my.sleepydeveloper.projectcompass.aws.AwsS3Service;
 import my.sleepydeveloper.projectcompass.common.basetest.AcceptanceTest;
 import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static io.restassured.RestAssured.given;
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
@@ -180,6 +182,24 @@ class AccountControllerTest extends AcceptanceTest {
             .port(port)
             .multiPart("file", ResourceUtils.getFile("classpath:profile-image-test.png"), "image/jpg")
             .put("/api/account/profile/profile-image")
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void getAccountProfileImage_이미지Get_성공() throws IOException {
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+
+        Mockito.when(awsS3Service.getProfileImageBytes(Mockito.any()))
+                        .thenReturn(new AwsS3File("asdf".getBytes(), "image/png", "filename"));
+
+        given(this.spec)
+            .filter(documentAccountProfileImageRetrieve())
+            .cookie(cookie)
+        .when()
+            .port(port)
+            .get("/api/account/profile/profile-image")
         .then()
             .statusCode(HttpStatus.OK.value());
     }
