@@ -159,4 +159,15 @@ public class AccountService {
 
         findAccount.updateProfileImageFile(uploadFile);
     }
+
+    public boolean checkProfileImageHost(Account account) {
+        Account findAccount = accountRepository.findById(account.getId())
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        if (findAccount.getProfileImageFile() == null) {
+            return false;
+        }
+
+        return findAccount.getProfileImageFile().getSaveFileName() != null;
+    }
 }
