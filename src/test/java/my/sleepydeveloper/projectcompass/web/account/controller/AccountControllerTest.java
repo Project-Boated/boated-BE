@@ -6,13 +6,17 @@ import my.sleepydeveloper.projectcompass.aws.AwsS3File;
 import my.sleepydeveloper.projectcompass.aws.AwsS3Service;
 import my.sleepydeveloper.projectcompass.common.basetest.AcceptanceTest;
 import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
+import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
 import my.sleepydeveloper.projectcompass.web.account.dto.PutNicknameRequest;
 import my.sleepydeveloper.projectcompass.web.account.dto.SignUpRequest;
 import my.sleepydeveloper.projectcompass.web.account.dto.ValidationNicknameUniqueRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.ResourceUtils;
@@ -192,7 +196,17 @@ class AccountControllerTest extends AcceptanceTest {
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
 
         Mockito.when(awsS3Service.getProfileImageBytes(Mockito.any()))
-                        .thenReturn(new AwsS3File("asdf".getBytes(), "image/png", "filename"));
+                .thenReturn(new AwsS3File("asdf".getBytes(), "image/png", "filename"));
+
+        given(this.spec)
+            .accept(ContentType.JSON)
+            .contentType(ContentType.MULTIPART)
+            .cookie(cookie)
+        .when()
+            .port(port)
+            .multiPart("file", ResourceUtils.getFile("classpath:profile-image-test.png"), "image/jpg")
+            .put("/api/account/profile/profile-image");
+
 
         given(this.spec)
             .filter(documentAccountProfileImageRetrieve())
