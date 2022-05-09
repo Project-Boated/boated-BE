@@ -325,6 +325,9 @@ include::{snippets}/project-create/http-request.adoc[]
 ===== request-headers
 include::{snippets}/project-create/request-headers.adoc[]
 
+===== request-fields
+include::{snippets}/project-create/request-fields.adoc[]
+
 ==== Response
 
 ===== http-response

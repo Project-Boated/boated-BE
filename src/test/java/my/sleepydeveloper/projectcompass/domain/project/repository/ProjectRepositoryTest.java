@@ -16,8 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
-import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.PROJECT_DESCRIPTION;
-import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.PROJECT_NAME;
+import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -34,7 +33,7 @@ class ProjectRepositoryTest extends BaseTest {
     void existsByNameAndCaptain_projectName이Captain에있음_true() throws Exception {
         // Given
         Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
-        Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain));
+        Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain, PROJECT_DEADLINE));
 
         // When
         boolean result = projectRepository.existsByNameAndCaptain(project.getName(), captain);
@@ -47,7 +46,7 @@ class ProjectRepositoryTest extends BaseTest {
     void existsByNameAndCaptain_projectName이Captain에없음_false() throws Exception {
         // Given
         Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
-        Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain));
+        Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain, PROJECT_DEADLINE));
         Account newAccount = accountRepository.save(new Account("newUsername", PASSWORD, "newNickname", PROFILE_IMAGE_FILE, ROLES));
 
         // When
@@ -61,7 +60,7 @@ class ProjectRepositoryTest extends BaseTest {
     void existsByName_존재하는name으로조회_true() throws Exception {
         // Given
         Account captain = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
-        Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain));
+        Project project = projectRepository.save(new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain, PROJECT_DEADLINE));
 
         // When
         boolean result = projectRepository.existsByName(PROJECT_NAME);
@@ -87,7 +86,7 @@ class ProjectRepositoryTest extends BaseTest {
         Account account = accountRepository.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
         List<Project> projects = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            projectRepository.save(new Project(PROJECT_NAME + "i", PROJECT_DESCRIPTION, account));
+            projectRepository.save(new Project(PROJECT_NAME + "i", PROJECT_DESCRIPTION, account, PROJECT_DEADLINE));
         }
 
         // When

@@ -30,7 +30,14 @@ public class ProjectController {
             @AuthenticationPrincipal Account account,
             @RequestBody @Validated CreateProjectRequest createProjectRequest
     ) {
-        Project project = projectService.save(new Project(createProjectRequest.getName(), createProjectRequest.getDescription(), account));
+        Project project = projectService.save(
+                Project.builder()
+                        .name(createProjectRequest.getName())
+                        .description(createProjectRequest.getDescription())
+                        .captain(account)
+                        .deadline(createProjectRequest.getDeadline())
+                        .build()
+        );
         return new CreateProjectResponse(project);
     }
 
