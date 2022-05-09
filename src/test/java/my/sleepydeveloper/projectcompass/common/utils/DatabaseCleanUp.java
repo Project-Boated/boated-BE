@@ -25,6 +25,9 @@ public class DatabaseCleanUp {
                 .filter(e -> e.getJavaType().getAnnotation(Entity.class) != null)
                 .map(e -> CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, e.getName()))
                 .collect(Collectors.toList());
+        tables.remove("url_profile_image");
+        tables.remove("upload_file_profile_image");
+        tables.remove("kakao_account");
     }
 
     @Transactional
@@ -33,7 +36,7 @@ public class DatabaseCleanUp {
         em.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate();
 
         for (String table : tables) {
-            if(table.equals("kakao_account")) continue;
+//            if(table.equals("kakao_account")) continue;
             em.createNativeQuery("TRUNCATE TABLE " + table).executeUpdate();
         }
 
