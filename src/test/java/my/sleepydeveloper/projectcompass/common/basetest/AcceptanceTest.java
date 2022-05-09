@@ -42,6 +42,5 @@ public class AcceptanceTest {
     public void afterEach() {
         databaseCleanUp.init();
         databaseCleanUp.execute();
-        PROFILE_IMAGE_FILE.setId(null);
     }
 }

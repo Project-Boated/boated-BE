@@ -3,6 +3,7 @@ package my.sleepydeveloper.projectcompass.security;
 import my.sleepydeveloper.projectcompass.common.basetest.AcceptanceTest;
 import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
 import my.sleepydeveloper.projectcompass.security.dto.UsernamePasswordDto;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static my.sleepydeveloper.projectcompass.security.document.LoginLogoutDocument.documentSignIn;
 import static org.hamcrest.Matchers.hasKey;
 
+@Disabled
 public class LoginLogoutTest extends AcceptanceTest {
 
     @Test

@@ -10,6 +10,7 @@ import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
 import my.sleepydeveloper.projectcompass.web.account.dto.PutNicknameRequest;
 import my.sleepydeveloper.projectcompass.web.account.dto.SignUpRequest;
 import my.sleepydeveloper.projectcompass.web.account.dto.ValidationNicknameUniqueRequest;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,6 +31,7 @@ import static my.sleepydeveloper.projectcompass.web.account.controller.document.
 import static org.hamcrest.Matchers.*;
 
 @ExtendWith(MockitoExtension.class)
+@Disabled
 class AccountControllerTest extends AcceptanceTest {
 
     @MockBean

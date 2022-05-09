@@ -18,6 +18,7 @@ import my.sleepydeveloper.projectcompass.domain.project.vo.ProjectUpdateConditio
 import my.sleepydeveloper.projectcompass.domain.uploadfile.repository.UploadFileRepository;
 import my.sleepydeveloper.projectcompass.security.service.KakaoWebService;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -40,6 +41,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @SpringBootTest
 @Transactional
 @ExtendWith(MockitoExtension.class)
+@Disabled
 class ProjectServiceTest extends BaseTest {
 
     @Autowired
@@ -68,12 +70,6 @@ class ProjectServiceTest extends BaseTest {
 
     @Autowired
     AccountProjectRepository accountProjectRepository;
-
-
-    @AfterEach
-    void afterEach() {
-        PROFILE_IMAGE_FILE.setId(null);
-    }
 
     @Test
     void save_project저장_성공() throws Exception {

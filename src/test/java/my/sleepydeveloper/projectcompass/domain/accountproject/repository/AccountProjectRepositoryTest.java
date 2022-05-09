@@ -7,6 +7,7 @@ import my.sleepydeveloper.projectcompass.domain.accountproject.entity.AccountPro
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -25,6 +26,7 @@ import static org.springframework.context.annotation.ComponentScan.*;
         type = FilterType.ANNOTATION,
         classes = Repository.class
 ))
+@Disabled
 class AccountProjectRepositoryTest extends BaseTest {
 
     @Autowired
@@ -35,11 +37,6 @@ class AccountProjectRepositoryTest extends BaseTest {
 
     @Autowired
     AccountProjectRepository accountProjectRepository;
-
-    @AfterEach
-    void afterEach() {
-        PROFILE_IMAGE_FILE.setId(null);
-    }
 
     @Test
     void findCrewsFromProject_crew찾기_정상() throws Exception {

@@ -3,6 +3,8 @@ package my.sleepydeveloper.projectcompass.security.mock;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Role;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
+import my.sleepydeveloper.projectcompass.domain.profileimage.entity.UploadFileProfileImage;
+import my.sleepydeveloper.projectcompass.domain.profileimage.entity.UrlProfileImage;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
 import my.sleepydeveloper.projectcompass.security.token.JsonAuthenticationToken;
 
@@ -32,7 +34,7 @@ public class WithMockJsonUserSecurityContextFactory implements WithSecurityConte
         Account account = new Account(annotation.username(),
                 annotation.password(),
                 annotation.nickname(),
-                new UploadFile(annotation.profileImageUrl()), Set.of(Role.USER));
+                new UrlProfileImage(annotation.profileImageUrl()), Set.of(Role.USER));
 
         JsonAuthenticationToken jsonAuthenticationToken = new JsonAuthenticationToken(accountService.save(account),
                 null,

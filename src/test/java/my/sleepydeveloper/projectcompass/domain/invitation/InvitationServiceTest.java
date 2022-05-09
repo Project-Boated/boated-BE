@@ -37,11 +37,6 @@ class InvitationServiceTest extends BaseTest {
     @Autowired
     InvitationRepository invitationRepository;
 
-    @AfterEach
-    void afterEach() {
-        PROFILE_IMAGE_FILE.setId(null);
-    }
-
 //    @Test
 //    void inviteCrew_초대1개생성_정상() throws Exception {
 //        // Given
