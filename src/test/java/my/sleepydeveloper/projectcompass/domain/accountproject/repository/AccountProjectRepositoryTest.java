@@ -17,8 +17,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
-import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.PROJECT_DESCRIPTION;
-import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.PROJECT_NAME;
+import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.context.annotation.ComponentScan.*;
 
@@ -44,7 +43,7 @@ class AccountProjectRepositoryTest extends BaseTest {
         Account captain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
         accountRepository.save(captain);
 
-        Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
+        Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain, PROJECT_DEADLINE);
         projectRepository.save(project);
 
         int crewsNumber = 3;
@@ -68,7 +67,7 @@ class AccountProjectRepositoryTest extends BaseTest {
         Account captain = new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES);
         accountRepository.save(captain);
 
-        Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain);
+        Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain, PROJECT_DEADLINE);
         projectRepository.save(project);
 
         accountProjectRepository.save(new AccountProject(captain, project));

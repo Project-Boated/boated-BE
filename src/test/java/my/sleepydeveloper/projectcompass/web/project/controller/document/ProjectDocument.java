@@ -23,7 +23,8 @@ public class ProjectDocument {
                 ),
                 requestFields(
                         fieldWithPath("name").type(JsonFieldType.STRING).description("프로젝트 이름"),
-                        fieldWithPath("description").type(JsonFieldType.STRING).description("프로젝트 설명")
+                        fieldWithPath("description").type(JsonFieldType.STRING).description("프로젝트 설명"),
+                        fieldWithPath("deadline").type(JsonFieldType.STRING).description("프로젝트 기한 (yyyy-MM-dd HH:mm:ss)")
                 ),
                 responseHeaders(
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")

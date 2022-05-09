@@ -72,6 +72,8 @@ dependencies {
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 
     // Spring Rest Docs
     testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'

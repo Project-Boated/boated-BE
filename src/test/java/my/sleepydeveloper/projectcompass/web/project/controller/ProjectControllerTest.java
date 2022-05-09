@@ -55,7 +55,7 @@ class ProjectControllerTest extends AcceptanceTest {
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
                 .cookie(cookie)
-                .body(new CreateProjectRequest(PROJECT_NAME, PROJECT_DESCRIPTION))
+                .body(new CreateProjectRequest(PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE))
         .when()
                 .port(port)
                 .post("/api/projects")
@@ -70,7 +70,7 @@ class ProjectControllerTest extends AcceptanceTest {
         // Given
         AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION);
+        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
 
         String projectUpdateName = "updatedProjectName";
         String projectUpdateDescription = "updateDescription";
@@ -97,7 +97,7 @@ class ProjectControllerTest extends AcceptanceTest {
         AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         for (int i = 0; i < count; i++) {
-            ProjectTestUtils.createProject(port, cookie, PROJECT_NAME + i, PROJECT_DESCRIPTION);
+            ProjectTestUtils.createProject(port, cookie, PROJECT_NAME + i, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
         }
 
         // When

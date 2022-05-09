@@ -1,6 +1,7 @@
 package my.sleepydeveloper.projectcompass.domain.project.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
@@ -8,6 +9,7 @@ import my.sleepydeveloper.projectcompass.domain.accountproject.entity.AccountPro
 import my.sleepydeveloper.projectcompass.domain.common.entity.BaseTimeEntity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +26,17 @@ public class Project extends BaseTimeEntity {
 
     private String description;
 
+    private LocalDateTime deadline;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id_captain")
     private Account captain;
 
-    public Project(String name, String description, Account captain) {
+    @Builder
+    public Project(String name, String description, Account captain, LocalDateTime deadline) {
         this.name = name;
         this.description = description;
+        this.deadline = deadline;
         this.captain = captain;
     }
 
