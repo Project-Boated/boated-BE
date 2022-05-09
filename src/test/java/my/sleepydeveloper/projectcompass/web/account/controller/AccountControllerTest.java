@@ -31,7 +31,6 @@ import static my.sleepydeveloper.projectcompass.web.account.controller.document.
 import static org.hamcrest.Matchers.*;
 
 @ExtendWith(MockitoExtension.class)
-@Disabled
 class AccountControllerTest extends AcceptanceTest {
 
     @MockBean
@@ -111,7 +110,7 @@ class AccountControllerTest extends AcceptanceTest {
             .statusCode(HttpStatus.OK.value())
             .assertThat().body("username", equalTo(USERNAME))
             .assertThat().body("nickname", equalTo(updateNickname))
-            .assertThat().body("profileImageUrl", equalTo("host"))
+            .assertThat().body("profileImageUrl", notNullValue())
             .assertThat().body("roles", notNullValue());
     }
 

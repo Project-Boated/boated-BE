@@ -26,7 +26,6 @@ import static my.sleepydeveloper.projectcompass.web.project.controller.document.
 import static org.hamcrest.Matchers.notNullValue;
 
 @AutoConfigureMockMvc
-@Disabled
 class ProjectControllerTest extends AcceptanceTest {
 
     @Autowired
