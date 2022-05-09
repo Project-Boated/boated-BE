@@ -7,13 +7,17 @@ import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.util.IOUtils;
+import my.sleepydeveloper.projectcompass.aws.exception.AccountProfileImageNotUploadFile;
 import my.sleepydeveloper.projectcompass.aws.exception.FileUploadInterruptException;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNotFoundException;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
-import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
+import my.sleepydeveloper.projectcompass.domain.profileimage.entity.ProfileImage;
 import my.sleepydeveloper.projectcompass.domain.common.exception.CommonIOException;
+import my.sleepydeveloper.projectcompass.domain.profileimage.entity.UploadFileProfileImage;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,9 +63,11 @@ public class AwsS3Service {
         }
     }
 
-    public String uploadProfileImage(Account account, MultipartFile multipartFile, UploadFile uploadFile) throws IOException {
+    public String uploadProfileImage(Account account, MultipartFile multipartFile, UploadFileProfileImage profileImage) throws IOException {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(multipartFile.getContentType());
+
+        UploadFile uploadFile = profileImage.getUploadFile();
 
         String path = "profile/" + account.getId() + "/" + uploadFile.getSaveFileName() + "." + uploadFile.getExt();
         uploadMultipartFile(path, multipartFile, metadata);
@@ -80,13 +86,20 @@ public class AwsS3Service {
     public AwsS3File getProfileImageBytes(Account account) {
         Account findAccount = accountRepository.findById(account.getId())
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+        ProfileImage profileImage = (ProfileImage) Hibernate.unproxy(findAccount.getProfileImage());
+
+        if(!(profileImage instanceof UploadFileProfileImage)) {
+            throw new AccountProfileImageNotUploadFile(ErrorCode.ACCOUNT_PROFILE_IMAGE_NOT_UPLOAD_FILE);
+        }
+
+        UploadFile uploadFile = ((UploadFileProfileImage) profileImage).getUploadFile();
 
         try {
-            byte[] bytes = getFile("profile/" + findAccount.getId() + "/" + findAccount.getProfileImageFile().getSaveFileName() + "." + findAccount.getProfileImageFile().getExt());
+            byte[] bytes = getFile("profile/" + findAccount.getId() + "/" + uploadFile.getSaveFileName() + "." + uploadFile.getExt());
 
-            String fileName = URLEncoder.encode(findAccount.getProfileImageFile().getOriginalFileName() + "." + findAccount.getProfileImageFile().getExt(), "UTF-8").replaceAll("\\+", "%20");
+            String fileName = URLEncoder.encode(uploadFile.getOriginalFileName() + "." + uploadFile.getExt(), "UTF-8").replaceAll("\\+", "%20");
 
-            return new AwsS3File(bytes, findAccount.getProfileImageFile().getMediaType(), fileName);
+            return new AwsS3File(bytes, uploadFile.getMediaType(), fileName);
         } catch (IOException e) {
             throw new CommonIOException(ErrorCode.COMMON_IO_EXCEPTION, e);
         }

@@ -37,7 +37,7 @@ class AccountRepositoryTest extends BaseTest {
         AssertionsForClassTypes.assertThat(account.get().getUsername()).isEqualTo(USERNAME);
         AssertionsForClassTypes.assertThat(account.get().getPassword()).isEqualTo(PASSWORD);
         AssertionsForClassTypes.assertThat(account.get().getNickname()).isEqualTo(NICKNAME);
-        AssertionsForClassTypes.assertThat(account.get().getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
+        AssertionsForClassTypes.assertThat(account.get().getProfileImage()).isEqualTo(PROFILE_IMAGE_FILE);
         AssertionsForClassTypes.assertThat(account.get().getRoles()).isEqualTo(ROLES);
     }
 

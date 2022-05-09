@@ -7,12 +7,14 @@ import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Role;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
 import my.sleepydeveloper.projectcompass.domain.account.service.condition.AccountUpdateCond;
+import my.sleepydeveloper.projectcompass.domain.common.exception.CommonIOException;
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
+import my.sleepydeveloper.projectcompass.domain.profileimage.entity.UploadFileProfileImage;
+import my.sleepydeveloper.projectcompass.domain.profileimage.entity.UrlProfileImage;
+import my.sleepydeveloper.projectcompass.domain.profileimage.service.ProfileImageService;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.service.UploadFileService;
 import my.sleepydeveloper.projectcompass.web.account.dto.*;
-import my.sleepydeveloper.projectcompass.domain.common.exception.CommonIOException;
-import my.sleepydeveloper.projectcompass.web.account.exception.AccountProfileImageFileNotHostException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URI;
@@ -38,6 +41,7 @@ public class AccountController {
 
     private final AccountService accountService;
     private final UploadFileService uploadFileService;
+    private final ProfileImageService profileImageService;
     private final AwsS3Service awsS3Service;
 
     @Value("${cloud.aws.s3.baseUrl}")
@@ -50,14 +54,22 @@ public class AccountController {
         String nickname = accountDto.getNickname();
         String profileImageUrl = accountDto.getProfileImageUrl();
 
-        Account savedAccount = accountService.save(new Account(username, password, nickname, new UploadFile(profileImageUrl), Set.of(Role.USER)));
+        Account savedAccount = accountService.save(new Account(username, password, nickname, new UrlProfileImage(profileImageUrl), Set.of(Role.USER)));
 
         return ResponseEntity.created(URI.create("/api/account/profile" + savedAccount.getId())).build();
     }
 
     @GetMapping("/profile")
-    public GetAccountProfileResponse getAccountProfile(@AuthenticationPrincipal Account account) {
-        return new GetAccountProfileResponse(accountService.findById(account.getId()));
+    public GetAccountProfileResponse getAccountProfile(@AuthenticationPrincipal Account account, HttpServletRequest request) {
+
+        String profileUrl = accountService.getProfileUrl(account, request);
+        String nickname = accountService.getNickname(account);
+        String username = accountService.getUsername(account);
+        Set<Role> roles = accountService.getRoles(account);
+
+        return new GetAccountProfileResponse(username, nickname, profileUrl, roles.stream()
+                .map(Role::getName)
+                .toList());
     }
 
     @PatchMapping("/profile")
@@ -66,9 +78,11 @@ public class AccountController {
             @ModelAttribute @Validated PatchAccountProfileRequest patchAccountProfileRequest
     ) {
 
-        MimeType mimeType = MimeType.valueOf(Objects.requireNonNull(patchAccountProfileRequest.getProfileImageFile().getContentType()));
-        if(!mimeType.getType().equals("image")) {
-            throw new NotImageFileException(ErrorCode.COMMON_NOT_IMAGE_FILE_EXCEPTION);
+        if (patchAccountProfileRequest.getProfileImageFile() != null) {
+            MimeType mimeType = MimeType.valueOf(Objects.requireNonNull(patchAccountProfileRequest.getProfileImageFile().getContentType()));
+            if (!mimeType.getType().equals("image")) {
+                throw new NotImageFileException(ErrorCode.COMMON_NOT_IMAGE_FILE_EXCEPTION);
+            }
         }
 
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
@@ -102,18 +116,19 @@ public class AccountController {
 
     @PutMapping("/profile/profile-image")
     public void putAccountProfileImage(@AuthenticationPrincipal Account account,
-                                           @RequestParam(name = "file") MultipartFile file) {
+                                       @RequestParam(name = "file") MultipartFile file) {
         MimeType mimeType = MimeType.valueOf(Objects.requireNonNull(file.getContentType()));
-        if(!mimeType.getType().equals("image")) {
+        if (!mimeType.getType().equals("image")) {
             throw new NotImageFileException(ErrorCode.COMMON_NOT_IMAGE_FILE_EXCEPTION);
         }
 
         try {
             UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), UUID.randomUUID().toString(), file.getContentType(), "host");
-            uploadFileService.save(uploadFile);
+            UploadFileProfileImage uploadFileProfileImage = new UploadFileProfileImage(uploadFile);
+            profileImageService.save(uploadFileProfileImage);
 
-            awsS3Service.uploadProfileImage(account, file, uploadFile);
-            accountService.updateProfileImage(account, uploadFile);
+            awsS3Service.uploadProfileImage(account, file, uploadFileProfileImage);
+            accountService.updateProfileImage(account, uploadFileProfileImage);
         } catch (IOException e) {
             throw new CommonIOException(ErrorCode.COMMON_IO_EXCEPTION, e);
         }
@@ -121,9 +136,7 @@ public class AccountController {
 
     @GetMapping("/profile/profile-image")
     public ResponseEntity<byte[]> getAccountProfileImage(@AuthenticationPrincipal Account account) {
-        if(!accountService.checkProfileImageHost(account)) {
-            throw new AccountProfileImageFileNotHostException(ErrorCode.ACCOUNT_PROFILE_IMAGE_FILE_NOT_HOST);
-        }
+        accountService.checkAccountProfileImageUploadFile(account);
 
         AwsS3File awsS3File = awsS3Service.getProfileImageBytes(account);
 

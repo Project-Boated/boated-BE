@@ -1,6 +1,7 @@
 package my.sleepydeveloper.projectcompass.domain.account.entity;
 
 import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
+import my.sleepydeveloper.projectcompass.domain.profileimage.entity.ProfileImage;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,7 @@ class AccountTest extends BaseTest {
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(PASSWORD);
         assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
+        assertThat(account.getProfileImage()).isEqualTo(PROFILE_IMAGE_FILE);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
@@ -36,7 +37,7 @@ class AccountTest extends BaseTest {
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(PASSWORD);
         assertThat(account.getNickname()).isEqualTo(newNickname);
-        assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
+        assertThat(account.getProfileImage()).isEqualTo(PROFILE_IMAGE_FILE);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
@@ -52,7 +53,7 @@ class AccountTest extends BaseTest {
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(PASSWORD);
         assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
+        assertThat(account.getProfileImage()).isEqualTo(PROFILE_IMAGE_FILE);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
@@ -69,7 +70,7 @@ class AccountTest extends BaseTest {
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(newPassword);
         assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
+        assertThat(account.getProfileImage()).isEqualTo(PROFILE_IMAGE_FILE);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
@@ -85,7 +86,7 @@ class AccountTest extends BaseTest {
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(PASSWORD);
         assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
+        assertThat(account.getProfileImage()).isEqualTo(PROFILE_IMAGE_FILE);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
@@ -96,14 +97,14 @@ class AccountTest extends BaseTest {
 
         // When
         String newProfileUrl = "newProfileUrl";
-        UploadFile newProfileImageFile = new UploadFile(newProfileUrl);
-        account.updateProfileImageFile(newProfileImageFile);
+        ProfileImage newProfileImageFile = new UploadFile(newProfileUrl);
+        account.updateProfileImage(newProfileImageFile);
 
         // Then
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(PASSWORD);
         assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        assertThat(account.getProfileImageFile()).isEqualTo(newProfileImageFile);
+        assertThat(account.getProfileImage()).isEqualTo(newProfileImageFile);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
@@ -121,7 +122,7 @@ class AccountTest extends BaseTest {
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(PASSWORD);
         assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
+        assertThat(account.getProfileImage()).isEqualTo(PROFILE_IMAGE_FILE);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
@@ -138,7 +139,7 @@ class AccountTest extends BaseTest {
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(PASSWORD);
         assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
+        assertThat(account.getProfileImage()).isEqualTo(PROFILE_IMAGE_FILE);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
@@ -173,7 +174,7 @@ class AccountTest extends BaseTest {
         assertThat(account.getUsername()).isEqualTo(USERNAME);
         assertThat(account.getPassword()).isEqualTo(PASSWORD);
         assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
+        assertThat(account.getProfileImage()).isEqualTo(PROFILE_IMAGE_FILE);
         assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 

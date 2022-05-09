@@ -16,7 +16,7 @@ class KakaoAccountTest {
         // then
         assertThat(kakaoAccount.getKakaoId()).isEqualTo(kakaoId);
         assertThat(kakaoAccount.getRoles()).isEqualTo(ROLES);
-        assertThat(kakaoAccount.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
+        assertThat(kakaoAccount.getProfileImage()).isEqualTo(PROFILE_IMAGE_FILE);
     }
 
 }

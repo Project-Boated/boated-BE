@@ -1,6 +1,7 @@
 package my.sleepydeveloper.projectcompass.domain.uploadfile.service;
 
 import lombok.RequiredArgsConstructor;
+import my.sleepydeveloper.projectcompass.domain.profileimage.entity.ProfileImage;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.repository.UploadFileRepository;
 import org.springframework.stereotype.Service;

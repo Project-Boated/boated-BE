@@ -82,7 +82,7 @@ class AccountServiceTest extends BaseTest {
         AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(USERNAME);
         AssertionsForClassTypes.assertThat(passwordEncoder.matches(PASSWORD, account.getPassword())).isTrue();
         AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        AssertionsForClassTypes.assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
+        AssertionsForClassTypes.assertThat(account.getProfileImage()).isEqualTo(PROFILE_IMAGE_FILE);
         AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
@@ -123,7 +123,7 @@ class AccountServiceTest extends BaseTest {
         AssertionsForClassTypes.assertThat(findAccount.getUsername()).isEqualTo(account.getUsername());
         AssertionsForClassTypes.assertThat(findAccount.getPassword()).isEqualTo(account.getPassword());
         AssertionsForClassTypes.assertThat(findAccount.getNickname()).isEqualTo(account.getNickname());
-        AssertionsForClassTypes.assertThat(findAccount.getProfileImageFile()).isEqualTo(account.getProfileImageFile());
+        AssertionsForClassTypes.assertThat(findAccount.getProfileImage()).isEqualTo(account.getProfileImage());
         AssertionsForClassTypes.assertThat(findAccount.getRoles()).isEqualTo(account.getRoles());
     }
 
@@ -362,7 +362,7 @@ class AccountServiceTest extends BaseTest {
         AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(USERNAME);
         AssertionsForClassTypes.assertThat(passwordEncoder.matches(PASSWORD, account.getPassword())).isTrue();
         AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(newNickname);
-        AssertionsForClassTypes.assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
+        AssertionsForClassTypes.assertThat(account.getProfileImage()).isEqualTo(PROFILE_IMAGE_FILE);
         AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
@@ -389,7 +389,7 @@ class AccountServiceTest extends BaseTest {
         AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(USERNAME);
         AssertionsForClassTypes.assertThat(passwordEncoder.matches(PASSWORD, account.getPassword())).isTrue();
         AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        AssertionsForClassTypes.assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
+        AssertionsForClassTypes.assertThat(account.getProfileImage()).isEqualTo(PROFILE_IMAGE_FILE);
         AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
@@ -405,7 +405,7 @@ class AccountServiceTest extends BaseTest {
         AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(USERNAME);
         AssertionsForClassTypes.assertThat(passwordEncoder.matches(PASSWORD, account.getPassword())).isTrue();
         AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(NICKNAME);
-        AssertionsForClassTypes.assertThat(account.getProfileImageFile()).isEqualTo(PROFILE_IMAGE_FILE);
+        AssertionsForClassTypes.assertThat(account.getProfileImage()).isEqualTo(PROFILE_IMAGE_FILE);
         AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
