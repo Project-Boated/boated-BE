@@ -1,6 +1,5 @@
 package my.sleepydeveloper.projectcompass.domain.project.service;
 
-import com.amazonaws.services.s3.AmazonS3;
 import my.sleepydeveloper.projectcompass.aws.AwsS3Service;
 import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
@@ -19,19 +18,15 @@ import my.sleepydeveloper.projectcompass.domain.project.vo.ProjectUpdateConditio
 import my.sleepydeveloper.projectcompass.domain.uploadfile.repository.UploadFileRepository;
 import my.sleepydeveloper.projectcompass.security.service.KakaoWebService;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -42,11 +37,11 @@ import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.PRO
 import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.PROJECT_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.springframework.context.annotation.ComponentScan.Filter;
 
 @SpringBootTest
 @Transactional
 @ExtendWith(MockitoExtension.class)
+@Disabled
 class ProjectServiceTest extends BaseTest {
 
     @Autowired
@@ -75,12 +70,6 @@ class ProjectServiceTest extends BaseTest {
 
     @Autowired
     AccountProjectRepository accountProjectRepository;
-
-
-    @AfterEach
-    void afterEach() {
-        PROFILE_IMAGE_FILE.setId(null);
-    }
 
     @Test
     void save_project저장_성공() throws Exception {

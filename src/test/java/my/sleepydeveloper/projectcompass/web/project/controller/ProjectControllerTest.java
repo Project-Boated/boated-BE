@@ -10,6 +10,7 @@ import my.sleepydeveloper.projectcompass.common.utils.ProjectTestUtils;
 import my.sleepydeveloper.projectcompass.domain.project.service.ProjectService;
 import my.sleepydeveloper.projectcompass.web.project.dto.CreateProjectRequest;
 import my.sleepydeveloper.projectcompass.web.project.dto.PatchProjectRequest;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -25,6 +26,7 @@ import static my.sleepydeveloper.projectcompass.web.project.controller.document.
 import static org.hamcrest.Matchers.notNullValue;
 
 @AutoConfigureMockMvc
+@Disabled
 class ProjectControllerTest extends AcceptanceTest {
 
     @Autowired

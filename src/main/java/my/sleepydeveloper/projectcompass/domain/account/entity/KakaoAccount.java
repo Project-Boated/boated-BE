@@ -8,7 +8,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
+import my.sleepydeveloper.projectcompass.domain.profileimage.entity.ProfileImage;
 
 import java.util.Set;
 
@@ -21,7 +21,7 @@ public class KakaoAccount extends Account{
 	private Long kakaoId;
 
 	@Builder
-	public KakaoAccount(Long kakaoId, Set<Role> roles, UploadFile profileImageFile) {
+	public KakaoAccount(Long kakaoId, Set<Role> roles, ProfileImage profileImageFile) {
 		super(null, null, null, profileImageFile, roles);
 		this.kakaoId = kakaoId;
 	}

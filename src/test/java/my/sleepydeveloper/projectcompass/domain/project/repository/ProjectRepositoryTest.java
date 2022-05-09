@@ -5,6 +5,7 @@ import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -20,6 +21,7 @@ import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.PRO
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@Disabled
 class ProjectRepositoryTest extends BaseTest {
 
     @Autowired
@@ -27,11 +29,6 @@ class ProjectRepositoryTest extends BaseTest {
 
     @Autowired
     AccountRepository accountRepository;
-
-    @AfterEach
-    void afterEach() {
-        PROFILE_IMAGE_FILE.setId(null);
-    }
 
     @Test
     void existsByNameAndCaptain_projectName이Captain에있음_true() throws Exception {

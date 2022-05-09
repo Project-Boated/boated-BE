@@ -18,6 +18,7 @@ public enum ErrorCode {
     ACCOUNT_NICKNAME_REQUIRED(403, "U007", "닉네임이 필요합니다."),
     ACCOUNT_PROFILE_IMAGE_FILE_NOT_EXIST(400, "U008", "Account의 프로필 이미지 파일이 없습니다."),
     ACCOUNT_PROFILE_IMAGE_FILE_NOT_HOST(400, "U009", "Account의 프로필 이미지가 host가 아닙니다"),
+    ACCOUNT_PROFILE_IMAGE_NOT_UPLOAD_FILE(400, "U010", "Account의 프로필 이미지가 Upload되지 않았습니다."),
 
     // Project
     PROJECT_NOT_FOUND(400, "P002", "Project를 찾을 수 없습니다"),

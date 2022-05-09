@@ -1,6 +1,7 @@
 package my.sleepydeveloper.projectcompass.security.service;
 
 import my.sleepydeveloper.projectcompass.domain.account.entity.Role;
+import my.sleepydeveloper.projectcompass.domain.profileimage.entity.UrlProfileImage;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class KakaoAccountDetailsService {
 
         return kakaoAccountRepository.findByKakaoId(kakaoAccountResponse.getId())
                 .orElseGet(() -> kakaoAccountRepository.save(KakaoAccount.builder()
-                        .profileImageFile(kakaoAccountResponse.getProfileImageUrl()==null ? null : new UploadFile(kakaoAccountResponse.getProfileImageUrl()))
+                        .profileImageFile(kakaoAccountResponse.getProfileImageUrl()==null ? null : new UrlProfileImage(kakaoAccountResponse.getProfileImageUrl()))
                         .roles(Set.of(Role.USER))
                         .kakaoId(
                                 kakaoAccountResponse.getId())
