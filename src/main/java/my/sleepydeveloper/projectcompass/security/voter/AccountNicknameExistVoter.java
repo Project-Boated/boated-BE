@@ -3,6 +3,7 @@ package my.sleepydeveloper.projectcompass.security.voter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
@@ -18,54 +19,54 @@ import my.sleepydeveloper.projectcompass.security.exception.NicknameRequiredExce
 
 @Component
 public class AccountNicknameExistVoter implements AccessDecisionVoter {
-	
-	private final AccountService accountService;
-	
-	private static Map<String, String> urlWhitelist = new HashMap<>();
-	static {
-		urlWhitelist.put("/api/account/profile/nickname", "PUT");
-		urlWhitelist.put("/api/account/profile/nickname/unique-validation", "POST");
-		urlWhitelist.put("/api/account/profile", "GET");
-		urlWhitelist.put("/api/account/profile/profile-image", "PUT");
-	}
-	
-	public AccountNicknameExistVoter(AccountService accountService) {
-		this.accountService = accountService;
-	}
-	
-	@Override
-	public boolean supports(ConfigAttribute attribute) {
-		return true;
-	}
-	
-	@Override
-	public int vote(Authentication authentication, Object object, Collection collection) {
-		if(authentication.getPrincipal() instanceof Account) {
-			FilterInvocation filterInvocation = (FilterInvocation)object;
-			String requestURI = filterInvocation.getHttpRequest()
-												.getRequestURI();
-			String method = filterInvocation.getHttpRequest()
-											.getMethod();
-			if(isInWhiteList(requestURI, method)) {
-				return ACCESS_ABSTAIN;
-			}
-			
-			Account account = accountService.findById(((Account)authentication.getPrincipal()).getId());
-			
-			if(!StringUtils.hasText(account.getNickname())) {
-				throw new NicknameRequiredException(ErrorCode.ACCOUNT_NICKNAME_REQUIRED);
-			}
-		}
-		return ACCESS_ABSTAIN;
-	}
-	
-	private boolean isInWhiteList(String requestURI, String method) {
-		return urlWhitelist.containsKey(requestURI) && urlWhitelist.get(requestURI)
-																   .equals(method);
-	}
-	
-	@Override
-	public boolean supports(Class clazz) {
-		return true;
-	}
+
+    private final AccountService accountService;
+
+    private static Map<String, Set<String>> urlWhitelist = new HashMap<>();
+
+    static {
+        urlWhitelist.put("/api/account/profile/nickname", Set.of("PUT"));
+        urlWhitelist.put("/api/account/profile/nickname/unique-validation", Set.of("POST"));
+        urlWhitelist.put("/api/account/profile", Set.of("GET"));
+        urlWhitelist.put("/api/account/profile/profile-image", Set.of("GET", "PUT"));
+    }
+
+    public AccountNicknameExistVoter(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
+    @Override
+    public boolean supports(ConfigAttribute attribute) {
+        return true;
+    }
+
+    @Override
+    public int vote(Authentication authentication, Object object, Collection collection) {
+        if (authentication.getPrincipal() instanceof Account) {
+            FilterInvocation filterInvocation = (FilterInvocation) object;
+            String requestURI = filterInvocation.getHttpRequest()
+                    .getRequestURI();
+            String method = filterInvocation.getHttpRequest()
+                    .getMethod();
+            if (isInWhiteList(requestURI, method)) {
+                return ACCESS_ABSTAIN;
+            }
+
+            Account account = accountService.findById(((Account) authentication.getPrincipal()).getId());
+
+            if (!StringUtils.hasText(account.getNickname())) {
+                throw new NicknameRequiredException(ErrorCode.ACCOUNT_NICKNAME_REQUIRED);
+            }
+        }
+        return ACCESS_ABSTAIN;
+    }
+
+    private boolean isInWhiteList(String requestURI, String method) {
+        return urlWhitelist.containsKey(requestURI) && urlWhitelist.get(requestURI).contains(method);
+    }
+
+    @Override
+    public boolean supports(Class clazz) {
+        return true;
+    }
 }
