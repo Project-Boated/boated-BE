@@ -481,6 +481,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#resources-project-my-captain-retrieve">내가 captain인 프로젝트 목록</a></li>
 </ul>
 </li>
+<li><a href="#resources-invitation">프로젝트 초대</a>
+<ul class="sectlevel2">
+<li><a href="#resources-invitation-create">프로젝트 초대하기</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -617,112 +622,36 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_request"><a class="link" href="#_request">Request</a></h4>
 <div class="sect4">
 <h5 id="_http_request"><a class="link" href="#_http_request">http-request</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/sign-in HTTP/1.1
-Accept: application/json
-Content-Type: application/json
-Host: localhost:42275
-Content-Length: 45
-
-{"username":"username","password":"password"}</code></pre>
-</div>
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::/home/kimbeomjun/git/boated-BE/build/generated-snippets/sign-in/http-request.adoc[]</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_request_headers"><a class="link" href="#_request_headers">request-headers</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Accept</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">받을 MediaType</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">보낸 Content Type</p></td>
-</tr>
-</tbody>
-</table>
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::/home/kimbeomjun/git/boated-BE/build/generated-snippets/sign-in/request-headers.adoc[]</p>
+</div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_response"><a class="link" href="#_response">Response</a></h4>
 <div class="sect4">
 <h5 id="_http_response"><a class="link" href="#_http_response">http-response</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 1; mode=block
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Pragma: no-cache
-Expires: 0
-X-Frame-Options: DENY
-Set-Cookie: JSESSIONID=F60278BFB186A5C3D441B4A583207957; Path=/; HttpOnly; SameSite=Lax
-Content-Type: application/json;charset=UTF-8
-Content-Length: 8
-Date: Mon, 09 May 2022 07:02:46 GMT
-Keep-Alive: timeout=60
-Connection: keep-alive
-
-{"id":1}</code></pre>
-</div>
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::/home/kimbeomjun/git/boated-BE/build/generated-snippets/sign-in/http-response.adoc[]</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_response_headers"><a class="link" href="#_response_headers">response-headers</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">보낸 Content Type</p></td>
-</tr>
-</tbody>
-</table>
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::/home/kimbeomjun/git/boated-BE/build/generated-snippets/sign-in/response-headers.adoc[]</p>
+</div>
 </div>
 <div class="sect4">
 <h5 id="_response_fields"><a class="link" href="#_response_fields">response-fields</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">로그인된 id</p></td>
-</tr>
-</tbody>
-</table>
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::/home/kimbeomjun/git/boated-BE/build/generated-snippets/sign-in/response-fields.adoc[]</p>
+</div>
 </div>
 </div>
 </div>
@@ -777,7 +706,7 @@ Connection: keep-alive
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/account/sign-up HTTP/1.1
 Content-Type: application/json
-Host: localhost:37541
+Host: localhost:44471
 Content-Length: 105
 
 {"username":"username","password":"password","nickname":"nickname","profileImageUrl":"profile_image_url"}</code></pre>
@@ -862,7 +791,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Date: Mon, 09 May 2022 08:04:38 GMT
+Date: Mon, 09 May 2022 12:07:59 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -883,8 +812,8 @@ Connection: keep-alive</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/account/profile HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Host: localhost:37541
-Cookie: JSESSIONID=4647773A7560FF917D8BD98ECC9DE95D</code></pre>
+Host: localhost:44471
+Cookie: JSESSIONID=18D4D36F53019DDA45227A0BBAE5952E</code></pre>
 </div>
 </div>
 </div>
@@ -928,7 +857,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Mon, 09 May 2022 08:04:37 GMT
+Date: Mon, 09 May 2022 12:07:58 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 105
@@ -1025,9 +954,9 @@ null, host, url
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/account/profile HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Content-Type: multipart/form-data; boundary="Hmn_3H_BkVJFH1RRRcr3YxQHVC__P_fTU53uG"; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
-Host: localhost:37541
-Cookie: JSESSIONID=6E9F897E8E23E78BB269B423DB67486D</code></pre>
+Content-Type: multipart/form-data; boundary="b-tMjDg20QiSLGO5CeVBk12GBzagyp58fXtrg6pR"; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
+Host: localhost:44471
+Cookie: JSESSIONID=6E1F08C19E683F800E11D6FE6916A3FE</code></pre>
 </div>
 </div>
 </div>
@@ -1102,7 +1031,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Date: Mon, 09 May 2022 08:04:39 GMT
+Date: Mon, 09 May 2022 12:08:00 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -1123,8 +1052,8 @@ Connection: keep-alive</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/account/profile HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Host: localhost:37541
-Cookie: JSESSIONID=1C69F6FBE754BF95F1CBF72DF95F6A43</code></pre>
+Host: localhost:44471
+Cookie: JSESSIONID=0BE3C0E81CDDF651CDC5FBDB61D4F179</code></pre>
 </div>
 </div>
 </div>
@@ -1145,7 +1074,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Date: Mon, 09 May 2022 08:04:38 GMT
+Date: Mon, 09 May 2022 12:07:59 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -1167,9 +1096,9 @@ Connection: keep-alive</code></pre>
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/account/profile/nickname/unique-validation HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:37541
+Host: localhost:44471
 Content-Length: 36
-Cookie: JSESSIONID=9C2641706393DA730CFC6EED4F2A3763
+Cookie: JSESSIONID=B9CD827D813C844AF9C0C8ADDD0C31E7
 
 {"nickname":"notDuplicatedNickname"}</code></pre>
 </div>
@@ -1243,7 +1172,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Mon, 09 May 2022 08:04:35 GMT
+Date: Mon, 09 May 2022 12:07:57 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 20
@@ -1313,9 +1242,9 @@ Content-Length: 20
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/account/profile/nickname HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:37541
+Host: localhost:44471
 Content-Length: 24
-Cookie: JSESSIONID=641F3090C7B048A32D22BD0F3ED321A8
+Cookie: JSESSIONID=4B1DCD11354B36E9E6913D68BEB5EE2A
 
 {"nickname":"nickname2"}</code></pre>
 </div>
@@ -1383,7 +1312,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Date: Mon, 09 May 2022 08:04:37 GMT
+Date: Mon, 09 May 2022 12:07:58 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -1403,8 +1332,8 @@ Connection: keep-alive</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/account/profile/profile-image HTTP/1.1
-Host: localhost:37541
-Cookie: JSESSIONID=3BD59AD69784FAD5D2CB6459A7D76FB2</code></pre>
+Host: localhost:44471
+Cookie: JSESSIONID=1FB25C5936EBEFF8678EC9EBE89A5403</code></pre>
 </div>
 </div>
 </div>
@@ -1428,7 +1357,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: image/png;charset=UTF-8
 Content-Length: 4
-Date: Mon, 09 May 2022 08:04:38 GMT
+Date: Mon, 09 May 2022 12:07:59 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 
@@ -1451,9 +1380,9 @@ asdf</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/account/profile/profile-image HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Content-Type: multipart/form-data; boundary="Tefj2-BKN34z8_vNjDE_vxXcUkrlIDafIN2j"; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
-Host: localhost:37541
-Cookie: JSESSIONID=1776D809B3CEE844A8006E57B9D3F096
+Content-Type: multipart/form-data; boundary="QHGffZd2pct51cXXwdr_AuEOwTJJhTtEYkq"; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
+Host: localhost:44471
+Cookie: JSESSIONID=D26254AC1A6D68548F181D4AB59F7ED8
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Content-Disposition: form-data; name=file; filename=profile-image-test.png
@@ -1556,7 +1485,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Date: Mon, 09 May 2022 08:04:37 GMT
+Date: Mon, 09 May 2022 12:07:58 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -1577,8 +1506,8 @@ Connection: keep-alive</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/account/profile/profile-image HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Host: localhost:37541
-Cookie: JSESSIONID=42C59D735380D4B4359A9FC2D179E995</code></pre>
+Host: localhost:44471
+Cookie: JSESSIONID=CF0639ABB073D460BB4ABE5B0A2C2305</code></pre>
 </div>
 </div>
 </div>
@@ -1599,7 +1528,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Date: Mon, 09 May 2022 08:04:38 GMT
+Date: Mon, 09 May 2022 12:07:59 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -1626,11 +1555,11 @@ Connection: keep-alive</code></pre>
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/projects HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:33011
-Content-Length: 43
-Cookie: JSESSIONID=B7566DA5EFEF287C95D88287B7737C97
+Host: localhost:42559
+Content-Length: 76
+Cookie: JSESSIONID=61F3FAC249C530809CBA73659D3D5D15
 
-{"name":"name","description":"description"}</code></pre>
+{"name":"name","description":"description","deadline":"2022-05-09 21:07:43"}</code></pre>
 </div>
 </div>
 </div>
@@ -1659,6 +1588,40 @@ Cookie: JSESSIONID=B7566DA5EFEF287C95D88287B7737C97
 </tbody>
 </table>
 </div>
+<div class="sect4">
+<h5 id="_request_fields_4"><a class="link" href="#_request_fields_4">request-fields</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">프로젝트 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">프로젝트 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>deadline</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">프로젝트 기한 (yyyy-MM-dd HH:mm:ss)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_response_11"><a class="link" href="#_response_11">Response</a></h4>
@@ -1678,7 +1641,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Mon, 09 May 2022 08:04:43 GMT
+Date: Mon, 09 May 2022 12:08:05 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 9
@@ -1747,9 +1710,9 @@ Content-Length: 9
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/projects/1 HTTP/1.1
 Content-Type: application/json
-Host: localhost:33011
+Host: localhost:42559
 Content-Length: 63
-Cookie: JSESSIONID=58439A912FE86DA82BBF2DC6234A8E81
+Cookie: JSESSIONID=CC6308A063145489BD12CC8B5E0BAE93
 
 {"name":"updatedProjectName","description":"updateDescription"}</code></pre>
 </div>
@@ -1777,7 +1740,7 @@ Cookie: JSESSIONID=58439A912FE86DA82BBF2DC6234A8E81
 </table>
 </div>
 <div class="sect4">
-<h5 id="_request_fields_4"><a class="link" href="#_request_fields_4">request-fields</a></h5>
+<h5 id="_request_fields_5"><a class="link" href="#_request_fields_5">request-fields</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1824,7 +1787,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Mon, 09 May 2022 08:04:43 GMT
+Date: Mon, 09 May 2022 12:08:05 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 8
@@ -1893,8 +1856,8 @@ Content-Length: 8
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/projects/my/captain HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Host: localhost:33011
-Cookie: JSESSIONID=F48841AA6A473274947D3F9D617D3560</code></pre>
+Host: localhost:42559
+Cookie: JSESSIONID=5C45D3180CE23E065EE8056F9D964798</code></pre>
 </div>
 </div>
 </div>
@@ -1938,12 +1901,12 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-Date: Mon, 09 May 2022 08:04:43 GMT
+Date: Mon, 09 May 2022 12:08:05 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 536
+Content-Length: 866
 
-{"projects":[{"id":2,"name":"name0","description":"description"},{"id":3,"name":"name1","description":"description"},{"id":4,"name":"name2","description":"description"},{"id":5,"name":"name3","description":"description"},{"id":6,"name":"name4","description":"description"},{"id":7,"name":"name5","description":"description"},{"id":8,"name":"name6","description":"description"},{"id":9,"name":"name7","description":"description"},{"id":10,"name":"name8","description":"description"},{"id":11,"name":"name9","description":"description"}]}</code></pre>
+{"projects":[{"id":2,"name":"name0","description":"description","deadline":"2022-05-09 21:07:43"},{"id":3,"name":"name1","description":"description","deadline":"2022-05-09 21:07:43"},{"id":4,"name":"name2","description":"description","deadline":"2022-05-09 21:07:43"},{"id":5,"name":"name3","description":"description","deadline":"2022-05-09 21:07:43"},{"id":6,"name":"name4","description":"description","deadline":"2022-05-09 21:07:43"},{"id":7,"name":"name5","description":"description","deadline":"2022-05-09 21:07:43"},{"id":8,"name":"name6","description":"description","deadline":"2022-05-09 21:07:43"},{"id":9,"name":"name7","description":"description","deadline":"2022-05-09 21:07:43"},{"id":10,"name":"name8","description":"description","deadline":"2022-05-09 21:07:43"},{"id":11,"name":"name9","description":"description","deadline":"2022-05-09 21:07:43"}]}</code></pre>
 </div>
 </div>
 </div>
@@ -2004,8 +1967,158 @@ Content-Length: 536
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">프로젝트 설명</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>projects[].deadline</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">프로젝트 마감기한</p></td>
+</tr>
 </tbody>
 </table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="resources-invitation"><a class="link" href="#resources-invitation">프로젝트 초대</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="resources-invitation-create"><a class="link" href="#resources-invitation-create">프로젝트 초대하기</a></h3>
+<div class="paragraph">
+<p><code>POST</code> 요청을 사용해서 프로젝트에 초대할 수 있습니다.</p>
+</div>
+<div class="sect3">
+<h4 id="_request_15"><a class="link" href="#_request_15">Request</a></h4>
+<div class="sect4">
+<h5 id="_http_request_15"><a class="link" href="#_http_request_15">http-request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/projects/1/crews?nickname=crew HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Content-Type: application/x-www-form-urlencoded; charset=ISO-8859-1
+Host: localhost:43527
+Cookie: JSESSIONID=BC2B056F0653A96CF1701799AED478B0</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_request_headers_12"><a class="link" href="#_request_headers_12">request-headers</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Accept</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">받을 MediaType</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_request_path_parameters"><a class="link" href="#_request_path_parameters">request-path-parameters</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/projects/{projectId}/crews</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>projectId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">target 프로젝트의 id</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_request_parameters"><a class="link" href="#_request_parameters">request-parameters</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">초대할 Account의 닉네임</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_14"><a class="link" href="#_response_14">Response</a></h4>
+<div class="sect4">
+<h5 id="_http_response_14"><a class="link" href="#_http_response_14">http-response</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Mon, 09 May 2022 12:08:03 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 8
+
+{"id":1}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_headers_7"><a class="link" href="#_response_headers_7">response-headers</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">보낸 Content Type</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_response_fields_7"><a class="link" href="#_response_fields_7">response-fields</a></h5>
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::/home/kimbeomjun/git/boated-BE/build/generated-snippets/project-crew-invite/response-fields.adoc[]</p>
+</div>
 </div>
 </div>
 </div>
@@ -2015,7 +2128,7 @@ Content-Length: 536
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-05-09 17:03:54 +0900
+Last updated 2022-05-09 21:04:41 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

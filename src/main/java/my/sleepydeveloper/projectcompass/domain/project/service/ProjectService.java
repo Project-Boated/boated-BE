@@ -104,4 +104,9 @@ public class ProjectService {
 
         accountProjectRepository.delete(project, crew);
     }
+
+    public List<Project> findAllByCrew(Account account) {
+        accountProjectRepository.findProjectFromCrew(account);
+        return null;
+    }
 }

@@ -440,34 +440,57 @@ include::{snippets}/project-my-captain-retrieve/response-fields.adoc[]
 //===== response-fields
 //include::{snippets}/project-captain-update/response-fields.adoc[]
 
-//[[resources-project-invitation]]
-//== 프로젝트 초대
-//
-//[[resources-project-crew-invite]]
-//=== 프로젝트 초대하기
-//`POST` 요청을 사용해서 프로젝트에 초대할 수 있습니다.
-//
-//==== Request
-//
-//===== http-request
-//include::{snippets}/project-crew-invite/http-request.adoc[]
-//
-//===== request-path-parameters
-//include::{snippets}/project-crew-invite/path-parameters.adoc[]
-//
-//===== request-headers
-//include::{snippets}/project-crew-invite/request-headers.adoc[]
-//
-//===== request-fields
-//include::{snippets}/project-crew-invite/request-fields.adoc[]
-//
-//==== Response
-//
-//===== http-response
-//include::{snippets}/project-crew-invite/http-response.adoc[]
-//
-//===== response-headers
-//include::{snippets}/project-crew-invite/response-headers.adoc[]
-//
-//===== response-fields
-//include::{snippets}/project-crew-invite/response-fields.adoc[]
+[[resources-invitation]]
+== 프로젝트 초대
+
+[[resources-invitation-create]]
+=== 프로젝트 초대하기
+`POST` 요청을 사용해서 프로젝트에 초대할 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/invitation-create/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/invitation-create/request-headers.adoc[]
+
+===== request-path-parameters
+include::{snippets}/invitation-create/path-parameters.adoc[]
+
+===== request-parameters
+include::{snippets}/invitation-create/request-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/invitation-create/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/invitation-create/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/invitation-create/response-fields.adoc[]
+
+[[resources-invitation-my-retrieve]]
+=== 초대받은 프로젝트
+`GET` 요청을 사용해서 초대받은 프로젝트를 조회할 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/invitation-my-retrieve/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/invitation-my-retrieve/request-headers.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/invitation-my-retrieve/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/invitation-my-retrieve/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/invitation-my-retrieve/response-fields.adoc[]
