@@ -53,4 +53,21 @@ public class InvitationDocument {
         );
     }
 
+    public static RestDocumentationFilter documentInvitationAccept() {
+        return document("invitation-accept",
+                requestHeaders(
+                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
+                ),
+                pathParameters(
+                        parameterWithName("invitationId").description("초대장 id")
+                ),
+                responseHeaders(
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
+                ),
+                responseFields(
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("Accept한 프로젝트 id")
+                )
+        );
+    }
+
 }
