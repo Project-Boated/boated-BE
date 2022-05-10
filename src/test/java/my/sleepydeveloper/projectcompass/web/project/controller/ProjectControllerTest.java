@@ -154,28 +154,4 @@ class ProjectControllerTest extends AcceptanceTest {
 //                .andExpect(jsonPath("id").value(newCaptain.getId()))
 //                .andDo(documentProjectUpdateCaptain());
 //    }
-
-//    @Test
-//    void inviteCrew_account초대하기_정상() throws Exception {
-//        // Given
-//        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
-//        String crewUsername = "crew";
-//        String crewNickname = "crew";
-//        AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL);
-//        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-//        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION);
-//
-//        // When
-//        // Then
-//        given(this.spec)
-//            .filter(documentProjectInviteCrew())
-//            .accept(ContentType.JSON)
-//            .cookie(cookie)
-//        .when()
-//            .port(port)
-//            .post("/projects/{projectId}/crews?nickname={nickname}", projectId, crewNickname)
-//        .then()
-//            .statusCode(HttpStatus.OK.value())
-//            .assertThat().body("id", notNullValue());
-//    }
 }

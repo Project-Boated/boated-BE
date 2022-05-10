@@ -63,7 +63,7 @@ public class InvitationService {
     }
 
     @Transactional
-    public void accept(Account account, Long invitationId) {
+    public Long accept(Account account, Long invitationId) {
         Account crew = accountRepository.findById(account.getId())
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
@@ -75,6 +75,8 @@ public class InvitationService {
         accountProjectRepository.save(new AccountProject(crew, project));
 
         invitationRepository.delete(invitation);
+
+        return project.getId();
     }
 
     @Transactional

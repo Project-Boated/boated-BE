@@ -5,6 +5,7 @@ import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.invitation.InvitationService;
 import my.sleepydeveloper.projectcompass.domain.invitation.entity.Invitation;
 import my.sleepydeveloper.projectcompass.security.dto.IdDto;
+import my.sleepydeveloper.projectcompass.web.invitation.dto.AcceptInvitationResponse;
 import my.sleepydeveloper.projectcompass.web.invitation.dto.CreateInvitationResponse;
 import my.sleepydeveloper.projectcompass.web.invitation.dto.GetMyInvitationResponse;
 import org.springframework.http.ResponseEntity;
@@ -34,9 +35,10 @@ public class InvitationController {
     }
 
     @PostMapping("/account/invitations/{invitationId}/accept")
-    public void acceptInvitation(@AuthenticationPrincipal Account account,
-                                   @PathVariable Long invitationId) {
-        invitationService.accept(account, invitationId);
+    public AcceptInvitationResponse acceptInvitation(@AuthenticationPrincipal Account account,
+                                                     @PathVariable Long invitationId) {
+        Long projectId = invitationService.accept(account, invitationId);
+        return new AcceptInvitationResponse(projectId);
     }
 
     @PostMapping("/account/invitations/{invitationId}/reject")

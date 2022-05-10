@@ -65,7 +65,8 @@ public class ProjectDocument {
                         fieldWithPath("projects").type(JsonFieldType.ARRAY).description("project목록"),
                         fieldWithPath("projects[].id").type(JsonFieldType.NUMBER).description("프로젝트 id"),
                         fieldWithPath("projects[].name").type(JsonFieldType.STRING).description("프로젝트 이름"),
-                        fieldWithPath("projects[].description").type(JsonFieldType.STRING).description("프로젝트 설명")
+                        fieldWithPath("projects[].description").type(JsonFieldType.STRING).description("프로젝트 설명"),
+                        fieldWithPath("projects[].deadline").type(JsonFieldType.STRING).description("프로젝트 마감기한")
                 )
         );
     }
@@ -103,26 +104,6 @@ public class ProjectDocument {
                 ),
                 responseFields(
                         fieldWithPath("id").type(JsonFieldType.NUMBER).description("새로운 captain의 userId")
-                )
-        );
-    }
-
-    public static RestDocumentationFilter documentProjectInviteCrew() {
-        return document("project-crew-invite",
-                pathParameters(
-                        parameterWithName("projectId").description("target 프로젝트의 id")
-                ),
-                requestParameters(
-                        parameterWithName("nickname").description("초대할 Account의 닉네임")
-                ),
-                requestHeaders(
-                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
-                ),
-                responseHeaders(
-                        headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
-                ),
-                responseFields(
-                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("생성된 invitation의 id")
                 )
         );
     }

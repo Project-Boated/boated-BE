@@ -59,11 +59,21 @@ public class ProjectController {
 
     @GetMapping("/my/captain")
     public GetMyCaptainProjectResponse getMyCaptainProject(@AuthenticationPrincipal Account account) {
-        List<GetMyCaptainProjectResponse.ProjectResponse> projectResponses = projectService.findAllByCaptain(account).stream()
+        List<GetMyCaptainProjectResponse.ProjectResponse> projects = projectService.findAllByCaptain(account).stream()
                 .map(GetMyCaptainProjectResponse.ProjectResponse::new)
                 .collect(Collectors.toList());
 
-        return new GetMyCaptainProjectResponse(projectResponses);
+        return new GetMyCaptainProjectResponse(projects);
+    }
+
+    @GetMapping("/my/crew")
+    public GetMyCrewProjectResponse getMyCrewProject(@AuthenticationPrincipal Account account) {
+
+        List<GetMyCrewProjectResponse.ProjectResponse> projects = projectService.findAllByCrew(account).stream()
+                .map(GetMyCrewProjectResponse.ProjectResponse::new)
+                .toList();
+
+        return new GetMyCrewProjectResponse(projects);
     }
 
     @GetMapping("/{projectId}/crews")

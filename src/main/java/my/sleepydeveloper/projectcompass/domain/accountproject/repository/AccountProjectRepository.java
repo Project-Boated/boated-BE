@@ -14,6 +14,7 @@ import java.util.List;
 
 import static my.sleepydeveloper.projectcompass.domain.accountproject.entity.QAccountProject.accountProject;
 import static my.sleepydeveloper.projectcompass.domain.account.entity.QAccount.account;
+import static my.sleepydeveloper.projectcompass.domain.project.entity.QProject.*;
 
 @Repository
 @Transactional
@@ -51,5 +52,13 @@ public class AccountProjectRepository {
         return queryFactory
                 .selectFrom(accountProject)
                 .where(accountProject.project.eq(project).and(accountProject.account.eq(crew))) != null;
+    }
+
+    public List<Project> findProjectFromCrew(Account account) {
+        return queryFactory
+                .select(project)
+                .from(accountProject)
+                .where(accountProject.account.eq(account))
+                .fetch();
     }
 }
