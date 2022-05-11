@@ -115,8 +115,10 @@ public class AccountController {
     }
 
     @PostMapping("/profile/profile-image")
-    public void postAccountProfileImage(@AuthenticationPrincipal Account account,
-                                        @RequestParam(name = "file") MultipartFile file) {
+    public PostAccountProfileImageResponse postAccountProfileImage(@AuthenticationPrincipal Account account,
+                                                                   @RequestParam(name = "file") MultipartFile file,
+                                                                   @RequestParam(name = "isProxy", required = false) boolean isProxy,
+                                                                   HttpServletRequest request) {
         MimeType mimeType = MimeType.valueOf(Objects.requireNonNull(file.getContentType()));
         if (!mimeType.getType().equals("image")) {
             throw new NotImageFileException(ErrorCode.COMMON_NOT_IMAGE_FILE_EXCEPTION);
@@ -132,6 +134,8 @@ public class AccountController {
         } catch (IOException e) {
             throw new CommonIOException(ErrorCode.COMMON_IO_EXCEPTION, e);
         }
+
+        return new PostAccountProfileImageResponse(isProxy ? "http://localhost:3000/api/account/profile/profile-image" : accountService.getProfileUrl(account, request));
     }
 
     @GetMapping("/profile/profile-image")

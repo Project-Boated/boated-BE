@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.UUID;
 
 @Service
@@ -176,8 +177,8 @@ public class AccountService {
 
         String profileUrl = "";
         if(profileImage instanceof UploadFileProfileImage) {
-            String requestUrl = request.getRequestURL().toString();
-            profileUrl = requestUrl + "/profile-image";
+            String host = request.getHeader("HOST");
+            profileUrl = "http://" + host + "/api/account/profile/profile-image";
         } else if (profileImage instanceof UrlProfileImage urlProfileImage) {
             profileUrl = urlProfileImage.getUrl();
         }
