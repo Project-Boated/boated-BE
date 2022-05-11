@@ -99,4 +99,32 @@ class InvitationControllerTest extends AcceptanceTest {
             .assertThat().body("id", notNullValue());
     }
 
+    @Test
+    void rejectInvitation_프로젝트초대reject_정상() throws Exception {
+        // Given
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL);
+
+        Cookie captainCookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+        int projectId = ProjectTestUtils.createProject(port, captainCookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+
+        InvitationTestUtils.createInvitation(port, captainCookie, (long) projectId, crewNickname);
+
+        Cookie crewCookie = AccountTestUtils.login(port, crewUsername, PASSWORD);
+        long invitationId = InvitationTestUtils.getMyInvitations(port, crewCookie).getBody().jsonPath().getLong("invitations[0].id");
+
+        // When
+        // Then
+        given(this.spec)
+            .filter(documentInvitationReject())
+            .accept(ContentType.JSON)
+            .cookie(crewCookie)
+        .when()
+            .port(port)
+            .post("/api/account/invitations/{invitationId}/reject", invitationId)
+        .then()
+            .statusCode(HttpStatus.OK.value())
+            .assertThat().body("id", notNullValue());
+    }
+
 }

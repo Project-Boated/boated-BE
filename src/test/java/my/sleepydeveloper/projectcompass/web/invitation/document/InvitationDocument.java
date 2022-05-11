@@ -70,4 +70,21 @@ public class InvitationDocument {
         );
     }
 
+    public static RestDocumentationFilter documentInvitationReject() {
+        return document("invitation-reject",
+                requestHeaders(
+                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
+                ),
+                pathParameters(
+                        parameterWithName("invitationId").description("초대장 id")
+                ),
+                responseHeaders(
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
+                ),
+                responseFields(
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("Reject한 프로젝트 id")
+                )
+        );
+    }
+
 }
