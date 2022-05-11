@@ -114,9 +114,9 @@ public class AccountController {
         accountService.updateNickname(account, request.getNickname());
     }
 
-    @PutMapping("/profile/profile-image")
-    public void putAccountProfileImage(@AuthenticationPrincipal Account account,
-                                       @RequestParam(name = "file") MultipartFile file) {
+    @PostMapping("/profile/profile-image")
+    public void postAccountProfileImage(@AuthenticationPrincipal Account account,
+                                        @RequestParam(name = "file") MultipartFile file) {
         MimeType mimeType = MimeType.valueOf(Objects.requireNonNull(file.getContentType()));
         if (!mimeType.getType().equals("image")) {
             throw new NotImageFileException(ErrorCode.COMMON_NOT_IMAGE_FILE_EXCEPTION);

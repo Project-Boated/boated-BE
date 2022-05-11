@@ -171,7 +171,7 @@ class AccountControllerTest extends AcceptanceTest {
     }
 
     @Test
-    void putAccountProfileImage_프로필이미지수정_성공() throws IOException {
+    void postAccountProfileImage_프로필이미지수정_성공() throws IOException {
         Mockito.when(awsS3Service.uploadProfileImage(Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn("http://test.com");
 
@@ -186,7 +186,7 @@ class AccountControllerTest extends AcceptanceTest {
         .when()
             .port(port)
             .multiPart("file", ResourceUtils.getFile("classpath:profile-image-test.png"), "image/jpg")
-            .put("/api/account/profile/profile-image")
+            .post("/api/account/profile/profile-image")
         .then()
             .statusCode(HttpStatus.OK.value());
     }
@@ -206,7 +206,7 @@ class AccountControllerTest extends AcceptanceTest {
         .when()
             .port(port)
             .multiPart("file", ResourceUtils.getFile("classpath:profile-image-test.png"), "image/jpg")
-            .put("/api/account/profile/profile-image");
+            .post("/api/account/profile/profile-image");
 
 
         given(this.spec)
