@@ -28,7 +28,7 @@ public class AccountNicknameExistVoter implements AccessDecisionVoter {
         urlWhitelist.put("/api/account/profile/nickname", Set.of("PUT"));
         urlWhitelist.put("/api/account/profile/nickname/unique-validation", Set.of("POST"));
         urlWhitelist.put("/api/account/profile", Set.of("GET"));
-        urlWhitelist.put("/api/account/profile/profile-image", Set.of("GET", "PUT"));
+        urlWhitelist.put("/api/account/profile/profile-image", Set.of("GET", "POST"));
     }
 
     public AccountNicknameExistVoter(AccountService accountService) {
