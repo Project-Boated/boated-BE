@@ -520,3 +520,29 @@ include::{snippets}/invitation-accept/response-headers.adoc[]
 
 ===== response-fields
 include::{snippets}/invitation-accept/response-fields.adoc[]
+
+[[resources-invitation-reject]]
+=== 초대받은 프로젝트 거절
+`POST` 요청을 사용해서 초대받은 프로젝트를 거절할 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/invitation-reject/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/invitation-reject/request-headers.adoc[]
+
+==== path-parameters
+include::{snippets}/invitation-reject/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/invitation-reject/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/invitation-reject/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/invitation-reject/response-fields.adoc[]

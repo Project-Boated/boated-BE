@@ -80,13 +80,17 @@ public class InvitationService {
     }
 
     @Transactional
-    public void reject(Account account, Long invitationId) {
+    public Long reject(Account account, Long invitationId) {
         Account crew = accountRepository.findById(account.getId())
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
         Invitation invitation = invitationRepository.findById(invitationId)
                 .orElseThrow(() -> new InvitationNotFoundException(ErrorCode.INVITATION_NOT_FOUND));
 
+        Long projectId = invitation.getProject().getId();
+
         invitationRepository.delete(invitation);
+
+        return projectId;
     }
 }

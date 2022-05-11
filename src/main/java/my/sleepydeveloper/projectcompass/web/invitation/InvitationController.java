@@ -8,6 +8,7 @@ import my.sleepydeveloper.projectcompass.security.dto.IdDto;
 import my.sleepydeveloper.projectcompass.web.invitation.dto.AcceptInvitationResponse;
 import my.sleepydeveloper.projectcompass.web.invitation.dto.CreateInvitationResponse;
 import my.sleepydeveloper.projectcompass.web.invitation.dto.GetMyInvitationResponse;
+import my.sleepydeveloper.projectcompass.web.invitation.dto.RejectInvitationResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -42,9 +43,10 @@ public class InvitationController {
     }
 
     @PostMapping("/account/invitations/{invitationId}/reject")
-    public void rejectInvitation(@AuthenticationPrincipal Account account,
-                                   @PathVariable Long invitationId) {
-        invitationService.reject(account, invitationId);
+    public RejectInvitationResponse rejectInvitation(@AuthenticationPrincipal Account account,
+                                                     @PathVariable Long invitationId) {
+        Long projectId = invitationService.reject(account, invitationId);
+        return new RejectInvitationResponse(projectId);
     }
 
 }
