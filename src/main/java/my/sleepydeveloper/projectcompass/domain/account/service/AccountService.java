@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.UUID;
 
 @Service
@@ -176,14 +177,36 @@ public class AccountService {
 
         String profileUrl = "";
         if(profileImage instanceof UploadFileProfileImage) {
-            String requestUrl = request.getRequestURL().toString();
-            profileUrl = requestUrl + "/profile-image";
+            String host = request.getHeader("HOST");
+            profileUrl = "http://" + host + "/api/account/profile/profile-image";
         } else if (profileImage instanceof UrlProfileImage urlProfileImage) {
             profileUrl = urlProfileImage.getUrl();
         }
 
         return profileUrl;
     }
+
+    public String getProfileUrl(Account account, HttpServletRequest request, boolean isProxy) {
+        Account findAccount = accountRepository.findById(account.getId())
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+        ProfileImage profileImage = (ProfileImage) Hibernate.unproxy(findAccount.getProfileImage());
+
+        String profileUrl = "";
+        if(profileImage instanceof UploadFileProfileImage) {
+            String host = "";
+            if(isProxy)
+                host = "localhost:3000";
+            else
+                host = request.getHeader("HOST");
+            profileUrl = "http://" + host + "/api/account/profile/profile-image";
+        } else if (profileImage instanceof UrlProfileImage urlProfileImage) {
+            profileUrl = urlProfileImage.getUrl();
+        }
+
+        return profileUrl;
+    }
+
+
 
     public void checkAccountProfileImageUploadFile(Account account) {
         Account findAccount = accountRepository.findById(account.getId())

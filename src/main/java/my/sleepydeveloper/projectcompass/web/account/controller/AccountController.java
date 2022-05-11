@@ -60,9 +60,11 @@ public class AccountController {
     }
 
     @GetMapping("/profile")
-    public GetAccountProfileResponse getAccountProfile(@AuthenticationPrincipal Account account, HttpServletRequest request) {
-
-        String profileUrl = accountService.getProfileUrl(account, request);
+    public GetAccountProfileResponse getAccountProfile(@AuthenticationPrincipal Account account,
+                                                       HttpServletRequest request,
+                                                       @RequestParam(name = "isProxy", required = false) boolean isProxy
+                                                       ) {
+        String profileUrl = accountService.getProfileUrl(account, request, isProxy);
         String nickname = accountService.getNickname(account);
         String username = accountService.getUsername(account);
         Set<Role> roles = accountService.getRoles(account);
@@ -115,8 +117,10 @@ public class AccountController {
     }
 
     @PostMapping("/profile/profile-image")
-    public void postAccountProfileImage(@AuthenticationPrincipal Account account,
-                                        @RequestParam(name = "file") MultipartFile file) {
+    public PostAccountProfileImageResponse postAccountProfileImage(@AuthenticationPrincipal Account account,
+                                                                   @RequestParam(name = "file") MultipartFile file,
+                                                                   @RequestParam(name = "isProxy", required = false) boolean isProxy,
+                                                                   HttpServletRequest request) {
         MimeType mimeType = MimeType.valueOf(Objects.requireNonNull(file.getContentType()));
         if (!mimeType.getType().equals("image")) {
             throw new NotImageFileException(ErrorCode.COMMON_NOT_IMAGE_FILE_EXCEPTION);
@@ -132,6 +136,8 @@ public class AccountController {
         } catch (IOException e) {
             throw new CommonIOException(ErrorCode.COMMON_IO_EXCEPTION, e);
         }
+
+        return new PostAccountProfileImageResponse(accountService.getProfileUrl(account, request, isProxy));
     }
 
     @GetMapping("/profile/profile-image")
