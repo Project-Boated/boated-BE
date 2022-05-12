@@ -13,10 +13,11 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetMyCaptainProjectResponse {
+public class GetMyCaptainTerminatedProjectResponse {
 
     private List<ProjectResponse> projects;
 

@@ -60,8 +60,12 @@ public class ProjectService {
                 projectRepository.existsByName(projectUpdateCondition.getName());
     }
 
-    public List<Project> findAllByCaptain(Account account) {
-        return projectRepository.findAllByCaptain(account);
+    public List<Project> findAllByCaptainNotTerminated(Account account) {
+        return projectRepository.findAllByCaptainAndNotTerminated(account);
+    }
+
+    public List<Project> findAllByCaptainTerminated(Account account) {
+        return projectRepository.findAllByCaptainAndTerminated(account);
     }
 
     public List<Account> findAllCrews(Long projectId) {
@@ -105,8 +109,12 @@ public class ProjectService {
         accountProjectRepository.delete(project, crew);
     }
 
-    public List<Project> findAllByCrew(Account account) {
-        return accountProjectRepository.findProjectFromCrew(account);
+    public List<Project> findAllByCrewNotTerminated(Account account) {
+        return accountProjectRepository.findProjectFromCrewNotTerminated(account);
+    }
+
+    public List<Project> findAllByCrewTerminated(Account account) {
+        return accountProjectRepository.findProjectFromCrewTerminated(account);
     }
 
     @Transactional

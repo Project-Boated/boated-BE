@@ -17,7 +17,6 @@ import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectReposi
 import my.sleepydeveloper.projectcompass.domain.project.vo.ProjectUpdateCondition;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.repository.UploadFileRepository;
 import my.sleepydeveloper.projectcompass.security.service.KakaoWebService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -207,7 +206,7 @@ class ProjectServiceTest extends BaseTest {
         }
 
         // When
-        int result = projectService.findAllByCaptain(captain).size();
+        int result = projectService.findAllByCaptainNotTerminated(captain).size();
 
         // Then
         assertThat(result).isEqualTo(count);

@@ -145,6 +145,66 @@ class ProjectControllerTest extends AcceptanceTest {
     }
 
     @Test
+    void getMyCaptainTerminatedProject_내가Captain인종료된프로젝트조회_정상() throws Exception {
+        // Given
+        String crewUsername = "crewUsername";
+        String crewNickname = "crewNickname";
+
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL);
+        Cookie crewCookie = AccountTestUtils.login(port, crewUsername, PASSWORD);
+        Cookie captainCookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+
+        int projectId = ProjectTestUtils.createProject(port, captainCookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+        int invitationId = InvitationTestUtils.createInvitation(port, captainCookie, (long) projectId, crewNickname);
+        InvitationTestUtils.acceptInvitation(port, crewCookie, (long)invitationId);
+
+        ProjectTestUtils.terminateProject(port, captainCookie, (long)projectId);
+
+        // When
+        // Then
+        given(this.spec)
+            .filter(documentProjectCaptainTerminated())
+            .accept(ContentType.JSON)
+            .cookie(captainCookie)
+        .when()
+            .port(port)
+            .get("/api/projects/my/captain/terminated")
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void getMyCrewTerminatedProject_내가Crew인종료된프로젝트조회_정상() throws Exception {
+        // Given
+        String crewUsername = "crewUsername";
+        String crewNickname = "crewNickname";
+
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL);
+        Cookie crewCookie = AccountTestUtils.login(port, crewUsername, PASSWORD);
+        Cookie captainCookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+
+        int projectId = ProjectTestUtils.createProject(port, captainCookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+        int invitationId = InvitationTestUtils.createInvitation(port, captainCookie, (long) projectId, crewNickname);
+        InvitationTestUtils.acceptInvitation(port, crewCookie, (long)invitationId);
+
+        ProjectTestUtils.terminateProject(port, captainCookie, (long)projectId);
+
+        // When
+        // Then
+        given(this.spec)
+            .filter(documentProjectCrewTerminated())
+            .accept(ContentType.JSON)
+            .cookie(crewCookie)
+        .when()
+            .port(port)
+            .get("/api/projects/my/crew/terminated")
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
     void terminateProject_프로젝트를종료시킴_정상() throws Exception {
         // Given
         AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);

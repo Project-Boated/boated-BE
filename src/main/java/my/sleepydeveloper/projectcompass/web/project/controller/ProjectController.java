@@ -3,7 +3,6 @@ package my.sleepydeveloper.projectcompass.web.project.controller;
 import lombok.RequiredArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.accountproject.service.AccountProjectService;
-import my.sleepydeveloper.projectcompass.domain.invitation.entity.Invitation;
 import my.sleepydeveloper.projectcompass.domain.invitation.InvitationService;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.service.ProjectService;
@@ -61,7 +60,7 @@ public class ProjectController {
 
     @GetMapping("/my/captain")
     public GetMyCaptainProjectResponse getMyCaptainProject(@AuthenticationPrincipal Account account) {
-        List<GetMyCaptainProjectResponse.ProjectResponse> projects = projectService.findAllByCaptain(account).stream()
+        List<GetMyCaptainProjectResponse.ProjectResponse> projects = projectService.findAllByCaptainNotTerminated(account).stream()
                 .map((p) -> new GetMyCaptainProjectResponse.ProjectResponse(p, accountProjectService.getCrews(p)))
                 .collect(Collectors.toList());
 
@@ -70,12 +69,29 @@ public class ProjectController {
 
     @GetMapping("/my/crew")
     public GetMyCrewProjectResponse getMyCrewProject(@AuthenticationPrincipal Account account) {
-
-        List<GetMyCrewProjectResponse.ProjectResponse> projects = projectService.findAllByCrew(account).stream()
+        List<GetMyCrewProjectResponse.ProjectResponse> projects = projectService.findAllByCrewNotTerminated(account).stream()
                 .map((p) -> new GetMyCrewProjectResponse.ProjectResponse(p, accountProjectService.getCrews(p)))
                 .toList();
 
         return new GetMyCrewProjectResponse(projects);
+    }
+
+    @GetMapping("/my/captain/terminated")
+    public GetMyCaptainTerminatedProjectResponse getMyCaptainTerminatedProject(@AuthenticationPrincipal Account account) {
+        List<GetMyCaptainTerminatedProjectResponse.ProjectResponse> projects = projectService.findAllByCaptainTerminated(account).stream()
+                .map((p) -> new GetMyCaptainTerminatedProjectResponse.ProjectResponse(p, accountProjectService.getCrews(p)))
+                .collect(Collectors.toList());
+
+        return new GetMyCaptainTerminatedProjectResponse(projects);
+    }
+
+    @GetMapping("/my/crew/terminated")
+    public GetMyCrewTerminatedProjectResponse getMyCrewTerminatedProject(@AuthenticationPrincipal Account account) {
+        List<GetMyCrewTerminatedProjectResponse.ProjectResponse> projects = projectService.findAllByCrewTerminated(account).stream()
+                .map((p) -> new GetMyCrewTerminatedProjectResponse.ProjectResponse(p, accountProjectService.getCrews(p)))
+                .collect(Collectors.toList());
+
+        return new GetMyCrewTerminatedProjectResponse(projects);
     }
 
     @GetMapping("/{projectId}/crews")
