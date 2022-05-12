@@ -431,6 +431,26 @@ include::{snippets}/project-my-captain-terminated-retrieve/response-headers.adoc
 ===== response-fields
 include::{snippets}/project-my-captain-terminated-retrieve/response-fields.adoc[]
 
+[[resources-project-my-crew-terminated-retrieve]]
+=== 내가 crew인 종료된 프로젝트 목록
+`GET` 요청을 사용해서 내가 crew인 종료된 프로젝트의 목록을 확인할 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/project-my-crew-terminated-retrieve/http-request.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/project-my-crew-terminated-retrieve/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/project-my-crew-terminated-retrieve/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/project-my-crew-terminated-retrieve/response-fields.adoc[]
+
 [[resources-project-terminate]]
 === 프로젝트 종료
 `POST` 요청을 사용해서 프로젝트를 종료시킬 수 있습니다.

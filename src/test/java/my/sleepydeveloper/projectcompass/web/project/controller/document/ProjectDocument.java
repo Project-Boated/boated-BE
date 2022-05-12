@@ -128,6 +128,31 @@ public class ProjectDocument {
         );
     }
 
+    public static RestDocumentationFilter documentProjectCrewTerminated() {
+        return document("project-my-crew-terminated-retrieve",
+                requestHeaders(
+                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
+                ),
+                responseHeaders(
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
+                ),
+                responseFields(
+                        fieldWithPath("projects").type(JsonFieldType.ARRAY).description("project목록"),
+                        fieldWithPath("projects[].id").type(JsonFieldType.NUMBER).description("프로젝트 id"),
+                        fieldWithPath("projects[].name").type(JsonFieldType.STRING).description("프로젝트 이름"),
+                        fieldWithPath("projects[].description").type(JsonFieldType.STRING).description("프로젝트 설명"),
+                        fieldWithPath("projects[].deadline").type(JsonFieldType.STRING).description("프로젝트 마감기한"),
+                        fieldWithPath("projects[].captain").type(JsonFieldType.OBJECT).description("Captain정보"),
+                        fieldWithPath("projects[].captain.id").type(JsonFieldType.NUMBER).description("Captain 고유id"),
+                        fieldWithPath("projects[].captain.nickname").type(JsonFieldType.STRING).description("Captain 닉네임"),
+                        fieldWithPath("projects[].crews").type(JsonFieldType.ARRAY).description("Crew원들 정보"),
+                        fieldWithPath("projects[].crews[].id").type(JsonFieldType.NUMBER).description("Crew원 고유id"),
+                        fieldWithPath("projects[].crews[].nickname").type(JsonFieldType.STRING).description("Crew원 닉네임"),
+                        fieldWithPath("projects[].terminated").type(JsonFieldType.BOOLEAN).description("종료된 프로젝트이면 true, 아니면 false")
+                )
+        );
+    }
+
     public static RestDocumentationFilter documentProjectTerminate() {
         return document("project-terminate",
                 pathParameters(

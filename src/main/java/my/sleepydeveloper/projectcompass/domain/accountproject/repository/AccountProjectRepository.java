@@ -69,4 +69,12 @@ public class AccountProjectRepository {
                 .where(accountProject.account.eq(account).and(accountProject.project.isTerminated.eq(false)))
                 .fetch();
     }
+
+    public List<Project> findProjectFromCrewTerminated(Account account) {
+        return queryFactory
+                .select(project)
+                .from(accountProject)
+                .where(accountProject.account.eq(account).and(accountProject.project.isTerminated.eq(true)))
+                .fetch();
+    }
 }

@@ -85,6 +85,15 @@ public class ProjectController {
         return new GetMyCaptainTerminatedProjectResponse(projects);
     }
 
+    @GetMapping("/my/crew/terminated")
+    public GetMyCrewTerminatedProjectResponse getMyCrewTerminatedProject(@AuthenticationPrincipal Account account) {
+        List<GetMyCrewTerminatedProjectResponse.ProjectResponse> projects = projectService.findAllByCrewTerminated(account).stream()
+                .map((p) -> new GetMyCrewTerminatedProjectResponse.ProjectResponse(p, accountProjectService.getCrews(p)))
+                .collect(Collectors.toList());
+
+        return new GetMyCrewTerminatedProjectResponse(projects);
+    }
+
     @GetMapping("/{projectId}/crews")
     public ResponseEntity<GetCrewsResponse> getCrews(@PathVariable Long projectId) {
 

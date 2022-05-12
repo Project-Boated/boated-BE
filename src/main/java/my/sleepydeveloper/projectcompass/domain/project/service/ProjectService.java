@@ -113,6 +113,10 @@ public class ProjectService {
         return accountProjectRepository.findProjectFromCrewNotTerminated(account);
     }
 
+    public List<Project> findAllByCrewTerminated(Account account) {
+        return accountProjectRepository.findProjectFromCrewTerminated(account);
+    }
+
     @Transactional
     public void terminateProject(Account account, Long projectId) {
         Account captain = accountRepository.findById(account.getId())
