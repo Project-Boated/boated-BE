@@ -101,6 +101,17 @@ public class ProjectDocument {
         );
     }
 
+    public static RestDocumentationFilter documentProjectTerminate() {
+        return document("project-terminate",
+                pathParameters(
+                        parameterWithName("projectId").description("프로젝트 id")
+                ),
+                responseFields(
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("프로젝트 고유 id")
+                )
+        );
+    }
+
     public static RestDocumentationResultHandler documentProjectRetrieveCrews() {
         return MockMvcRestDocumentation.document("project-crews-retrieve",
                 requestHeaders(
