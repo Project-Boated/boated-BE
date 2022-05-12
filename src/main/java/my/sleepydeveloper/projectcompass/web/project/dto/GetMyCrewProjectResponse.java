@@ -37,6 +37,8 @@ public class GetMyCrewProjectResponse {
 
         private List<ProjectCrew> crews;
 
+        private boolean isTerminated;
+
         public ProjectResponse(Project project, List<Account> crews) {
             this.id = project.getId();
             this.name = project.getName();
@@ -44,6 +46,7 @@ public class GetMyCrewProjectResponse {
             this.deadline = project.getDeadline();
             this.captain = new ProjectCaptain(project.getCaptain());
             this.crews = crews.stream().map(ProjectCrew::new).toList();
+            this.isTerminated = project.isTerminated();
         }
     }
 

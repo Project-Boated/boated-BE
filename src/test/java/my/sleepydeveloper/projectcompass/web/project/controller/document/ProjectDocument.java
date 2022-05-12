@@ -53,7 +53,7 @@ public class ProjectDocument {
         );
     }
 
-    public static RestDocumentationFilter documentProjectMy() {
+    public static RestDocumentationFilter documentProjectCaptain() {
         return document("project-my-captain-retrieve",
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
@@ -72,7 +72,8 @@ public class ProjectDocument {
                         fieldWithPath("projects[].captain.nickname").type(JsonFieldType.STRING).description("Captain 닉네임"),
                         fieldWithPath("projects[].crews").type(JsonFieldType.ARRAY).description("Crew원들 정보"),
                         fieldWithPath("projects[].crews[].id").type(JsonFieldType.NUMBER).description("Crew원 고유id"),
-                        fieldWithPath("projects[].crews[].nickname").type(JsonFieldType.STRING).description("Crew원 닉네임")
+                        fieldWithPath("projects[].crews[].nickname").type(JsonFieldType.STRING).description("Crew원 닉네임"),
+                        fieldWithPath("projects[].terminated").type(JsonFieldType.BOOLEAN).description("종료된 프로젝트이면 true, 아니면 false")
                 )
         );
     }
@@ -96,7 +97,19 @@ public class ProjectDocument {
                         fieldWithPath("projects[].captain.nickname").type(JsonFieldType.STRING).description("Captain 닉네임"),
                         fieldWithPath("projects[].crews").type(JsonFieldType.ARRAY).description("Crew원들 정보"),
                         fieldWithPath("projects[].crews[].id").type(JsonFieldType.NUMBER).description("Crew원 고유id"),
-                        fieldWithPath("projects[].crews[].nickname").type(JsonFieldType.STRING).description("Crew원 닉네임")
+                        fieldWithPath("projects[].crews[].nickname").type(JsonFieldType.STRING).description("Crew원 닉네임"),
+                        fieldWithPath("projects[].terminated").type(JsonFieldType.BOOLEAN).description("종료된 프로젝트이면 true, 아니면 false")
+                )
+        );
+    }
+
+    public static RestDocumentationFilter documentProjectTerminate() {
+        return document("project-terminate",
+                pathParameters(
+                        parameterWithName("projectId").description("프로젝트 id")
+                ),
+                responseFields(
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("프로젝트 고유 id")
                 )
         );
     }

@@ -105,4 +105,12 @@ public class ProjectController {
 
         return ResponseEntity.ok(new IdDto(newCaptain.getId()));
     }
+
+    @PostMapping("/{projectId}/terminate")
+    public TerminateProjectResponse terminateProject(@AuthenticationPrincipal Account account,
+                                                     @PathVariable Long projectId) {
+        projectService.terminateProject(account, projectId);
+
+        return new TerminateProjectResponse(projectId);
+    }
 }
