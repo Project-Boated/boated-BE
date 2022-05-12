@@ -12,7 +12,6 @@ import my.sleepydeveloper.projectcompass.domain.project.service.ProjectService;
 import my.sleepydeveloper.projectcompass.web.project.dto.CreateProjectRequest;
 import my.sleepydeveloper.projectcompass.web.project.dto.PatchProjectRequest;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
@@ -107,7 +106,7 @@ class ProjectControllerTest extends AcceptanceTest {
         // When
         // Then
         given(this.spec)
-            .filter(documentProjectMy())
+            .filter(documentProjectCaptain())
             .accept(ContentType.JSON)
             .cookie(captainCookie)
         .when()
