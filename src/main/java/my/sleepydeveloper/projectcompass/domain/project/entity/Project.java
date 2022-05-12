@@ -32,12 +32,15 @@ public class Project extends BaseTimeEntity {
     @JoinColumn(name = "account_id_captain")
     private Account captain;
 
+    private boolean isTerminated;
+
     @Builder
     public Project(String name, String description, Account captain, LocalDateTime deadline) {
         this.name = name;
         this.description = description;
         this.deadline = deadline;
         this.captain = captain;
+        this.isTerminated = false;
     }
 
     public void changeProjectInform(String name, String description) {
@@ -51,5 +54,9 @@ public class Project extends BaseTimeEntity {
 
     public void changeCaptain(Account account) {
         this.captain = account;
+    }
+
+    public void terminateProject() {
+        isTerminated = true;
     }
 }

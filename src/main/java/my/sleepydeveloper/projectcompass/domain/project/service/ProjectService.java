@@ -108,4 +108,19 @@ public class ProjectService {
     public List<Project> findAllByCrew(Account account) {
         return accountProjectRepository.findProjectFromCrew(account);
     }
+
+    @Transactional
+    public void terminateProject(Account account, Long projectId) {
+        Account captain = accountRepository.findById(account.getId())
+                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+
+        if (project.getCaptain().getId() != captain.getId()) {
+            throw new ProjectUpdateAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
+        }
+
+        project.terminateProject();
+    }
 }
