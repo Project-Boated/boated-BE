@@ -6,14 +6,13 @@ import io.restassured.http.Cookie;
 import my.sleepydeveloper.projectcompass.common.basetest.AcceptanceTest;
 import my.sleepydeveloper.projectcompass.common.utils.AccountProjectTestUtils;
 import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
+import my.sleepydeveloper.projectcompass.common.utils.InvitationTestUtils;
 import my.sleepydeveloper.projectcompass.common.utils.ProjectTestUtils;
 import my.sleepydeveloper.projectcompass.domain.project.service.ProjectService;
 import my.sleepydeveloper.projectcompass.web.project.dto.CreateProjectRequest;
 import my.sleepydeveloper.projectcompass.web.project.dto.PatchProjectRequest;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
@@ -90,22 +89,27 @@ class ProjectControllerTest extends AcceptanceTest {
                 .assertThat().body("id", notNullValue());
     }
 
-    @ParameterizedTest
-    @ValueSource(ints = {10})
-    void getMyCaptainProject_내가Captain인프로젝트조회_정상(int count) throws Exception {
+    @Test
+    void getMyCaptainProject_내가Captain인프로젝트조회_정상() throws Exception {
         // Given
+        String crewUsername = "crewUsername";
+        String crewNickname = "crewNickname";
+
         AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
-        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        for (int i = 0; i < count; i++) {
-            ProjectTestUtils.createProject(port, cookie, PROJECT_NAME + i, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
-        }
+        AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL);
+        Cookie crewCookie = AccountTestUtils.login(port, crewUsername, PASSWORD);
+        Cookie captainCookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+
+        int projectId = ProjectTestUtils.createProject(port, captainCookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+        int invitationId = InvitationTestUtils.createInvitation(port, captainCookie, (long) projectId, crewNickname);
+        InvitationTestUtils.acceptInvitation(port, crewCookie, (long)invitationId);
 
         // When
         // Then
         given(this.spec)
             .filter(documentProjectMy())
             .accept(ContentType.JSON)
-            .cookie(cookie)
+            .cookie(captainCookie)
         .when()
             .port(port)
             .get("/api/projects/my/captain")
