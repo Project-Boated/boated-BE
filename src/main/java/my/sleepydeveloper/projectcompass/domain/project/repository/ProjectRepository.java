@@ -15,4 +15,10 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     boolean existsByName(String name);
 
     List<Project> findAllByCaptain(Account captain);
+
+    @Query("select p from Project p where p.captain=:captain and p.isTerminated=false")
+    List<Project> findAllByCaptainAndNotTerminated(@Param("captain") Account captain);
+
+    @Query("select p from Project p where p.captain=:captain and p.isTerminated=true")
+    List<Project> findAllByCaptainAndTerminated(@Param("captain")Account captain);
 }

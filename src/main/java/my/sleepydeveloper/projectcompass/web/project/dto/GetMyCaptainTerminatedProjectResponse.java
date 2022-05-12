@@ -11,10 +11,11 @@ import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetMyCaptainProjectResponse {
+public class GetMyCaptainTerminatedProjectResponse {
 
     private List<ProjectResponse> projects;
 
