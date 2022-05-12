@@ -73,7 +73,8 @@ public class ProjectDocument {
                         fieldWithPath("projects[].crews").type(JsonFieldType.ARRAY).description("Crew원들 정보"),
                         fieldWithPath("projects[].crews[].id").type(JsonFieldType.NUMBER).description("Crew원 고유id"),
                         fieldWithPath("projects[].crews[].nickname").type(JsonFieldType.STRING).description("Crew원 닉네임"),
-                        fieldWithPath("projects[].terminated").type(JsonFieldType.BOOLEAN).description("종료된 프로젝트이면 true, 아니면 false")
+                        fieldWithPath("projects[].terminated").type(JsonFieldType.BOOLEAN).description("종료된 프로젝트이면 true, 아니면 false"),
+                        fieldWithPath("projects[].dday").type(JsonFieldType.NUMBER).description("dday")
                 )
         );
     }
@@ -98,7 +99,8 @@ public class ProjectDocument {
                         fieldWithPath("projects[].crews").type(JsonFieldType.ARRAY).description("Crew원들 정보"),
                         fieldWithPath("projects[].crews[].id").type(JsonFieldType.NUMBER).description("Crew원 고유id"),
                         fieldWithPath("projects[].crews[].nickname").type(JsonFieldType.STRING).description("Crew원 닉네임"),
-                        fieldWithPath("projects[].terminated").type(JsonFieldType.BOOLEAN).description("종료된 프로젝트이면 true, 아니면 false")
+                        fieldWithPath("projects[].terminated").type(JsonFieldType.BOOLEAN).description("종료된 프로젝트이면 true, 아니면 false"),
+                        fieldWithPath("projects[].dday").type(JsonFieldType.NUMBER).description("dday")
                 )
         );
     }
@@ -123,7 +125,8 @@ public class ProjectDocument {
                         fieldWithPath("projects[].crews").type(JsonFieldType.ARRAY).description("Crew원들 정보"),
                         fieldWithPath("projects[].crews[].id").type(JsonFieldType.NUMBER).description("Crew원 고유id"),
                         fieldWithPath("projects[].crews[].nickname").type(JsonFieldType.STRING).description("Crew원 닉네임"),
-                        fieldWithPath("projects[].terminated").type(JsonFieldType.BOOLEAN).description("종료된 프로젝트이면 true, 아니면 false")
+                        fieldWithPath("projects[].terminated").type(JsonFieldType.BOOLEAN).description("종료된 프로젝트이면 true, 아니면 false"),
+                        fieldWithPath("projects[].dday").type(JsonFieldType.NUMBER).description("dday")
                 )
         );
     }
@@ -148,7 +151,8 @@ public class ProjectDocument {
                         fieldWithPath("projects[].crews").type(JsonFieldType.ARRAY).description("Crew원들 정보"),
                         fieldWithPath("projects[].crews[].id").type(JsonFieldType.NUMBER).description("Crew원 고유id"),
                         fieldWithPath("projects[].crews[].nickname").type(JsonFieldType.STRING).description("Crew원 닉네임"),
-                        fieldWithPath("projects[].terminated").type(JsonFieldType.BOOLEAN).description("종료된 프로젝트이면 true, 아니면 false")
+                        fieldWithPath("projects[].terminated").type(JsonFieldType.BOOLEAN).description("종료된 프로젝트이면 true, 아니면 false"),
+                        fieldWithPath("projects[].dday").type(JsonFieldType.NUMBER).description("dday")
                 )
         );
     }

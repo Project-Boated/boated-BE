@@ -8,7 +8,9 @@ import lombok.Setter;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 
 @Getter
@@ -38,6 +40,8 @@ public class GetMyCrewTerminatedProjectResponse {
 
         private boolean isTerminated;
 
+        private Integer dday;
+
         public ProjectResponse(Project project, List<Account> crews) {
             this.id = project.getId();
             this.name = project.getName();
@@ -46,6 +50,7 @@ public class GetMyCrewTerminatedProjectResponse {
             this.captain = new ProjectCaptain(project.getCaptain());
             this.crews = crews.stream().map(ProjectCrew::new).toList();
             this.isTerminated = project.isTerminated();
+            this.dday = project.getDeadline()!=null ? Period.between(deadline.toLocalDate(), LocalDate.now()).getDays() : null;
         }
     }
 
