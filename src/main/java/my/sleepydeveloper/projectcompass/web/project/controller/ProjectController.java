@@ -72,7 +72,7 @@ public class ProjectController {
     public GetMyCrewProjectResponse getMyCrewProject(@AuthenticationPrincipal Account account) {
 
         List<GetMyCrewProjectResponse.ProjectResponse> projects = projectService.findAllByCrew(account).stream()
-                .map(GetMyCrewProjectResponse.ProjectResponse::new)
+                .map((p) -> new GetMyCrewProjectResponse.ProjectResponse(p, accountProjectService.getCrews(p)))
                 .toList();
 
         return new GetMyCrewProjectResponse(projects);

@@ -117,6 +117,34 @@ class ProjectControllerTest extends AcceptanceTest {
             .statusCode(HttpStatus.OK.value());
     }
 
+    @Test
+    void getMyCrewProject_내가Crew인프로젝트조회_정상() throws Exception {
+        // Given
+        String crewUsername = "crewUsername";
+        String crewNickname = "crewNickname";
+
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL);
+        Cookie crewCookie = AccountTestUtils.login(port, crewUsername, PASSWORD);
+        Cookie captainCookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+
+        int projectId = ProjectTestUtils.createProject(port, captainCookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+        int invitationId = InvitationTestUtils.createInvitation(port, captainCookie, (long) projectId, crewNickname);
+        InvitationTestUtils.acceptInvitation(port, crewCookie, (long)invitationId);
+
+        // When
+        // Then
+        given(this.spec)
+            .filter(documentProjectCrew())
+            .accept(ContentType.JSON)
+            .cookie(crewCookie)
+        .when()
+            .port(port)
+            .get("/api/projects/my/crew")
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
+
     // Invitation 구현이 끝나면 다시 테스팅, 현재는 테스트 불가
 //    @Test
 //    void getCrews_project에속한모든crew조회_성공() throws Exception {

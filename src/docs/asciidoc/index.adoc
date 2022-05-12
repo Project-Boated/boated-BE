@@ -387,6 +387,29 @@ include::{snippets}/project-my-captain-retrieve/response-headers.adoc[]
 
 ===== response-fields
 include::{snippets}/project-my-captain-retrieve/response-fields.adoc[]
+
+[[resources-project-my-crew-retrieve]]
+=== 내가 crew인 프로젝트 목록
+`GET` 요청을 사용해서 내가 crew 프로젝트의 목록을 확인할 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/project-my-crew-retrieve/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/project-my-crew-retrieve/request-headers.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/project-my-crew-retrieve/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/project-my-crew-retrieve/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/project-my-crew-retrieve/response-fields.adoc[]
 //
 //[[resources-project-crews-retrieve]]
 //=== 프로젝트에 참여한 유저
