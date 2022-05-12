@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 
 import java.time.LocalDateTime;
@@ -31,11 +32,45 @@ public class GetMyCaptainProjectResponse {
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime deadline;
 
-        public ProjectResponse(Project project) {
+        private ProjectCaptain captain;
+
+        private List<ProjectCrew> crews;
+
+        public ProjectResponse(Project project, List<Account> crews) {
             this.id = project.getId();
             this.name = project.getName();
             this.description = project.getDescription();
             this.deadline = project.getDeadline();
+            this.captain = new ProjectCaptain(project.getCaptain());
+            this.crews = crews.stream().map(ProjectCrew::new).toList();
+        }
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ProjectCaptain {
+        private Long id;
+        private String nickname;
+
+        public ProjectCaptain(Account captain) {
+            this.id = captain.getId();
+            this.nickname = captain.getNickname();
+        }
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ProjectCrew {
+        private Long id;
+        private String nickname;
+
+        public ProjectCrew(Account crew) {
+            this.id = crew.getId();
+            this.nickname = crew.getNickname();
         }
     }
 

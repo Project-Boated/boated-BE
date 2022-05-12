@@ -106,7 +106,6 @@ public class ProjectService {
     }
 
     public List<Project> findAllByCrew(Account account) {
-        accountProjectRepository.findProjectFromCrew(account);
-        return null;
+        return accountProjectRepository.findProjectFromCrew(account);
     }
 }

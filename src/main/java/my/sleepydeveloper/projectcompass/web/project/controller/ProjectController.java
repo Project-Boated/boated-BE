@@ -2,6 +2,7 @@ package my.sleepydeveloper.projectcompass.web.project.controller;
 
 import lombok.RequiredArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
+import my.sleepydeveloper.projectcompass.domain.accountproject.service.AccountProjectService;
 import my.sleepydeveloper.projectcompass.domain.invitation.entity.Invitation;
 import my.sleepydeveloper.projectcompass.domain.invitation.InvitationService;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final AccountProjectService accountProjectService;
     private final InvitationService invitationService;
 
     @PostMapping
@@ -60,7 +62,7 @@ public class ProjectController {
     @GetMapping("/my/captain")
     public GetMyCaptainProjectResponse getMyCaptainProject(@AuthenticationPrincipal Account account) {
         List<GetMyCaptainProjectResponse.ProjectResponse> projects = projectService.findAllByCaptain(account).stream()
-                .map(GetMyCaptainProjectResponse.ProjectResponse::new)
+                .map((p) -> new GetMyCaptainProjectResponse.ProjectResponse(p, accountProjectService.getCrews(p)))
                 .collect(Collectors.toList());
 
         return new GetMyCaptainProjectResponse(projects);
@@ -70,7 +72,7 @@ public class ProjectController {
     public GetMyCrewProjectResponse getMyCrewProject(@AuthenticationPrincipal Account account) {
 
         List<GetMyCrewProjectResponse.ProjectResponse> projects = projectService.findAllByCrew(account).stream()
-                .map(GetMyCrewProjectResponse.ProjectResponse::new)
+                .map((p) -> new GetMyCrewProjectResponse.ProjectResponse(p, accountProjectService.getCrews(p)))
                 .toList();
 
         return new GetMyCrewProjectResponse(projects);
