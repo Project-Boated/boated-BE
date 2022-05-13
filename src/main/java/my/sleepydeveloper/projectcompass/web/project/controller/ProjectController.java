@@ -129,4 +129,12 @@ public class ProjectController {
 
         return new TerminateProjectResponse(projectId);
     }
+
+    @PostMapping("/{projectId}/cancel-terminate")
+    public CancelTerminateProjectResponse cancelTerminateProject(@AuthenticationPrincipal Account account,
+                                                     @PathVariable Long projectId) {
+        projectService.cancelTerminateProject(account, projectId);
+
+        return new CancelTerminateProjectResponse(projectId);
+    }
 }
