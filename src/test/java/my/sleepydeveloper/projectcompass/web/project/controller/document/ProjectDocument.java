@@ -42,7 +42,8 @@ public class ProjectDocument {
                 ),
                 requestFields(
                         fieldWithPath("name").type(JsonFieldType.STRING).description("업데이트할 프로젝트 이름(생략가능)"),
-                        fieldWithPath("description").type(JsonFieldType.STRING).description("업데이트할 프로젝트 설명(생략가능)")
+                        fieldWithPath("description").type(JsonFieldType.STRING).description("업데이트할 프로젝트 설명(생략가능)"),
+                        fieldWithPath("deadline").type(JsonFieldType.STRING).description("업데이트할 마감기한 (생략가능)(yyyy-MM-dd HH:mm:ss)")
                 ),
                 responseHeaders(
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")

@@ -52,7 +52,7 @@ public class ProjectService {
             throw new ProjectNameSameInAccountException(ErrorCode.PROJECT_NAME_EXISTS_IN_ACCOUNT);
         }
 
-        project.changeProjectInform(projectUpdateCondition.getName(), projectUpdateCondition.getDescription());
+        project.changeProjectInform(projectUpdateCondition.getName(), projectUpdateCondition.getDescription(), projectUpdateCondition.getDeadline());
     }
 
     private boolean isSameProjectNameInAccount(ProjectUpdateCondition projectUpdateCondition, Project project) {

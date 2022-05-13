@@ -17,6 +17,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 import static io.restassured.RestAssured.given;
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.*;
@@ -79,7 +82,7 @@ class ProjectControllerTest extends AcceptanceTest {
                 .filter(documentProjectUpdate())
                 .contentType(ContentType.JSON)
                 .cookie(cookie)
-                .body(new PatchProjectRequest(projectUpdateName, projectUpdateDescription))
+                .body(new PatchProjectRequest(projectUpdateName, projectUpdateDescription, LocalDateTime.now().plus(1, ChronoUnit.DAYS)))
         .when()
                 .port(port)
                 .patch("/api/projects/" + projectId)
