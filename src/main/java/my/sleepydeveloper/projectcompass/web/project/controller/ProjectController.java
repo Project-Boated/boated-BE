@@ -51,6 +51,7 @@ public class ProjectController {
         ProjectUpdateCondition projectUpdateCondition = ProjectUpdateCondition.builder()
                 .name(patchProjectRequest.getName())
                 .description(patchProjectRequest.getDescription())
+                .deadline(patchProjectRequest.getDeadline())
                 .build();
 
         projectService.update(account, projectId, projectUpdateCondition);

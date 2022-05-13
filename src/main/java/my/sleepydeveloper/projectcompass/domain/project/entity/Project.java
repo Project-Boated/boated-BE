@@ -43,12 +43,15 @@ public class Project extends BaseTimeEntity {
         this.isTerminated = false;
     }
 
-    public void changeProjectInform(String name, String description) {
+    public void changeProjectInform(String name, String description, LocalDateTime deadline) {
         if (name != null) {
             this.name = name;
         }
         if (description != null) {
             this.description = description;
+        }
+        if (deadline != null) {
+            this.deadline = deadline;
         }
     }
 

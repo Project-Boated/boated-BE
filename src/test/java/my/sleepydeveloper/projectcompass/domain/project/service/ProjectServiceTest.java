@@ -28,6 +28,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,11 +113,13 @@ class ProjectServiceTest extends BaseTest {
         // When
         String newProjectName = "newProjectName";
         String newProjectDescription = "newProjectDescription";
-        projectService.update(captain, project.getId(), new ProjectUpdateCondition(newProjectName, newProjectDescription));
+        LocalDateTime newDeadline = PROJECT_DEADLINE.plus(1, ChronoUnit.DAYS);
+        projectService.update(captain, project.getId(), new ProjectUpdateCondition(newProjectName, newProjectDescription, newDeadline));
 
         // Then
         assertThat(project.getName()).isEqualTo(newProjectName);
         assertThat(project.getDescription()).isEqualTo(newProjectDescription);
+        assertThat(project.getDeadline()).isEqualTo(newDeadline);
     }
 
     @Test
@@ -143,11 +147,12 @@ class ProjectServiceTest extends BaseTest {
         projectRepository.save(project);
 
         // When
-        projectService.update(captain, project.getId(), new ProjectUpdateCondition(PROJECT_NAME, PROJECT_DESCRIPTION));
+        projectService.update(captain, project.getId(), new ProjectUpdateCondition(PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE));
 
         // Then
         assertThat(project.getName()).isEqualTo(PROJECT_NAME);
         assertThat(project.getDescription()).isEqualTo(PROJECT_DESCRIPTION);
+        assertThat(project.getDeadline()).isEqualTo(PROJECT_DEADLINE);
     }
 
     @Test
@@ -157,7 +162,7 @@ class ProjectServiceTest extends BaseTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.update(account, 123L, new ProjectUpdateCondition(PROJECT_NAME, PROJECT_DESCRIPTION)))
+        assertThatThrownBy(() -> projectService.update(account, 123L, new ProjectUpdateCondition(PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE)))
                 .isInstanceOf(ProjectNotFoundException.class);
     }
 
@@ -172,7 +177,7 @@ class ProjectServiceTest extends BaseTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.update(account2, project.getId(), new ProjectUpdateCondition("newProjectName", "newProjectDescription")))
+        assertThatThrownBy(() -> projectService.update(account2, project.getId(), new ProjectUpdateCondition("newProjectName", "newProjectDescription", null)))
                 .isInstanceOf(ProjectUpdateAccessDeniedException.class);
     }
 
@@ -189,7 +194,7 @@ class ProjectServiceTest extends BaseTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.update(captain, project2.getId(), new ProjectUpdateCondition(PROJECT_NAME, PROJECT_DESCRIPTION)))
+        assertThatThrownBy(() -> projectService.update(captain, project2.getId(), new ProjectUpdateCondition(PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE)))
                 .isInstanceOf(ProjectNameSameInAccountException.class);
     }
 

@@ -4,6 +4,8 @@ import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import org.junit.jupiter.api.Test;
 
+import java.time.temporal.ChronoUnit;
+
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,7 +39,7 @@ class ProjectTest extends BaseTest {
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain, PROJECT_DEADLINE);
         
         // When
-        project.changeProjectInform(newProjectName, newProjectDescription);
+        project.changeProjectInform(newProjectName, newProjectDescription, PROJECT_DEADLINE.plus(1, ChronoUnit.DAYS));
         
         // Then
         assertThat(project.getName()).isEqualTo(newProjectName);
@@ -51,11 +53,12 @@ class ProjectTest extends BaseTest {
         Project project = new Project(PROJECT_NAME, PROJECT_DESCRIPTION, captain, PROJECT_DEADLINE);
 
         // When
-        project.changeProjectInform(null, null);
+        project.changeProjectInform(null, null, null);
 
         // Then
         assertThat(project.getName()).isEqualTo(PROJECT_NAME);
         assertThat(project.getDescription()).isEqualTo(PROJECT_DESCRIPTION);
+        assertThat(project.getDeadline()).isEqualTo(PROJECT_DEADLINE);
     }
 
     @Test
