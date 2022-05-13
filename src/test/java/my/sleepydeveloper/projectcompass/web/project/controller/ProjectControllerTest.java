@@ -226,6 +226,29 @@ class ProjectControllerTest extends AcceptanceTest {
             .assertThat().body("id", equalTo(projectId));
     }
 
+    @Test
+    void cancelTerminateProject_종료된프로젝트를시작_정상() throws Exception {
+        // Given
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        Cookie captainCookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+
+        int projectId = ProjectTestUtils.createProject(port, captainCookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+        ProjectTestUtils.terminateProject(port, captainCookie, projectId);
+
+        // When
+        // Then
+        given(this.spec)
+            .filter(documentProjectCancelTerminate())
+            .accept(ContentType.JSON)
+            .cookie(captainCookie)
+        .when()
+            .port(port)
+            .post("/api/projects/{projectId}/cancel-terminate", projectId)
+        .then()
+            .statusCode(HttpStatus.OK.value())
+            .assertThat().body("id", equalTo(projectId));
+    }
+
     // Invitation 구현이 끝나면 다시 테스팅, 현재는 테스트 불가
 //    @Test
 //    void getCrews_project에속한모든crew조회_성공() throws Exception {

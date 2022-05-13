@@ -471,6 +471,26 @@ include::{snippets}/project-terminate/http-response.adoc[]
 ===== response-fields
 include::{snippets}/project-terminate/response-fields.adoc[]
 
+[[resources-project-cancel-terminate]]
+=== 프로젝트 종료 취소
+`POST` 요청을 사용해서 프로젝트 종료를 취소 시킬 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/project-cancel-terminate/http-request.adoc[]
+
+===== path-parameters
+include::{snippets}/project-cancel-terminate/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/project-cancel-terminate/http-response.adoc[]
+
+===== response-fields
+include::{snippets}/project-cancel-terminate/response-fields.adoc[]
+
 //
 //[[resources-project-crews-retrieve]]
 //=== 프로젝트에 참여한 유저

@@ -59,4 +59,8 @@ public class Project extends BaseTimeEntity {
     public void terminateProject() {
         isTerminated = true;
     }
+
+    public void cancelTerminateProject() {
+        isTerminated = false;
+    }
 }
