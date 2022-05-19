@@ -22,12 +22,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.UUID;
 
 @Service
@@ -175,15 +175,18 @@ public class AccountService {
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
         ProfileImage profileImage = (ProfileImage) Hibernate.unproxy(findAccount.getProfileImage());
 
-        String profileUrl = "";
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
+        uriBuilder.scheme("http");
+
         if(profileImage instanceof UploadFileProfileImage) {
-            String host = request.getHeader("HOST");
-            profileUrl = "http://" + host + "/api/account/profile/profile-image";
+            uriBuilder.host(request.getHeader("HOST"));
+            uriBuilder.path("/api/account/profile/profile-image");
+            return uriBuilder.build().toString();
         } else if (profileImage instanceof UrlProfileImage urlProfileImage) {
-            profileUrl = urlProfileImage.getUrl();
+            return urlProfileImage.getUrl();
         }
 
-        return profileUrl;
+        throw new AccountProfileImageNotSupportTypeException(ErrorCode.ACCOUNT_PROFILE_IMAGE_NOT_SUPPORT_TYPE);
     }
 
     public String getProfileUrl(Account account, HttpServletRequest request, boolean isProxy) {
@@ -191,19 +194,21 @@ public class AccountService {
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
         ProfileImage profileImage = (ProfileImage) Hibernate.unproxy(findAccount.getProfileImage());
 
-        String profileUrl = "";
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
+        uriBuilder.scheme("http");
+
         if(profileImage instanceof UploadFileProfileImage) {
-            String host = "";
             if(isProxy)
-                host = "localhost:3000";
+                uriBuilder.host("localhost:3000");
             else
-                host = request.getHeader("HOST");
-            profileUrl = "http://" + host + "/api/account/profile/profile-image";
+                uriBuilder.host(request.getHeader("HOST"));
+            uriBuilder.path("/api/account/profile/profile-image");
+            return uriBuilder.build().toString();
         } else if (profileImage instanceof UrlProfileImage urlProfileImage) {
-            profileUrl = urlProfileImage.getUrl();
+            return urlProfileImage.getUrl();
         }
 
-        return profileUrl;
+        throw new AccountProfileImageNotSupportTypeException(ErrorCode.ACCOUNT_PROFILE_IMAGE_NOT_SUPPORT_TYPE);
     }
 
 
