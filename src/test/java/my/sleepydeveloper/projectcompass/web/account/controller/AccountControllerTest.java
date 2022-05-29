@@ -3,27 +3,21 @@ package my.sleepydeveloper.projectcompass.web.account.controller;
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
 import my.sleepydeveloper.projectcompass.aws.AwsS3File;
-import my.sleepydeveloper.projectcompass.aws.AwsS3Service;
 import my.sleepydeveloper.projectcompass.common.basetest.AcceptanceTest;
 import my.sleepydeveloper.projectcompass.common.utils.AccountTestUtils;
-import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
+import my.sleepydeveloper.projectcompass.domain.profileimage.service.AwsS3ProfileImageService;
 import my.sleepydeveloper.projectcompass.web.account.dto.PutNicknameRequest;
 import my.sleepydeveloper.projectcompass.web.account.dto.SignUpRequest;
 import my.sleepydeveloper.projectcompass.web.account.dto.ValidationNicknameUniqueRequest;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 import static io.restassured.RestAssured.given;
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
@@ -34,7 +28,7 @@ import static org.hamcrest.Matchers.*;
 class AccountControllerTest extends AcceptanceTest {
 
     @MockBean
-    AwsS3Service awsS3Service;
+    AwsS3ProfileImageService awsS3ProfileService;
 
     @Test
     void signUp_회원가입_성공() throws Exception {
@@ -74,7 +68,7 @@ class AccountControllerTest extends AcceptanceTest {
     @Test
     void patchAccountProfile_프로필update_성공() throws Exception {
 
-        Mockito.when(awsS3Service.uploadProfileImage(Mockito.any(), Mockito.any(), Mockito.any()))
+        Mockito.when(awsS3ProfileService.uploadProfileImage(Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn("http://test.com");
 
         AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
@@ -172,7 +166,7 @@ class AccountControllerTest extends AcceptanceTest {
 
     @Test
     void postAccountProfileImage_프로필이미지수정_성공() throws IOException {
-        Mockito.when(awsS3Service.uploadProfileImage(Mockito.any(), Mockito.any(), Mockito.any()))
+        Mockito.when(awsS3ProfileService.uploadProfileImage(Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn("http://test.com");
 
         AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
@@ -196,8 +190,8 @@ class AccountControllerTest extends AcceptanceTest {
         AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
 
-        Mockito.when(awsS3Service.getProfileImageBytes(Mockito.any()))
-                .thenReturn(new AwsS3File("asdf".getBytes(), "image/png", "filename"));
+        Mockito.when(awsS3ProfileService.getProfileImageBytes(Mockito.any()))
+                .thenReturn(new AwsS3File("filename", "image/png", "asdf".getBytes()));
 
         given(this.spec)
             .accept(ContentType.JSON)

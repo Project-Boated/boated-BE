@@ -30,3 +30,4 @@ cloud:
       static: ap-northeast-2
     s3:
       baseUrl: baseUrl
+      bucketName: boated

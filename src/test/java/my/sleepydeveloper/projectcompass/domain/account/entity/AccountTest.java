@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
+import static my.sleepydeveloper.projectcompass.common.data.BasicUploadFileData.UPLOADFILE_INSTANCE;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class AccountTest extends BaseTest {
@@ -154,7 +155,7 @@ class AccountTest extends BaseTest {
         String updatePassword = "updatePassword";
         String updateNickname = "updateNickname";
         String updateProfileUrl = "updateProfileUrl";
-        UploadFile updateProfileFile = new UploadFile(updateProfileUrl);
+        UploadFile updateProfileFile = UPLOADFILE_INSTANCE;
         account.updateProfile(updateNickname, updatePassword);
 
         // Then
