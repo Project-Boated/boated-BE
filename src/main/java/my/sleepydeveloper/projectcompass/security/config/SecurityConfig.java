@@ -66,7 +66,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(characterEncodingFilter(), CsrfFilter.class)
                 .addFilterBefore(kakaoAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jsonAuthenticationFilter(), KakaoAuthenticationFilter.class);
-                
 
         http
                 .csrf().disable();

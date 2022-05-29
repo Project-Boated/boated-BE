@@ -1,6 +1,5 @@
 package my.sleepydeveloper.projectcompass.domain.account.service;
 
-import my.sleepydeveloper.projectcompass.aws.AwsS3Service;
 import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.entity.KakaoAccount;
@@ -13,11 +12,10 @@ import my.sleepydeveloper.projectcompass.domain.account.repository.AccountReposi
 import my.sleepydeveloper.projectcompass.domain.account.repository.KakaoAccountRepository;
 import my.sleepydeveloper.projectcompass.domain.account.service.condition.AccountUpdateCond;
 import my.sleepydeveloper.projectcompass.domain.profileimage.repository.ProfileImageRepository;
+import my.sleepydeveloper.projectcompass.domain.profileimage.service.AwsS3ProfileImageService;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
-import my.sleepydeveloper.projectcompass.domain.uploadfile.repository.UploadFileRepository;
 import my.sleepydeveloper.projectcompass.security.service.KakaoWebService;
 import org.assertj.core.api.AssertionsForClassTypes;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -33,6 +31,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Set;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
+import static my.sleepydeveloper.projectcompass.common.data.BasicUploadFileData.UPLOADFILE_INSTANCE;
 import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -63,11 +62,14 @@ class AccountServiceTest extends BaseTest {
     KakaoWebService kakaoWebService;
 
     @Mock
-    AwsS3Service awsS3Service;
+    AwsS3ProfileImageService awsS3ProfileService;
+
+    @Mock
+    AccountNicknameService accountNicknameService;
 
     @BeforeEach
     void beforeEach() {
-        accountService = new AccountService(accountRepository,profileImageRepository, passwordEncoder, kakaoWebService, awsS3Service);
+        accountService = new AccountService(accountRepository, passwordEncoder, kakaoWebService, awsS3ProfileService, accountNicknameService);
     }
 
     @Test
@@ -142,7 +144,7 @@ class AccountServiceTest extends BaseTest {
         String newNickname = "newNickname";
         String newPassword = "newPassword";
         String newProfileImageUrl = "newProfileImageUrl";
-        UploadFile newProfileImageFile = new UploadFile(newProfileImageUrl);
+        UploadFile newProfileImageFile = UPLOADFILE_INSTANCE;
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(newNickname)
                 .newPassword(newPassword)
@@ -168,7 +170,7 @@ class AccountServiceTest extends BaseTest {
 
         String newNickname = "newNickname";
         String newProfileImageUrl = "newProfileImageUrl";
-        UploadFile newProfileImageFile = new UploadFile(newProfileImageUrl);
+        UploadFile newProfileImageFile = UPLOADFILE_INSTANCE;
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(newNickname)
                 .build();
@@ -211,7 +213,7 @@ class AccountServiceTest extends BaseTest {
         String newNickname = "newNickname";
         String newPassword = "newPassword";
         String newProfileImageUrl = "newProfileImageUrl";
-        UploadFile newProfileImageFile = new UploadFile(newProfileImageUrl);
+        UploadFile newProfileImageFile = UPLOADFILE_INSTANCE;
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(newNickname)
                 .newPassword(newPassword)
@@ -232,7 +234,7 @@ class AccountServiceTest extends BaseTest {
         String newNickname = "newNickname";
         String newPassword = "newPassword";
         String newProfileImageUrl = "newProfileImageUrl";
-        UploadFile newProfileImageFile = new UploadFile(newProfileImageUrl);
+        UploadFile newProfileImageFile = UPLOADFILE_INSTANCE;
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(newNickname)
                 .newPassword(newPassword)
@@ -253,7 +255,7 @@ class AccountServiceTest extends BaseTest {
         String newNickname = "newNickname";
         String newPassword = "newPassword";
         String newProfileImageUrl = "newProfileImageUrl";
-        UploadFile newProfileImageFile = new UploadFile(newProfileImageUrl);
+        UploadFile newProfileImageFile = UPLOADFILE_INSTANCE;
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(newNickname)
                 .newPassword(newPassword)
@@ -275,7 +277,7 @@ class AccountServiceTest extends BaseTest {
 
         String newPassword = "newPassword";
         String newProfileImageUrl = "newProfileImageUrl";
-        UploadFile newProfileImageFile = new UploadFile(newProfileImageUrl);
+        UploadFile newProfileImageFile = UPLOADFILE_INSTANCE;
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(NICKNAME)
                 .newPassword(newPassword)
@@ -305,7 +307,7 @@ class AccountServiceTest extends BaseTest {
 
         String newPassword = "newPassword";
         String newProfileImageUrl = "newProfileImageUrl";
-        UploadFile newProfileImageFile = new UploadFile(newProfileImageUrl);
+        UploadFile newProfileImageFile = UPLOADFILE_INSTANCE;
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(account1Nickname)
                 .newPassword(newPassword)
@@ -354,7 +356,7 @@ class AccountServiceTest extends BaseTest {
 
         // When
         String newNickname = "newNickname";
-        accountService.updateNickname(account, newNickname);
+        accountNicknameService.updateNickname(account, newNickname);
 
         // Then
         AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(USERNAME);
@@ -372,7 +374,7 @@ class AccountServiceTest extends BaseTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> accountService.updateNickname(account, NICKNAME));
+        assertThatThrownBy(() -> accountNicknameService.updateNickname(account, NICKNAME));
     }
 
     @Test
@@ -381,7 +383,7 @@ class AccountServiceTest extends BaseTest {
         Account account = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
 
         // When
-        accountService.updateNickname(account, NICKNAME);
+        accountNicknameService.updateNickname(account, NICKNAME);
 
         // Then
         AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(USERNAME);
@@ -397,7 +399,7 @@ class AccountServiceTest extends BaseTest {
         Account account = accountService.save(new Account(USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_FILE, ROLES));
 
         // When
-        accountService.updateNickname(account, null);
+        accountNicknameService.updateNickname(account, null);
 
         // Then
         AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(USERNAME);
@@ -420,7 +422,7 @@ class AccountServiceTest extends BaseTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> accountService.updateNickname(account2, account1Nickname))
+        assertThatThrownBy(() -> accountNicknameService.updateNickname(account2, account1Nickname))
                 .isInstanceOf(AccountNicknameAlreadyExistsException.class);
     }
 

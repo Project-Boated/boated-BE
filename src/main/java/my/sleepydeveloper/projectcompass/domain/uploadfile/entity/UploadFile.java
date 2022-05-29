@@ -21,8 +21,6 @@ public class UploadFile {
 
     private String ext;
 
-    private String url;
-
     private String mediaType;
 
     public UploadFile(String originalFileName, String saveFileName, String mediaType) {
@@ -30,15 +28,6 @@ public class UploadFile {
         this.ext = extractExt(originalFileName);
         this.saveFileName = saveFileName;
         this.mediaType = mediaType;
-    }
-
-    public UploadFile(String originalFileName, String saveFileName, String mediaType, String url) {
-        this(originalFileName, saveFileName, mediaType);
-        this.url = url;
-    }
-
-    public UploadFile(String url) {
-        this.url = url;
     }
 
     private String extractExt(String originalFileName) {

@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 public class AwsS3File {
 
-    private byte[] bytes;
-    private String mediaType;
     private String fileName;
+    private String mediaType;
+    private byte[] bytes;
 }
