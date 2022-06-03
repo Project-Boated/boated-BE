@@ -14,8 +14,8 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCodeException;
-import my.sleepydeveloper.projectcompass.web.exception.dto.BasicErrorResponse;
-import my.sleepydeveloper.projectcompass.web.exception.dto.ExceptionMessageResponse;
+import my.sleepydeveloper.projectcompass.web.infra.exception.dto.BasicErrorResponse;
+import my.sleepydeveloper.projectcompass.web.infra.exception.dto.ExceptionMessageResponse;
 
 public class JsonAccessDeniedHandler implements AccessDeniedHandler {
 

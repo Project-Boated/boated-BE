@@ -7,14 +7,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ProfileImageService {
 
     private final ProfileImageRepository profileImageRepository;
 
-    public void save(ProfileImage profileImage) {
-        profileImageRepository.save(profileImage);
+    @Transactional
+    public ProfileImage save(ProfileImage profileImage) {
+        return profileImageRepository.save(profileImage);
     }
 
 }

@@ -8,11 +8,17 @@ import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.exception.*;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.account.service.condition.AccountUpdateCond;
+import my.sleepydeveloper.projectcompass.domain.profileimage.entity.ProfileImage;
 import my.sleepydeveloper.projectcompass.domain.profileimage.entity.UploadFileProfileImage;
+import my.sleepydeveloper.projectcompass.domain.profileimage.repository.ProfileImageRepository;
 import my.sleepydeveloper.projectcompass.domain.profileimage.service.AwsS3ProfileImageService;
+import my.sleepydeveloper.projectcompass.domain.profileimage.service.ProfileImageService;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.repository.UploadFileRepository;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.service.UploadFileService;
 import my.sleepydeveloper.projectcompass.security.service.KakaoWebService;
 import my.sleepydeveloper.projectcompass.utils.StringUtils;
+import org.hibernate.Hibernate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +40,8 @@ public class AccountService {
     private final KakaoWebService kakaoWebService;
     private final AwsS3ProfileImageService awsS3ProfileService;
     private final AccountNicknameService nicknameService;
+    private final UploadFileRepository uploadFileRepository;
+    private final ProfileImageRepository profileImageRepository;
 
     public Account findById(Long accountId) {
         return accountRepository.findById(accountId)
@@ -88,6 +96,17 @@ public class AccountService {
             } catch (IOException e) {
                 throw new CommonIOException(ErrorCode.COMMON_IO_EXCEPTION, e);
             }
+
+            ProfileImage oldProfileImage = (ProfileImage) Hibernate.unproxy(findAccount.getProfileImage());
+            if (oldProfileImage instanceof UploadFileProfileImage oldUploadFileProfileImage) {
+                UploadFile oldUploadFile = oldUploadFileProfileImage.getUploadFile();
+                uploadFileRepository.delete(oldUploadFile);
+            }
+            profileImageRepository.delete(oldProfileImage);
+
+            uploadFileRepository.save(uploadFile);
+            profileImageRepository.save(uploadFileProfileImage);
+
             findAccount.updateProfileImage(uploadFileProfileImage);
         }
 

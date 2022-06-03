@@ -1,7 +1,7 @@
 package my.sleepydeveloper.projectcompass.web.common.exception;
 
 import my.sleepydeveloper.projectcompass.common.basetest.BaseTest;
-import my.sleepydeveloper.projectcompass.web.exception.dto.BasicFieldError;
+import my.sleepydeveloper.projectcompass.web.infra.exception.dto.BasicFieldError;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

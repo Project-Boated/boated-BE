@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
-import my.sleepydeveloper.projectcompass.web.exception.dto.ExceptionMessageResponse;
+import my.sleepydeveloper.projectcompass.web.infra.exception.dto.ExceptionMessageResponse;
 
 @Slf4j
 public class KakaoAuthenticationFailureHandler implements AuthenticationFailureHandler {

@@ -1,4 +1,4 @@
-package my.sleepydeveloper.projectcompass.web.exception.dto;
+package my.sleepydeveloper.projectcompass.web.infra.exception.dto;
 
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import org.springframework.context.MessageSource;

@@ -1,6 +1,6 @@
 package my.sleepydeveloper.projectcompass.security.entrypoint;
 
-import my.sleepydeveloper.projectcompass.web.exception.dto.ExceptionMessageResponse;
+import my.sleepydeveloper.projectcompass.web.infra.exception.dto.ExceptionMessageResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

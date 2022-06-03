@@ -5,13 +5,13 @@ import my.sleepydeveloper.projectcompass.aws.AwsS3File;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.exception.AccountProfileImageFileNotExist;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountProfileImageService;
-import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
 import my.sleepydeveloper.projectcompass.domain.common.exception.CommonIOException;
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
 import my.sleepydeveloper.projectcompass.domain.profileimage.entity.UploadFileProfileImage;
 import my.sleepydeveloper.projectcompass.domain.profileimage.service.AwsS3ProfileImageService;
 import my.sleepydeveloper.projectcompass.domain.profileimage.service.ProfileImageService;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.service.UploadFileService;
 import my.sleepydeveloper.projectcompass.web.account.dto.NotImageFileException;
 import my.sleepydeveloper.projectcompass.web.account.dto.PostAccountProfileImageRequest;
 import my.sleepydeveloper.projectcompass.web.account.dto.PostAccountProfileImageResponse;
@@ -32,7 +32,7 @@ import java.util.UUID;
 @RequestMapping("/api/account/profile/profile-image")
 public class AccountProfileImageController {
 
-    private final AccountService accountService;
+    private final UploadFileService uploadFileService;
     private final ProfileImageService profileImageService;
     private final AccountProfileImageService accountProfileImageService;
     private final AwsS3ProfileImageService awsS3ProfileImageService;
@@ -56,6 +56,7 @@ public class AccountProfileImageController {
         try {
             UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), UUID.randomUUID().toString(), file.getContentType());
             UploadFileProfileImage uploadFileProfileImage = new UploadFileProfileImage(uploadFile);
+            uploadFileService.save(uploadFile);
             profileImageService.save(uploadFileProfileImage);
 
             awsS3ProfileImageService.uploadProfileImage(account, uploadFileProfileImage, file);
@@ -77,7 +78,7 @@ public class AccountProfileImageController {
                 ok()
                 .contentType(MediaType.valueOf(awsS3File.getMediaType()))
                 .contentLength(awsS3File.getBytes().length)
-                .header("Content-Disposition", "filename=\""+ awsS3File.getFileName() +"\"")
+//                .header("Content-Disposition", "filename=\""+ awsS3File.getFileName() +"\"")
                 .body(awsS3File.getBytes());
     }
 
