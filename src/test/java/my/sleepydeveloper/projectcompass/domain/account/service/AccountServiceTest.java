@@ -14,6 +14,7 @@ import my.sleepydeveloper.projectcompass.domain.account.service.condition.Accoun
 import my.sleepydeveloper.projectcompass.domain.profileimage.repository.ProfileImageRepository;
 import my.sleepydeveloper.projectcompass.domain.profileimage.service.AwsS3ProfileImageService;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.repository.UploadFileRepository;
 import my.sleepydeveloper.projectcompass.security.service.KakaoWebService;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +33,6 @@ import java.util.Set;
 
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static my.sleepydeveloper.projectcompass.common.data.BasicUploadFileData.UPLOADFILE_INSTANCE;
-import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.context.annotation.ComponentScan.Filter;
@@ -67,9 +67,19 @@ class AccountServiceTest extends BaseTest {
     @Mock
     AccountNicknameService accountNicknameService;
 
+    @Mock
+    UploadFileRepository uploadFileRepository;
+
     @BeforeEach
     void beforeEach() {
-        accountService = new AccountService(accountRepository, passwordEncoder, kakaoWebService, awsS3ProfileService, accountNicknameService);
+        accountService = new AccountService(accountRepository,
+                passwordEncoder,
+                kakaoWebService,
+                awsS3ProfileService,
+                accountNicknameService,
+                uploadFileRepository,
+                profileImageRepository
+        );
     }
 
     @Test

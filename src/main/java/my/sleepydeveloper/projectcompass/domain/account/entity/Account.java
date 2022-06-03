@@ -30,12 +30,12 @@ public class Account extends BaseTimeEntity {
     @Column(unique = true)
     private String nickname;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_image_id")
     private ProfileImage profileImage;
 
     @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(
             name="account_role",
             joinColumns = @JoinColumn(name = "account_id")

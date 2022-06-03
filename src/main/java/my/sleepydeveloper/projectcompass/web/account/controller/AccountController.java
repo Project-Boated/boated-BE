@@ -7,7 +7,9 @@ import my.sleepydeveloper.projectcompass.domain.account.service.AccountProfileIm
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
 import my.sleepydeveloper.projectcompass.domain.account.service.condition.AccountUpdateCond;
 import my.sleepydeveloper.projectcompass.domain.exception.ErrorCode;
+import my.sleepydeveloper.projectcompass.domain.profileimage.entity.ProfileImage;
 import my.sleepydeveloper.projectcompass.domain.profileimage.entity.UrlProfileImage;
+import my.sleepydeveloper.projectcompass.domain.profileimage.service.ProfileImageService;
 import my.sleepydeveloper.projectcompass.web.account.dto.GetAccountProfileResponse;
 import my.sleepydeveloper.projectcompass.web.account.dto.NotImageFileException;
 import my.sleepydeveloper.projectcompass.web.account.dto.PatchAccountProfileRequest;
@@ -30,7 +32,8 @@ import java.util.Set;
 public class AccountController {
 
     private final AccountService accountService;
-    private final AccountProfileImageService profileImageService;
+    private final AccountProfileImageService accountProfileImageService;
+    private final ProfileImageService profileImageService;
 
     @PostMapping("/sign-up")
     public ResponseEntity<Void> signUp(@RequestBody @Validated SignUpRequest accountDto) {
@@ -39,7 +42,9 @@ public class AccountController {
         String nickname = accountDto.getNickname();
         String profileImageUrl = accountDto.getProfileImageUrl();
 
-        Account savedAccount = accountService.save(new Account(username, password, nickname, new UrlProfileImage(profileImageUrl), Set.of(Role.USER)));
+        ProfileImage profileImage = profileImageService.save(new UrlProfileImage(profileImageUrl));
+
+        Account savedAccount = accountService.save(new Account(username, password, nickname, profileImage, Set.of(Role.USER)));
 
         return ResponseEntity.created(URI.create("/api/account/profile" + savedAccount.getId())).build();
     }
@@ -49,7 +54,7 @@ public class AccountController {
                                                        HttpServletRequest request,
                                                        @RequestParam(name = "isProxy", required = false) boolean isProxy) {
         Account findAccount = accountService.findById(account.getId());
-        String profileUrl = profileImageService.getProfileUrl(account, request, isProxy);
+        String profileUrl = accountProfileImageService.getProfileUrl(account, request, isProxy);
         String nickname = findAccount.getNickname();
         String username = findAccount.getUsername();
         Set<Role> roles = findAccount.getRoles();

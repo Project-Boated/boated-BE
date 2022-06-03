@@ -1,9 +1,9 @@
-package my.sleepydeveloper.projectcompass.web.exception;
+package my.sleepydeveloper.projectcompass.web.infra.exception;
 
-import my.sleepydeveloper.projectcompass.web.exception.dto.BasicErrorResponse;
-import my.sleepydeveloper.projectcompass.web.exception.dto.BasicFieldErrorResponse;
+import my.sleepydeveloper.projectcompass.web.infra.exception.dto.BasicErrorResponse;
+import my.sleepydeveloper.projectcompass.web.infra.exception.dto.BasicFieldErrorResponse;
 import my.sleepydeveloper.projectcompass.domain.exception.BusinessException;
-import my.sleepydeveloper.projectcompass.web.exception.dto.ExceptionMessageResponse;
+import my.sleepydeveloper.projectcompass.web.infra.exception.dto.ExceptionMessageResponse;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,4 +1,4 @@
-package my.sleepydeveloper.projectcompass.web.config;
+package my.sleepydeveloper.projectcompass.web.infra.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

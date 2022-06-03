@@ -12,7 +12,7 @@ import javax.persistence.*;
 @DiscriminatorValue("upload_file")
 public class UploadFileProfileImage extends ProfileImage {
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     private UploadFile uploadFile;
 
     public UploadFileProfileImage(UploadFile uploadFile) {

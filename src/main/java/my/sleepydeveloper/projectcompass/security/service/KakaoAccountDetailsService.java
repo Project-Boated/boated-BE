@@ -1,7 +1,9 @@
 package my.sleepydeveloper.projectcompass.security.service;
 
 import my.sleepydeveloper.projectcompass.domain.account.entity.Role;
+import my.sleepydeveloper.projectcompass.domain.profileimage.entity.ProfileImage;
 import my.sleepydeveloper.projectcompass.domain.profileimage.entity.UrlProfileImage;
+import my.sleepydeveloper.projectcompass.domain.profileimage.service.ProfileImageService;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ import java.util.Set;
 public class KakaoAccountDetailsService {
 
     private final KakaoAccountRepository kakaoAccountRepository;
+    private final ProfileImageService profileImageService;
     private final KakaoWebService kakaoWebService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -38,11 +41,18 @@ public class KakaoAccountDetailsService {
                 KakaoAccountInformation.class);
 
         return kakaoAccountRepository.findByKakaoId(kakaoAccountResponse.getId())
-                .orElseGet(() -> kakaoAccountRepository.save(KakaoAccount.builder()
-                        .profileImageFile(kakaoAccountResponse.getProfileImageUrl()==null ? null : new UrlProfileImage(kakaoAccountResponse.getProfileImageUrl()))
-                        .roles(Set.of(Role.USER))
-                        .kakaoId(
-                                kakaoAccountResponse.getId())
-                        .build()));
+                .orElseGet(() -> {
+                    ProfileImage profileImage = null;
+                    if (kakaoAccountResponse.getProfileImageUrl() != null) {
+                        profileImage = profileImageService.save(new UrlProfileImage(kakaoAccountResponse.getProfileImageUrl()));
+                    }
+
+                    return kakaoAccountRepository.save(KakaoAccount.builder()
+                            .profileImageFile(profileImage)
+                            .roles(Set.of(Role.USER))
+                            .kakaoId(
+                                    kakaoAccountResponse.getId())
+                            .build());
+                });
     }
 }

@@ -2,9 +2,12 @@ package my.sleepydeveloper.projectcompass.security.mock;
 
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Role;
+import my.sleepydeveloper.projectcompass.domain.account.service.AccountProfileImageService;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountService;
+import my.sleepydeveloper.projectcompass.domain.profileimage.entity.ProfileImage;
 import my.sleepydeveloper.projectcompass.domain.profileimage.entity.UploadFileProfileImage;
 import my.sleepydeveloper.projectcompass.domain.profileimage.entity.UrlProfileImage;
+import my.sleepydeveloper.projectcompass.domain.profileimage.service.ProfileImageService;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
 import my.sleepydeveloper.projectcompass.security.token.JsonAuthenticationToken;
 
@@ -21,9 +24,11 @@ import java.util.stream.Collectors;
 public class WithMockJsonUserSecurityContextFactory implements WithSecurityContextFactory<WithMockJsonUser> {
 
     private final AccountService accountService;
+    private final ProfileImageService profileImageService;
 
-    public WithMockJsonUserSecurityContextFactory(AccountService accountService) {
+    public WithMockJsonUserSecurityContextFactory(AccountService accountService, ProfileImageService profileImageService) {
         this.accountService = accountService;
+        this.profileImageService = profileImageService;
     }
 
     @Override
@@ -31,10 +36,13 @@ public class WithMockJsonUserSecurityContextFactory implements WithSecurityConte
 
         SecurityContext context = SecurityContextHolder.createEmptyContext();
 
+        ProfileImage profileImage = profileImageService.save(new UrlProfileImage(annotation.profileImageUrl()));
+
         Account account = new Account(annotation.username(),
                 annotation.password(),
                 annotation.nickname(),
-                new UrlProfileImage(annotation.profileImageUrl()), Set.of(Role.USER));
+                profileImage,
+                Set.of(Role.USER));
 
         JsonAuthenticationToken jsonAuthenticationToken = new JsonAuthenticationToken(accountService.save(account),
                 null,

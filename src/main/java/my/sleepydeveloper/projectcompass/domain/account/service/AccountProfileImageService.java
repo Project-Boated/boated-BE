@@ -12,6 +12,8 @@ import my.sleepydeveloper.projectcompass.domain.profileimage.entity.ProfileImage
 import my.sleepydeveloper.projectcompass.domain.profileimage.entity.UploadFileProfileImage;
 import my.sleepydeveloper.projectcompass.domain.profileimage.entity.UrlProfileImage;
 import my.sleepydeveloper.projectcompass.domain.profileimage.repository.ProfileImageRepository;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
+import my.sleepydeveloper.projectcompass.domain.uploadfile.repository.UploadFileRepository;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,20 +27,38 @@ import javax.servlet.http.HttpServletRequest;
 public class AccountProfileImageService {
 
     private final AccountRepository accountRepository;
+    private final UploadFileRepository uploadFileRepository;
     private final ProfileImageRepository profileImageRepository;
 
     @Transactional
-    public void updateProfileImage(Account account, ProfileImage profileImage) {
+    public void updateProfileImage(Account account, ProfileImage newProfileImage) {
         Account findAccount = accountRepository.findById(account.getId())
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-        findAccount.updateProfileImage(profileImage);
+        ProfileImage profileImage = (ProfileImage) Hibernate.unproxy(findAccount.getProfileImage());
+        if (profileImage instanceof UploadFileProfileImage uploadFileProfileImage) {
+            UploadFile uploadFile = uploadFileProfileImage.getUploadFile();
+            uploadFileRepository.delete(uploadFile);
+        }
+        profileImageRepository.delete(profileImage);
+
+        if(newProfileImage instanceof UploadFileProfileImage uploadFileProfileImage) {
+            UploadFile uploadFile = uploadFileProfileImage.getUploadFile();
+            uploadFileRepository.save(uploadFile);
+        }
+        profileImageRepository.save(newProfileImage);
+
+        findAccount.updateProfileImage(newProfileImage);
     }
 
     public String getProfileUrl(Account account, HttpServletRequest request, boolean isProxy) {
         Account findAccount = accountRepository.findById(account.getId())
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
         ProfileImage profileImage = (ProfileImage) Hibernate.unproxy(findAccount.getProfileImage());
+
+        if (profileImage == null) {
+            return null;
+        }
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
         uriBuilder.scheme("http");
@@ -65,9 +85,15 @@ public class AccountProfileImageService {
         if(findAccount.getProfileImage() == null)
             throw new AccountProfileImageFileNotExist(ErrorCode.ACCOUNT_PROFILE_IMAGE_FILE_NOT_EXIST);
 
-        ProfileImage uploadFile = findAccount.getProfileImage();
+        ProfileImage profileImage = (ProfileImage) Hibernate.unproxy(findAccount.getProfileImage());
+
         findAccount.updateProfileImage(null);
-        profileImageRepository.delete(uploadFile);
+
+        if (profileImage instanceof UploadFileProfileImage uploadFileProfileImage) {
+            UploadFile uploadFile = uploadFileProfileImage.getUploadFile();
+            uploadFileRepository.delete(uploadFile);
+        }
+        profileImageRepository.delete(profileImage);
     }
 
     public void checkAccountProfileImageUploadFile(Account account) {
