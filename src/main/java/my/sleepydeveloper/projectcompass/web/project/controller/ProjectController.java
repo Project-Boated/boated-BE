@@ -24,7 +24,6 @@ public class ProjectController {
 
     private final ProjectService projectService;
     private final AccountProjectService accountProjectService;
-    private final InvitationService invitationService;
 
     @PostMapping
     public CreateProjectResponse createProject(
@@ -40,6 +39,15 @@ public class ProjectController {
                         .build()
         );
         return new CreateProjectResponse(project);
+    }
+
+    @GetMapping("/{projectId}")
+    public GetProjectResponse getProject(
+            @AuthenticationPrincipal Account account,
+            @PathVariable Long projectId
+    ) {
+        Project project = projectService.findById(projectId, account);
+        return new GetProjectResponse(project);
     }
 
     @PatchMapping("/{projectId}")

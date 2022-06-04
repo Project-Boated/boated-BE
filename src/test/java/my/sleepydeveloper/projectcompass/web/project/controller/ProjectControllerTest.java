@@ -10,6 +10,7 @@ import my.sleepydeveloper.projectcompass.common.utils.InvitationTestUtils;
 import my.sleepydeveloper.projectcompass.common.utils.ProjectTestUtils;
 import my.sleepydeveloper.projectcompass.domain.project.service.ProjectService;
 import my.sleepydeveloper.projectcompass.web.project.dto.CreateProjectRequest;
+import my.sleepydeveloper.projectcompass.web.project.dto.GetProjectResponse;
 import my.sleepydeveloper.projectcompass.web.project.dto.PatchProjectRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -293,4 +294,25 @@ class ProjectControllerTest extends AcceptanceTest {
 //                .andExpect(jsonPath("id").value(newCaptain.getId()))
 //                .andDo(documentProjectUpdateCaptain());
 //    }
+
+    @Test
+    void getProject_프로젝트프로필조회_정상() throws Exception {
+        // Given
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+
+        // When
+        // Then
+        given(this.spec)
+            .filter(documentProjectRetrieve())
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .cookie(cookie)
+        .when()
+            .port(port)
+            .get("/api/projects/{projectId}", projectId)
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
 }

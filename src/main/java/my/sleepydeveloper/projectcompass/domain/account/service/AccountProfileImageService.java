@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -64,6 +65,7 @@ public class AccountProfileImageService {
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
         uriBuilder.scheme("http");
+        uriBuilder.queryParam("dummy", UUID.randomUUID().toString());
 
         if(profileImage instanceof UploadFileProfileImage) {
             if(isProxy)
@@ -73,7 +75,7 @@ public class AccountProfileImageService {
             uriBuilder.path("/api/account/profile/profile-image");
             return uriBuilder.build().toString();
         } else if (profileImage instanceof UrlProfileImage urlProfileImage) {
-            return urlProfileImage.getUrl();
+            return urlProfileImage.getUrl() + "?dummy=" + UUID.randomUUID().toString();
         }
 
         throw new AccountProfileImageNotSupportTypeException(ErrorCode.ACCOUNT_PROFILE_IMAGE_NOT_SUPPORT_TYPE);

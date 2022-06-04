@@ -217,4 +217,29 @@ public class ProjectDocument {
         );
     }
 
+    public static RestDocumentationFilter documentProjectRetrieve() {
+        return document("project-retrieve",
+                requestHeaders(
+                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
+                ),
+                pathParameters(
+                        parameterWithName("projectId").description("프로젝트의 id")
+                ),
+                responseHeaders(
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
+                ),
+                responseFields(
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("프로젝트 id"),
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("프로젝트 이름"),
+                        fieldWithPath("description").type(JsonFieldType.STRING).description("프로젝트 설명"),
+                        fieldWithPath("deadline").type(JsonFieldType.STRING).description("프로젝트 마감기한"),
+                        fieldWithPath("captain").type(JsonFieldType.OBJECT).description("Captain정보"),
+                        fieldWithPath("captain.id").type(JsonFieldType.NUMBER).description("Captain 고유id"),
+                        fieldWithPath("captain.nickname").type(JsonFieldType.STRING).description("Captain 닉네임"),
+                        fieldWithPath("terminated").type(JsonFieldType.BOOLEAN).description("종료된 프로젝트이면 true, 아니면 false"),
+                        fieldWithPath("dday").type(JsonFieldType.NUMBER).description("dday")
+                )
+        );
+    }
+
 }

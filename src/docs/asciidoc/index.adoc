@@ -339,6 +339,32 @@ include::{snippets}/project-create/response-headers.adoc[]
 ===== response-fields
 include::{snippets}/project-create/response-fields.adoc[]
 
+[[resources-project-retrieve]]
+=== 프로젝트 정보 조회
+`GET` 요청을 사용해서 프로젝트정보를 조회할 수 있다.
+
+==== Request
+
+===== http-request
+include::{snippets}/project-retrieve/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/project-retrieve/request-headers.adoc[]
+
+==== path-parameters
+include::{snippets}/project-retrieve/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/project-retrieve/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/project-retrieve/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/project-retrieve/response-fields.adoc[]
+
 [[resources-project-update]]
 === 프로젝트 업데이트
 `PATCH` 요청을 사용해서 프로젝트의 내용을 업데이트 할 수 있다.
