@@ -47,7 +47,7 @@ public class ProjectController {
             @PathVariable Long projectId
     ) {
         Project project = projectService.findById(projectId, account);
-        return new GetProjectResponse(new GetProjectResponse.ProjectResponse(project));
+        return new GetProjectResponse(project);
     }
 
     @PatchMapping("/{projectId}")

@@ -17,36 +17,27 @@ import java.time.Period;
 @Getter
 public class GetProjectResponse {
 
-    private ProjectResponse project;
+    private Long id;
+    private String name;
+    private String description;
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class ProjectResponse {
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime deadline;
 
-        private Long id;
-        private String name;
-        private String description;
+    private ProjectCaptain captain;
 
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        private LocalDateTime deadline;
+    private boolean isTerminated;
 
-        private ProjectCaptain captain;
+    private Integer dday;
 
-        private boolean isTerminated;
-
-        private Integer dday;
-
-        public ProjectResponse(Project project) {
-            this.id = project.getId();
-            this.name = project.getName();
-            this.description = project.getDescription();
-            this.deadline = project.getDeadline();
-            this.captain = new ProjectCaptain(project.getCaptain());
-            this.isTerminated = project.isTerminated();
-            this.dday = project.getDeadline()!=null ? Period.between(deadline.toLocalDate(), LocalDate.now()).getDays() : null;
-        }
+    public GetProjectResponse(Project project) {
+        this.id = project.getId();
+        this.name = project.getName();
+        this.description = project.getDescription();
+        this.deadline = project.getDeadline();
+        this.captain = new ProjectCaptain(project.getCaptain());
+        this.isTerminated = project.isTerminated();
+        this.dday = project.getDeadline()!=null ? Period.between(deadline.toLocalDate(), LocalDate.now()).getDays() : null;
     }
 
     @Getter
