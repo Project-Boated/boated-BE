@@ -35,12 +35,14 @@ public class AccountProfileImageService {
         Account findAccount = accountRepository.findById(account.getId())
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-        ProfileImage profileImage = (ProfileImage) Hibernate.unproxy(findAccount.getProfileImage());
-        if (profileImage instanceof UploadFileProfileImage uploadFileProfileImage) {
-            UploadFile uploadFile = uploadFileProfileImage.getUploadFile();
-            uploadFileRepository.delete(uploadFile);
+        if (findAccount.getProfileImage() != null) {
+            ProfileImage profileImage = (ProfileImage) Hibernate.unproxy(findAccount.getProfileImage());
+            if (profileImage instanceof UploadFileProfileImage uploadFileProfileImage) {
+                UploadFile uploadFile = uploadFileProfileImage.getUploadFile();
+                uploadFileRepository.delete(uploadFile);
+            }
+            profileImageRepository.delete(profileImage);
         }
-        profileImageRepository.delete(profileImage);
 
         if(newProfileImage instanceof UploadFileProfileImage uploadFileProfileImage) {
             UploadFile uploadFile = uploadFileProfileImage.getUploadFile();
