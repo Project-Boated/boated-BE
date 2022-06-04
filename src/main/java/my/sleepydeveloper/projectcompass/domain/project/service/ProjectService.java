@@ -8,10 +8,7 @@ import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNotFoun
 import my.sleepydeveloper.projectcompass.domain.accountproject.repository.AccountProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
-import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectNotFoundException;
-import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectUpdateAccessDeniedException;
-import my.sleepydeveloper.projectcompass.domain.project.exception.ProjectNameSameInAccountException;
-import my.sleepydeveloper.projectcompass.domain.project.exception.UpdateCaptainAccessDenied;
+import my.sleepydeveloper.projectcompass.domain.project.exception.*;
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.project.vo.ProjectUpdateCondition;
 import org.springframework.stereotype.Service;
@@ -135,7 +132,7 @@ public class ProjectService {
     @Transactional
     public void cancelTerminateProject(Account account, Long projectId) {
         Account captain = accountRepository.findById(account.getId())
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
@@ -145,5 +142,18 @@ public class ProjectService {
         }
 
         project.cancelTerminateProject();
+    }
+
+    public Project findById(Long projectId, Account account) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+
+        if(project.getCaptain().getId() == account.getId()) {
+            return project;
+        } else if (!accountProjectRepository.findCrewsFromProject(project).contains(account)) {
+            return project;
+        }
+
+        throw new ProjectAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
     }
 }
