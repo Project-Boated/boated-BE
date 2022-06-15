@@ -42,6 +42,8 @@ public class GetMyCrewTerminatedProjectResponse {
 
         private Integer dday;
 
+        private Integer totalDay;
+
         public ProjectResponse(Project project, List<Account> crews) {
             this.id = project.getId();
             this.name = project.getName();
@@ -51,6 +53,7 @@ public class GetMyCrewTerminatedProjectResponse {
             this.crews = crews.stream().map(ProjectCrew::new).toList();
             this.isTerminated = project.isTerminated();
             this.dday = project.getDeadline()!=null ? Period.between(deadline.toLocalDate(), LocalDate.now()).getDays() : null;
+            this.totalDay = project.getDeadline()!=null ? Period.between(project.getCreatedDate().toLocalDate(), deadline.toLocalDate()).getDays() : null;
         }
     }
 

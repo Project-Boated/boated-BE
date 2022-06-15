@@ -30,6 +30,8 @@ public class GetProjectResponse {
 
     private Integer dday;
 
+    private Integer totalDay;
+
     public GetProjectResponse(Project project) {
         this.id = project.getId();
         this.name = project.getName();
@@ -38,6 +40,7 @@ public class GetProjectResponse {
         this.captain = new ProjectCaptain(project.getCaptain());
         this.isTerminated = project.isTerminated();
         this.dday = project.getDeadline()!=null ? Period.between(deadline.toLocalDate(), LocalDate.now()).getDays() : null;
+        this.totalDay = project.getDeadline()!=null ? Period.between(project.getCreatedDate().toLocalDate(), deadline.toLocalDate()).getDays() : null;
     }
 
     @Getter
