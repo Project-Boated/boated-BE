@@ -29,16 +29,14 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/account/profile/profile-image")
 public class AccountProfileImageController {
 
-    private final UploadFileService uploadFileService;
     private final ProfileImageService profileImageService;
     private final AccountProfileImageService accountProfileImageService;
     private final AwsS3ProfileImageService awsS3ProfileImageService;
 
 
-    @PostMapping
+    @PostMapping("/api/account/profile/profile-image")
     public PostAccountProfileImageResponse postAccountProfileImage(@AuthenticationPrincipal Account account,
                                                                    @Validated @ModelAttribute PostAccountProfileImageRequest postAccountProfileImageRequest,
                                                                    HttpServletRequest request) {
@@ -53,22 +51,12 @@ public class AccountProfileImageController {
             throw new NotImageFileException(ErrorCode.COMMON_NOT_IMAGE_FILE_EXCEPTION);
         }
 
-        try {
-            UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), UUID.randomUUID().toString(), file.getContentType());
-            UploadFileProfileImage uploadFileProfileImage = new UploadFileProfileImage(uploadFile);
-            uploadFileService.save(uploadFile);
-            profileImageService.save(uploadFileProfileImage);
-
-            awsS3ProfileImageService.uploadProfileImage(account, uploadFileProfileImage, file);
-            accountProfileImageService.updateProfileImage(account, uploadFileProfileImage);
-        } catch (IOException e) {
-            throw new CommonIOException(ErrorCode.COMMON_IO_EXCEPTION, e);
-        }
+        profileImageService.updateProfileImage(account.getId(), file);
 
         return new PostAccountProfileImageResponse(accountProfileImageService.getProfileUrl(account, request, postAccountProfileImageRequest.isProxy()));
     }
 
-    @GetMapping
+    @GetMapping("/api/account/profile/profile-image")
     public ResponseEntity<byte[]> getAccountProfileImage(@AuthenticationPrincipal Account account) {
         accountProfileImageService.checkAccountProfileImageUploadFile(account);
 
@@ -82,7 +70,7 @@ public class AccountProfileImageController {
                 .body(awsS3File.getBytes());
     }
 
-    @DeleteMapping
+    @DeleteMapping("/api/account/profile/profile-image")
     public void deleteAccountProfileImage(@AuthenticationPrincipal Account account) {
         accountProfileImageService.deleteProfileImageFile(account);
     }
