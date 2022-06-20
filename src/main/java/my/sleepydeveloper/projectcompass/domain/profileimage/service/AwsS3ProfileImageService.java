@@ -28,9 +28,22 @@ public class AwsS3ProfileImageService {
 
     public String uploadProfileImage(Account account, UploadFileProfileImage profileImage, MultipartFile multipartFile) throws IOException {
         UploadFile uploadFile = profileImage.getUploadFile();
-        String path = "profile/" + account.getId() + "/" + uploadFile.getSaveFileName() + "." + uploadFile.getExt();
+        String path = getProfileSavePath(account, uploadFile);
         awsS3Service.uploadMultipartFile(path, multipartFile);
         return path;
+    }
+
+    private String getProfileSavePath(Account account, UploadFile uploadFile) {
+        return "profile/" + account.getId() + "/" + uploadFile.getSaveFileName() + "." + uploadFile.getExt();
+    }
+
+    private String getProfileSavePath(Long accountId, UploadFile uploadFile) {
+        return "profile/" + accountId + "/" + uploadFile.getSaveFileName() + "." + uploadFile.getExt();
+    }
+
+    public void deleteProfileImage(Long accountId, UploadFileProfileImage profileImage) {
+        String profileSavePath = getProfileSavePath(accountId, profileImage.getUploadFile());
+        awsS3Service.deleteFile(profileSavePath);
     }
 
     public AwsS3File getProfileImageBytes(Account account) {
@@ -44,7 +57,7 @@ public class AwsS3ProfileImageService {
 
         try {
             UploadFile uploadFile = ((UploadFileProfileImage) profileImage).getUploadFile();
-            byte[] bytes = awsS3Service.getBytes("profile/" + findAccount.getId() + "/" + uploadFile.getSaveFileName() + "." + uploadFile.getExt());
+            byte[] bytes = awsS3Service.getBytes(getProfileSavePath(findAccount, uploadFile));
 
             String fileName = URLEncoder.encode(uploadFile.getOriginalFileName() + "." + uploadFile.getExt(), "UTF-8").replaceAll("\\+", "%20");
 
