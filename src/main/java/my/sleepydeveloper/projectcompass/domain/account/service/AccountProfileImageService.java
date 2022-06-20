@@ -12,6 +12,7 @@ import my.sleepydeveloper.projectcompass.domain.profileimage.entity.ProfileImage
 import my.sleepydeveloper.projectcompass.domain.profileimage.entity.UploadFileProfileImage;
 import my.sleepydeveloper.projectcompass.domain.profileimage.entity.UrlProfileImage;
 import my.sleepydeveloper.projectcompass.domain.profileimage.repository.ProfileImageRepository;
+import my.sleepydeveloper.projectcompass.domain.profileimage.service.AwsS3ProfileImageService;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.entity.UploadFile;
 import my.sleepydeveloper.projectcompass.domain.uploadfile.repository.UploadFileRepository;
 import org.hibernate.Hibernate;
@@ -30,6 +31,7 @@ public class AccountProfileImageService {
     private final AccountRepository accountRepository;
     private final UploadFileRepository uploadFileRepository;
     private final ProfileImageRepository profileImageRepository;
+    private final AwsS3ProfileImageService awsS3ProfileImageService;
 
     @Transactional
     public void updateProfileImage(Account account, ProfileImage newProfileImage) {
@@ -39,6 +41,7 @@ public class AccountProfileImageService {
         if (findAccount.getProfileImage() != null) {
             ProfileImage profileImage = (ProfileImage) Hibernate.unproxy(findAccount.getProfileImage());
             if (profileImage instanceof UploadFileProfileImage uploadFileProfileImage) {
+                awsS3ProfileImageService.deleteProfileImage(findAccount.getId(), uploadFileProfileImage);
                 UploadFile uploadFile = uploadFileProfileImage.getUploadFile();
                 uploadFileRepository.delete(uploadFile);
             }
@@ -94,6 +97,7 @@ public class AccountProfileImageService {
         findAccount.updateProfileImage(null);
 
         if (profileImage instanceof UploadFileProfileImage uploadFileProfileImage) {
+            awsS3ProfileImageService.deleteProfileImage(findAccount.getId(), uploadFileProfileImage);
             UploadFile uploadFile = uploadFileProfileImage.getUploadFile();
             uploadFileRepository.delete(uploadFile);
         }
