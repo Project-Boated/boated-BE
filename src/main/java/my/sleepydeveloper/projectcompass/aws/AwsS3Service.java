@@ -42,6 +42,10 @@ public class AwsS3Service {
         }
     }
 
+    public void deleteFile(String key) {
+        amazonS3.deleteObject(BUCKET_NAME, key);
+    }
+
     public void uploadMultipartFile(String key, MultipartFile multipartFile) throws IOException {
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(multipartFile.getSize());
