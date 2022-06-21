@@ -3,7 +3,6 @@ package my.sleepydeveloper.projectcompass.web.project.controller;
 import lombok.RequiredArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.accountproject.service.AccountProjectService;
-import my.sleepydeveloper.projectcompass.domain.invitation.InvitationService;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.service.ProjectService;
 import my.sleepydeveloper.projectcompass.domain.project.vo.ProjectUpdateCondition;
@@ -19,13 +18,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/projects")
 public class ProjectController {
 
     private final ProjectService projectService;
     private final AccountProjectService accountProjectService;
 
-    @PostMapping
+    @PostMapping("/api/projects")
     public CreateProjectResponse createProject(
             @AuthenticationPrincipal Account account,
             @RequestBody @Validated CreateProjectRequest createProjectRequest
@@ -41,7 +39,7 @@ public class ProjectController {
         return new CreateProjectResponse(project);
     }
 
-    @GetMapping("/{projectId}")
+    @GetMapping("/api/projects/{projectId}")
     public GetProjectResponse getProject(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId
@@ -50,7 +48,7 @@ public class ProjectController {
         return new GetProjectResponse(project);
     }
 
-    @PatchMapping("/{projectId}")
+    @PatchMapping("/api/projects/{projectId}")
     public PatchProjectResponse patchProject(
             @AuthenticationPrincipal Account account,
             @RequestBody @Validated PatchProjectRequest patchProjectRequest,
@@ -67,7 +65,7 @@ public class ProjectController {
         return new PatchProjectResponse(projectId);
     }
 
-    @GetMapping("/my/captain")
+    @GetMapping("/api/projects/my/captain")
     public GetMyCaptainProjectResponse getMyCaptainProject(@AuthenticationPrincipal Account account) {
         List<GetMyCaptainProjectResponse.ProjectResponse> projects = projectService.findAllByCaptainNotTerminated(account).stream()
                 .map((p) -> new GetMyCaptainProjectResponse.ProjectResponse(p, accountProjectService.getCrews(p)))
@@ -76,7 +74,7 @@ public class ProjectController {
         return new GetMyCaptainProjectResponse(projects);
     }
 
-    @GetMapping("/my/crew")
+    @GetMapping("/api/projects/my/crew")
     public GetMyCrewProjectResponse getMyCrewProject(@AuthenticationPrincipal Account account) {
         List<GetMyCrewProjectResponse.ProjectResponse> projects = projectService.findAllByCrewNotTerminated(account).stream()
                 .map((p) -> new GetMyCrewProjectResponse.ProjectResponse(p, accountProjectService.getCrews(p)))
@@ -85,7 +83,7 @@ public class ProjectController {
         return new GetMyCrewProjectResponse(projects);
     }
 
-    @GetMapping("/my/captain/terminated")
+    @GetMapping("/api/projects/my/captain/terminated")
     public GetMyCaptainTerminatedProjectResponse getMyCaptainTerminatedProject(@AuthenticationPrincipal Account account) {
         List<GetMyCaptainTerminatedProjectResponse.ProjectResponse> projects = projectService.findAllByCaptainTerminated(account).stream()
                 .map((p) -> new GetMyCaptainTerminatedProjectResponse.ProjectResponse(p, accountProjectService.getCrews(p)))
@@ -94,7 +92,7 @@ public class ProjectController {
         return new GetMyCaptainTerminatedProjectResponse(projects);
     }
 
-    @GetMapping("/my/crew/terminated")
+    @GetMapping("/api/projects/my/crew/terminated")
     public GetMyCrewTerminatedProjectResponse getMyCrewTerminatedProject(@AuthenticationPrincipal Account account) {
         List<GetMyCrewTerminatedProjectResponse.ProjectResponse> projects = projectService.findAllByCrewTerminated(account).stream()
                 .map((p) -> new GetMyCrewTerminatedProjectResponse.ProjectResponse(p, accountProjectService.getCrews(p)))
@@ -103,7 +101,7 @@ public class ProjectController {
         return new GetMyCrewTerminatedProjectResponse(projects);
     }
 
-    @GetMapping("/{projectId}/crews")
+    @GetMapping("/api/projects/{projectId}/crews")
     public ResponseEntity<GetCrewsResponse> getCrews(@PathVariable Long projectId) {
 
         List<CrewResponse> crewResponses = projectService.findAllCrews(projectId).stream()
@@ -113,14 +111,14 @@ public class ProjectController {
         return ResponseEntity.ok(new GetCrewsResponse(crewResponses));
     }
 
-    @DeleteMapping("/{projectId}/crews/{crewNickname}")
+    @DeleteMapping("/api/projects/{projectId}/crews/{crewNickname}")
     public void deleteCrew(@AuthenticationPrincipal Account account,
                            @PathVariable Long projectId,
                            @PathVariable String crewNickname) {
         projectService.deleteCrew(account, projectId, crewNickname);
     }
 
-    @PutMapping("/{projectId}/captain")
+    @PutMapping("/api/projects/{projectId}/captain")
     public ResponseEntity<IdDto> updateCaptain(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
@@ -131,7 +129,7 @@ public class ProjectController {
         return ResponseEntity.ok(new IdDto(newCaptain.getId()));
     }
 
-    @PostMapping("/{projectId}/terminate")
+    @PostMapping("/api/projects/{projectId}/terminate")
     public TerminateProjectResponse terminateProject(@AuthenticationPrincipal Account account,
                                                      @PathVariable Long projectId) {
         projectService.terminateProject(account, projectId);
@@ -139,7 +137,7 @@ public class ProjectController {
         return new TerminateProjectResponse(projectId);
     }
 
-    @PostMapping("/{projectId}/cancel-terminate")
+    @PostMapping("/api/projects/{projectId}/cancel-terminate")
     public CancelTerminateProjectResponse cancelTerminateProject(@AuthenticationPrincipal Account account,
                                                      @PathVariable Long projectId) {
         projectService.cancelTerminateProject(account, projectId);
