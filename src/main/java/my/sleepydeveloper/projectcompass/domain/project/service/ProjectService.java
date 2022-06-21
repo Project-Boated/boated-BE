@@ -7,6 +7,7 @@ import my.sleepydeveloper.projectcompass.domain.accountproject.entity.AccountPro
 import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNotFoundException;
 import my.sleepydeveloper.projectcompass.domain.accountproject.repository.AccountProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
+import my.sleepydeveloper.projectcompass.domain.project.dto.ProjectFindCrewsAccessDeniedException;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.exception.*;
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
@@ -65,9 +66,13 @@ public class ProjectService {
         return projectRepository.findAllByCaptainAndTerminated(account);
     }
 
-    public List<Account> findAllCrews(Long projectId) {
+    public List<Account> findAllCrews(Account account, Long projectId) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+
+        if(!isCaptain(account, project) && !isCrew(account, projectId)) {
+            throw new ProjectFindCrewsAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
+        }
 
         return accountProjectRepository.findCrewsFromProject(project);
     }
@@ -77,7 +82,7 @@ public class ProjectService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if (project.getCaptain().getId() != account.getId()) {
+        if (!isCaptain(account, project)) {
             throw new UpdateCaptainAccessDenied(ErrorCode.PROJECT_CAPTAIN_UPDATE_ACCESS_DENIED);
         }
 
@@ -96,7 +101,7 @@ public class ProjectService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if (project.getCaptain().getId() != account.getId()) {
+        if (!isCaptain(account, project)) {
             throw new UpdateCaptainAccessDenied(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
@@ -122,7 +127,7 @@ public class ProjectService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if (project.getCaptain().getId() != captain.getId()) {
+        if (!isCaptain(captain, project)) {
             throw new ProjectUpdateAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
@@ -137,7 +142,7 @@ public class ProjectService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if (project.getCaptain().getId() != captain.getId()) {
+        if (!isCaptain(captain, project)) {
             throw new ProjectUpdateAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
@@ -155,5 +160,13 @@ public class ProjectService {
         }
 
         throw new ProjectAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
+    }
+
+    private boolean isCrew(Account account, Long projectId) {
+        return accountProjectRepository.countByCrewInProject(account.getId(), projectId) == 1;
+    }
+
+    private boolean isCaptain(Account account, Project project) {
+        return project.getCaptain().getId() == account.getId();
     }
 }

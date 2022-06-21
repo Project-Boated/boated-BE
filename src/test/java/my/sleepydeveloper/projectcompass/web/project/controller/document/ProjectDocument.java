@@ -1,5 +1,6 @@
 package my.sleepydeveloper.projectcompass.web.project.controller.document;
 
+import io.restassured.filter.Filter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
@@ -184,18 +185,23 @@ public class ProjectDocument {
         );
     }
 
-    public static RestDocumentationResultHandler documentProjectRetrieveCrews() {
-        return MockMvcRestDocumentation.document("project-crews-retrieve",
+    public static Filter documentProjectRetrieveCrews() {
+        return document("project-crews-retrieve",
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
+                ),
+                pathParameters(
+                        parameterWithName("projectId").description("조회할 프로젝트 고유번호")
                 ),
                 responseHeaders(
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
                 ),
                 responseFields(
                         fieldWithPath("crews").type(JsonFieldType.ARRAY).description("crew 목록"),
-                        fieldWithPath("crews[].username").type(JsonFieldType.STRING).description("아이디"),
-                        fieldWithPath("crews[].nickname").type(JsonFieldType.STRING).description("닉네임")
+                        fieldWithPath("crews[].id").type(JsonFieldType.NUMBER).description("crew 고유번호"),
+                        fieldWithPath("crews[].username").type(JsonFieldType.STRING).description("crew 아이디"),
+                        fieldWithPath("crews[].nickname").type(JsonFieldType.STRING).description("crew 닉네임"),
+                        fieldWithPath("crews[].profileImageUrl").type(JsonFieldType.STRING).description("crew 프로필 이미지 URL")
                 )
         );
     }

@@ -10,7 +10,6 @@ import my.sleepydeveloper.projectcompass.common.utils.InvitationTestUtils;
 import my.sleepydeveloper.projectcompass.common.utils.ProjectTestUtils;
 import my.sleepydeveloper.projectcompass.domain.project.service.ProjectService;
 import my.sleepydeveloper.projectcompass.web.project.dto.CreateProjectRequest;
-import my.sleepydeveloper.projectcompass.web.project.dto.GetProjectResponse;
 import my.sleepydeveloper.projectcompass.web.project.dto.PatchProjectRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,8 @@ import static io.restassured.RestAssured.given;
 import static my.sleepydeveloper.projectcompass.common.data.BasicAccountData.*;
 import static my.sleepydeveloper.projectcompass.common.data.BasicProjectData.*;
 import static my.sleepydeveloper.projectcompass.web.project.controller.document.ProjectDocument.*;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 @AutoConfigureMockMvc
 class ProjectControllerTest extends AcceptanceTest {
@@ -41,8 +41,6 @@ class ProjectControllerTest extends AcceptanceTest {
 
     @Autowired
     ProjectService projectService;
-
-    final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     void createProject_프로젝트생성_정상() throws Exception {
@@ -252,25 +250,6 @@ class ProjectControllerTest extends AcceptanceTest {
             .statusCode(HttpStatus.OK.value())
             .assertThat().body("id", equalTo(projectId));
     }
-
-    // Invitation 구현이 끝나면 다시 테스팅, 현재는 테스트 불가
-//    @Test
-//    void getCrews_project에속한모든crew조회_성공() throws Exception {
-//        // Given
-//        Account account = accountTestUtils.getAccountFromSecurityContext();
-//        Project project = projectTestUtils.createProject(account);
-//        AccountProject accountProject = accountProjectTestUtils.createAccountRepository(account, project);
-//
-//        // When
-//        // Then
-//        mockMvc.perform(get("/api/projects/" + project.getId() + "/crews")
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("crews").exists())
-//                .andExpect(jsonPath("crews[0].username").value(account.getUsername()))
-//                .andExpect(jsonPath("crews[0].nickname").value(account.getNickname()))
-//                .andDo(documentProjectRetrieveCrews());
-//    }
 
     // Invitation 구현이 끝나면 다시 테스팅, 현재는 테스트 불가
 //    @Test
