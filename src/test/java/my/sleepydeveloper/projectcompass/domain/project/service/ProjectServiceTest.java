@@ -231,7 +231,7 @@ class ProjectServiceTest extends BaseTest {
         accountProjectRepository.save(accountProject);
 
         // When
-        List<Account> crews = projectService.findAllCrews(project.getId());
+        List<Account> crews = projectService.findAllCrews(captain, project.getId());
 
         // Then
         assertThat(crews.size()).isEqualTo(1);
@@ -240,9 +240,10 @@ class ProjectServiceTest extends BaseTest {
     @Test
     void findAllCrew_존재하지않는ProjectId_오류발생() throws Exception {
         // Given
+        Account captain = createAccount();
         // When
         // Then
-        assertThatThrownBy(() -> projectService.findAllCrews(1L))
+        assertThatThrownBy(() -> projectService.findAllCrews(captain, 1L))
                 .isInstanceOf(ProjectNotFoundException.class);
     }
 

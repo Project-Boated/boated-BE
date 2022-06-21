@@ -77,4 +77,12 @@ public class AccountProjectRepository {
                 .where(accountProject.account.eq(account).and(accountProject.project.isTerminated.eq(true)))
                 .fetch();
     }
+
+    public Long countByCrewInProject(Long crewId, Long projectId) {
+        return (Long) em.createQuery("select count(ap) from AccountProject ap " +
+                "where ap.account.id=:crewId and ap.project.id=:projectId")
+                .setParameter("crewId", crewId)
+                .setParameter("projectId", projectId)
+                .getSingleResult();
+    }
 }
