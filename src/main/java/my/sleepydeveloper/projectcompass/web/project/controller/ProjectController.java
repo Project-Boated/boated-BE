@@ -101,23 +101,6 @@ public class ProjectController {
         return new GetMyCrewTerminatedProjectResponse(projects);
     }
 
-    @GetMapping("/api/projects/{projectId}/crews")
-    public ResponseEntity<GetCrewsResponse> getCrews(@PathVariable Long projectId) {
-
-        List<CrewResponse> crewResponses = projectService.findAllCrews(projectId).stream()
-                .map(c -> new CrewResponse(c.getUsername(), c.getNickname()))
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(new GetCrewsResponse(crewResponses));
-    }
-
-    @DeleteMapping("/api/projects/{projectId}/crews/{crewNickname}")
-    public void deleteCrew(@AuthenticationPrincipal Account account,
-                           @PathVariable Long projectId,
-                           @PathVariable String crewNickname) {
-        projectService.deleteCrew(account, projectId, crewNickname);
-    }
-
     @PutMapping("/api/projects/{projectId}/captain")
     public ResponseEntity<IdDto> updateCaptain(
             @AuthenticationPrincipal Account account,
