@@ -48,7 +48,7 @@ public class ProjectService {
 
         for (KanbanLaneType kanbanLaneType : KanbanLaneType.values()) {
             String name = kanbanLaneType.name();
-            KanbanLane kanbanLane = new KanbanLane(name, newKanban);
+            KanbanLane kanbanLane = new KanbanLane(name, newProject, newKanban);
             kanbanLaneRepository.save(kanbanLane);
         }
 
@@ -179,6 +179,23 @@ public class ProjectService {
         }
 
         throw new ProjectAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
+    }
+
+    @Transactional
+    public void delete(Account account, Long projectId) {
+        Account findAccount = accountRepository.findById(account.getId())
+                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+
+        if (!isCaptain(findAccount, project)) {
+            throw new ProjectDeleteAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
+        }
+
+        kanbanLaneRepository.deleteByProject(project);
+        kanbanRepository.deleteByProject(project);
+        projectRepository.delete(project);
     }
 
     private boolean isCrew(Account account, Long projectId) {

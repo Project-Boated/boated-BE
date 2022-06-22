@@ -65,6 +65,14 @@ public class ProjectController {
         return new PatchProjectResponse(projectId);
     }
 
+    @DeleteMapping("/api/projects/{projectId}")
+    public void deleteProject(
+            @AuthenticationPrincipal Account account,
+            @PathVariable Long projectId
+    ) {
+        projectService.delete(account, projectId);
+    }
+
     @GetMapping("/api/projects/my/captain")
     public GetMyCaptainProjectResponse getMyCaptainProject(@AuthenticationPrincipal Account account) {
         List<GetMyCaptainProjectResponse.ProjectResponse> projects = projectService.findAllByCaptainNotTerminated(account).stream()
