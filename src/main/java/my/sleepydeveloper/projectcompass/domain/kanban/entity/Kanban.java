@@ -15,4 +15,8 @@ public class Kanban extends BaseTimeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
+
+    public Kanban(Project project) {
+        this.project = project;
+    }
 }

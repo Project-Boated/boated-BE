@@ -7,11 +7,17 @@ import my.sleepydeveloper.projectcompass.domain.accountproject.entity.AccountPro
 import my.sleepydeveloper.projectcompass.domain.account.exception.AccountNotFoundException;
 import my.sleepydeveloper.projectcompass.domain.accountproject.repository.AccountProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.account.repository.AccountRepository;
+import my.sleepydeveloper.projectcompass.domain.kanban.entity.Kanban;
+import my.sleepydeveloper.projectcompass.domain.kanban.entity.KanbanLane;
+import my.sleepydeveloper.projectcompass.domain.kanban.entity.KanbanLaneType;
+import my.sleepydeveloper.projectcompass.domain.kanban.repository.KanbanLaneRepository;
+import my.sleepydeveloper.projectcompass.domain.kanban.repository.KanbanRepository;
 import my.sleepydeveloper.projectcompass.domain.project.dto.ProjectFindCrewsAccessDeniedException;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.exception.*;
 import my.sleepydeveloper.projectcompass.domain.project.repository.ProjectRepository;
 import my.sleepydeveloper.projectcompass.domain.project.vo.ProjectUpdateCondition;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +31,8 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final AccountRepository accountRepository;
+    private final KanbanRepository kanbanRepository;
+    private final KanbanLaneRepository kanbanLaneRepository;
     private final AccountProjectRepository accountProjectRepository;
 
     @Transactional
@@ -33,7 +41,18 @@ public class ProjectService {
             throw new ProjectNameSameInAccountException(ErrorCode.PROJECT_NAME_EXISTS_IN_ACCOUNT);
         }
 
-        return projectRepository.save(project);
+        Project newProject = projectRepository.save(project);
+
+        Kanban newKanban = new Kanban(newProject);
+        kanbanRepository.save(newKanban);
+
+        for (KanbanLaneType kanbanLaneType : KanbanLaneType.values()) {
+            String name = kanbanLaneType.name();
+            KanbanLane kanbanLane = new KanbanLane(name, newKanban);
+            kanbanLaneRepository.save(kanbanLane);
+        }
+
+        return newProject;
     }
 
     @Transactional

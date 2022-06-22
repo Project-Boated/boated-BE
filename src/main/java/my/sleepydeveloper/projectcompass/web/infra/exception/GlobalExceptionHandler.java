@@ -1,5 +1,6 @@
 package my.sleepydeveloper.projectcompass.web.infra.exception;
 
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import my.sleepydeveloper.projectcompass.web.infra.exception.dto.BasicErrorResponse;
 import my.sleepydeveloper.projectcompass.web.infra.exception.dto.BasicFieldErrorResponse;
 import my.sleepydeveloper.projectcompass.domain.exception.BusinessException;
@@ -53,6 +54,11 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.badRequest()
 							 .contentType(MediaType.APPLICATION_JSON)
 							 .body(new BasicFieldErrorResponse(e.getBindingResult(), messageSource, locale));
+	}
+
+	@ExceptionHandler(AmazonS3Exception.class)
+	public ResponseEntity<String> handleAmazonS3Exception(AmazonS3Exception e) {
+		return ResponseEntity.badRequest().body("Amazon S3 Error");
 	}
 	
 	@ExceptionHandler(Exception.class)
