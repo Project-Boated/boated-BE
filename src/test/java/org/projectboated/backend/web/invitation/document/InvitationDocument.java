@@ -6,6 +6,8 @@ import org.springframework.restdocs.restassured3.RestDocumentationFilter;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
@@ -16,6 +18,7 @@ public class InvitationDocument {
 
     public static RestDocumentationFilter documentInvitationCreate() {
         return document("invitation-create",
+                preprocessResponse(prettyPrint()),
                 pathParameters(
                         parameterWithName("projectId").description("target 프로젝트의 id")
                 ),
@@ -36,6 +39,7 @@ public class InvitationDocument {
 
     public static RestDocumentationFilter documentMyInvitationRetrieve() {
         return document("invitation-my-retrieve",
+                preprocessResponse(prettyPrint()),
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
                 ),
@@ -55,6 +59,7 @@ public class InvitationDocument {
 
     public static RestDocumentationFilter documentInvitationAccept() {
         return document("invitation-accept",
+                preprocessResponse(prettyPrint()),
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
                 ),
@@ -72,6 +77,7 @@ public class InvitationDocument {
 
     public static RestDocumentationFilter documentInvitationReject() {
         return document("invitation-reject",
+                preprocessResponse(prettyPrint()),
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
                 ),

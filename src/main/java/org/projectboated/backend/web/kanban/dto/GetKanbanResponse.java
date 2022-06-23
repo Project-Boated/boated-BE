@@ -2,7 +2,6 @@ package org.projectboated.backend.web.kanban.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.projectboated.backend.domain.kanban.entity.KanbanLane;
 import org.projectboated.backend.domain.task.entity.Task;
 

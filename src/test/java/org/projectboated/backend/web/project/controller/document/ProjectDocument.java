@@ -10,10 +10,11 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.restassured3.RestDocumentationFilter;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -21,6 +22,7 @@ public class ProjectDocument {
 
     public static RestDocumentationFilter documentProjectCreate() {
         return document("project-create",
+                preprocessResponse(prettyPrint()),
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType"),
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
@@ -41,6 +43,7 @@ public class ProjectDocument {
 
     public static RestDocumentationFilter documentProjectUpdate() {
         return document("project-update",
+                preprocessResponse(prettyPrint()),
                 requestHeaders(
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
                 ),
@@ -68,6 +71,7 @@ public class ProjectDocument {
 
     public static RestDocumentationFilter documentProjectCaptain() {
         return document("project-my-captain-retrieve",
+                preprocessResponse(prettyPrint()),
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
                 ),
@@ -95,6 +99,7 @@ public class ProjectDocument {
 
     public static RestDocumentationFilter documentProjectCrew() {
         return document("project-my-crew-retrieve",
+                preprocessResponse(prettyPrint()),
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
                 ),
@@ -122,6 +127,7 @@ public class ProjectDocument {
 
     public static RestDocumentationFilter documentProjectCaptainTerminated() {
         return document("project-my-captain-terminated-retrieve",
+                preprocessResponse(prettyPrint()),
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
                 ),
@@ -149,6 +155,7 @@ public class ProjectDocument {
 
     public static RestDocumentationFilter documentProjectCrewTerminated() {
         return document("project-my-crew-terminated-retrieve",
+                preprocessResponse(prettyPrint()),
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
                 ),
@@ -176,6 +183,7 @@ public class ProjectDocument {
 
     public static RestDocumentationFilter documentProjectTerminate() {
         return document("project-terminate",
+                preprocessResponse(prettyPrint()),
                 pathParameters(
                         parameterWithName("projectId").description("프로젝트 id")
                 ),
@@ -187,6 +195,7 @@ public class ProjectDocument {
 
     public static RestDocumentationFilter documentProjectCancelTerminate() {
         return document("project-cancel-terminate",
+                preprocessResponse(prettyPrint()),
                 pathParameters(
                         parameterWithName("projectId").description("프로젝트 id")
                 ),
@@ -198,6 +207,7 @@ public class ProjectDocument {
 
     public static Filter documentProjectRetrieveCrews() {
         return document("project-crews-retrieve",
+                preprocessResponse(prettyPrint()),
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
                 ),
@@ -219,6 +229,7 @@ public class ProjectDocument {
 
     public static RestDocumentationResultHandler documentProjectUpdateCaptain() {
         return MockMvcRestDocumentation.document("project-captain-update",
+                preprocessResponse(prettyPrint()),
                 pathParameters(
                         parameterWithName("projectId").description("target 프로젝트의 id")
                 ),
@@ -240,6 +251,7 @@ public class ProjectDocument {
 
     public static RestDocumentationFilter documentProjectRetrieve() {
         return document("project-retrieve",
+                preprocessResponse(prettyPrint()),
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
                 ),
