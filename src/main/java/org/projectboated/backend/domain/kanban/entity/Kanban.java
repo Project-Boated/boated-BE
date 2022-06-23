@@ -1,14 +1,18 @@
 package org.projectboated.backend.domain.kanban.entity;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.projectboated.backend.domain.common.entity.BaseTimeEntity;
 import org.projectboated.backend.domain.project.entity.Project;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Kanban extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +23,9 @@ public class Kanban extends BaseTimeEntity {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "kanban")
+    private List<KanbanLane> lanes = new ArrayList<>();
+
     public Kanban(Project project) {
         this.project = project;
     }
@@ -28,5 +35,10 @@ public class Kanban extends BaseTimeEntity {
             this.project = project;
             project.changeKanban(this);
         }
+    }
+
+    public void addLane(KanbanLane kanbanLane) {
+        this.lanes.add(kanbanLane);
+        kanbanLane.setKanban(this);
     }
 }

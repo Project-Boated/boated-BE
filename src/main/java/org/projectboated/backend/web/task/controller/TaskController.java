@@ -11,13 +11,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class TaskController {
 
     private final TaskService taskService;
 
-    @PostMapping(value = "/api/projects/{projectId}/tasks", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/api/projects/{projectId}/kanban/lanes/tasks", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CreateTaskResponse> createTask(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
