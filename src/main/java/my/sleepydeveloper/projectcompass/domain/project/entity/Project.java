@@ -5,13 +5,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
-import my.sleepydeveloper.projectcompass.domain.accountproject.entity.AccountProject;
 import my.sleepydeveloper.projectcompass.domain.common.entity.BaseTimeEntity;
+import my.sleepydeveloper.projectcompass.domain.kanban.entity.Kanban;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -31,6 +29,9 @@ public class Project extends BaseTimeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id_captain")
     private Account captain;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "project")
+    private Kanban kanban;
 
     private boolean isTerminated;
 
@@ -57,6 +58,13 @@ public class Project extends BaseTimeEntity {
 
     public void changeCaptain(Account account) {
         this.captain = account;
+    }
+
+    public void changeKanban(Kanban kanban) {
+        if (!this.kanban.equals(kanban)) {
+            this.kanban = kanban;
+            kanban.changeProject(this);
+        }
     }
 
     public void terminateProject() {

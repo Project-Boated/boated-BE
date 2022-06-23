@@ -1,6 +1,7 @@
 package my.sleepydeveloper.projectcompass.domain.kanban.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.common.entity.BaseTimeEntity;
 import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
@@ -25,9 +26,18 @@ public class KanbanLane extends BaseTimeEntity {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    @Builder
     public KanbanLane(String name, Project project, Kanban kanban) {
         this.name = name;
         this.project = project;
+        this.kanban = kanban;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public void setKanban(Kanban kanban) {
         this.kanban = kanban;
     }
 }

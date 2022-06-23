@@ -11,4 +11,8 @@ public interface KanbanLaneRepository extends JpaRepository<KanbanLane, Long> {
     @Modifying
     @Query("delete from KanbanLane kl where kl.project=:project")
     void deleteByProject(@Param("project") Project project);
+
+    @Query("select count(kl) from KanbanLane kl where kl.project=:project")
+    Long countByProject(@Param("project") Project project);
+
 }

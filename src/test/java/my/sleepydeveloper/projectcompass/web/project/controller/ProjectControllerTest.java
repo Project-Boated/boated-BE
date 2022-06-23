@@ -91,6 +91,23 @@ class ProjectControllerTest extends AcceptanceTest {
     }
 
     @Test
+    void deleteProject_프로젝트삭제_정상() {
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+
+        given(this.spec)
+            .filter(documentProjectDelete())
+            .contentType(ContentType.JSON)
+            .cookie(cookie)
+        .when()
+            .port(port)
+            .delete("/api/projects/{projectId}", projectId)
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
     void getMyCaptainProject_내가Captain인프로젝트조회_정상() throws Exception {
         // Given
         String crewUsername = "crewUsername";

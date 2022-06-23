@@ -1,6 +1,8 @@
 package my.sleepydeveloper.projectcompass.web.project.controller.document;
 
 import io.restassured.filter.Filter;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
@@ -14,6 +16,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProjectDocument {
 
     public static RestDocumentationFilter documentProjectCreate() {
@@ -51,6 +54,14 @@ public class ProjectDocument {
                 ),
                 responseFields(
                         fieldWithPath("id").type(JsonFieldType.NUMBER).description("수정한 project의 id")
+                )
+        );
+    }
+
+    public static RestDocumentationFilter documentProjectDelete() {
+        return document("project-delete",
+                pathParameters(
+                        parameterWithName("projectId").description("프로젝트 고유번호")
                 )
         );
     }

@@ -22,4 +22,11 @@ public class Kanban extends BaseTimeEntity {
     public Kanban(Project project) {
         this.project = project;
     }
+
+    public void changeProject(Project project) {
+        if(!this.project.equals(project)) {
+            this.project = project;
+            project.changeKanban(this);
+        }
+    }
 }

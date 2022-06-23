@@ -3,21 +3,15 @@ package my.sleepydeveloper.projectcompass.web.project.controller;
 import lombok.RequiredArgsConstructor;
 import my.sleepydeveloper.projectcompass.domain.account.entity.Account;
 import my.sleepydeveloper.projectcompass.domain.account.service.AccountProfileImageService;
-import my.sleepydeveloper.projectcompass.domain.accountproject.service.AccountProjectService;
-import my.sleepydeveloper.projectcompass.domain.project.entity.Project;
 import my.sleepydeveloper.projectcompass.domain.project.service.ProjectService;
-import my.sleepydeveloper.projectcompass.domain.project.vo.ProjectUpdateCondition;
-import my.sleepydeveloper.projectcompass.security.dto.IdDto;
-import my.sleepydeveloper.projectcompass.web.project.dto.*;
-import org.springframework.http.HttpRequest;
+import my.sleepydeveloper.projectcompass.web.project.dto.CrewResponse;
+import my.sleepydeveloper.projectcompass.web.project.dto.GetCrewsResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
