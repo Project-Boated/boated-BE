@@ -3,6 +3,8 @@ package org.projectboated.backend.security.provider;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.index.qual.SameLen;
 import org.projectboated.backend.domain.exception.ErrorCode;
 import org.projectboated.backend.security.exception.KakaoServerException;
 import org.projectboated.backend.domain.account.entity.KakaoAccount;
@@ -23,6 +25,7 @@ import org.projectboated.backend.security.service.KakaoWebService;
 import org.projectboated.backend.security.token.KakaoAuthenticationToken;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class KakaoAuthenticationProvider implements AuthenticationProvider {
@@ -46,6 +49,7 @@ public class KakaoAuthenticationProvider implements AuthenticationProvider {
         } catch (JsonProcessingException e) {
             throw new JsonParsingException("Json ParsingError");
         } catch (WebClientResponseException e) {
+            log.error("kakao server exception", e);
             throw new KakaoServerException(ErrorCode.KAKAO_SERVER_EXCEPTION);
         }
     }
