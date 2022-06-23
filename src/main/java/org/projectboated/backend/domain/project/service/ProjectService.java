@@ -169,16 +169,8 @@ public class ProjectService {
     }
 
     public Project findById(Long projectId, Account account) {
-        Project project = projectRepository.findById(projectId)
+        return projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
-
-        if(project.getCaptain().getId() == account.getId()) {
-            return project;
-        } else if (!accountProjectRepository.findCrewsFromProject(project).contains(account)) {
-            return project;
-        }
-
-        throw new ProjectAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
     }
 
     @Transactional
@@ -198,11 +190,11 @@ public class ProjectService {
         projectRepository.delete(project);
     }
 
-    private boolean isCrew(Account account, Long projectId) {
+    public boolean isCrew(Account account, Long projectId) {
         return accountProjectRepository.countByCrewInProject(account.getId(), projectId) == 1;
     }
 
-    private boolean isCaptain(Account account, Project project) {
+    public boolean isCaptain(Account account, Project project) {
         return project.getCaptain().getId() == account.getId();
     }
 }

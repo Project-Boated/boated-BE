@@ -1,0 +1,1 @@
+NOTE: 본 API는 Captain과 Crew만이 호출할 수 있습니다.

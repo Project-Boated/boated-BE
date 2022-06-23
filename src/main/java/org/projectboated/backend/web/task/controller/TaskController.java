@@ -5,11 +5,10 @@ import org.projectboated.backend.domain.account.entity.Account;
 import org.projectboated.backend.domain.task.entity.Task;
 import org.projectboated.backend.domain.task.service.TaskService;
 import org.projectboated.backend.web.task.dto.CreateTaskRequest;
+import org.projectboated.backend.web.task.dto.CreateTaskResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,10 +17,10 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping("/api/projects/{projectId}/tasks")
-    public void createTask(
+    public ResponseEntity<CreateTaskResponse> createTask(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
-            @ModelAttribute CreateTaskRequest createTaskRequest
+            @RequestBody CreateTaskRequest createTaskRequest
             ) {
         Task task = Task.builder()
                 .name(createTaskRequest.getName())
@@ -29,6 +28,7 @@ public class TaskController {
                 .deadline(createTaskRequest.getDeadline())
                 .build();
 
-        taskService.save(account, projectId, task);
+        Task newTask = taskService.save(account, projectId, task);
+        return ResponseEntity.ok(new CreateTaskResponse(newTask));
     }
 }
