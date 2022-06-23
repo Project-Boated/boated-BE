@@ -14,6 +14,7 @@ import org.projectboated.backend.web.account.dto.GetAccountProfileResponse;
 import org.projectboated.backend.web.account.dto.NotImageFileException;
 import org.projectboated.backend.web.account.dto.PatchAccountProfileRequest;
 import org.projectboated.backend.web.account.dto.SignUpRequest;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.MimeType;
@@ -35,7 +36,7 @@ public class AccountController {
     private final AccountProfileImageService accountProfileImageService;
     private final ProfileImageService profileImageService;
 
-    @PostMapping("/sign-up")
+    @PostMapping(value = "/sign-up", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> signUp(@RequestBody @Validated SignUpRequest accountDto) {
         String username = accountDto.getUsername();
         String password = accountDto.getPassword();
@@ -64,7 +65,7 @@ public class AccountController {
                 .toList());
     }
 
-    @PatchMapping("/profile")
+    @PatchMapping(value = "/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void patchAccountProfile(
             @AuthenticationPrincipal Account account,
             @ModelAttribute @Validated PatchAccountProfileRequest requestAttribute

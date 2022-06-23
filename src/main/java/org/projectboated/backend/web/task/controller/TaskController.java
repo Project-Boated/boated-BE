@@ -6,6 +6,7 @@ import org.projectboated.backend.domain.task.entity.Task;
 import org.projectboated.backend.domain.task.service.TaskService;
 import org.projectboated.backend.web.task.dto.CreateTaskRequest;
 import org.projectboated.backend.web.task.dto.CreateTaskResponse;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class TaskController {
 
     private final TaskService taskService;
 
-    @PostMapping("/api/projects/{projectId}/tasks")
+    @PostMapping(value = "/api/projects/{projectId}/tasks", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CreateTaskResponse> createTask(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,

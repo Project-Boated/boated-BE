@@ -8,6 +8,7 @@ import org.projectboated.backend.domain.project.service.ProjectService;
 import org.projectboated.backend.domain.project.vo.ProjectUpdateCondition;
 import org.projectboated.backend.security.dto.IdDto;
 import org.projectboated.backend.web.project.dto.*;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -23,7 +24,7 @@ public class ProjectController {
     private final ProjectService projectService;
     private final AccountProjectService accountProjectService;
 
-    @PostMapping("/api/projects")
+    @PostMapping(value = "/api/projects", consumes = MediaType.APPLICATION_JSON_VALUE)
     public CreateProjectResponse createProject(
             @AuthenticationPrincipal Account account,
             @RequestBody @Validated CreateProjectRequest createProjectRequest
@@ -48,7 +49,7 @@ public class ProjectController {
         return new GetProjectResponse(project);
     }
 
-    @PatchMapping("/api/projects/{projectId}")
+    @PatchMapping(value = "/api/projects/{projectId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public PatchProjectResponse patchProject(
             @AuthenticationPrincipal Account account,
             @RequestBody @Validated PatchProjectRequest patchProjectRequest,
@@ -109,7 +110,7 @@ public class ProjectController {
         return new GetMyCrewTerminatedProjectResponse(projects);
     }
 
-    @PutMapping("/api/projects/{projectId}/captain")
+    @PutMapping(value = "/api/projects/{projectId}/captain", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<IdDto> updateCaptain(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,

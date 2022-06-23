@@ -30,7 +30,7 @@ public class AccountProfileImageController {
     private final AwsS3ProfileImageService awsS3ProfileImageService;
 
 
-    @PostMapping("/api/account/profile/profile-image")
+    @PostMapping(value = "/api/account/profile/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public PostAccountProfileImageResponse postAccountProfileImage(@AuthenticationPrincipal Account account,
                                                                    @Validated @ModelAttribute PostAccountProfileImageRequest postAccountProfileImageRequest,
                                                                    HttpServletRequest request) {
