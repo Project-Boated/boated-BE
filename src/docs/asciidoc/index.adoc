@@ -1,4 +1,4 @@
-= Project Compass API 가이드 문서
+= Boated API 가이드 문서
 김범준;
 :doctype: book
 :icons: font
@@ -371,7 +371,7 @@ include::{snippets}/project-retrieve/response-fields.adoc[]
 === 프로젝트 업데이트
 `PATCH` 요청을 사용해서 프로젝트의 내용을 업데이트 할 수 있다.
 
-include::noteCaptainOnly.adoc[]
+include::./noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -399,7 +399,7 @@ include::{snippets}/project-update/response-fields.adoc[]
 === 프로젝트 종료
 `POST` 요청을 사용해서 프로젝트를 종료시킬 수 있습니다.
 
-include::noteCaptainOnly.adoc[]
+include::./noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -421,7 +421,7 @@ include::{snippets}/project-terminate/response-fields.adoc[]
 === 프로젝트 종료 취소
 `POST` 요청을 사용해서 프로젝트 종료를 취소 시킬 수 있습니다.
 
-include::noteCaptainOnly.adoc[]
+include::./noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -443,7 +443,7 @@ include::{snippets}/project-cancel-terminate/response-fields.adoc[]
 === 프로젝트 삭제
 `DELETE` 요청을 사용해서 프로젝트를 삭제할 수 있습니다.
 
-include::noteCaptainOnly.adoc[]
+include::./noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -551,7 +551,7 @@ include::{snippets}/project-my-crew-terminated-retrieve/response-fields.adoc[]
 === 프로젝트에 참여한 Crew
 `GET` 요청을 사용해서 프로젝트에 참여한 유저를 확인할 수 있습니다.
 
-include::noteCaptainOrCrewOnly.adoc[]
+include::./noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 
@@ -608,11 +608,33 @@ include::{snippets}/project-crews-retrieve/response-fields.adoc[]
 [[resources-kanban]]
 == 칸반
 
+[[resources-kanban-retreive]]
+=== 칸반 정보 조회
+`GET` 요청을 사용해서 칸반 정보를 조회할 수 있습니다.
+
+include::./noteCaptainOrCrewOnly.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/kanban-retrieve/http-request.adoc[]
+
+===== request-path-parameters
+include::{snippets}/kanban-retrieve/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/kanban-retrieve/http-response.adoc[]
+
+==== response-fields
+include::{snippets}/kanban-retrieve/response-fields.adoc[]
+
 [[resources-kanban-lane-create]]
 === 칸반 Custom lane 추가
 `POST` 요청을 사용해서 칸반에 Custom lane을 추가할 수 있습니다.
 
-include::noteCaptainOnly.adoc[]
+include::./noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -637,7 +659,7 @@ include::{snippets}/kanban-lane-create/http-response.adoc[]
 === 칸반 Custom lane 삭제
 `DELETE` 요청을 사용해서 칸반에 Custom lane을 삭제할 수 있습니다.
 
-include::noteCaptainOnly.adoc[]
+include::./noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -660,7 +682,7 @@ include::{snippets}/kanban-lane-delete/http-response.adoc[]
 === 프로젝트 초대하기
 `POST` 요청을 사용해서 프로젝트에 초대할 수 있습니다.
 
-include::noteCaptainOnly.adoc[]
+include::./noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -769,7 +791,7 @@ include::{snippets}/invitation-reject/response-fields.adoc[]
 === Task생성
 `POST` 요청을 사용해서 Task를 생성할 수 있습니다.
 
-include::noteCaptainOrCrewOnly.adoc[]
+include::./noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 

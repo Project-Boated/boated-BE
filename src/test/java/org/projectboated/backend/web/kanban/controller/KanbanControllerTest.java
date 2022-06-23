@@ -9,6 +9,7 @@ import org.projectboated.backend.common.data.BasicProjectData;
 import org.projectboated.backend.common.utils.AccountTestUtils;
 import org.projectboated.backend.common.utils.KanbanTestUtils;
 import org.projectboated.backend.common.utils.ProjectTestUtils;
+import org.projectboated.backend.common.utils.TaskTestUtils;
 import org.projectboated.backend.web.kanban.dto.CreateKanbanLaneRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,8 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static io.restassured.RestAssured.given;
 import static org.projectboated.backend.common.data.BasicKanbanData.KANBAN_LANE_NAME;
-import static org.projectboated.backend.web.project.controller.document.KanbanDocument.documentKanbanLaneCreate;
-import static org.projectboated.backend.web.project.controller.document.KanbanDocument.documentKanbanLaneDelete;
+import static org.projectboated.backend.common.data.BasicTaskData.*;
+import static org.projectboated.backend.web.project.controller.document.KanbanDocument.*;
 
 @AutoConfigureMockMvc
 class KanbanControllerTest extends AcceptanceTest {
@@ -59,6 +60,25 @@ class KanbanControllerTest extends AcceptanceTest {
         .when()
             .port(port)
             .delete("/api/projects/{projectId}/kanban/lanes", projectId)
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void getKanban_칸반lane조회_정상() {
+        AccountTestUtils.createAccount(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD);
+        int projectId = ProjectTestUtils.createProject(port, cookie, BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, BasicProjectData.PROJECT_DEADLINE);
+
+        KanbanTestUtils.createCustomKanbanLane(port, cookie, projectId, KANBAN_LANE_NAME);
+        TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE);
+
+        given(this.spec)
+            .filter(documentKanbanRetrieve())
+            .cookie(cookie)
+        .when()
+            .port(port)
+            .get("/api/projects/{projectId}/kanban", projectId)
         .then()
             .statusCode(HttpStatus.OK.value());
     }

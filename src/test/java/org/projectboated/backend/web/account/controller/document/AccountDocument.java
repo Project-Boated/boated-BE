@@ -6,6 +6,8 @@ import org.springframework.restdocs.restassured3.RestDocumentationFilter;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
@@ -16,6 +18,7 @@ public class AccountDocument {
 
     public static RestDocumentationFilter documentSignUp() {
         return document("sign-up",
+                preprocessResponse(prettyPrint()),
                 requestHeaders(
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낼 Content Type")
                 ),
@@ -29,6 +32,7 @@ public class AccountDocument {
     }
     public static RestDocumentationFilter documentAccountProfileRetrieve() {
         return document("account-profile-retrieve",
+                preprocessResponse(prettyPrint()),
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("보낼 받을 타입")
                 ),
@@ -64,6 +68,7 @@ public class AccountDocument {
 
     public static RestDocumentationFilter documentAccountNicknameUniqueValidation() {
         return document("account-nickname-validation",
+                preprocessResponse(prettyPrint()),
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 타입"),
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낼 Media Type")
@@ -82,6 +87,7 @@ public class AccountDocument {
 
     public static RestDocumentationFilter documentAccountPutNickname() {
         return document("account-nickname-update",
+                preprocessResponse(prettyPrint()),
                 requestHeaders(
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낼 Media Type")
                 ),
