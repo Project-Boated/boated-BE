@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface KanbanLaneRepository extends JpaRepository<KanbanLane, Long> {
     @Modifying
     @Query("delete from KanbanLane kl where kl.project=:project")
@@ -18,4 +20,6 @@ public interface KanbanLaneRepository extends JpaRepository<KanbanLane, Long> {
     @Modifying
     @Query("delete from CustomKanbanLane ckl where ckl.project.id=:projectId")
     void deleteCustomLaneById(Long projectId);
+
+    Optional<KanbanLane> findByProjectAndName(Project project, String ready);
 }

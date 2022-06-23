@@ -371,6 +371,8 @@ include::{snippets}/project-retrieve/response-fields.adoc[]
 === 프로젝트 업데이트
 `PATCH` 요청을 사용해서 프로젝트의 내용을 업데이트 할 수 있다.
 
+include::noteCaptainOnly.adoc[]
+
 ==== Request
 
 ===== http-request
@@ -392,6 +394,69 @@ include::{snippets}/project-update/response-headers.adoc[]
 
 ===== response-fields
 include::{snippets}/project-update/response-fields.adoc[]
+
+[[resources-project-terminate]]
+=== 프로젝트 종료
+`POST` 요청을 사용해서 프로젝트를 종료시킬 수 있습니다.
+
+include::noteCaptainOnly.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/project-terminate/http-request.adoc[]
+
+===== path-parameters
+include::{snippets}/project-terminate/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/project-terminate/http-response.adoc[]
+
+===== response-fields
+include::{snippets}/project-terminate/response-fields.adoc[]
+
+[[resources-project-cancel-terminate]]
+=== 프로젝트 종료 취소
+`POST` 요청을 사용해서 프로젝트 종료를 취소 시킬 수 있습니다.
+
+include::noteCaptainOnly.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/project-cancel-terminate/http-request.adoc[]
+
+===== path-parameters
+include::{snippets}/project-cancel-terminate/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/project-cancel-terminate/http-response.adoc[]
+
+===== response-fields
+include::{snippets}/project-cancel-terminate/response-fields.adoc[]
+
+[[resources-project-delete]]
+=== 프로젝트 삭제
+`DELETE` 요청을 사용해서 프로젝트를 삭제할 수 있습니다.
+
+include::noteCaptainOnly.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/project-delete/http-request.adoc[]
+
+===== path-parameters
+include::{snippets}/project-delete/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/project-delete/http-response.adoc[]
 
 [[resources-project-my-captain-retrieve]]
 === 내가 captain인 프로젝트 목록
@@ -416,6 +481,26 @@ include::{snippets}/project-my-captain-retrieve/response-headers.adoc[]
 ===== response-fields
 include::{snippets}/project-my-captain-retrieve/response-fields.adoc[]
 
+[[resources-project-my-captain-terminated-retrieve]]
+=== 내가 captain인 종료된 프로젝트 목록
+`GET` 요청을 사용해서 내가 captain인 종료된 프로젝트의 목록을 확인할 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/project-my-captain-terminated-retrieve/http-request.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/project-my-captain-terminated-retrieve/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/project-my-captain-terminated-retrieve/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/project-my-captain-terminated-retrieve/response-fields.adoc[]
+
 [[resources-project-my-crew-retrieve]]
 === 내가 crew인 프로젝트 목록
 `GET` 요청을 사용해서 내가 crew 프로젝트의 목록을 확인할 수 있습니다.
@@ -439,26 +524,6 @@ include::{snippets}/project-my-crew-retrieve/response-headers.adoc[]
 ===== response-fields
 include::{snippets}/project-my-crew-retrieve/response-fields.adoc[]
 
-[[resources-project-my-captain-terminated-retrieve]]
-=== 내가 captain인 종료된 프로젝트 목록
-`GET` 요청을 사용해서 내가 captain인 종료된 프로젝트의 목록을 확인할 수 있습니다.
-
-==== Request
-
-===== http-request
-include::{snippets}/project-my-captain-terminated-retrieve/http-request.adoc[]
-
-==== Response
-
-===== http-response
-include::{snippets}/project-my-captain-terminated-retrieve/http-response.adoc[]
-
-===== response-headers
-include::{snippets}/project-my-captain-terminated-retrieve/response-headers.adoc[]
-
-===== response-fields
-include::{snippets}/project-my-captain-terminated-retrieve/response-fields.adoc[]
-
 [[resources-project-my-crew-terminated-retrieve]]
 === 내가 crew인 종료된 프로젝트 목록
 `GET` 요청을 사용해서 내가 crew인 종료된 프로젝트의 목록을 확인할 수 있습니다.
@@ -479,65 +544,6 @@ include::{snippets}/project-my-crew-terminated-retrieve/response-headers.adoc[]
 ===== response-fields
 include::{snippets}/project-my-crew-terminated-retrieve/response-fields.adoc[]
 
-[[resources-project-terminate]]
-=== 프로젝트 종료
-`POST` 요청을 사용해서 프로젝트를 종료시킬 수 있습니다.
-
-==== Request
-
-===== http-request
-include::{snippets}/project-terminate/http-request.adoc[]
-
-===== path-parameters
-include::{snippets}/project-terminate/path-parameters.adoc[]
-
-==== Response
-
-===== http-response
-include::{snippets}/project-terminate/http-response.adoc[]
-
-===== response-fields
-include::{snippets}/project-terminate/response-fields.adoc[]
-
-[[resources-project-cancel-terminate]]
-=== 프로젝트 종료 취소
-`POST` 요청을 사용해서 프로젝트 종료를 취소 시킬 수 있습니다.
-
-==== Request
-
-===== http-request
-include::{snippets}/project-cancel-terminate/http-request.adoc[]
-
-===== path-parameters
-include::{snippets}/project-cancel-terminate/path-parameters.adoc[]
-
-==== Response
-
-===== http-response
-include::{snippets}/project-cancel-terminate/http-response.adoc[]
-
-===== response-fields
-include::{snippets}/project-cancel-terminate/response-fields.adoc[]
-
-[[resources-project-delete]]
-=== 프로젝트 삭제
-`DELETE` 요청을 사용해서 프로젝트를 삭제할 수 있습니다.
-
-NOTE: Captain만 이 API를 호출할 수 있습니다.
-
-==== Request
-
-===== http-request
-include::{snippets}/project-delete/http-request.adoc[]
-
-===== path-parameters
-include::{snippets}/project-delete/path-parameters.adoc[]
-
-==== Response
-
-===== http-response
-include::{snippets}/project-delete/http-response.adoc[]
-
 [[resources-project-crews]]
 == 프로젝트 Crew
 
@@ -545,7 +551,7 @@ include::{snippets}/project-delete/http-response.adoc[]
 === 프로젝트에 참여한 Crew
 `GET` 요청을 사용해서 프로젝트에 참여한 유저를 확인할 수 있습니다.
 
-NOTE: 본 API는 조회하는 projectId의 Captain이거나 Crew이어야합니다
+include::noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 
@@ -606,7 +612,7 @@ include::{snippets}/project-crews-retrieve/response-fields.adoc[]
 === 칸반 Custom lane 추가
 `POST` 요청을 사용해서 칸반에 Custom lane을 추가할 수 있습니다.
 
-NOTE: 본 API는 조회하는 projectId의 Captain이어야 합니다.
+include::noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -631,7 +637,7 @@ include::{snippets}/kanban-lane-create/http-response.adoc[]
 === 칸반 Custom lane 삭제
 `DELETE` 요청을 사용해서 칸반에 Custom lane을 삭제할 수 있습니다.
 
-NOTE: 본 API는 조회하는 projectId의 Captain이어야 합니다.
+include::noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -653,6 +659,8 @@ include::{snippets}/kanban-lane-delete/http-response.adoc[]
 [[resources-invitation-create]]
 === 프로젝트 초대하기
 `POST` 요청을 사용해서 프로젝트에 초대할 수 있습니다.
+
+include::noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -753,3 +761,34 @@ include::{snippets}/invitation-reject/response-headers.adoc[]
 
 ===== response-fields
 include::{snippets}/invitation-reject/response-fields.adoc[]
+
+[[resources-task]]
+== 프로젝트 Task
+
+[[resources-task-create]]
+=== Task생성
+`POST` 요청을 사용해서 Task를 생성할 수 있습니다.
+
+include::noteCaptainOrCrewOnly.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/task-create/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/task-create/request-headers.adoc[]
+
+===== request-path-parameters
+include::{snippets}/task-create/path-parameters.adoc[]
+
+===== request-fields
+include::{snippets}/task-create/request-fields.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/task-create/http-response.adoc[]
+
+===== response-fields
+include::{snippets}/task-create/response-fields.adoc[]

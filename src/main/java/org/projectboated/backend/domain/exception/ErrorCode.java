@@ -38,8 +38,9 @@ public enum ErrorCode {
     INVITATION_ACCOUNT_EXISTS_IN_PROJECT(400, "IV003", "이미 Crew인 Account입니다."),
     INVITATION_NOT_FOUND(400, "IV004", "찾을 수 없는 초대입니다."),
 
-    // Kanban
-    KANBAN_LANE_EXISTS_UPPER_5(400, "KB001", "칸반 lane의 개수가 이미 5개입니다"),
+    // Kanban Lane
+    KANBAN_LANE_EXISTS_UPPER_5(400, "KL001", "칸반 lane의 개수가 이미 5개입니다"),
+    KANBAN_LANE_NOT_FOUND(400, "KL002", "칸반 lane을 찾을 수 없습니다"),
 
     // For Testing
     FOR_TESTING(507, "T001", "테스트용입니다.");
