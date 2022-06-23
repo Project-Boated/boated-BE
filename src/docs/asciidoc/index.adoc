@@ -598,12 +598,13 @@ include::{snippets}/project-crews-retrieve/response-fields.adoc[]
 //===== response-fields
 //include::{snippets}/project-captain-update/response-fields.adoc[]
 
+
 [[resources-kanban]]
 == 칸반
 
 [[resources-kanban-lane-create]]
-=== 칸반 lane 추가
-`POST` 요청을 사용해서 칸반에 lane을 추가할 수 있습니다.
+=== 칸반 Custom lane 추가
+`POST` 요청을 사용해서 칸반에 Custom lane을 추가할 수 있습니다.
 
 NOTE: 본 API는 조회하는 projectId의 Captain이어야 합니다.
 
@@ -625,6 +626,26 @@ include::{snippets}/kanban-lane-create/request-fields.adoc[]
 
 ===== http-response
 include::{snippets}/kanban-lane-create/http-response.adoc[]
+
+[[resources-kanban-lane-delete]]
+=== 칸반 Custom lane 삭제
+`DELETE` 요청을 사용해서 칸반에 Custom lane을 삭제할 수 있습니다.
+
+NOTE: 본 API는 조회하는 projectId의 Captain이어야 합니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/kanban-lane-delete/http-request.adoc[]
+
+===== request-path-parameters
+include::{snippets}/kanban-lane-delete/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/kanban-lane-delete/http-response.adoc[]
+
 
 [[resources-invitation]]
 == 프로젝트 초대
