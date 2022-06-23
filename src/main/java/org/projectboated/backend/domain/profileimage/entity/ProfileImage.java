@@ -12,6 +12,6 @@ import javax.persistence.*;
 @DiscriminatorColumn(name = "image_type")
 public abstract class ProfileImage {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 }
