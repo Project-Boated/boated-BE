@@ -91,29 +91,29 @@
 
 유저 관련 API
 
-[[resources-accounts-sign-in]]
-=== 유저 로그인
-
-`POST` 요청을 사용해서 로그인을 할 수 있다.
-
-==== Request
-
-===== http-request
-include::{snippets}/sign-in/http-request.adoc[]
-
-===== request-headers
-include::{snippets}/sign-in/request-headers.adoc[]
-
-==== Response
-
-===== http-response
-include::{snippets}/sign-in/http-response.adoc[]
-
-===== response-headers
-include::{snippets}/sign-in/response-headers.adoc[]
-
-===== response-fields
-include::{snippets}/sign-in/response-fields.adoc[]
+//[[resources-accounts-sign-in]]
+//=== 유저 로그인
+//
+//`POST` 요청을 사용해서 로그인을 할 수 있다.
+//
+//==== Request
+//
+//===== http-request
+//include::{snippets}/sign-in/http-request.adoc[]
+//
+//===== request-headers
+//include::{snippets}/sign-in/request-headers.adoc[]
+//
+//==== Response
+//
+//===== http-response
+//include::{snippets}/sign-in/http-response.adoc[]
+//
+//===== response-headers
+//include::{snippets}/sign-in/response-headers.adoc[]
+//
+//===== response-fields
+//include::{snippets}/sign-in/response-fields.adoc[]
 
 [[resources-account-kakao-continue]]
 === 카카오톡으로 계속하기
@@ -122,9 +122,11 @@ include::{snippets}/sign-in/response-fields.adoc[]
 ==== Request
 
 ===== http-request
-```
+
+[source]
+----
 GET /api/sign-in/kakao?code=dsa213021lkfds02 HTTP/1.1
-```
+----
 
 ===== request-headers
 
@@ -517,11 +519,30 @@ include::{snippets}/project-cancel-terminate/http-response.adoc[]
 ===== response-fields
 include::{snippets}/project-cancel-terminate/response-fields.adoc[]
 
+[[resources-project-delete]]
+=== 프로젝트 삭제
+`DELETE` 요청을 사용해서 프로젝트를 삭제할 수 있습니다.
+
+NOTE: Captain만 이 API를 호출할 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/project-delete/http-request.adoc[]
+
+===== path-parameters
+include::{snippets}/project-delete/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/project-delete/http-response.adoc[]
+
 [[resources-project-crews]]
-== 프로젝트 크루원
+== 프로젝트 Crew
 
 [[resources-project-crews-retrieve]]
-=== 프로젝트에 참여한 유저
+=== 프로젝트에 참여한 Crew
 `GET` 요청을 사용해서 프로젝트에 참여한 유저를 확인할 수 있습니다.
 
 NOTE: 본 API는 조회하는 projectId의 Captain이거나 Crew이어야합니다
@@ -576,6 +597,55 @@ include::{snippets}/project-crews-retrieve/response-fields.adoc[]
 //
 //===== response-fields
 //include::{snippets}/project-captain-update/response-fields.adoc[]
+
+
+[[resources-kanban]]
+== 칸반
+
+[[resources-kanban-lane-create]]
+=== 칸반 Custom lane 추가
+`POST` 요청을 사용해서 칸반에 Custom lane을 추가할 수 있습니다.
+
+NOTE: 본 API는 조회하는 projectId의 Captain이어야 합니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/kanban-lane-create/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/kanban-lane-create/request-headers.adoc[]
+
+===== request-path-parameters
+include::{snippets}/kanban-lane-create/path-parameters.adoc[]
+
+===== request-fields
+include::{snippets}/kanban-lane-create/request-fields.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/kanban-lane-create/http-response.adoc[]
+
+[[resources-kanban-lane-delete]]
+=== 칸반 Custom lane 삭제
+`DELETE` 요청을 사용해서 칸반에 Custom lane을 삭제할 수 있습니다.
+
+NOTE: 본 API는 조회하는 projectId의 Captain이어야 합니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/kanban-lane-delete/http-request.adoc[]
+
+===== request-path-parameters
+include::{snippets}/kanban-lane-delete/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/kanban-lane-delete/http-response.adoc[]
+
 
 [[resources-invitation]]
 == 프로젝트 초대

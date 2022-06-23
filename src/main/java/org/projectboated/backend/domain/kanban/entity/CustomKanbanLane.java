@@ -1,0 +1,20 @@
+package org.projectboated.backend.domain.kanban.entity;
+
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import org.projectboated.backend.domain.project.entity.Project;
+
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("custom")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class CustomKanbanLane extends KanbanLane{
+
+    @Builder
+    public CustomKanbanLane(String name, Project project, Kanban kanban) {
+        super(name, project, kanban);
+    }
+}
