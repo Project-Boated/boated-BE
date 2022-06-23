@@ -42,7 +42,7 @@ class TaskControllerTest extends AcceptanceTest {
             .body(new CreateTaskRequest(TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE))
         .when()
             .port(port)
-            .post("/api/projects/{projectId}/tasks", projectId)
+            .post("/api/projects/{projectId}/kanban/lanes/tasks", projectId)
         .then()
             .statusCode(HttpStatus.OK.value());
     }
