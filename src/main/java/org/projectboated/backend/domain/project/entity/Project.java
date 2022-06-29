@@ -30,7 +30,7 @@ public class Project extends BaseTimeEntity {
     @JoinColumn(name = "account_id_captain")
     private Account captain;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "project")
+    @OneToOne(mappedBy = "project")
     private Kanban kanban;
 
     private boolean isTerminated;

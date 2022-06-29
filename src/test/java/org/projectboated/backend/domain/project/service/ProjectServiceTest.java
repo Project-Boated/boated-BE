@@ -14,7 +14,7 @@ import org.projectboated.backend.domain.project.exception.ProjectUpdateAccessDen
 import org.projectboated.backend.domain.project.exception.ProjectNameSameInAccountException;
 import org.projectboated.backend.domain.project.exception.UpdateCaptainAccessDenied;
 import org.projectboated.backend.domain.project.repository.ProjectRepository;
-import org.projectboated.backend.domain.project.vo.ProjectUpdateCondition;
+import org.projectboated.backend.domain.project.condition.ProjectUpdateCond;
 import org.projectboated.backend.domain.uploadfile.repository.UploadFileRepository;
 import org.projectboated.backend.security.service.KakaoWebService;
 import org.junit.jupiter.api.Disabled;
@@ -114,7 +114,7 @@ class ProjectServiceTest extends BaseTest {
         String newProjectName = "newProjectName";
         String newProjectDescription = "newProjectDescription";
         LocalDateTime newDeadline = BasicProjectData.PROJECT_DEADLINE.plus(1, ChronoUnit.DAYS);
-        projectService.update(captain, project.getId(), new ProjectUpdateCondition(newProjectName, newProjectDescription, newDeadline));
+        projectService.update(captain, project.getId(), new ProjectUpdateCond(newProjectName, newProjectDescription, newDeadline));
 
         // Then
         assertThat(project.getName()).isEqualTo(newProjectName);
@@ -131,7 +131,7 @@ class ProjectServiceTest extends BaseTest {
         projectRepository.save(project);
 
         // When
-        projectService.update(captain, project.getId(), new ProjectUpdateCondition());
+        projectService.update(captain, project.getId(), new ProjectUpdateCond());
 
         // Then
         assertThat(project.getName()).isEqualTo(BasicProjectData.PROJECT_NAME);
@@ -147,7 +147,7 @@ class ProjectServiceTest extends BaseTest {
         projectRepository.save(project);
 
         // When
-        projectService.update(captain, project.getId(), new ProjectUpdateCondition(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, BasicProjectData.PROJECT_DEADLINE));
+        projectService.update(captain, project.getId(), new ProjectUpdateCond(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, BasicProjectData.PROJECT_DEADLINE));
 
         // Then
         assertThat(project.getName()).isEqualTo(BasicProjectData.PROJECT_NAME);
@@ -162,7 +162,7 @@ class ProjectServiceTest extends BaseTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.update(account, 123L, new ProjectUpdateCondition(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, BasicProjectData.PROJECT_DEADLINE)))
+        assertThatThrownBy(() -> projectService.update(account, 123L, new ProjectUpdateCond(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, BasicProjectData.PROJECT_DEADLINE)))
                 .isInstanceOf(ProjectNotFoundException.class);
     }
 
@@ -177,7 +177,7 @@ class ProjectServiceTest extends BaseTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.update(account2, project.getId(), new ProjectUpdateCondition("newProjectName", "newProjectDescription", null)))
+        assertThatThrownBy(() -> projectService.update(account2, project.getId(), new ProjectUpdateCond("newProjectName", "newProjectDescription", null)))
                 .isInstanceOf(ProjectUpdateAccessDeniedException.class);
     }
 
@@ -194,7 +194,7 @@ class ProjectServiceTest extends BaseTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.update(captain, project2.getId(), new ProjectUpdateCondition(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, BasicProjectData.PROJECT_DEADLINE)))
+        assertThatThrownBy(() -> projectService.update(captain, project2.getId(), new ProjectUpdateCond(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, BasicProjectData.PROJECT_DEADLINE)))
                 .isInstanceOf(ProjectNameSameInAccountException.class);
     }
 

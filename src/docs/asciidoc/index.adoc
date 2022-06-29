@@ -544,6 +544,32 @@ include::{snippets}/project-my-crew-terminated-retrieve/response-headers.adoc[]
 ===== response-fields
 include::{snippets}/project-my-crew-terminated-retrieve/response-fields.adoc[]
 
+[[resources-project-my-retrieve]]
+=== 내 프로젝트 목록
+`GET` 요청을 사용해서 내가 crew인 종료된 프로젝트의 목록을 확인할 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/project-my-retrieve/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/project-my-retrieve/request-headers.adoc[]
+
+===== request-parameters
+include::{snippets}/project-my-retrieve/request-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/project-my-retrieve/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/project-my-retrieve/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/project-my-retrieve/response-fields.adoc[]
+
 [[resources-project-crews]]
 == 프로젝트 Crew
 

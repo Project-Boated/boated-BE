@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ProjectRepository extends JpaRepository<Project, Long> {
+public interface ProjectRepository extends JpaRepository<Project, Long>, ProjectQueryDslRepository {
 
     boolean existsByNameAndCaptain(String name, Account captain);
 
