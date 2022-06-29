@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class CrewController {
+public class ProjectCrewController {
 
     private final ProjectService projectService;
     private final AccountProfileImageService accountProfileImageService;

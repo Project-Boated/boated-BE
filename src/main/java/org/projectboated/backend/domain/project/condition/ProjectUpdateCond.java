@@ -1,15 +1,14 @@
-package org.projectboated.backend.domain.project.vo;
+package org.projectboated.backend.domain.project.condition;
 
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProjectUpdateCondition {
+public class ProjectUpdateCond {
 
     private String name;
     private String description;

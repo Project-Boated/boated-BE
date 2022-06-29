@@ -13,11 +13,13 @@ import org.projectboated.backend.domain.kanban.entity.KanbanLane;
 import org.projectboated.backend.domain.kanban.entity.KanbanLaneType;
 import org.projectboated.backend.domain.kanban.repository.KanbanLaneRepository;
 import org.projectboated.backend.domain.kanban.repository.KanbanRepository;
+import org.projectboated.backend.domain.project.condition.GetMyProjectsCond;
 import org.projectboated.backend.domain.project.dto.ProjectFindCrewsAccessDeniedException;
 import org.projectboated.backend.domain.project.entity.Project;
 import org.projectboated.backend.domain.project.exception.*;
 import org.projectboated.backend.domain.project.repository.ProjectRepository;
-import org.projectboated.backend.domain.project.vo.ProjectUpdateCondition;
+import org.projectboated.backend.domain.project.condition.ProjectUpdateCond;
+import org.projectboated.backend.domain.project.service.dto.MyProjectsDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,7 +58,7 @@ public class ProjectService {
     }
 
     @Transactional
-    public void update(Account account, Long projectId, ProjectUpdateCondition projectUpdateCondition) {
+    public void update(Account account, Long projectId, ProjectUpdateCond projectUpdateCond) {
 
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
@@ -65,16 +67,16 @@ public class ProjectService {
             throw new ProjectUpdateAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
-        if(isSameProjectNameInAccount(projectUpdateCondition, project)) {
+        if(isSameProjectNameInAccount(projectUpdateCond, project)) {
             throw new ProjectNameSameInAccountException(ErrorCode.PROJECT_NAME_EXISTS_IN_ACCOUNT);
         }
 
-        project.changeProjectInform(projectUpdateCondition.getName(), projectUpdateCondition.getDescription(), projectUpdateCondition.getDeadline());
+        project.changeProjectInform(projectUpdateCond.getName(), projectUpdateCond.getDescription(), projectUpdateCond.getDeadline());
     }
 
-    private boolean isSameProjectNameInAccount(ProjectUpdateCondition projectUpdateCondition, Project project) {
-        return !Objects.equals(project.getName(), projectUpdateCondition.getName()) &&
-                projectRepository.existsByName(projectUpdateCondition.getName());
+    private boolean isSameProjectNameInAccount(ProjectUpdateCond projectUpdateCond, Project project) {
+        return !Objects.equals(project.getName(), projectUpdateCond.getName()) &&
+                projectRepository.existsByName(projectUpdateCond.getName());
     }
 
     public List<Project> findAllByCaptainNotTerminated(Account account) {
@@ -196,5 +198,15 @@ public class ProjectService {
 
     public boolean isCaptain(Account account, Project project) {
         return project.getCaptain().getId() == account.getId();
+    }
+
+    public MyProjectsDto getMyProjects(Account account, GetMyProjectsCond cond) {
+        List<Project> projects = projectRepository.getMyProjects(account, cond);
+        return MyProjectsDto.builder()
+                .page(cond.getPageable().getPageNumber())
+                .size(cond.getPageable().getPageSize())
+                .hasNext(projects.size()==cond.getPageable().getPageSize())
+                .projects(projects)
+                .build();
     }
 }
