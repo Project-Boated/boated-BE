@@ -367,6 +367,34 @@ include::{snippets}/project-retrieve/response-headers.adoc[]
 ===== response-fields
 include::{snippets}/project-retrieve/response-fields.adoc[]
 
+[[resources-project-crews-retrieve]]
+=== 프로젝트에 참여한 Crew
+`GET` 요청을 사용해서 프로젝트에 참여한 유저를 확인할 수 있습니다.
+
+include::./noteCaptainOrCrewOnly.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/project-crews-retrieve/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/project-crews-retrieve/request-headers.adoc[]
+
+===== request-path-parameters
+include::{snippets}/project-crews-retrieve/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/project-crews-retrieve/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/project-crews-retrieve/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/project-crews-retrieve/response-fields.adoc[]
+
 [[resources-project-update]]
 === 프로젝트 업데이트
 `PATCH` 요청을 사용해서 프로젝트의 내용을 업데이트 할 수 있다.
@@ -394,6 +422,28 @@ include::{snippets}/project-update/response-headers.adoc[]
 
 ===== response-fields
 include::{snippets}/project-update/response-fields.adoc[]
+
+[[resources-projects-captain-update]]
+=== 프로젝트의 captain 바꾸기
+`PUT` 요청을 사용해서 프로젝트의 Captain을 바꿀 수 있습니다.
+
+include::./noteCaptainOnly.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/project-captain-update/http-request.adoc[]
+
+===== path-parameters
+include::{snippets}/project-captain-update/path-parameters.adoc[]
+
+===== request-fields
+include::{snippets}/project-captain-update/request-fields.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/project-captain-update/http-response.adoc[]
 
 [[resources-project-terminate]]
 === 프로젝트 종료
@@ -457,6 +507,32 @@ include::{snippets}/project-delete/path-parameters.adoc[]
 
 ===== http-response
 include::{snippets}/project-delete/http-response.adoc[]
+
+[[resources-project-my-retrieve]]
+=== 내 프로젝트 목록
+`GET` 요청을 사용해서 내가 crew인 종료된 프로젝트의 목록을 확인할 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/project-my-retrieve/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/project-my-retrieve/request-headers.adoc[]
+
+===== request-parameters
+include::{snippets}/project-my-retrieve/request-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/project-my-retrieve/http-response.adoc[]
+
+===== response-headers
+include::{snippets}/project-my-retrieve/response-headers.adoc[]
+
+===== response-fields
+include::{snippets}/project-my-retrieve/response-fields.adoc[]
 
 [[resources-project-my-captain-retrieve]]
 === 내가 captain인 프로젝트 목록
@@ -543,92 +619,6 @@ include::{snippets}/project-my-crew-terminated-retrieve/response-headers.adoc[]
 
 ===== response-fields
 include::{snippets}/project-my-crew-terminated-retrieve/response-fields.adoc[]
-
-[[resources-project-my-retrieve]]
-=== 내 프로젝트 목록
-`GET` 요청을 사용해서 내가 crew인 종료된 프로젝트의 목록을 확인할 수 있습니다.
-
-==== Request
-
-===== http-request
-include::{snippets}/project-my-retrieve/http-request.adoc[]
-
-===== request-headers
-include::{snippets}/project-my-retrieve/request-headers.adoc[]
-
-===== request-parameters
-include::{snippets}/project-my-retrieve/request-parameters.adoc[]
-
-==== Response
-
-===== http-response
-include::{snippets}/project-my-retrieve/http-response.adoc[]
-
-===== response-headers
-include::{snippets}/project-my-retrieve/response-headers.adoc[]
-
-===== response-fields
-include::{snippets}/project-my-retrieve/response-fields.adoc[]
-
-[[resources-project-crews]]
-== 프로젝트 Crew
-
-[[resources-project-crews-retrieve]]
-=== 프로젝트에 참여한 Crew
-`GET` 요청을 사용해서 프로젝트에 참여한 유저를 확인할 수 있습니다.
-
-include::./noteCaptainOrCrewOnly.adoc[]
-
-==== Request
-
-===== http-request
-include::{snippets}/project-crews-retrieve/http-request.adoc[]
-
-===== request-headers
-include::{snippets}/project-crews-retrieve/request-headers.adoc[]
-
-===== request-path-parameters
-include::{snippets}/project-crews-retrieve/path-parameters.adoc[]
-
-==== Response
-
-===== http-response
-include::{snippets}/project-crews-retrieve/http-response.adoc[]
-
-===== response-headers
-include::{snippets}/project-crews-retrieve/response-headers.adoc[]
-
-===== response-fields
-include::{snippets}/project-crews-retrieve/response-fields.adoc[]
-
-//[[resources-project-captain-update]]
-//=== 프로젝트의 captain 바꾸기
-//`PUT` 요청을 사용해서 프로젝트의 Captain을 바꿀 수 있습니다.
-//
-//==== Request
-//
-//===== http-request
-//include::{snippets}/project-captain-update/http-request.adoc[]
-//
-//===== request-headers
-//include::{snippets}/project-captain-update/path-parameters.adoc[]
-//
-//===== request-headers
-//include::{snippets}/project-captain-update/request-headers.adoc[]
-//
-//===== request-fields
-//include::{snippets}/project-captain-update/request-fields.adoc[]
-//
-//==== Response
-//
-//===== http-response
-//include::{snippets}/project-captain-update/http-response.adoc[]
-//
-//===== response-headers
-//include::{snippets}/project-captain-update/response-headers.adoc[]
-//
-//===== response-fields
-//include::{snippets}/project-captain-update/response-fields.adoc[]
 
 
 [[resources-kanban]]
