@@ -369,7 +369,7 @@ include::{snippets}/project-retrieve/response-fields.adoc[]
 
 [[resources-project-crews-retrieve]]
 === 프로젝트에 참여한 Crew
-`GET` 요청을 사용해서 프로젝트에 참여한 유저를 확인할 수 있습니다.
+`GET` 요청을 사용해서 프로젝트에 참여한 Crew를 확인할 수 있습니다.
 
 include::./noteCaptainOrCrewOnly.adoc[]
 
@@ -394,6 +394,25 @@ include::{snippets}/project-crews-retrieve/response-headers.adoc[]
 
 ===== response-fields
 include::{snippets}/project-crews-retrieve/response-fields.adoc[]
+
+[[resources-projects-crew-delete]]
+=== 프로젝트에 참여한 Crew방출
+`DELETE` 요청을 사용해서 프로젝트에 참여한 Crew를 방출할 수 있습니다.
+
+include::./noteCaptainOnly.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/projects-crew-delete/http-request.adoc[]
+
+===== request-path-parameters
+include::{snippets}/projects-crew-delete/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/projects-crew-delete/http-response.adoc[]
 
 [[resources-project-update]]
 === 프로젝트 업데이트
