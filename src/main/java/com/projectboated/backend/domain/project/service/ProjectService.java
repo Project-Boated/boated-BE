@@ -1,6 +1,7 @@
 package com.projectboated.backend.domain.project.service;
 
 import com.projectboated.backend.domain.account.entity.Account;
+import com.projectboated.backend.domain.account.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.account.repository.AccountRepository;
 import com.projectboated.backend.domain.accountproject.repository.AccountProjectRepository;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
@@ -106,7 +107,7 @@ public class ProjectService {
         }
 
         Account crew = accountRepository.findByNickname(crewNickname)
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND_BY_USERNAME));
 
         accountProjectRepository.delete(project, crew);
     }
