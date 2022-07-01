@@ -10,6 +10,7 @@ pipeline {
         stage('Copy Credential') {
             steps {
                 sh 'cp /var/jenkins_home/boated-be/application-deploy.properties src/main/resources/application-deploy.properties'
+                sh 'cp /var/jenkins_home/boated-be/application-develop.properties src/main/resources/application-develop.properties'
             }
         }
         stage('Gradlew grant Execute Permission') {
@@ -34,12 +35,15 @@ pipeline {
         }
         stage('Make Docker Image') {
             steps {
-                sh 'docker build -t public.ecr.aws/g7j4u9e2/boated-be:$(git rev-parse --short HEAD) -t public.ecr.aws/g7j4u9e2/boated-be:latest .'
-                sh 'docker push public.ecr.aws/g7j4u9e2/boated-be:$(git rev-parse --short HEAD)'
-                sh 'docker push public.ecr.aws/g7j4u9e2/boated-be:latest'
+                sh 'docker build -t public.ecr.aws/g7j4u9e2/boated-be-develop:$(git rev-parse --short HEAD) -t public.ecr.aws/g7j4u9e2/boated-be-develop:latest -f Dockerfile-develop .'
+                sh 'docker build -t public.ecr.aws/g7j4u9e2/boated-be-deploy:$(git rev-parse --short HEAD) -t public.ecr.aws/g7j4u9e2/boated-be-deploy:latest -f Dockerfile-deploy .'
+                sh 'docker push public.ecr.aws/g7j4u9e2/boated-be-develop:$(git rev-parse --short HEAD)'
+                sh 'docker push public.ecr.aws/g7j4u9e2/boated-be-develop:latest'
+                sh 'docker push public.ecr.aws/g7j4u9e2/boated-be-deploy:$(git rev-parse --short HEAD)'
+                sh 'docker push public.ecr.aws/g7j4u9e2/boated-be-deploy:latest'
             }
         }
-        stage('Image') {
+        stage('Server work') {
             steps {
                 sh 'ssh ubuntu@15.164.89.188 "cd boated ; sh boated-be.sh"'
             }
