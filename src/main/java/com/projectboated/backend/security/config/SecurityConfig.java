@@ -103,6 +103,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.addAllowedMethod(HttpMethod.PUT);
         configuration.addAllowedMethod(HttpMethod.DELETE);
         configuration.addAllowedMethod(HttpMethod.PATCH);
+        configuration.addAllowedMethod(HttpMethod.OPTIONS);
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
