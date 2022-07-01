@@ -7,6 +7,11 @@ pipeline {
                 slackSend (channel: '#jenkins', color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
             }
         }
+        stage('Copy Credential') {
+            steps {
+                sh 'cp /var/jenkins_home/boated-be/application-deploy.properties src/main/resources/application-deploy.properties'
+            }
+        }
         stage('Gradlew grant Execute Permission') {
             steps {
                 sh 'chmod +x ./gradlew'
@@ -15,11 +20,6 @@ pipeline {
         stage('Clean') {
             steps {
                 sh './gradlew clean'
-            }
-        }
-        stage('Copy Credential') {
-            steps {
-                sh 'cp /var/jenkins_home/boated-be/application-deploy.properties src/main/resources/application-deploy.properties'
             }
         }
         stage('Test') {
@@ -34,13 +34,13 @@ pipeline {
         }
         stage('Make Docker Image') {
             steps {
-                sh 'docker build -t boated-be .'
-                sh 'docker save -o boated-be.tar boated-be'
+                sh 'docker build -t public.ecr.aws/g7j4u9e2/boated-be:$(git rev-parse --short HEAD) -t public.ecr.aws/g7j4u9e2/boated-be:latest .'
+                sh 'docker push public.ecr.aws/g7j4u9e2/boated-be:$(git rev-parse --short HEAD)'
+                sh 'docker push public.ecr.aws/g7j4u9e2/boated-be:latest'
             }
         }
-        stage('Transfer Image To Server') {
+        stage('Image') {
             steps {
-                sh 'scp boated-be.tar ubuntu@15.164.89.188:/home/ubuntu/boated'
                 sh 'ssh ubuntu@15.164.89.188 "cd boated ; sh boated.sh"'
             }
         }
