@@ -41,13 +41,12 @@ pipeline {
         }
         stage('Image') {
             steps {
-                sh 'ssh ubuntu@15.164.89.188 "cd boated ; sh boated.sh"'
+                sh 'ssh ubuntu@15.164.89.188 "cd boated ; sh boated-be.sh"'
             }
         }
-        stage('Delete Docker Image') {
+        stage('Delete Dangling Image') {
             steps {
-                sh 'docker rmi boated-be'
-                sh 'rm boated-be.tar'
+                sh 'docker image prune -f'
             }
         }
     }
