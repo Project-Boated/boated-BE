@@ -33,10 +33,14 @@ pipeline {
                 sh './gradlew bootJar -x test -Dorg.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64'
             }
         }
-        stage('Make Docker Image') {
+        stage('Build Docker Image') {
             steps {
                 sh 'docker build -t public.ecr.aws/g7j4u9e2/boated-be-develop:$(git rev-parse --short HEAD) -t public.ecr.aws/g7j4u9e2/boated-be-develop:latest -f Dockerfile-develop .'
                 sh 'docker build -t public.ecr.aws/g7j4u9e2/boated-be-deploy:$(git rev-parse --short HEAD) -t public.ecr.aws/g7j4u9e2/boated-be-deploy:latest -f Dockerfile-deploy .'
+            }
+        }
+        stage('Send Docker Image to Repository') {
+            steps {
                 sh 'docker push public.ecr.aws/g7j4u9e2/boated-be-develop:$(git rev-parse --short HEAD)'
                 sh 'docker push public.ecr.aws/g7j4u9e2/boated-be-develop:latest'
                 sh 'docker push public.ecr.aws/g7j4u9e2/boated-be-deploy:$(git rev-parse --short HEAD)'
