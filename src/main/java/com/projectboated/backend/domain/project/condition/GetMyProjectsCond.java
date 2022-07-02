@@ -17,4 +17,9 @@ public class GetMyProjectsCond {
     boolean crewTerm;
 
     Pageable pageable;
+
+    public boolean hasCond() {
+        return captainNotTerm || captainTerm ||
+                crewNotTerm || crewTerm;
+    }
 }

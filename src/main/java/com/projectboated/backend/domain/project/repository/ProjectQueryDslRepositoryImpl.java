@@ -23,7 +23,7 @@ import static com.projectboated.backend.domain.accountproject.entity.QAccountPro
 import static com.projectboated.backend.domain.project.entity.QProject.*;
 
 @Repository
-public class ProjectQueryDslRepositoryImpl implements ProjectQueryDslRepository{
+public class ProjectQueryDslRepositoryImpl implements ProjectQueryDslRepository {
 
     private final JPAQueryFactory queryFactory;
 
@@ -33,38 +33,30 @@ public class ProjectQueryDslRepositoryImpl implements ProjectQueryDslRepository{
 
     public List<Project> getMyProjects(Account account, GetMyProjectsCond cond) {
         BooleanBuilder builder = new BooleanBuilder();
-        if (cond.isCaptainTerm()) {
+        if (!cond.hasCond() || cond.isCaptainTerm()) {
             builder.or(project.captain.eq(account).and(isProjectTerminated()));
         }
-        if (cond.isCaptainNotTerm()) {
+        if (!cond.hasCond() || cond.isCaptainNotTerm()) {
             builder.or(project.captain.eq(account).and(isProjectNotTerminated()));
         }
-        if(cond.isCrewTerm()) {
+        if (!cond.hasCond() || cond.isCrewTerm()) {
             builder.or(project.id.in(
-                    JPAExpressions
-                            .select(accountProject.project.id)
-                            .from(accountProject)
-                            .where(accountProject.account.eq(account)))
+                            JPAExpressions
+                                    .select(accountProject.project.id)
+                                    .from(accountProject)
+                                    .where(accountProject.account.eq(account)))
                     .and(isProjectTerminated()));
         }
-        if(cond.isCrewNotTerm()) {
+        if (!cond.hasCond() || cond.isCrewNotTerm()) {
             builder.or(project.id.in(
-                    JPAExpressions
-                            .select(accountProject.project.id)
-                            .from(accountProject)
-                            .where(accountProject.account.eq(account)))
+                            JPAExpressions
+                                    .select(accountProject.project.id)
+                                    .from(accountProject)
+                                    .where(accountProject.account.eq(account)))
                     .and(isProjectNotTerminated()));
         }
 
         Pageable pageable = cond.getPageable();
-        if (pageable == null) {
-            return queryFactory
-                    .selectFrom(project)
-                    .where(builder)
-                    .orderBy(project.id.asc())
-                    .fetch();
-        }
-
         return queryFactory
                 .selectFrom(project)
                 .where(builder)
