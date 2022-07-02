@@ -10,7 +10,7 @@ import com.projectboated.backend.domain.project.entity.Project;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,9 +28,9 @@ public class GetProjectResponse {
 
     private boolean isTerminated;
 
-    private Integer dday;
+    private Long dday;
 
-    private Integer totalDay;
+    private Long totalDay;
 
     public GetProjectResponse(Project project) {
         this.id = project.getId();
@@ -39,8 +39,8 @@ public class GetProjectResponse {
         this.deadline = project.getDeadline();
         this.captain = new ProjectCaptain(project.getCaptain());
         this.isTerminated = project.isTerminated();
-        this.dday = project.getDeadline()!=null ? Period.between(deadline.toLocalDate(), LocalDate.now()).getDays() : null;
-        this.totalDay = project.getDeadline()!=null ? Period.between(project.getCreatedDate().toLocalDate(), deadline.toLocalDate()).getDays() : null;
+        this.dday = project.getDeadline()!=null ? ChronoUnit.DAYS.between(deadline.toLocalDate(), LocalDate.now()) : null;
+        this.totalDay = project.getDeadline()!=null ? ChronoUnit.DAYS.between(project.getCreatedDate().toLocalDate(), deadline.toLocalDate()) : null;
     }
 
     @Getter
