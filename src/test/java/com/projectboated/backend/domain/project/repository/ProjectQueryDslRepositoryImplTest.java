@@ -12,6 +12,7 @@ import com.projectboated.backend.domain.project.entity.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
@@ -65,6 +66,7 @@ class ProjectQueryDslRepositoryImplTest {
                 .crewNotTerm(true)
                 .captainTerm(true)
                 .captainNotTerm(true)
+                .pageable(PageRequest.of(0, 20))
                 .build();
 
         // When
@@ -105,6 +107,7 @@ class ProjectQueryDslRepositoryImplTest {
                 .crewNotTerm(true)
                 .captainTerm(false)
                 .captainNotTerm(false)
+                .pageable(PageRequest.of(0, 20))
                 .build();
 
         // When
@@ -145,6 +148,7 @@ class ProjectQueryDslRepositoryImplTest {
                 .crewNotTerm(false)
                 .captainTerm(false)
                 .captainNotTerm(false)
+                .pageable(PageRequest.of(0, 20))
                 .build();
 
         // When
@@ -185,6 +189,7 @@ class ProjectQueryDslRepositoryImplTest {
                 .crewNotTerm(false)
                 .captainTerm(false)
                 .captainNotTerm(true)
+                .pageable(PageRequest.of(0, 20))
                 .build();
 
         // When
@@ -225,6 +230,7 @@ class ProjectQueryDslRepositoryImplTest {
                 .crewNotTerm(false)
                 .captainTerm(true)
                 .captainNotTerm(false)
+                .pageable(PageRequest.of(0, 20))
                 .build();
 
         // When
@@ -248,6 +254,7 @@ class ProjectQueryDslRepositoryImplTest {
                 .crewNotTerm(false)
                 .captainTerm(false)
                 .captainNotTerm(true)
+                .pageable(PageRequest.of(0, 20))
                 .build();
         
         // When
@@ -272,6 +279,7 @@ class ProjectQueryDslRepositoryImplTest {
                 .crewNotTerm(false)
                 .captainTerm(true)
                 .captainNotTerm(false)
+                .pageable(PageRequest.of(0, 20))
                 .build();
 
         // When
@@ -300,6 +308,7 @@ class ProjectQueryDslRepositoryImplTest {
                 .crewNotTerm(true)
                 .captainTerm(false)
                 .captainNotTerm(false)
+                .pageable(PageRequest.of(0, 20))
                 .build();
 
         // When
@@ -329,6 +338,7 @@ class ProjectQueryDslRepositoryImplTest {
                 .crewNotTerm(false)
                 .captainTerm(false)
                 .captainNotTerm(false)
+                .pageable(PageRequest.of(0, 20))
                 .build();
 
         // When
