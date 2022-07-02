@@ -37,8 +37,9 @@ out/
 .vscode/
 
 ### secret ###
-src/main/resources/application-deploy.properties
+src/main/resources/application-local.properties
 src/main/resources/application-develop.properties
+src/main/resources/application-deploy.properties
 
 ### Rest Docs ###
 src/main/resources/static/docs/
