@@ -1,10 +1,10 @@
 package com.projectboated.backend.common.data;
 
-import com.projectboated.backend.domain.account.entity.Role;
+import com.projectboated.backend.domain.account.account.entity.Role;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import com.projectboated.backend.domain.profileimage.entity.ProfileImage;
-import com.projectboated.backend.domain.profileimage.entity.UrlProfileImage;
+import com.projectboated.backend.domain.account.profileimage.entity.ProfileImage;
+import com.projectboated.backend.domain.account.profileimage.entity.UrlProfileImage;
 
 import java.util.Set;
 

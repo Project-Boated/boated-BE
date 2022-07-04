@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.task.entity;
 
-import com.projectboated.backend.domain.kanban.entity.KanbanLane;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,9 +11,8 @@ import com.projectboated.backend.domain.project.entity.Project;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
+@Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
 public class Task extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

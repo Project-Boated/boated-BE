@@ -1,19 +1,21 @@
 package com.projectboated.backend.domain.account.service;
 
 import com.projectboated.backend.common.data.BasicAccountData;
-import com.projectboated.backend.domain.account.entity.Account;
-import com.projectboated.backend.domain.account.entity.KakaoAccount;
-import com.projectboated.backend.domain.account.entity.Role;
-import com.projectboated.backend.domain.profileimage.service.AwsS3ProfileImageService;
+import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.account.account.entity.KakaoAccount;
+import com.projectboated.backend.domain.account.account.entity.Role;
 import com.projectboated.backend.common.basetest.BaseTest;
-import com.projectboated.backend.domain.account.exception.AccountNicknameAlreadyExistsException;
-import com.projectboated.backend.domain.account.exception.AccountNotFoundException;
-import com.projectboated.backend.domain.account.exception.AccountPasswordWrong;
-import com.projectboated.backend.domain.account.exception.AccountUsernameAlreadyExistsException;
-import com.projectboated.backend.domain.account.repository.AccountRepository;
-import com.projectboated.backend.domain.account.repository.KakaoAccountRepository;
-import com.projectboated.backend.domain.account.service.condition.AccountUpdateCond;
-import com.projectboated.backend.domain.profileimage.repository.ProfileImageRepository;
+import com.projectboated.backend.domain.account.account.service.AccountNicknameService;
+import com.projectboated.backend.domain.account.account.service.AccountService;
+import com.projectboated.backend.domain.account.account.service.exception.AccountNicknameAlreadyExistsException;
+import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
+import com.projectboated.backend.domain.account.account.service.exception.AccountPasswordWrong;
+import com.projectboated.backend.domain.account.account.service.exception.AccountUsernameAlreadyExistsException;
+import com.projectboated.backend.domain.account.account.repository.AccountRepository;
+import com.projectboated.backend.domain.account.account.repository.KakaoAccountRepository;
+import com.projectboated.backend.domain.account.account.service.condition.AccountUpdateCond;
+import com.projectboated.backend.domain.account.profileimage.repository.ProfileImageRepository;
+import com.projectboated.backend.domain.account.profileimage.service.AwsS3ProfileImageService;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import com.projectboated.backend.domain.uploadfile.repository.UploadFileRepository;
 import com.projectboated.backend.security.service.KakaoWebService;
@@ -175,7 +177,7 @@ class AccountServiceTest extends BaseTest {
     void updateProfile_카카오Account_모든필드업데이트_성공() throws Exception {
         // Given
         KakaoAccount kakaoAccount = new KakaoAccount(123L, BasicAccountData.ROLES, BasicAccountData.PROFILE_IMAGE_FILE);
-        kakaoAccount.updateNickname(BasicAccountData.NICKNAME);
+        kakaoAccount.changeNickname(BasicAccountData.NICKNAME);
         kakaoAccountRepository.save(kakaoAccount);
 
         String newNickname = "newNickname";
@@ -273,7 +275,7 @@ class AccountServiceTest extends BaseTest {
                 .build();
 
         // When
-        account.updateId(123123L);
+        account.changeId(123123L);
 
         // Then
         assertThatThrownBy(() -> accountService.updateProfile(account, updateCondition))
@@ -380,7 +382,7 @@ class AccountServiceTest extends BaseTest {
     void updateNickname_존재하지않는AccountId_오류발생() {
         // Given
         Account account = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
-        account.updateId(12345L);
+        account.changeId(12345L);
 
         // When
         // Then

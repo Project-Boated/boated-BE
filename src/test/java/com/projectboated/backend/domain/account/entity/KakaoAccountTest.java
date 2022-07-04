@@ -1,6 +1,7 @@
 package com.projectboated.backend.domain.account.entity;
 
 import com.projectboated.backend.common.data.BasicAccountData;
+import com.projectboated.backend.domain.account.account.entity.KakaoAccount;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

@@ -1,8 +1,8 @@
 package com.projectboated.backend.security.service;
 
-import com.projectboated.backend.domain.account.entity.Account;
+import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.security.exception.IllegalUsernamePassword;
-import com.projectboated.backend.domain.account.repository.AccountRepository;
+import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

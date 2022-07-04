@@ -1,13 +1,12 @@
 package com.projectboated.backend.web.project.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.projectboated.backend.domain.account.entity.Account;
+import com.projectboated.backend.domain.account.account.entity.Account;
 import lombok.*;
 import com.projectboated.backend.domain.project.entity.Project;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 

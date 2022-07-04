@@ -1,10 +1,10 @@
 package com.projectboated.backend.web.project.controller;
 
-import com.projectboated.backend.domain.project.condition.ProjectUpdateCond;
+import com.projectboated.backend.domain.project.service.condition.ProjectUpdateCond;
 import com.projectboated.backend.web.project.dto.request.CreateProjectRequest;
 import com.projectboated.backend.web.project.dto.request.PatchProjectRequest;
 import lombok.RequiredArgsConstructor;
-import com.projectboated.backend.domain.account.entity.Account;
+import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.web.project.dto.response.CreateProjectResponse;

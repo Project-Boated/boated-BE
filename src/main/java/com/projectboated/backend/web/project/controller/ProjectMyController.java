@@ -1,22 +1,20 @@
 package com.projectboated.backend.web.project.controller;
 
-import com.projectboated.backend.domain.account.entity.Account;
-import com.projectboated.backend.domain.accountproject.service.AccountProjectService;
-import com.projectboated.backend.domain.project.condition.GetMyProjectsCond;
+import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.project.service.AccountProjectService;
+import com.projectboated.backend.domain.project.service.condition.GetMyProjectsCond;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.dto.MyProjectsDto;
-import com.projectboated.backend.web.project.dto.response.*;
+import com.projectboated.backend.web.project.dto.response.GetMyProjectsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,12 +22,6 @@ public class ProjectMyController {
 
     private final ProjectService projectService;
     private final AccountProjectService accountProjectService;
-
-    @GetMapping("/test")
-    private void asdf(@RequestParam(value = "captain", required = false) List<List<String>> captain) {
-        System.out.println(captain);
-    }
-
 
     @GetMapping("/api/projects/my")
     public GetMyProjectsResponse getMyProjects(
@@ -57,42 +49,6 @@ public class ProjectMyController {
                 .toList();
 
         return new GetMyProjectsResponse(page, size, hasNext, projectResponses);
-    }
-
-    @GetMapping("/api/projects/my/captain")
-    public GetMyCaptainProjectResponse getMyCaptainProject(@AuthenticationPrincipal Account account) {
-        List<GetMyCaptainProjectResponse.ProjectResponse> projects = projectService.findAllByCaptainNotTerminated(account).stream()
-                .map((p) -> new GetMyCaptainProjectResponse.ProjectResponse(p, accountProjectService.getCrews(p)))
-                .collect(Collectors.toList());
-
-        return new GetMyCaptainProjectResponse(projects);
-    }
-
-    @GetMapping("/api/projects/my/crew")
-    public GetMyCrewProjectResponse getMyCrewProject(@AuthenticationPrincipal Account account) {
-        List<GetMyCrewProjectResponse.ProjectResponse> projects = projectService.findAllByCrewNotTerminated(account).stream()
-                .map((p) -> new GetMyCrewProjectResponse.ProjectResponse(p, accountProjectService.getCrews(p)))
-                .toList();
-
-        return new GetMyCrewProjectResponse(projects);
-    }
-
-    @GetMapping("/api/projects/my/captain/terminated")
-    public GetMyCaptainTerminatedProjectResponse getMyCaptainTerminatedProject(@AuthenticationPrincipal Account account) {
-        List<GetMyCaptainTerminatedProjectResponse.ProjectResponse> projects = projectService.findAllByCaptainTerminated(account).stream()
-                .map((p) -> new GetMyCaptainTerminatedProjectResponse.ProjectResponse(p, accountProjectService.getCrews(p)))
-                .collect(Collectors.toList());
-
-        return new GetMyCaptainTerminatedProjectResponse(projects);
-    }
-
-    @GetMapping("/api/projects/my/crew/terminated")
-    public GetMyCrewTerminatedProjectResponse getMyCrewTerminatedProject(@AuthenticationPrincipal Account account) {
-        List<GetMyCrewTerminatedProjectResponse.ProjectResponse> projects = projectService.findAllByCrewTerminated(account).stream()
-                .map((p) -> new GetMyCrewTerminatedProjectResponse.ProjectResponse(p, accountProjectService.getCrews(p)))
-                .collect(Collectors.toList());
-
-        return new GetMyCrewTerminatedProjectResponse(projects);
     }
 
 }

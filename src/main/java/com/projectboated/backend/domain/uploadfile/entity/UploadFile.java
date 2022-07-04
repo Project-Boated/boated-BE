@@ -7,9 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
+@Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Setter @Getter
 public class UploadFile {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +22,7 @@ public class UploadFile {
 
     private String mediaType;
 
+    @Builder
     public UploadFile(String originalFileName, String saveFileName, String mediaType) {
         this.originalFileName = removeExt(originalFileName);
         this.ext = extractExt(originalFileName);

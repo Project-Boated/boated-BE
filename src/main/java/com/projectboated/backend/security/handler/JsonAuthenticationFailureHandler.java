@@ -1,6 +1,6 @@
 package com.projectboated.backend.security.handler;
 
-import com.projectboated.backend.web.infra.exception.dto.ExceptionMessageResponse;
+import com.projectboated.backend.web.common.exception.dto.ExceptionMessageResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

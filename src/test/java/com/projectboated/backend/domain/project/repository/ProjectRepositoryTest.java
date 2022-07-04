@@ -2,9 +2,9 @@ package com.projectboated.backend.domain.project.repository;
 
 import com.projectboated.backend.common.data.BasicAccountData;
 import com.projectboated.backend.common.data.BasicProjectData;
-import com.projectboated.backend.domain.account.entity.Account;
+import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.common.basetest.BaseTest;
-import com.projectboated.backend.domain.account.repository.AccountRepository;
+import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.project.entity.Project;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

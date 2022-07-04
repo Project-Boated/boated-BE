@@ -1,7 +1,7 @@
 package com.projectboated.backend.web.project.controller;
 
-import com.projectboated.backend.domain.account.entity.Account;
-import com.projectboated.backend.domain.account.service.AccountProfileImageService;
+import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.account.profileimage.service.AccountProfileImageService;
 import com.projectboated.backend.web.project.dto.response.CrewResponse;
 import com.projectboated.backend.web.project.dto.response.GetCrewsResponse;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.projectboated.backend.web.project.controller;
 
-import com.projectboated.backend.domain.account.entity.Account;
+import com.projectboated.backend.domain.account.account.entity.Account;
 import lombok.RequiredArgsConstructor;
 import com.projectboated.backend.domain.project.service.ProjectCaptainService;
 import com.projectboated.backend.web.project.dto.request.UpdateProjectCaptainRequest;
