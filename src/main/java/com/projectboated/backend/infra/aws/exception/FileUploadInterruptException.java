@@ -1,4 +1,4 @@
-package com.projectboated.backend.aws.exception;
+package com.projectboated.backend.infra.aws.exception;
 
 import com.projectboated.backend.domain.common.exception.BusinessException;
 import com.projectboated.backend.domain.common.exception.ErrorCode;

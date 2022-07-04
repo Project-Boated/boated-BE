@@ -3,7 +3,7 @@ package com.projectboated.backend.domain.account.service;
 import com.projectboated.backend.domain.account.entity.Account;
 import com.projectboated.backend.domain.profileimage.service.AwsS3ProfileImageService;
 import lombok.RequiredArgsConstructor;
-import com.projectboated.backend.aws.exception.AccountProfileImageNotUploadFile;
+import com.projectboated.backend.infra.aws.exception.AccountProfileImageNotUploadFile;
 import com.projectboated.backend.domain.account.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.account.exception.AccountProfileImageFileNotExist;
 import com.projectboated.backend.domain.account.exception.AccountProfileImageNotSupportTypeException;

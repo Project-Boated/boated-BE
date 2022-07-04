@@ -4,7 +4,7 @@ import com.projectboated.backend.common.data.BasicAccountData;
 import com.projectboated.backend.web.account.dto.PutNicknameRequest;
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
-import com.projectboated.backend.aws.AwsS3File;
+import com.projectboated.backend.infra.aws.AwsS3File;
 import com.projectboated.backend.common.basetest.AcceptanceTest;
 import com.projectboated.backend.common.utils.AccountTestUtils;
 import com.projectboated.backend.domain.profileimage.service.AwsS3ProfileImageService;

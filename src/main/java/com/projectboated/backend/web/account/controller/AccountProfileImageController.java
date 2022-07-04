@@ -6,7 +6,7 @@ import com.projectboated.backend.domain.profileimage.service.AwsS3ProfileImageSe
 import com.projectboated.backend.web.account.dto.PostAccountProfileImageRequest;
 import com.projectboated.backend.web.account.dto.PostAccountProfileImageResponse;
 import lombok.RequiredArgsConstructor;
-import com.projectboated.backend.aws.AwsS3File;
+import com.projectboated.backend.infra.aws.AwsS3File;
 import com.projectboated.backend.domain.account.exception.AccountProfileImageFileNotExist;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.projectboated.backend.domain.profileimage.service.ProfileImageService;

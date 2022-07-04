@@ -1,12 +1,13 @@
 package com.projectboated.backend.security.config;
 
-import com.projectboated.backend.security.entrypoint.JsonAuthenticationEntryPoint;
 import com.projectboated.backend.security.filter.JsonAuthenticationFilter;
 import com.projectboated.backend.security.filter.KakaoAuthenticationFilter;
-import com.projectboated.backend.security.handler.*;
 import com.projectboated.backend.security.provider.JsonAuthenticationProvider;
 import com.projectboated.backend.security.provider.KakaoAuthenticationProvider;
+import com.projectboated.backend.security.entrypoint.JsonAuthenticationEntryPoint;
+import com.projectboated.backend.security.handler.*;
 import com.projectboated.backend.security.voter.AccountNicknameExistVoter;
+import com.projectboated.backend.web.security.handler.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;

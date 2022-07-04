@@ -77,7 +77,7 @@ public class AccountService {
             }
         }
 
-        if (!StringUtils.equalsOrNull(account.getNickname(), updateCond.getNickname()) &&
+        if (!equalsOrNull(account.getNickname(), updateCond.getNickname()) &&
                 accountRepository.existsByNickname(updateCond.getNickname())) {
             throw new AccountNicknameAlreadyExistsException(ErrorCode.ACCOUNT_NICKNAME_EXISTS);
         }
@@ -125,5 +125,12 @@ public class AccountService {
             kakaoWebService.disconnect(kakaoAccount.getKakaoId());
         }
         accountRepository.delete(account);
+    }
+
+    public boolean equalsOrNull(String s1, String s2) {
+        if (s1 == null || s2 == null) {
+            return true;
+        }
+        return s1.equals(s2);
     }
 }

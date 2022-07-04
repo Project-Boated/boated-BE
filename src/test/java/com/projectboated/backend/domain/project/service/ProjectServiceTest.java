@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.project.service;
 
-import com.projectboated.backend.aws.AwsS3Service;
+import com.projectboated.backend.infra.aws.AwsS3Service;
 import com.projectboated.backend.common.basetest.BaseTest;
 import com.projectboated.backend.common.data.BasicAccountData;
 import com.projectboated.backend.common.data.BasicProjectData;

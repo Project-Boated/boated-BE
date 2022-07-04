@@ -1,6 +1,7 @@
 package com.projectboated.backend.aws;
 
 import com.projectboated.backend.common.basetest.BaseTest;
+import com.projectboated.backend.infra.aws.AwsS3Service;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

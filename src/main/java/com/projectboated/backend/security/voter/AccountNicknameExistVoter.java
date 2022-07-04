@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.projectboated.backend.domain.account.entity.Account;
+import com.projectboated.backend.security.exception.NicknameRequiredException;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.Authentication;
@@ -15,7 +16,6 @@ import org.springframework.util.StringUtils;
 
 import com.projectboated.backend.domain.account.service.AccountService;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
-import com.projectboated.backend.security.exception.NicknameRequiredException;
 
 @Component
 public class AccountNicknameExistVoter implements AccessDecisionVoter {

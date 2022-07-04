@@ -1,4 +1,4 @@
-package com.projectboated.backend.aws;
+package com.projectboated.backend.infra.aws;
 
 import lombok.*;
 

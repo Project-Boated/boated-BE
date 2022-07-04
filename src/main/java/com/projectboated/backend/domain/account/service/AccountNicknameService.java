@@ -24,7 +24,7 @@ public class AccountNicknameService {
         Account findAccount = accountRepository.findById(account.getId())
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-        if (!StringUtils.equalsOrNull(account.getNickname(), nickname) &&
+        if (!equalsOrNull(account.getNickname(), nickname) &&
                 accountRepository.existsByNickname(nickname)) {
             throw new AccountNicknameAlreadyExistsException(ErrorCode.ACCOUNT_NICKNAME_EXISTS);
         }
@@ -34,6 +34,13 @@ public class AccountNicknameService {
 
     public boolean isNotSameAndExistsNickname(String nickname) {
         return Objects.nonNull(nickname) && accountRepository.existsByNickname(nickname);
+    }
+
+    public boolean equalsOrNull(String s1, String s2) {
+        if (s1 == null || s2 == null) {
+            return true;
+        }
+        return s1.equals(s2);
     }
 
 }
