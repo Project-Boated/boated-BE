@@ -1,18 +1,18 @@
 package com.projectboated.backend.domain.task.service;
 
-import com.projectboated.backend.domain.account.entity.Account;
-import com.projectboated.backend.domain.kanban.entity.KanbanLane;
-import com.projectboated.backend.domain.kanban.exception.KanbanLaneNotFoundException;
-import com.projectboated.backend.domain.kanban.repository.KanbanLaneRepository;
+import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
+import com.projectboated.backend.domain.kanban.kanbanlane.service.exception.KanbanLaneNotFoundException;
+import com.projectboated.backend.domain.kanban.kanbanlane.repository.KanbanLaneRepository;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.task.entity.Task;
-import com.projectboated.backend.domain.task.exception.TaskSaveAccessDeniedException;
+import com.projectboated.backend.domain.task.service.exception.TaskSaveAccessDeniedException;
 import com.projectboated.backend.domain.task.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
-import com.projectboated.backend.domain.account.repository.AccountRepository;
+import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.projectboated.backend.domain.project.entity.Project;
-import com.projectboated.backend.domain.project.exception.ProjectNotFoundException;
+import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
 import com.projectboated.backend.domain.project.service.ProjectService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

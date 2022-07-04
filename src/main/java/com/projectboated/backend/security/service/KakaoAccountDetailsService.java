@@ -1,11 +1,11 @@
 package com.projectboated.backend.security.service;
 
-import com.projectboated.backend.domain.account.entity.KakaoAccount;
-import com.projectboated.backend.domain.account.entity.Role;
+import com.projectboated.backend.domain.account.account.entity.KakaoAccount;
+import com.projectboated.backend.domain.account.account.entity.Role;
 import com.projectboated.backend.security.service.dto.KakaoAccountInformation;
-import com.projectboated.backend.domain.profileimage.entity.ProfileImage;
-import com.projectboated.backend.domain.profileimage.entity.UrlProfileImage;
-import com.projectboated.backend.domain.profileimage.service.ProfileImageService;
+import com.projectboated.backend.domain.account.profileimage.entity.ProfileImage;
+import com.projectboated.backend.domain.account.profileimage.entity.UrlProfileImage;
+import com.projectboated.backend.domain.account.profileimage.service.ProfileImageService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
-import com.projectboated.backend.domain.account.repository.KakaoAccountRepository;
+import com.projectboated.backend.domain.account.account.repository.KakaoAccountRepository;
 
 import java.util.Set;
 
@@ -46,7 +46,7 @@ public class KakaoAccountDetailsService {
                         profileImage = profileImageService.save(new UrlProfileImage(kakaoAccountResponse.getProfileImageUrl()));
                     }
 
-                    return kakaoAccountRepository.save(KakaoAccount.builder()
+                    return kakaoAccountRepository.save(KakaoAccount.kakaoBuilder()
                             .profileImageFile(profileImage)
                             .roles(Set.of(Role.USER))
                             .kakaoId(

@@ -3,7 +3,7 @@ package com.projectboated.backend.security.provider;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.projectboated.backend.domain.account.entity.KakaoAccount;
+import com.projectboated.backend.domain.account.account.entity.KakaoAccount;
 import com.projectboated.backend.security.exception.JsonParsingException;
 import com.projectboated.backend.security.exception.KakaoServerException;
 import lombok.extern.slf4j.Slf4j;

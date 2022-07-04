@@ -1,9 +1,9 @@
 package com.projectboated.backend.web.invitation;
 
-import com.projectboated.backend.domain.account.entity.Account;
+import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.web.invitation.dto.CreateInvitationResponse;
 import lombok.RequiredArgsConstructor;
-import com.projectboated.backend.domain.invitation.InvitationService;
+import com.projectboated.backend.domain.invitation.service.InvitationService;
 import com.projectboated.backend.domain.invitation.entity.Invitation;
 import com.projectboated.backend.web.invitation.dto.AcceptInvitationResponse;
 import com.projectboated.backend.web.invitation.dto.GetMyInvitationResponse;

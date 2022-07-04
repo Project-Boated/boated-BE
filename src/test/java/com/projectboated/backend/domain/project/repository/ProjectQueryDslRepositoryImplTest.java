@@ -2,12 +2,11 @@ package com.projectboated.backend.domain.project.repository;
 
 import com.projectboated.backend.common.data.BasicAccountData;
 import com.projectboated.backend.common.data.BasicProjectData;
-import com.projectboated.backend.domain.account.entity.Account;
-import com.projectboated.backend.domain.accountproject.repository.AccountProjectRepository;
-import com.projectboated.backend.domain.project.condition.GetMyProjectsCond;
+import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.project.service.condition.GetMyProjectsCond;
 import org.junit.jupiter.api.Test;
-import com.projectboated.backend.domain.account.repository.AccountRepository;
-import com.projectboated.backend.domain.accountproject.entity.AccountProject;
+import com.projectboated.backend.domain.account.account.repository.AccountRepository;
+import com.projectboated.backend.domain.project.entity.AccountProject;
 import com.projectboated.backend.domain.project.entity.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

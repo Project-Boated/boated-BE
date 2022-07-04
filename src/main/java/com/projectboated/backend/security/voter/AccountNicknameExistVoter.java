@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.projectboated.backend.domain.account.entity.Account;
+import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.security.exception.NicknameRequiredException;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
@@ -14,7 +14,7 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import com.projectboated.backend.domain.account.service.AccountService;
+import com.projectboated.backend.domain.account.account.service.AccountService;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
 
 @Component

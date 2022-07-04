@@ -1,7 +1,6 @@
 package com.projectboated.backend.web.common.exception;
 
 import com.projectboated.backend.web.common.exception.codes.ExceptionHandlerTestHandler;
-import com.projectboated.backend.web.infra.exception.GlobalExceptionHandler;
 import com.projectboated.backend.common.basetest.BaseTest;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;

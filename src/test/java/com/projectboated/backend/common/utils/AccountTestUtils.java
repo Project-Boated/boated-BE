@@ -1,7 +1,7 @@
 package com.projectboated.backend.common.utils;
 
 import com.projectboated.backend.security.dto.UsernamePasswordDto;
-import com.projectboated.backend.web.account.dto.SignUpRequest;
+import com.projectboated.backend.web.account.account.dto.request.SignUpRequest;
 import io.restassured.http.Cookie;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

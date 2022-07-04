@@ -3,7 +3,7 @@ package com.projectboated.backend.domain.project.entity;
 import com.projectboated.backend.common.basetest.BaseTest;
 import com.projectboated.backend.common.data.BasicAccountData;
 import com.projectboated.backend.common.data.BasicProjectData;
-import com.projectboated.backend.domain.account.entity.Account;
+import com.projectboated.backend.domain.account.account.entity.Account;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

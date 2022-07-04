@@ -1,6 +1,6 @@
 package com.projectboated.backend.web.common.exception;
 
-import com.projectboated.backend.web.infra.exception.dto.BasicFieldError;
+import com.projectboated.backend.web.common.exception.dto.BasicFieldError;
 import com.projectboated.backend.common.basetest.BaseTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

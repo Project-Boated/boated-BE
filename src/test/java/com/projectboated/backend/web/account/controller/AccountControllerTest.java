@@ -1,15 +1,15 @@
 package com.projectboated.backend.web.account.controller;
 
 import com.projectboated.backend.common.data.BasicAccountData;
-import com.projectboated.backend.web.account.dto.PutNicknameRequest;
+import com.projectboated.backend.web.account.account.dto.request.PutNicknameRequest;
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
 import com.projectboated.backend.infra.aws.AwsS3File;
 import com.projectboated.backend.common.basetest.AcceptanceTest;
 import com.projectboated.backend.common.utils.AccountTestUtils;
-import com.projectboated.backend.domain.profileimage.service.AwsS3ProfileImageService;
-import com.projectboated.backend.web.account.dto.SignUpRequest;
-import com.projectboated.backend.web.account.dto.ValidationNicknameUniqueRequest;
+import com.projectboated.backend.domain.account.profileimage.service.AwsS3ProfileImageService;
+import com.projectboated.backend.web.account.account.dto.request.SignUpRequest;
+import com.projectboated.backend.web.account.account.dto.request.ValidationNicknameUniqueRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;

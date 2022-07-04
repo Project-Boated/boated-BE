@@ -1,8 +1,10 @@
 package com.projectboated.backend.domain.invitation;
 
+import com.projectboated.backend.domain.invitation.repository.InvitationRepository;
+import com.projectboated.backend.domain.invitation.service.InvitationService;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.common.basetest.BaseTest;
-import com.projectboated.backend.domain.account.repository.AccountRepository;
+import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.FilterType;

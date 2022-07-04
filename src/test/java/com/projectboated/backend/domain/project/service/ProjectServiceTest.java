@@ -1,29 +1,27 @@
 package com.projectboated.backend.domain.project.service;
 
-import com.projectboated.backend.infra.aws.AwsS3Service;
 import com.projectboated.backend.common.basetest.BaseTest;
 import com.projectboated.backend.common.data.BasicAccountData;
 import com.projectboated.backend.common.data.BasicProjectData;
-import com.projectboated.backend.domain.account.entity.Account;
-import com.projectboated.backend.domain.account.service.AccountService;
-import com.projectboated.backend.domain.accountproject.entity.AccountProject;
-import com.projectboated.backend.domain.accountproject.repository.AccountProjectRepository;
-import com.projectboated.backend.domain.project.condition.ProjectUpdateCond;
-import com.projectboated.backend.domain.project.exception.ProjectNameSameInAccountException;
-import com.projectboated.backend.domain.project.exception.ProjectNotFoundException;
-import com.projectboated.backend.domain.project.repository.ProjectRepository;
-import com.projectboated.backend.domain.uploadfile.repository.UploadFileRepository;
-import com.projectboated.backend.security.service.KakaoWebService;
-import com.projectboated.backend.domain.account.exception.AccountNotFoundException;
-import com.projectboated.backend.domain.account.repository.AccountRepository;
+import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.account.account.repository.AccountRepository;
+import com.projectboated.backend.domain.account.account.service.AccountService;
+import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
+import com.projectboated.backend.domain.project.entity.AccountProject;
 import com.projectboated.backend.domain.project.entity.Project;
-import com.projectboated.backend.domain.project.exception.ProjectUpdateAccessDeniedException;
-import com.projectboated.backend.domain.project.exception.ProjectCaptainUpdateDenied;
+import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
+import com.projectboated.backend.domain.project.repository.ProjectRepository;
+import com.projectboated.backend.domain.project.service.condition.ProjectUpdateCond;
+import com.projectboated.backend.domain.project.service.exception.ProjectCaptainUpdateDenied;
+import com.projectboated.backend.domain.project.service.exception.ProjectNameSameInAccountException;
+import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
+import com.projectboated.backend.domain.project.service.exception.ProjectUpdateAccessDeniedException;
+import com.projectboated.backend.domain.uploadfile.repository.UploadFileRepository;
+import com.projectboated.backend.infra.aws.AwsS3Service;
+import com.projectboated.backend.security.service.KakaoWebService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -199,25 +196,6 @@ class ProjectServiceTest extends BaseTest {
         // Then
         assertThatThrownBy(() -> projectService.update(captain, project2.getId(), new ProjectUpdateCond(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, BasicProjectData.PROJECT_DEADLINE)))
                 .isInstanceOf(ProjectNameSameInAccountException.class);
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {0, 1, 10})
-    void findAllByCaptain_Account의Project존재_리스트개수(int count) throws Exception {
-        // Given
-        Account captain = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
-        List<Project> projects = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            Project project = new Project(BasicProjectData.PROJECT_NAME + i, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
-            projectRepository.save(project);
-            projects.add(project);
-        }
-
-        // When
-        int result = projectService.findAllByCaptainNotTerminated(captain).size();
-
-        // Then
-        assertThat(result).isEqualTo(count);
     }
 
     @Test

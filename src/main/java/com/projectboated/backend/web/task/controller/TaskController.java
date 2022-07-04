@@ -1,6 +1,6 @@
 package com.projectboated.backend.web.task.controller;
 
-import com.projectboated.backend.domain.account.entity.Account;
+import com.projectboated.backend.domain.account.account.entity.Account;
 import lombok.RequiredArgsConstructor;
 import com.projectboated.backend.domain.task.entity.Task;
 import com.projectboated.backend.domain.task.service.TaskService;

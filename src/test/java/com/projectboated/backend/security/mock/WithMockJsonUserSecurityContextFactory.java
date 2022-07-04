@@ -1,11 +1,11 @@
 package com.projectboated.backend.security.mock;
 
-import com.projectboated.backend.domain.account.entity.Account;
-import com.projectboated.backend.domain.account.entity.Role;
-import com.projectboated.backend.domain.account.service.AccountService;
-import com.projectboated.backend.domain.profileimage.entity.ProfileImage;
-import com.projectboated.backend.domain.profileimage.entity.UrlProfileImage;
-import com.projectboated.backend.domain.profileimage.service.ProfileImageService;
+import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.account.account.entity.Role;
+import com.projectboated.backend.domain.account.account.service.AccountService;
+import com.projectboated.backend.domain.account.profileimage.entity.ProfileImage;
+import com.projectboated.backend.domain.account.profileimage.entity.UrlProfileImage;
+import com.projectboated.backend.domain.account.profileimage.service.ProfileImageService;
 import com.projectboated.backend.security.token.JsonAuthenticationToken;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

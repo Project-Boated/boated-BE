@@ -1,23 +1,22 @@
 package com.projectboated.backend.domain.project.service;
 
-import com.projectboated.backend.domain.account.entity.Account;
-import com.projectboated.backend.domain.account.exception.AccountNotFoundException;
-import com.projectboated.backend.domain.account.repository.AccountRepository;
-import com.projectboated.backend.domain.accountproject.repository.AccountProjectRepository;
+import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.account.account.repository.AccountRepository;
+import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
-import com.projectboated.backend.domain.kanban.entity.DefaultKanbanLane;
-import com.projectboated.backend.domain.kanban.entity.Kanban;
-import com.projectboated.backend.domain.kanban.entity.KanbanLane;
-import com.projectboated.backend.domain.kanban.entity.KanbanLaneType;
-import com.projectboated.backend.domain.kanban.repository.KanbanLaneRepository;
-import com.projectboated.backend.domain.kanban.repository.KanbanRepository;
-import com.projectboated.backend.domain.project.condition.GetMyProjectsCond;
-import com.projectboated.backend.domain.project.condition.ProjectUpdateCond;
-import com.projectboated.backend.domain.project.dto.ProjectFindCrewsAccessDeniedException;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.DefaultKanbanLane;
+import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLaneType;
+import com.projectboated.backend.domain.kanban.kanbanlane.repository.KanbanLaneRepository;
+import com.projectboated.backend.domain.kanban.kanban.repository.KanbanRepository;
 import com.projectboated.backend.domain.project.entity.Project;
-import com.projectboated.backend.domain.project.exception.*;
+import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
+import com.projectboated.backend.domain.project.service.condition.GetMyProjectsCond;
+import com.projectboated.backend.domain.project.service.condition.ProjectUpdateCond;
 import com.projectboated.backend.domain.project.service.dto.MyProjectsDto;
+import com.projectboated.backend.domain.project.service.exception.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,21 +76,12 @@ public class ProjectService {
         return !Objects.equals(project.getName(), projectUpdateCond.getName()) &&
                 projectRepository.existsByName(projectUpdateCond.getName());
     }
-
-    public List<Project> findAllByCaptainNotTerminated(Account account) {
-        return projectRepository.findAllByCaptainAndNotTerminated(account);
-    }
-
-    public List<Project> findAllByCaptainTerminated(Account account) {
-        return projectRepository.findAllByCaptainAndTerminated(account);
-    }
-
     public List<Account> findAllCrews(Account account, Long projectId) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
         if(!isCaptain(account, project) && !isCrew(account, projectId)) {
-            throw new ProjectFindCrewsAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
+            throw new ProjectAccessDeniedException.ProjectFindCrewsAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
         return accountProjectRepository.findCrewsFromProject(project);
@@ -110,14 +100,6 @@ public class ProjectService {
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND_BY_USERNAME));
 
         accountProjectRepository.delete(project, crew);
-    }
-
-    public List<Project> findAllByCrewNotTerminated(Account account) {
-        return accountProjectRepository.findProjectFromCrewNotTerminated(account);
-    }
-
-    public List<Project> findAllByCrewTerminated(Account account) {
-        return accountProjectRepository.findProjectFromCrewTerminated(account);
     }
 
     @Transactional

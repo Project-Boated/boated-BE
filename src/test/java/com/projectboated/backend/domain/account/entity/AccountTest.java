@@ -3,6 +3,7 @@ package com.projectboated.backend.domain.account.entity;
 import com.projectboated.backend.common.data.BasicAccountData;
 import com.projectboated.backend.common.data.BasicUploadFileData;
 import com.projectboated.backend.common.basetest.BaseTest;
+import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ class AccountTest extends BaseTest {
 
         // When
         String newNickname = "newNickname";
-        account.updateNickname(newNickname);
+        account.changeNickname(newNickname);
 
         // Then
         assertThat(account.getUsername()).isEqualTo(BasicAccountData.USERNAME);
@@ -48,7 +49,7 @@ class AccountTest extends BaseTest {
         Account account = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
 
         // When
-        account.updateNickname(null);
+        account.changeNickname(null);
 
         // Then
         assertThat(account.getUsername()).isEqualTo(BasicAccountData.USERNAME);
@@ -65,7 +66,7 @@ class AccountTest extends BaseTest {
 
         // When
         String newPassword = "newPassword";
-        account.updatePassword(newPassword);
+        account.changePassword(newPassword);
 
         // Then
         assertThat(account.getUsername()).isEqualTo(BasicAccountData.USERNAME);
@@ -81,7 +82,7 @@ class AccountTest extends BaseTest {
         Account account = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
 
         // When
-        account.updatePassword(null);
+        account.changePassword(null);
 
         // Then
         assertThat(account.getUsername()).isEqualTo(BasicAccountData.USERNAME);
@@ -117,7 +118,7 @@ class AccountTest extends BaseTest {
 
         // When
         Long newId = 123L;
-        account.updateId(newId);
+        account.changeId(newId);
 
         // Then
         assertThat(account.getId()).isEqualTo(newId);
@@ -134,7 +135,7 @@ class AccountTest extends BaseTest {
         Account account = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
 
         // When
-        account.updateId(null);
+        account.changeId(null);
 
         // Then
         assertThat(account.getId()).isEqualTo(null);
@@ -155,7 +156,7 @@ class AccountTest extends BaseTest {
         String updateNickname = "updateNickname";
         String updateProfileUrl = "updateProfileUrl";
         UploadFile updateProfileFile = BasicUploadFileData.UPLOADFILE_INSTANCE;
-        account.updateProfile(updateNickname, updatePassword);
+        account.changeProfile(updateNickname, updatePassword);
 
         // Then
         assertThat(account.getUsername()).isEqualTo(BasicAccountData.USERNAME);
@@ -170,7 +171,7 @@ class AccountTest extends BaseTest {
         Account account = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
 
         // When
-        account.updateProfile(null, null);
+        account.changeProfile(null, null);
 
         // Then
         assertThat(account.getUsername()).isEqualTo(BasicAccountData.USERNAME);

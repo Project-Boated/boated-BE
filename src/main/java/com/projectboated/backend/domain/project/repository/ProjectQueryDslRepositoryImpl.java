@@ -1,16 +1,14 @@
 package com.projectboated.backend.domain.project.repository;
 
-import com.projectboated.backend.domain.account.entity.Account;
-import com.projectboated.backend.domain.accountproject.entity.QAccountProject;
-import com.projectboated.backend.domain.project.condition.GetMyProjectsCond;
-import com.projectboated.backend.domain.project.entity.QProject;
+import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.domain.project.service.condition.GetMyProjectsCond;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.projectboated.backend.domain.project.entity.Project;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
@@ -19,8 +17,8 @@ import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.projectboated.backend.domain.accountproject.entity.QAccountProject.*;
-import static com.projectboated.backend.domain.project.entity.QProject.*;
+import static com.projectboated.backend.domain.project.entity.QAccountProject.accountProject;
+import static com.projectboated.backend.domain.project.entity.QProject.project;
 
 @Repository
 public class ProjectQueryDslRepositoryImpl implements ProjectQueryDslRepository {
