@@ -1,4 +1,4 @@
-package com.projectboated.backend.web.kanban.kanbanlane.dto;
+package com.projectboated.backend.web.kanban.kanbanlane.dto.request;
 
 import lombok.*;
 
