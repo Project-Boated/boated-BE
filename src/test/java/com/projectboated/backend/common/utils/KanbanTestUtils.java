@@ -4,7 +4,7 @@ import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import com.projectboated.backend.web.kanban.kanbanlane.dto.CreateKanbanLaneRequest;
+import com.projectboated.backend.web.kanban.kanbanlane.dto.request.CreateKanbanLaneRequest;
 
 import static io.restassured.RestAssured.given;
 

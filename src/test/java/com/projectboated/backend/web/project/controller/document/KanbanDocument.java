@@ -51,6 +51,7 @@ public final class KanbanDocument {
                 ),
                 responseFields(
                         fieldWithPath("lanes").type(JsonFieldType.ARRAY).description("Kanban의 lane들"),
+                        fieldWithPath("lanes[].id").type(JsonFieldType.NUMBER).description("lane 고유번호"),
                         fieldWithPath("lanes[].name").type(JsonFieldType.STRING).description("lane 이름"),
                         fieldWithPath("lanes[].tasks").type(JsonFieldType.ARRAY).description("lane에 있는 task"),
                         fieldWithPath("lanes[].tasks[].id").type(JsonFieldType.NUMBER).description("task 고유번호"),

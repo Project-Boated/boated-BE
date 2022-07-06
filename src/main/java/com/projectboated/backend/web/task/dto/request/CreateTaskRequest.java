@@ -1,4 +1,4 @@
-package com.projectboated.backend.web.task.dto;
+package com.projectboated.backend.web.task.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;

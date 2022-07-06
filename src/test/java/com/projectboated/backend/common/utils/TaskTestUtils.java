@@ -4,7 +4,7 @@ import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import com.projectboated.backend.web.task.dto.CreateTaskRequest;
+import com.projectboated.backend.web.task.dto.request.CreateTaskRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

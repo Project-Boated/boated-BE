@@ -9,7 +9,7 @@ import io.restassured.http.Cookie;
 import org.junit.jupiter.api.Test;
 import com.projectboated.backend.common.basetest.AcceptanceTest;
 import com.projectboated.backend.common.utils.AccountTestUtils;
-import com.projectboated.backend.web.task.dto.CreateTaskRequest;
+import com.projectboated.backend.web.task.dto.request.CreateTaskRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;

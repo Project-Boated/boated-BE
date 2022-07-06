@@ -7,7 +7,7 @@ import com.projectboated.backend.common.data.BasicTaskData;
 import com.projectboated.backend.common.utils.KanbanTestUtils;
 import com.projectboated.backend.common.utils.ProjectTestUtils;
 import com.projectboated.backend.common.utils.TaskTestUtils;
-import com.projectboated.backend.web.kanban.kanbanlane.dto.CreateKanbanLaneRequest;
+import com.projectboated.backend.web.kanban.kanbanlane.dto.request.CreateKanbanLaneRequest;
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
 import org.junit.jupiter.api.Test;

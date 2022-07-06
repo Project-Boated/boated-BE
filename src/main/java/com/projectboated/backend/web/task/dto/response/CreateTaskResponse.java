@@ -1,4 +1,4 @@
-package com.projectboated.backend.web.task.dto;
+package com.projectboated.backend.web.task.dto.response;
 
 import com.projectboated.backend.domain.task.entity.Task;
 import lombok.Getter;
