@@ -41,6 +41,7 @@ pipeline {
         }
         stage('Send Docker Image to Repository') {
             steps {
+                sh 'aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws'
                 sh 'docker push public.ecr.aws/g7j4u9e2/boated-be-develop:$(git rev-parse --short HEAD)'
                 sh 'docker push public.ecr.aws/g7j4u9e2/boated-be-develop:latest'
                 sh 'docker push public.ecr.aws/g7j4u9e2/boated-be-deploy:$(git rev-parse --short HEAD)'
