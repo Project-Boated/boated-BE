@@ -41,7 +41,7 @@ class AccountControllerTest extends AcceptanceTest {
                 .port(port)
                 .post("/api/account/sign-up")
         .then()
-                .statusCode(HttpStatus.CREATED.value());
+                .statusCode(HttpStatus.OK.value());
     }
 
     @Test

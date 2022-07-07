@@ -1,7 +1,9 @@
 package com.projectboated.backend.web.project.dto.common;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
+import lombok.Getter;
 
+@Getter
 public class ProjectCrewResponse {
     private Long id;
     private String nickname;

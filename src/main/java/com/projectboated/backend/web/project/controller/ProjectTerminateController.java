@@ -20,7 +20,6 @@ public class ProjectTerminateController {
     public TerminateProjectResponse terminateProject(@AuthenticationPrincipal Account account,
                                                      @PathVariable Long projectId) {
         projectService.terminateProject(account, projectId);
-
         return new TerminateProjectResponse(projectId);
     }
 
@@ -28,7 +27,6 @@ public class ProjectTerminateController {
     public CancelTerminateProjectResponse cancelTerminateProject(@AuthenticationPrincipal Account account,
                                                                  @PathVariable Long projectId) {
         projectService.cancelTerminateProject(account, projectId);
-
         return new CancelTerminateProjectResponse(projectId);
     }
 

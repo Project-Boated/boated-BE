@@ -1,8 +1,8 @@
 package com.projectboated.backend.web.project.dto.response;
 
-import lombok.Setter;
+import lombok.Getter;
 
-@Setter
+@Getter
 public class TerminateProjectResponse {
 
     private Long id;
