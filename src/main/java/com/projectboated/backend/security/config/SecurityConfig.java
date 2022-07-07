@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web
                 .ignoring()
                     .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                    .antMatchers("/docs/**");
+                    .antMatchers("/docs/**", "/error");
     }
 
     @Override
