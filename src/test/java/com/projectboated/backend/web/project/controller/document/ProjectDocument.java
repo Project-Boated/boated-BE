@@ -113,7 +113,8 @@ public final class ProjectDocument {
                         fieldWithPath("captain.nickname").type(JsonFieldType.STRING).description("Captain 닉네임"),
                         fieldWithPath("terminated").type(JsonFieldType.BOOLEAN).description("종료된 프로젝트이면 true, 아니면 false"),
                         fieldWithPath("dday").type(JsonFieldType.NUMBER).description("dday"),
-                        fieldWithPath("totalDay").type(JsonFieldType.NUMBER).description("프로젝트 수행시간")
+                        fieldWithPath("totalDay").type(JsonFieldType.NUMBER).description("프로젝트 수행시간"),
+                        fieldWithPath("taskSize").type(JsonFieldType.NUMBER).description("총 task 개수")
                 )
         );
     }

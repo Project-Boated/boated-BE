@@ -1,6 +1,7 @@
 package com.projectboated.backend.web.project.controller;
 
 import com.projectboated.backend.domain.project.service.condition.ProjectUpdateCond;
+import com.projectboated.backend.domain.task.service.TaskService;
 import com.projectboated.backend.web.project.dto.request.CreateProjectRequest;
 import com.projectboated.backend.web.project.dto.request.PatchProjectRequest;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final TaskService taskService;
 
     @PostMapping(value = "/api/projects", consumes = MediaType.APPLICATION_JSON_VALUE)
     public CreateProjectResponse createProject(
@@ -43,7 +45,8 @@ public class ProjectController {
             @PathVariable Long projectId
     ) {
         Project project = projectService.findById(projectId, account);
-        return new GetProjectResponse(project);
+        long taskSize = taskService.taskSize(project);
+        return new GetProjectResponse(project,taskSize);
     }
 
     @PatchMapping(value = "/api/projects/{projectId}", consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -88,4 +88,8 @@ public class TaskService {
 
         accountTaskRepository.save(accountTask);
     }
+
+    public long taskSize(Project project) {
+        return taskRepository.countByProject(project);
+    }
 }

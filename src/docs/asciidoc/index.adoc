@@ -772,18 +772,18 @@ include::./adoc/noteCaptainOrCrewOnly.adoc[]
 ==== Request
 
 ===== http-request
-include::{snippets}/task-assign/http-request.adoc[]
+include::{snippets}/tasks-assign/http-request.adoc[]
 
 ===== request-headers
-include::{snippets}/task-assign/request-headers.adoc[]
+include::{snippets}/tasks-assign/request-headers.adoc[]
 
 ===== request-path-parameters
-include::{snippets}/task-assign/path-parameters.adoc[]
+include::{snippets}/tasks-assign/path-parameters.adoc[]
 
 ===== request-fields
-include::{snippets}/task-assign/request-fields.adoc[]
+include::{snippets}/tasks-assign/request-fields.adoc[]
 
 ==== Response
 
 ===== http-response
-include::{snippets}/task-assign/http-response.adoc[]
+include::{snippets}/tasks-assign/http-response.adoc[]
