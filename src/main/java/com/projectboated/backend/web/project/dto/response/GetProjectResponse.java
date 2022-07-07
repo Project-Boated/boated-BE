@@ -27,7 +27,9 @@ public class GetProjectResponse {
 
     private Long totalDay;
 
-    public GetProjectResponse(Project project) {
+    private long taskSize;
+
+    public GetProjectResponse(Project project, long taskSize) {
         this.id = project.getId();
         this.name = project.getName();
         this.description = project.getDescription();
@@ -36,6 +38,7 @@ public class GetProjectResponse {
         this.isTerminated = project.isTerminated();
         this.dday = project.getDeadline()!=null ? ChronoUnit.DAYS.between(deadline.toLocalDate(), LocalDate.now()) : null;
         this.totalDay = project.getDeadline()!=null ? ChronoUnit.DAYS.between(project.getCreatedDate().toLocalDate(), deadline.toLocalDate()) : null;
+        this.taskSize = taskSize;
     }
 
 }
