@@ -3,6 +3,7 @@ package com.projectboated.backend.web.task.controller;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.task.entity.Task;
 import com.projectboated.backend.domain.task.service.TaskService;
+import com.projectboated.backend.web.task.dto.request.AssignAccountTaskRequest;
 import com.projectboated.backend.web.task.dto.request.CreateTaskRequest;
 import com.projectboated.backend.web.task.dto.response.CreateTaskResponse;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +35,16 @@ public class TaskController {
         Task newTask = taskService.save(account, projectId, task);
 
         return new CreateTaskResponse(newTask);
+    }
+
+    @PostMapping(value = "/api/projects/{projectId}/kanban/lanes/tasks/{taskId}/assign", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void assignAccountTask(
+            @AuthenticationPrincipal Account account,
+            @PathVariable Long projectId,
+            @PathVariable Long taskId,
+            @RequestBody AssignAccountTaskRequest request
+    ) {
+        String nickname = request.getNickname();
+        taskService.assignAccount(account, projectId, taskId, nickname);
     }
 }

@@ -1,5 +1,6 @@
 package com.projectboated.backend.common.utils;
 
+import com.projectboated.backend.web.task.dto.request.AssignAccountTaskRequest;
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
 import lombok.AccessLevel;
@@ -26,6 +27,17 @@ public class TaskTestUtils {
             .post("/api/projects/{projectId}/kanban/lanes/tasks", projectId)
         .thenReturn()
             .body().jsonPath().getInt("id");
+    }
+
+    public static void assignTask(int port, Cookie cookie, int projectId, int taskId, String nickname) {
+        given()
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .cookie(cookie)
+            .body(new AssignAccountTaskRequest(nickname))
+        .when()
+            .port(port)
+            .post("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}/assign", projectId, taskId);
     }
 
 }

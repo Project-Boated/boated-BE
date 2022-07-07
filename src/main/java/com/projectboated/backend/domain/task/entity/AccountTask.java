@@ -3,6 +3,7 @@ package com.projectboated.backend.domain.task.entity;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,4 +24,10 @@ public class AccountTask extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id")
     private Task task;
+
+    @Builder
+    public AccountTask(Account account, Task task) {
+        this.account = account;
+        this.task = task;
+    }
 }

@@ -7,9 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
 import com.projectboated.backend.domain.project.entity.Project;
+import net.bytebuddy.agent.builder.AgentBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,6 +35,9 @@ public class Task extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "task")
+    private List<AccountTask> assignedAccounts = new ArrayList<>();
 
     @Builder
     public Task(String name, String description, LocalDateTime deadline) {
