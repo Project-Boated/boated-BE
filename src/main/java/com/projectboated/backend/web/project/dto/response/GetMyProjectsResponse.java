@@ -1,13 +1,9 @@
 package com.projectboated.backend.web.project.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.projectboated.backend.domain.account.account.entity.Account;
-import lombok.*;
-import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.web.project.dto.common.ProjectResponse;
+import lombok.Builder;
+import lombok.Getter;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Builder
@@ -25,60 +21,4 @@ public class GetMyProjectsResponse {
         this.hasNext = hasNext;
         this.content = projectResponse;
     }
-
-    @Getter
-    public static class ProjectResponse {
-
-        private Long id;
-        private String name;
-        private String description;
-
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        private LocalDateTime deadline;
-
-        private ProjectCaptain captain;
-        private List<ProjectCrew> crews;
-
-        private boolean isTerminated;
-
-        private Long dday;
-
-        private Long totalDay;
-
-        public ProjectResponse(Project project, List<Account> crews) {
-            this.id = project.getId();
-            this.name = project.getName();
-            this.description = project.getDescription();
-            this.deadline = project.getDeadline();
-            this.captain = new ProjectCaptain(project.getCaptain());
-            this.crews = crews.stream().map(ProjectCrew::new).toList();
-            this.isTerminated = project.isTerminated();
-            this.dday = project.getDeadline()!=null ? ChronoUnit.DAYS.between(deadline.toLocalDate(), LocalDate.now()) : null;
-            this.totalDay = project.getDeadline()!=null ? ChronoUnit.DAYS.between(project.getCreatedDate().toLocalDate(), deadline.toLocalDate()) : null;
-        }
-    }
-
-    @Getter
-    public static class ProjectCaptain {
-        private Long id;
-        private String nickname;
-
-        public ProjectCaptain(Account captain) {
-            this.id = captain.getId();
-            this.nickname = captain.getNickname();
-        }
-    }
-
-    @Getter
-    public static class ProjectCrew {
-        private Long id;
-        private String nickname;
-
-        public ProjectCrew(Account crew) {
-            this.id = crew.getId();
-            this.nickname = crew.getNickname();
-        }
-    }
-
-
 }

@@ -2,9 +2,7 @@ package com.projectboated.backend.web.task.dto.response;
 
 import com.projectboated.backend.domain.task.entity.Task;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Getter
 public class CreateTaskResponse {
 

@@ -1,15 +1,13 @@
 package com.projectboated.backend.web.project.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Getter @Setter
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
 public class PatchProjectRequest {
 
@@ -19,4 +17,11 @@ public class PatchProjectRequest {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deadline;
+
+    @Builder
+    public PatchProjectRequest(String name, String description, LocalDateTime deadline) {
+        this.name = name;
+        this.description = description;
+        this.deadline = deadline;
+    }
 }

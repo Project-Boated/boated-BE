@@ -24,14 +24,14 @@ public class ProjectController {
     @PostMapping(value = "/api/projects", consumes = MediaType.APPLICATION_JSON_VALUE)
     public CreateProjectResponse createProject(
             @AuthenticationPrincipal Account account,
-            @RequestBody @Validated CreateProjectRequest createProjectRequest
+            @RequestBody @Validated CreateProjectRequest request
     ) {
         Project project = projectService.save(
                 Project.builder()
-                        .name(createProjectRequest.getName())
-                        .description(createProjectRequest.getDescription())
+                        .name(request.getName())
+                        .description(request.getDescription())
                         .captain(account)
-                        .deadline(createProjectRequest.getDeadline())
+                        .deadline(request.getDeadline())
                         .build()
         );
         return new CreateProjectResponse(project);
@@ -49,13 +49,13 @@ public class ProjectController {
     @PatchMapping(value = "/api/projects/{projectId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public PatchProjectResponse patchProject(
             @AuthenticationPrincipal Account account,
-            @RequestBody @Validated PatchProjectRequest patchProjectRequest,
+            @RequestBody @Validated PatchProjectRequest request,
             @PathVariable Long projectId
     ) {
         ProjectUpdateCond projectUpdateCond = ProjectUpdateCond.builder()
-                .name(patchProjectRequest.getName())
-                .description(patchProjectRequest.getDescription())
-                .deadline(patchProjectRequest.getDeadline())
+                .name(request.getName())
+                .description(request.getDescription())
+                .deadline(request.getDeadline())
                 .build();
 
         projectService.update(account, projectId, projectUpdateCond);

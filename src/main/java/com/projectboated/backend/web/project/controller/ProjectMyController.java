@@ -6,6 +6,7 @@ import com.projectboated.backend.domain.project.service.condition.GetMyProjectsC
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.dto.MyProjectsDto;
+import com.projectboated.backend.web.project.dto.common.ProjectResponse;
 import com.projectboated.backend.web.project.dto.response.GetMyProjectsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -44,8 +45,8 @@ public class ProjectMyController {
         boolean hasNext = myProjects.isHasNext();
         List<Project> projects = myProjects.getProjects();
 
-        List<GetMyProjectsResponse.ProjectResponse> projectResponses = projects.stream()
-                .map(p -> new GetMyProjectsResponse.ProjectResponse(p, accountProjectService.getCrews(p)))
+        List<ProjectResponse> projectResponses = projects.stream()
+                .map(p -> new ProjectResponse(p, accountProjectService.getCrews(p)))
                 .toList();
 
         return new GetMyProjectsResponse(page, size, hasNext, projectResponses);

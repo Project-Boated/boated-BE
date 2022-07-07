@@ -1,16 +1,17 @@
-package com.projectboated.backend.web.project.dto.response;
+package com.projectboated.backend.web.project.dto.common;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.project.entity.Project;
-import com.projectboated.backend.web.project.dto.common.ProjectCaptainResponse;
 import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Getter
-public class GetProjectResponse {
+public class ProjectResponse {
 
     private Long id;
     private String name;
@@ -21,21 +22,23 @@ public class GetProjectResponse {
 
     private ProjectCaptainResponse captain;
 
+    private List<ProjectCrewResponse> crews;
+
     private boolean isTerminated;
 
     private Long dday;
 
     private Long totalDay;
 
-    public GetProjectResponse(Project project) {
+    public ProjectResponse(Project project, List<Account> crews) {
         this.id = project.getId();
         this.name = project.getName();
         this.description = project.getDescription();
         this.deadline = project.getDeadline();
         this.captain = new ProjectCaptainResponse(project.getCaptain());
+        this.crews = crews.stream().map(ProjectCrewResponse::new).toList();
         this.isTerminated = project.isTerminated();
-        this.dday = project.getDeadline()!=null ? ChronoUnit.DAYS.between(deadline.toLocalDate(), LocalDate.now()) : null;
-        this.totalDay = project.getDeadline()!=null ? ChronoUnit.DAYS.between(project.getCreatedDate().toLocalDate(), deadline.toLocalDate()) : null;
+        this.dday = project.getDeadline() != null ? ChronoUnit.DAYS.between(deadline.toLocalDate(), LocalDate.now()) : null;
+        this.totalDay = project.getDeadline() != null ? ChronoUnit.DAYS.between(project.getCreatedDate().toLocalDate(), deadline.toLocalDate()) : null;
     }
-
 }

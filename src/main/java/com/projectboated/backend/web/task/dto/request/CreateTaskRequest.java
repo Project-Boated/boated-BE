@@ -7,10 +7,7 @@ import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class CreateTaskRequest {
 
     @NotEmpty
@@ -22,4 +19,10 @@ public class CreateTaskRequest {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deadline;
 
+    @Builder
+    public CreateTaskRequest(String name, String description, LocalDateTime deadline) {
+        this.name = name;
+        this.description = description;
+        this.deadline = deadline;
+    }
 }

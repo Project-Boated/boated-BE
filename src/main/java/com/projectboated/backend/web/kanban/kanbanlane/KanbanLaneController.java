@@ -20,10 +20,10 @@ public class KanbanLaneController {
     public void createCustomKanbanLane(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
-            @RequestBody CreateKanbanLaneRequest createKanbanLaneRequest
+            @RequestBody CreateKanbanLaneRequest request
     ) {
         KanbanLane kanbanLane = CustomKanbanLane.builder()
-                .name(createKanbanLaneRequest.getName())
+                .name(request.getName())
                 .build();
 
         kanbanLaneService.save(account, projectId, kanbanLane);
