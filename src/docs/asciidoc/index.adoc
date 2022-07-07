@@ -744,21 +744,46 @@ include::./adoc/noteCaptainOrCrewOnly.adoc[]
 ==== Request
 
 ===== http-request
-include::{snippets}/task-create/http-request.adoc[]
+include::{snippets}/tasks-create/http-request.adoc[]
 
 ===== request-headers
-include::{snippets}/task-create/request-headers.adoc[]
+include::{snippets}/tasks-create/request-headers.adoc[]
 
 ===== request-path-parameters
-include::{snippets}/task-create/path-parameters.adoc[]
+include::{snippets}/tasks-create/path-parameters.adoc[]
 
 ===== request-fields
-include::{snippets}/task-create/request-fields.adoc[]
+include::{snippets}/tasks-create/request-fields.adoc[]
 
 ==== Response
 
 ===== http-response
-include::{snippets}/task-create/http-response.adoc[]
+include::{snippets}/tasks-create/http-response.adoc[]
 
 ===== response-fields
-include::{snippets}/task-create/response-fields.adoc[]
+include::{snippets}/tasks-create/response-fields.adoc[]
+
+[[resources-tasks-assign]]
+=== Task배정
+`POST` 요청을 사용해서 Task를 배정할 수 있습니다
+
+include::./adoc/noteCaptainOrCrewOnly.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/task-assign/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/task-assign/request-headers.adoc[]
+
+===== request-path-parameters
+include::{snippets}/task-assign/path-parameters.adoc[]
+
+===== request-fields
+include::{snippets}/task-assign/request-fields.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/task-assign/http-response.adoc[]

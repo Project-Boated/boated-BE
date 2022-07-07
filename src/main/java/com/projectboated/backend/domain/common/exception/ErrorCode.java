@@ -28,6 +28,11 @@ public enum ErrorCode {
     PROJECT_CAPTAIN_UPDATE_DENIED_NOT_CAPTAIN(400, "P003", "Captain을 Update할 수 없습니다. Captain만 가능합니다."),
     PROJECT_CAPTAIN_UPDATE_DENIED_NOT_CREW(400, "P004", "Captain을 Update할 수 없습니다. username이 crew가 아닙니다"),
 
+    // Task
+    TASK_NOT_FOUND(400, "T001", "task를 찾을 수 없습니다."),
+    TASK_ASSIGN_DENIED_EXCEPTION(400, "T002", "task를 assign할 수 없습니다. 권한부족"),
+    TASK_ALREADY_ASSIGNED(400, "T003", "이미 해당 task에 배정받은 Account입니다."),
+
     // Kakao
     KAKAO_SERVER_EXCEPTION(400, "K001", "카카오 서버 오류입니다."),
 

@@ -7,6 +7,7 @@ import lombok.Getter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Getter
 public class TaskResponse {
@@ -19,6 +20,8 @@ public class TaskResponse {
     private Long dday;
     private int fileCount;
 
+    private List<TaskAssignedAccountResponse> assignedAccounts;
+
     public TaskResponse(Task task) {
         this.id = task.getId();
         this.name = task.getName();
@@ -26,5 +29,8 @@ public class TaskResponse {
         this.deadline = task.getDeadline();
         this.dday = deadline!=null ? ChronoUnit.DAYS.between(deadline.toLocalDate(), LocalDate.now()) : null;
         this.fileCount = 0;
+        this.assignedAccounts = task.getAssignedAccounts().stream()
+                .map(at -> new TaskAssignedAccountResponse(at.getAccount()))
+                .toList();
     }
 }

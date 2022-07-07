@@ -16,11 +16,10 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class TaskDocument {
+public abstract class TaskDocument {
 
     public static RestDocumentationFilter documentTaskCreate() {
-        return document("task-create",
+        return document("tasks-create",
                 preprocessResponse(prettyPrint()),
                 requestHeaders(
                         headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType"),
@@ -36,6 +35,23 @@ public class TaskDocument {
                 ),
                 responseFields(
                         fieldWithPath("id").type(JsonFieldType.NUMBER).description("생성된 invitation의 id")
+                )
+        );
+    }
+
+    public static RestDocumentationFilter documentTaskAssign() {
+        return document("tasks-assign",
+                preprocessResponse(prettyPrint()),
+                requestHeaders(
+                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType"),
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
+                ),
+                pathParameters(
+                        parameterWithName("projectId").description("target 프로젝트의 id"),
+                        parameterWithName("taskId").description("target task의 id")
+                ),
+                requestFields(
+                        fieldWithPath("nickname").type(JsonFieldType.STRING).description("assign할 account의 nickname")
                 )
         );
     }
