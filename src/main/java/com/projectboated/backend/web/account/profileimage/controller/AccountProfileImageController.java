@@ -1,16 +1,16 @@
 package com.projectboated.backend.web.account.profileimage.controller;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.account.account.service.exception.AccountProfileImageFileNotExist;
 import com.projectboated.backend.domain.account.profileimage.service.AccountProfileImageService;
 import com.projectboated.backend.domain.account.profileimage.service.AwsS3ProfileImageService;
+import com.projectboated.backend.domain.account.profileimage.service.ProfileImageService;
+import com.projectboated.backend.domain.common.exception.ErrorCode;
+import com.projectboated.backend.infra.aws.AwsS3File;
+import com.projectboated.backend.web.account.account.exception.NotImageFileException;
 import com.projectboated.backend.web.account.profileimage.dto.PostAccountProfileImageRequest;
 import com.projectboated.backend.web.account.profileimage.dto.PostAccountProfileImageResponse;
 import lombok.RequiredArgsConstructor;
-import com.projectboated.backend.infra.aws.AwsS3File;
-import com.projectboated.backend.domain.account.account.service.exception.AccountProfileImageFileNotExist;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
-import com.projectboated.backend.domain.account.profileimage.service.ProfileImageService;
-import com.projectboated.backend.web.account.account.exception.NotImageFileException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,11 +32,11 @@ public class AccountProfileImageController {
 
     @PostMapping(value = "/api/account/profile/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public PostAccountProfileImageResponse postAccountProfileImage(@AuthenticationPrincipal Account account,
-                                                                   @Validated @ModelAttribute PostAccountProfileImageRequest postAccountProfileImageRequest,
+                                                                   @ModelAttribute @Validated PostAccountProfileImageRequest postAccountProfileImageRequest,
                                                                    HttpServletRequest request) {
 
         MultipartFile file = postAccountProfileImageRequest.getFile();
-        if(file.isEmpty()) {
+        if (file.isEmpty()) {
             throw new AccountProfileImageFileNotExist(ErrorCode.ACCOUNT_PROFILE_IMAGE_FILE_NOT_EXIST);
         }
 

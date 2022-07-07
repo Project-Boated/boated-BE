@@ -2,13 +2,10 @@ package com.projectboated.backend.web.project.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 
-@Getter @Setter
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
 public class GetCrewsResponse {
 

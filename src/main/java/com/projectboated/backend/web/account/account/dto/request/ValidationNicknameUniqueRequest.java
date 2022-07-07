@@ -1,17 +1,19 @@
 package com.projectboated.backend.web.account.account.dto.request;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor
 public class ValidationNicknameUniqueRequest {
 
-	@NotEmpty
+	@NotBlank
 	private String nickname;
 
+	@Builder
 	public ValidationNicknameUniqueRequest(String nickname) {
 		this.nickname = nickname;
 	}

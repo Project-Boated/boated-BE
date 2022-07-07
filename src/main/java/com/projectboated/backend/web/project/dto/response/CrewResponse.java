@@ -1,5 +1,6 @@
 package com.projectboated.backend.web.project.dto.response;
 
+import com.projectboated.backend.domain.account.account.entity.Account;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,11 @@ public class CrewResponse {
     private String username;
     private String nickname;
     private String profileImageUrl;
+
+    public CrewResponse(Account account, String profileImageUrl) {
+        this.id = account.getId();
+        this.username = account.getUsername();
+        this.nickname = account.getNickname();
+        this.profileImageUrl = profileImageUrl;
+    }
 }

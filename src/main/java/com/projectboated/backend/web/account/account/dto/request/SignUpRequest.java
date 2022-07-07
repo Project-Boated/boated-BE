@@ -1,25 +1,32 @@
 package com.projectboated.backend.web.account.account.dto.request;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Getter
 @NoArgsConstructor
 public class SignUpRequest {
 
-    @NotEmpty
+    @NotBlank
+    @Size(min = 2, max = 15)
     private String username;
 
-    @NotEmpty
+    @NotBlank
+    @Size(min = 10, max = 15)
     private String password;
 
-    @NotEmpty
-    String nickname;
+    @NotBlank
+    @Size(min = 2, max=15)
+    private String nickname;
 
-    String profileImageUrl;
+    private String profileImageUrl;
 
+    @Builder
     public SignUpRequest(String username, String password, String nickname, String profileImageUrl) {
         this.username = username;
         this.password = password;

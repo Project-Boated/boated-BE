@@ -1,15 +1,17 @@
 package com.projectboated.backend.web.task.controller;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
-import lombok.RequiredArgsConstructor;
 import com.projectboated.backend.domain.task.entity.Task;
 import com.projectboated.backend.domain.task.service.TaskService;
 import com.projectboated.backend.web.task.dto.request.CreateTaskRequest;
 import com.projectboated.backend.web.task.dto.response.CreateTaskResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,18 +20,19 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping(value = "/api/projects/{projectId}/kanban/lanes/tasks", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CreateTaskResponse> createTask(
+    public CreateTaskResponse createTask(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
-            @RequestBody CreateTaskRequest createTaskRequest
+            @RequestBody CreateTaskRequest request
             ) {
         Task task = Task.builder()
-                .name(createTaskRequest.getName())
-                .description(createTaskRequest.getDescription())
-                .deadline(createTaskRequest.getDeadline())
+                .name(request.getName())
+                .description(request.getDescription())
+                .deadline(request.getDeadline())
                 .build();
 
         Task newTask = taskService.save(account, projectId, task);
-        return ResponseEntity.ok(new CreateTaskResponse(newTask));
+
+        return new CreateTaskResponse(newTask);
     }
 }
