@@ -1,26 +1,22 @@
 package com.projectboated.backend.domain.task.service;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.account.account.service.AccountService;
+import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
+import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
-import com.projectboated.backend.domain.kanban.kanbanlane.service.exception.KanbanLaneNotFoundException;
 import com.projectboated.backend.domain.kanban.kanbanlane.repository.KanbanLaneRepository;
+import com.projectboated.backend.domain.kanban.kanbanlane.service.exception.KanbanLaneNotFoundException;
+import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
+import com.projectboated.backend.domain.project.service.ProjectService;
+import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
 import com.projectboated.backend.domain.task.entity.AccountTask;
 import com.projectboated.backend.domain.task.entity.Task;
 import com.projectboated.backend.domain.task.repository.AccountTaskRepository;
-import com.projectboated.backend.domain.task.service.exception.TaskAlreadyAssignedException;
-import com.projectboated.backend.domain.task.service.exception.TaskAssignDeniedException;
-import com.projectboated.backend.domain.task.service.exception.TaskNotFoundException;
-import com.projectboated.backend.domain.task.service.exception.TaskSaveAccessDeniedException;
 import com.projectboated.backend.domain.task.repository.TaskRepository;
+import com.projectboated.backend.domain.task.service.exception.*;
 import lombok.RequiredArgsConstructor;
-import com.projectboated.backend.domain.account.account.repository.AccountRepository;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
-import com.projectboated.backend.domain.project.entity.Project;
-import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
-import com.projectboated.backend.domain.project.service.ProjectService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -91,5 +87,30 @@ public class TaskService {
 
     public long taskSize(Project project) {
         return taskRepository.countByProject(project);
+    }
+
+    @Transactional
+    public void cancelAssignAccount(Account account, Long projectId, Long taskId, String nickname) {
+        Account requestAccount = accountRepository.findById(account.getId())
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+
+        if (!projectService.isCaptain(requestAccount, project) &&
+                !projectService.isCrew(requestAccount, projectId)) {
+            throw new TaskAssignDeniedException(ErrorCode.TASK_ASSIGN_DENIED_EXCEPTION);
+        }
+
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException(ErrorCode.TASK_NOT_FOUND));
+
+        Account assignAccount = accountRepository.findByNickname(nickname)
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        AccountTask accountTask = accountTaskRepository.findByTaskAndAccount(task, assignAccount)
+                .orElseThrow(() -> new AccountTaskNotFoundException(ErrorCode.ACCOUNT_TASK_NOT_FOUND));
+
+        accountTaskRepository.delete(accountTask);
     }
 }

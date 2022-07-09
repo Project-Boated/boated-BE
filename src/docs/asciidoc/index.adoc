@@ -787,3 +787,28 @@ include::{snippets}/tasks-assign/request-fields.adoc[]
 
 ===== http-response
 include::{snippets}/tasks-assign/http-response.adoc[]
+
+[[resources-tasks-assign-cancel]]
+=== Task배정취소
+`POST` 요청을 사용해서 Task를 배정을 취소할 수 있습니다.
+
+include::./adoc/noteCaptainOrCrewOnly.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/tasks-assign-cancel/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/tasks-assign-cancel/request-headers.adoc[]
+
+===== request-path-parameters
+include::{snippets}/tasks-assign-cancel/path-parameters.adoc[]
+
+===== request-fields
+include::{snippets}/tasks-assign-cancel/request-fields.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/tasks-assign-cancel/http-response.adoc[]

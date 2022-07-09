@@ -55,4 +55,21 @@ public abstract class TaskDocument {
                 )
         );
     }
+
+    public static RestDocumentationFilter documentTaskCancelAssign() {
+        return document("tasks-assign-cancel",
+                preprocessResponse(prettyPrint()),
+                requestHeaders(
+                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType"),
+                        headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
+                ),
+                pathParameters(
+                        parameterWithName("projectId").description("target 프로젝트의 id"),
+                        parameterWithName("taskId").description("target task의 id")
+                ),
+                requestFields(
+                        fieldWithPath("nickname").type(JsonFieldType.STRING).description("assign 취소할 account의 nickname")
+                )
+        );
+    }
 }

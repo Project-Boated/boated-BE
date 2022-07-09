@@ -32,6 +32,7 @@ public enum ErrorCode {
     TASK_NOT_FOUND(400, "T001", "task를 찾을 수 없습니다."),
     TASK_ASSIGN_DENIED_EXCEPTION(400, "T002", "task를 assign할 수 없습니다. 권한부족"),
     TASK_ALREADY_ASSIGNED(400, "T003", "이미 해당 task에 배정받은 Account입니다."),
+    ACCOUNT_TASK_NOT_FOUND(400, "T004", "배정되지 않은 account입니다."),
 
     // Kakao
     KAKAO_SERVER_EXCEPTION(400, "K001", "카카오 서버 오류입니다."),
