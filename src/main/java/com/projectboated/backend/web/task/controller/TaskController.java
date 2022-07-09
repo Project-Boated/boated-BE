@@ -47,4 +47,15 @@ public class TaskController {
         String nickname = request.getNickname();
         taskService.assignAccount(account, projectId, taskId, nickname);
     }
+
+    @PostMapping(value = "/api/projects/{projectId}/kanban/lanes/tasks/{taskId}/cancel-assign", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void cancelAssignAccountTask(
+            @AuthenticationPrincipal Account account,
+            @PathVariable Long projectId,
+            @PathVariable Long taskId,
+            @RequestBody AssignAccountTaskRequest request
+    ) {
+        String nickname = request.getNickname();
+        taskService.cancelAssignAccount(account, projectId, taskId, nickname);
+    }
 }
