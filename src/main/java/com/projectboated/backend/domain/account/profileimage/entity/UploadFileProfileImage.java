@@ -13,7 +13,9 @@ import javax.persistence.*;
 @DiscriminatorValue("upload_file")
 public class UploadFileProfileImage extends ProfileImage {
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true)
     @JoinColumn(name = "upload_file_id")
     private UploadFile uploadFile;
 

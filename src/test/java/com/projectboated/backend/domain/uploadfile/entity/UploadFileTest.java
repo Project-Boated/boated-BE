@@ -1,12 +1,10 @@
 package com.projectboated.backend.domain.uploadfile.entity;
 
-import com.projectboated.backend.common.data.BasicUploadFileData;
 import com.projectboated.backend.domain.uploadfile.entity.exception.UploadFileNotFoundExt;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.projectboated.backend.common.data.BasicUploadFileData.*;
+import static com.projectboated.backend.common.data.BasicDataUploadFile.*;
 import static org.assertj.core.api.Assertions.*;
 
 
@@ -17,10 +15,10 @@ class UploadFileTest {
     void 생성자_uploadFile생성_return_생성된uploadFile() {
         // Given
         // When
-        UploadFile uploadFile = new UploadFile(ORIGINAL_FILE_NAME_WITH_EXT, SAVE_FILE_NAME, MEDIATYPE);
+        UploadFile uploadFile = new UploadFile(ORIGINAL_FILE_NAME, SAVE_FILE_NAME, MEDIATYPE);
 
         // Then
-        assertThat(uploadFile.getOriginalFileName()).isEqualTo(ORIGINAL_FILE_NAME);
+        assertThat(uploadFile.getOriginalFileName()).isEqualTo(ORIGINAL_FILE_NAME_NO_EXT);
         assertThat(uploadFile.getSaveFileName()).isEqualTo(SAVE_FILE_NAME);
         assertThat(uploadFile.getExt()).isEqualTo(EXT);
         assertThat(uploadFile.getMediaType()).isEqualTo(MEDIATYPE);
@@ -31,7 +29,7 @@ class UploadFileTest {
         // Given
         // When
         // Then
-        assertThatThrownBy(() -> new UploadFile(ORIGINAL_FILE_NAME, SAVE_FILE_NAME, MEDIATYPE))
+        assertThatThrownBy(() -> new UploadFile(ORIGINAL_FILE_NAME_NO_EXT, SAVE_FILE_NAME, MEDIATYPE))
                 .isInstanceOf(UploadFileNotFoundExt.class);
     }
 

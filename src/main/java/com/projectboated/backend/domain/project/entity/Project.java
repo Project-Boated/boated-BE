@@ -35,7 +35,7 @@ public class Project extends BaseTimeEntity {
     private boolean isTerminated;
 
     @Builder
-    public Project(String name, String description, Account captain, LocalDateTime deadline) {
+    public Project(Account captain, String name, String description, LocalDateTime deadline) {
         this.name = name;
         this.description = description;
         this.deadline = deadline;

@@ -1,7 +1,7 @@
-package com.projectboated.backend.domain.accountproject.repository;
+package com.projectboated.backend.domain.project.repository;
 
 import com.projectboated.backend.common.basetest.BaseTest;
-import com.projectboated.backend.common.data.BasicProjectData;
+import com.projectboated.backend.common.data.BasicDataProject;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.project.entity.AccountProject;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.projectboated.backend.common.data.BasicAccountData.*;
+import static com.projectboated.backend.common.data.BasicDataAccount.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.context.annotation.ComponentScan.Filter;
 
@@ -43,7 +43,7 @@ class AccountProjectRepositoryTest extends BaseTest {
         Account captain = new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES);
         accountRepository.save(captain);
 
-        Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
+        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
         projectRepository.save(project);
 
         int crewsNumber = 3;
@@ -67,7 +67,7 @@ class AccountProjectRepositoryTest extends BaseTest {
         Account captain = new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES);
         accountRepository.save(captain);
 
-        Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
+        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
         projectRepository.save(project);
 
         accountProjectRepository.save(new AccountProject(captain, project));

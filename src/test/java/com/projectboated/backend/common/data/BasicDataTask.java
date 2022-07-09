@@ -2,7 +2,7 @@ package com.projectboated.backend.common.data;
 
 import java.time.LocalDateTime;
 
-public abstract class BasicTaskData {
+public abstract class BasicDataTask {
 
     public static final String TASK_NAME="taskName";
 

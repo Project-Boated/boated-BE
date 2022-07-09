@@ -7,7 +7,7 @@ import com.projectboated.backend.domain.account.profileimage.entity.UrlProfileIm
 
 import java.util.Set;
 
-public abstract class BasicAccountData {
+public abstract class BasicDataAccount {
 
     public final static Long ACCOUNT_ID = 123L;
     public final static String USERNAME = "testUsername";

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.projectboated.backend.common.data.BasicAccountData.*;
+import static com.projectboated.backend.common.data.BasicDataAccount.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Account : Entity 단위 테스트")

@@ -1,8 +1,8 @@
 package com.projectboated.backend.web.task.controller;
 
-import com.projectboated.backend.common.data.BasicAccountData;
-import com.projectboated.backend.common.data.BasicProjectData;
-import com.projectboated.backend.common.data.BasicTaskData;
+import com.projectboated.backend.common.data.BasicDataAccount;
+import com.projectboated.backend.common.data.BasicDataProject;
+import com.projectboated.backend.common.data.BasicDataTask;
 import com.projectboated.backend.common.utils.KanbanTestUtils;
 import com.projectboated.backend.common.utils.ProjectTestUtils;
 import com.projectboated.backend.common.utils.TaskTestUtils;
@@ -18,10 +18,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static com.projectboated.backend.common.data.BasicAccountData.*;
-import static com.projectboated.backend.common.data.BasicKanbanData.KANBAN_LANE_NAME;
-import static com.projectboated.backend.common.data.BasicProjectData.*;
-import static com.projectboated.backend.common.data.BasicTaskData.*;
+import static com.projectboated.backend.common.data.BasicDataAccount.*;
+import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_LANE_NAME;
+import static com.projectboated.backend.common.data.BasicDataProject.*;
+import static com.projectboated.backend.common.data.BasicDataTask.*;
 import static com.projectboated.backend.web.task.controller.document.TaskDocument.*;
 import static io.restassured.RestAssured.given;
 
@@ -33,16 +33,16 @@ class TaskControllerTest extends AcceptanceTest {
 
     @Test
     void createTask_task하나생성_정상() {
-        AccountTestUtils.createAccount(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_URL);
-        Cookie cookie = AccountTestUtils.login(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, cookie, BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, BasicProjectData.PROJECT_DEADLINE);
+        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
+        int projectId = ProjectTestUtils.createProject(port, cookie, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
 
         given(this.spec)
             .filter(documentTaskCreate())
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .cookie(cookie)
-            .body(new CreateTaskRequest(BasicTaskData.TASK_NAME, BasicTaskData.TASK_DESCRIPTION, BasicTaskData.TASK_DEADLINE))
+            .body(new CreateTaskRequest(BasicDataTask.TASK_NAME, BasicDataTask.TASK_DESCRIPTION, BasicDataTask.TASK_DEADLINE))
         .when()
             .port(port)
             .post("/api/projects/{projectId}/kanban/lanes/tasks", projectId)

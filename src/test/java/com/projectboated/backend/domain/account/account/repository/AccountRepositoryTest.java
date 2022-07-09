@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
-import static com.projectboated.backend.common.data.BasicAccountData.*;
+import static com.projectboated.backend.common.data.BasicDataAccount.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Account : Persistence 단위 테스트")

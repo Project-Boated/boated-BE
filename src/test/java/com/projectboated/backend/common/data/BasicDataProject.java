@@ -2,7 +2,7 @@ package com.projectboated.backend.common.data;
 
 import java.time.LocalDateTime;
 
-public abstract class BasicProjectData {
+public abstract class BasicDataProject {
 
     public final static Long PROJECT_ID = 120L;
     public final static String PROJECT_NAME = "name";
