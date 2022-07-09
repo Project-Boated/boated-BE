@@ -1,4 +1,4 @@
-package com.projectboated.backend.domain.account.service;
+package com.projectboated.backend.domain.account.account.service;
 
 import com.projectboated.backend.common.data.BasicAccountData;
 import com.projectboated.backend.domain.account.account.entity.Account;

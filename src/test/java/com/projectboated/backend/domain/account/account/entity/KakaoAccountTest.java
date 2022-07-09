@@ -1,11 +1,13 @@
 package com.projectboated.backend.domain.account.account.entity;
 
-import com.projectboated.backend.common.data.BasicAccountData;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.projectboated.backend.common.data.BasicAccountData.*;
+import static com.projectboated.backend.common.data.BasicAccountData.ROLES;
+import static com.projectboated.backend.common.data.BasicAccountData.URL_PROFILE_IMAGE;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@DisplayName("KakaoAccount : Entity 단위 테스트")
 class KakaoAccountTest {
 
     @Test

@@ -3,11 +3,13 @@ package com.projectboated.backend.domain.account.account.entity;
 import com.projectboated.backend.domain.account.profileimage.entity.ProfileImage;
 import com.projectboated.backend.domain.account.profileimage.entity.UrlProfileImage;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.projectboated.backend.common.data.BasicAccountData.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@DisplayName("Account : Entity 단위 테스트")
 class AccountTest {
 
     @Test
