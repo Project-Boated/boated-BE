@@ -22,9 +22,8 @@ import static com.projectboated.backend.common.data.BasicAccountData.*;
 import static com.projectboated.backend.common.data.BasicKanbanData.KANBAN_LANE_NAME;
 import static com.projectboated.backend.common.data.BasicProjectData.*;
 import static com.projectboated.backend.common.data.BasicTaskData.*;
-import static com.projectboated.backend.web.task.controller.document.TaskDocument.documentTaskAssign;
+import static com.projectboated.backend.web.task.controller.document.TaskDocument.*;
 import static io.restassured.RestAssured.given;
-import static com.projectboated.backend.web.task.controller.document.TaskDocument.documentTaskCreate;
 
 @AutoConfigureMockMvc
 class TaskControllerTest extends AcceptanceTest {
@@ -69,6 +68,29 @@ class TaskControllerTest extends AcceptanceTest {
         .when()
             .port(port)
             .post("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}/assign", projectId, taskId)
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void cancelAssignAccountTask_assign취소_정상() {
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+
+        KanbanTestUtils.createCustomKanbanLane(port, cookie, projectId, KANBAN_LANE_NAME);
+        int taskId = TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE);
+        TaskTestUtils.assignTask(port, cookie, projectId, taskId, NICKNAME);
+
+        given(this.spec)
+            .filter(documentTaskCancelAssign())
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .cookie(cookie)
+            .body(new AssignAccountTaskRequest(NICKNAME))
+        .when()
+            .port(port)
+            .post("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}/cancel-assign", projectId, taskId)
         .then()
             .statusCode(HttpStatus.OK.value());
     }
