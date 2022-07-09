@@ -3,6 +3,7 @@ package com.projectboated.backend.web.common.exception;
 import com.projectboated.backend.web.common.exception.dto.BasicFieldError;
 import com.projectboated.backend.common.basetest.BaseTest;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +18,7 @@ import java.util.Locale;
 
 @SpringBootTest
 @ActiveProfiles("deploy")
+@Disabled
 class BasicFieldErrorTest extends BaseTest {
 
     @Autowired
