@@ -2,16 +2,14 @@ package com.projectboated.backend.domain.uploadfile.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UploadFile {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "upload_file_id")
     private Long id;
 
     private String originalFileName;

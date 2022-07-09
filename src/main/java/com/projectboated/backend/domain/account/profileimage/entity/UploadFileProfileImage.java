@@ -14,6 +14,7 @@ import javax.persistence.*;
 public class UploadFileProfileImage extends ProfileImage {
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "upload_file_id")
     private UploadFile uploadFile;
 
     @Builder

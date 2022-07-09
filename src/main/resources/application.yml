@@ -6,6 +6,9 @@ spring:
         default_batch_fetch_size: 100
     hibernate:
       ddl-auto: none
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
 
   messages:
     basename: messages, errors

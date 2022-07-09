@@ -16,6 +16,9 @@ spring:
   messages:
     basename: messages, errors
 
+  flyway:
+    enabled: false
+
 kakao:
   clientId: testClientId
   redirectUri: testUri
