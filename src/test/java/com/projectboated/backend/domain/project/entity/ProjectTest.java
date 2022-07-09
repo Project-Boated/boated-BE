@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.temporal.ChronoUnit;
 
+import static com.projectboated.backend.common.data.BasicAccountData.ACCOUNT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ProjectTest extends BaseTest {
@@ -22,7 +23,7 @@ class ProjectTest extends BaseTest {
     @Test
     void constructor_Project생성_성공() {
         // Given
-        Account captain = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
+        Account captain = new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.URL_PROFILE_IMAGE, BasicAccountData.ROLES);
 
         // When
         Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
@@ -36,7 +37,7 @@ class ProjectTest extends BaseTest {
     @Test
     void changeProjectInform_모든정보업데이트_업데이트성공() throws Exception {
         // Given
-        Account captain = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
+        Account captain = new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.URL_PROFILE_IMAGE, BasicAccountData.ROLES);
         Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
         
         // When
@@ -50,7 +51,7 @@ class ProjectTest extends BaseTest {
     @Test
     void changeProjectInform_모든요청NULL_기존정보유지() throws Exception {
         // Given
-        Account captain = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
+        Account captain = new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.URL_PROFILE_IMAGE, BasicAccountData.ROLES);
         Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
 
         // When
@@ -65,11 +66,11 @@ class ProjectTest extends BaseTest {
     @Test
     void changeCaptain_captain바꾸기_바꾸기성공() throws Exception {
         // Given
-        Account existingCaptain = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
+        Account existingCaptain = new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.URL_PROFILE_IMAGE, BasicAccountData.ROLES);
         Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, existingCaptain, BasicProjectData.PROJECT_DEADLINE);
 
         // When
-        Account newCaptain = new Account(newCaptainUsername, BasicAccountData.PASSWORD, newCaptainNickname, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
+        Account newCaptain = new Account(ACCOUNT_ID, newCaptainUsername, BasicAccountData.PASSWORD, newCaptainNickname, BasicAccountData.URL_PROFILE_IMAGE, BasicAccountData.ROLES);
         project.changeCaptain(newCaptain);
 
         // Then

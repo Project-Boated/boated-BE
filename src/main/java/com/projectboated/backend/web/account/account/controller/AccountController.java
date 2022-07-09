@@ -42,7 +42,15 @@ public class AccountController {
 
         ProfileImage profileImage = profileImageService.save(new UrlProfileImage(profileImageUrl));
 
-        accountService.save(new Account(username, password, nickname, profileImage, Set.of(Role.USER)));
+        Account newAccount = Account.builder()
+                .username(username)
+                .password(password)
+                .nickname(nickname)
+                .profileImageFile(profileImage)
+                .roles(Set.of(Role.USER))
+                .build();
+
+        accountService.save(newAccount);
     }
 
     @GetMapping("/api/account/profile")

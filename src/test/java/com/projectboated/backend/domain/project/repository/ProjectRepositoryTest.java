@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.projectboated.backend.common.data.BasicAccountData.ACCOUNT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -31,7 +32,7 @@ class ProjectRepositoryTest extends BaseTest {
     @Test
     void existsByNameAndCaptain_projectName이Captain에있음_true() throws Exception {
         // Given
-        Account captain = accountRepository.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account captain = accountRepository.save(new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.URL_PROFILE_IMAGE, BasicAccountData.ROLES));
         Project project = projectRepository.save(new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE));
 
         // When
@@ -44,9 +45,9 @@ class ProjectRepositoryTest extends BaseTest {
     @Test
     void existsByNameAndCaptain_projectName이Captain에없음_false() throws Exception {
         // Given
-        Account captain = accountRepository.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account captain = accountRepository.save(new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.URL_PROFILE_IMAGE, BasicAccountData.ROLES));
         Project project = projectRepository.save(new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE));
-        Account newAccount = accountRepository.save(new Account("newUsername", BasicAccountData.PASSWORD, "newNickname", BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account newAccount = accountRepository.save(new Account(ACCOUNT_ID, "newUsername", BasicAccountData.PASSWORD, "newNickname", BasicAccountData.URL_PROFILE_IMAGE, BasicAccountData.ROLES));
 
         // When
         boolean result = projectRepository.existsByNameAndCaptain(project.getName(), newAccount);
@@ -58,7 +59,7 @@ class ProjectRepositoryTest extends BaseTest {
     @Test
     void existsByName_존재하는name으로조회_true() throws Exception {
         // Given
-        Account captain = accountRepository.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account captain = accountRepository.save(new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.URL_PROFILE_IMAGE, BasicAccountData.ROLES));
         Project project = projectRepository.save(new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE));
 
         // When
@@ -82,7 +83,7 @@ class ProjectRepositoryTest extends BaseTest {
     @ValueSource(ints = {0, 1, 10})
     void findAllByCaptain_account에project저장됨_account가소유한project개수(int count) throws Exception {
         // Given
-        Account account = accountRepository.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account = accountRepository.save(new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.URL_PROFILE_IMAGE, BasicAccountData.ROLES));
         List<Project> projects = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             projectRepository.save(new Project(BasicProjectData.PROJECT_NAME + "i", BasicProjectData.PROJECT_DESCRIPTION, account, BasicProjectData.PROJECT_DEADLINE));

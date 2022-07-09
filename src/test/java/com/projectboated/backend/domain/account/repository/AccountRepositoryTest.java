@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Optional;
 
+import static com.projectboated.backend.common.data.BasicAccountData.ACCOUNT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -24,7 +25,7 @@ class AccountRepositoryTest extends BaseTest {
     @Test
     void findByUsername_가입된유저찾기_성공() throws Exception {
         // Given
-        accountRepository.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        accountRepository.save(new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.URL_PROFILE_IMAGE, BasicAccountData.ROLES));
 
         // When
         Optional<Account> account = accountRepository.findByUsername(BasicAccountData.USERNAME);
@@ -34,7 +35,7 @@ class AccountRepositoryTest extends BaseTest {
         AssertionsForClassTypes.assertThat(account.get().getUsername()).isEqualTo(BasicAccountData.USERNAME);
         AssertionsForClassTypes.assertThat(account.get().getPassword()).isEqualTo(BasicAccountData.PASSWORD);
         AssertionsForClassTypes.assertThat(account.get().getNickname()).isEqualTo(BasicAccountData.NICKNAME);
-        AssertionsForClassTypes.assertThat(account.get().getProfileImage()).isEqualTo(BasicAccountData.PROFILE_IMAGE_FILE);
+        AssertionsForClassTypes.assertThat(account.get().getProfileImage()).isEqualTo(BasicAccountData.URL_PROFILE_IMAGE);
         AssertionsForClassTypes.assertThat(account.get().getRoles()).isEqualTo(BasicAccountData.ROLES);
     }
 
@@ -51,7 +52,7 @@ class AccountRepositoryTest extends BaseTest {
     @Test
     void existsByUsername_가입된유저찾기_true() throws Exception {
         // Given
-        accountRepository.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        accountRepository.save(new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.URL_PROFILE_IMAGE, BasicAccountData.ROLES));
 
         // When
         boolean existsByUsername = accountRepository.existsByUsername(BasicAccountData.USERNAME);
@@ -74,7 +75,7 @@ class AccountRepositoryTest extends BaseTest {
     @Test
     void existsById_가입된유저찾기_true() throws Exception {
         // Given
-        Account account = accountRepository.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account = accountRepository.save(new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.URL_PROFILE_IMAGE, BasicAccountData.ROLES));
 
         // When
         boolean result = accountRepository.existsById(account.getId());
@@ -96,7 +97,7 @@ class AccountRepositoryTest extends BaseTest {
     @Test
     void findById_가입된유저찾기_조회성공() throws Exception {
         // Given
-        Account account = accountRepository.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account = accountRepository.save(new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.URL_PROFILE_IMAGE, BasicAccountData.ROLES));
 
         // When
         Optional<Account> findAccount = accountRepository.findById(account.getId());

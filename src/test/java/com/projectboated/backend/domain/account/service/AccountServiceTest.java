@@ -34,6 +34,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Set;
 
+import static com.projectboated.backend.common.data.BasicAccountData.*;
 import static com.projectboated.backend.common.data.BasicUploadFileData.UPLOADFILE_INSTANCE;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -88,44 +89,44 @@ class AccountServiceTest extends BaseTest {
     void save_존재하지않는Username_AND_존재하지않는Nickname_으로저장_성공() throws Exception {
         // Given
         // When
-        Account account = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account = accountService.save(new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES));
 
         // Then
-        AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(BasicAccountData.USERNAME);
-        AssertionsForClassTypes.assertThat(passwordEncoder.matches(BasicAccountData.PASSWORD, account.getPassword())).isTrue();
-        AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(BasicAccountData.NICKNAME);
-        AssertionsForClassTypes.assertThat(account.getProfileImage()).isEqualTo(BasicAccountData.PROFILE_IMAGE_FILE);
-        AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(BasicAccountData.ROLES);
+        AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(USERNAME);
+        AssertionsForClassTypes.assertThat(passwordEncoder.matches(PASSWORD, account.getPassword())).isTrue();
+        AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(NICKNAME);
+        AssertionsForClassTypes.assertThat(account.getProfileImage()).isEqualTo(URL_PROFILE_IMAGE);
+        AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
     @Test
     void save_중복된Username저장_오류발생() throws Exception {
         // Given
-        accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        accountService.save(new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES));
 
         // When
         // Then
         String newNickname = "newNickname";
-        assertThatThrownBy(() -> accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, newNickname, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES)))
+        assertThatThrownBy(() -> accountService.save(new Account(ACCOUNT_ID, USERNAME, PASSWORD, newNickname, URL_PROFILE_IMAGE, ROLES)))
                 .isInstanceOf(AccountUsernameAlreadyExistsException.class);
     }
 
     @Test
     void save_중복된Nickname저장_오류발생() throws Exception {
         // Given
-        accountRepository.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        accountRepository.save(new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES));
 
         // When
         // Then
         String newUsername = "newUsername";
-        assertThatThrownBy(() -> accountService.save(new Account(newUsername, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES)))
+        assertThatThrownBy(() -> accountService.save(new Account(ACCOUNT_ID, newUsername, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES)))
                 .isInstanceOf(AccountNicknameAlreadyExistsException.class);
     }
 
     @Test
     void findById_존재하는Id로조회_조회성공() {
         // Given
-        Account account = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
+        Account account = new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES);
         accountService.save(account);
 
         // When
@@ -151,7 +152,7 @@ class AccountServiceTest extends BaseTest {
     @Test
     void updateProfile_모든필드업데이트_성공() throws Exception {
         // Given
-        Account account = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account = accountService.save(new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES));
 
         String newNickname = "newNickname";
         String newPassword = "newPassword";
@@ -160,24 +161,24 @@ class AccountServiceTest extends BaseTest {
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(newNickname)
                 .newPassword(newPassword)
-                .originalPassword(BasicAccountData.PASSWORD)
+                .originalPassword(PASSWORD)
                 .build();
 
         // When
         accountService.updateProfile(account, updateCondition);
 
         // Then
-        AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(BasicAccountData.USERNAME);
+        AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(USERNAME);
         AssertionsForClassTypes.assertThat(passwordEncoder.matches(newPassword, account.getPassword())).isTrue();
         AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(newNickname);
-        AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(BasicAccountData.ROLES);
+        AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
     @Test
     void updateProfile_카카오Account_모든필드업데이트_성공() throws Exception {
         // Given
-        KakaoAccount kakaoAccount = new KakaoAccount(123L, BasicAccountData.ROLES, BasicAccountData.PROFILE_IMAGE_FILE);
-        kakaoAccount.changeNickname(BasicAccountData.NICKNAME);
+        KakaoAccount kakaoAccount = new KakaoAccount(123L, ROLES, URL_PROFILE_IMAGE);
+        kakaoAccount.changeNickname(NICKNAME);
         kakaoAccountRepository.save(kakaoAccount);
 
         String newNickname = "newNickname";
@@ -194,33 +195,33 @@ class AccountServiceTest extends BaseTest {
         AssertionsForClassTypes.assertThat(kakaoAccount.getUsername()).isNull();
         AssertionsForClassTypes.assertThat(kakaoAccount.getPassword()).isNull();
         AssertionsForClassTypes.assertThat(kakaoAccount.getNickname()).isEqualTo(newNickname);
-        AssertionsForClassTypes.assertThat(kakaoAccount.getRoles()).isEqualTo(BasicAccountData.ROLES);
+        AssertionsForClassTypes.assertThat(kakaoAccount.getRoles()).isEqualTo(ROLES);
     }
 
     @Test
     void updateProfile_모든필드NULL_업데이트안함() throws Exception {
         // Given
-        Account account = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account = accountService.save(new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES));
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(null)
                 .newPassword(null)
-                .originalPassword(BasicAccountData.PASSWORD)
+                .originalPassword(PASSWORD)
                 .build();
 
         // When
         accountService.updateProfile(account, updateCondition);
 
         // Then
-        AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(BasicAccountData.USERNAME);
-        AssertionsForClassTypes.assertThat(passwordEncoder.matches(BasicAccountData.PASSWORD, account.getPassword())).isTrue();
-        AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(BasicAccountData.NICKNAME);
-        AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(BasicAccountData.ROLES);
+        AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(USERNAME);
+        AssertionsForClassTypes.assertThat(passwordEncoder.matches(PASSWORD, account.getPassword())).isTrue();
+        AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(NICKNAME);
+        AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
     @Test
     void updateProfile_OriginalPassword없음_오류발생() throws Exception {
         // Given
-        Account account = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account = accountService.save(new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES));
 
         String newNickname = "newNickname";
         String newPassword = "newPassword";
@@ -241,7 +242,7 @@ class AccountServiceTest extends BaseTest {
     @Test
     void updateProfile_다른originalPassword_오류발생() throws Exception {
         // Given
-        Account account = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account = accountService.save(new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES));
 
         String newNickname = "newNickname";
         String newPassword = "newPassword";
@@ -262,7 +263,7 @@ class AccountServiceTest extends BaseTest {
     @Test
     void updateProfile_존재하지않는AccountId_오류발생() throws Exception {
         // Given
-        Account account = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account = accountService.save(new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES));
 
         String newNickname = "newNickname";
         String newPassword = "newPassword";
@@ -271,11 +272,11 @@ class AccountServiceTest extends BaseTest {
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(newNickname)
                 .newPassword(newPassword)
-                .originalPassword(BasicAccountData.PASSWORD)
+                .originalPassword(PASSWORD)
                 .build();
 
         // When
-        account.changeId(123123L);
+//        account.changeId(123123L);
 
         // Then
         assertThatThrownBy(() -> accountService.updateProfile(account, updateCondition))
@@ -285,25 +286,25 @@ class AccountServiceTest extends BaseTest {
     @Test
     void updateProfile_같은nickname으로업데이트_성공() throws Exception {
         // Given
-        Account account = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account = accountService.save(new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES));
 
         String newPassword = "newPassword";
         String newProfileImageUrl = "newProfileImageUrl";
         UploadFile newProfileImageFile = UPLOADFILE_INSTANCE;
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
-                .nickname(BasicAccountData.NICKNAME)
+                .nickname(NICKNAME)
                 .newPassword(newPassword)
-                .originalPassword(BasicAccountData.PASSWORD)
+                .originalPassword(PASSWORD)
                 .build();
 
         // When
         accountService.updateProfile(account, updateCondition);
 
         // Then
-        AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(BasicAccountData.USERNAME);
+        AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(USERNAME);
         AssertionsForClassTypes.assertThat(passwordEncoder.matches(newPassword, account.getPassword())).isTrue();
-        AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(BasicAccountData.NICKNAME);
-        AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(BasicAccountData.ROLES);
+        AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(NICKNAME);
+        AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
     @Test
@@ -311,11 +312,11 @@ class AccountServiceTest extends BaseTest {
         // Given
         String account1Username = "account1Username";
         String account1Nickname = "account1Nickname";
-        Account account1 = accountService.save(new Account(account1Username, BasicAccountData.PASSWORD, account1Nickname, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account1 = accountService.save(new Account(ACCOUNT_ID, account1Username, PASSWORD, account1Nickname, URL_PROFILE_IMAGE, ROLES));
 
         String account2Username = "account2Username";
         String account2Nickname = "account2Nickname";
-        Account account2 = accountService.save(new Account(account2Username, BasicAccountData.PASSWORD, account2Nickname, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account2 = accountService.save(new Account(ACCOUNT_ID, account2Username, PASSWORD, account2Nickname, URL_PROFILE_IMAGE, ROLES));
 
         String newPassword = "newPassword";
         String newProfileImageUrl = "newProfileImageUrl";
@@ -323,7 +324,7 @@ class AccountServiceTest extends BaseTest {
         AccountUpdateCond updateCondition = AccountUpdateCond.builder()
                 .nickname(account1Nickname)
                 .newPassword(newPassword)
-                .originalPassword(BasicAccountData.PASSWORD)
+                .originalPassword(PASSWORD)
                 .build();
 
         // When
@@ -335,7 +336,7 @@ class AccountServiceTest extends BaseTest {
     @Test
     void delete_Account삭제_성공() throws Exception {
         // Given
-        Account account = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account = accountService.save(new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES));
 
         // When
         accountService.delete(account);
@@ -350,7 +351,7 @@ class AccountServiceTest extends BaseTest {
     void delete_KakaoAccount삭제_성공() throws Exception {
         // Given
         Mockito.doNothing().when(kakaoWebService).disconnect(any());
-        Account account = accountRepository.save(new KakaoAccount(123L, Set.of(Role.USER), BasicAccountData.PROFILE_IMAGE_FILE));
+        Account account = accountRepository.save(new KakaoAccount(123L, Set.of(Role.USER), URL_PROFILE_IMAGE));
 
         // When
         accountService.delete(account);
@@ -364,61 +365,61 @@ class AccountServiceTest extends BaseTest {
     @Test
     void updateNickname_새로운Nickname으로변경_변경성공() {
         // Given
-        Account account = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account = accountService.save(new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES));
 
         // When
         String newNickname = "newNickname";
         accountNicknameService.updateNickname(account, newNickname);
 
         // Then
-        AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(BasicAccountData.USERNAME);
-        AssertionsForClassTypes.assertThat(passwordEncoder.matches(BasicAccountData.PASSWORD, account.getPassword())).isTrue();
+        AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(USERNAME);
+        AssertionsForClassTypes.assertThat(passwordEncoder.matches(PASSWORD, account.getPassword())).isTrue();
         AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(newNickname);
-        AssertionsForClassTypes.assertThat(account.getProfileImage()).isEqualTo(BasicAccountData.PROFILE_IMAGE_FILE);
-        AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(BasicAccountData.ROLES);
+        AssertionsForClassTypes.assertThat(account.getProfileImage()).isEqualTo(URL_PROFILE_IMAGE);
+        AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
     @Test
     void updateNickname_존재하지않는AccountId_오류발생() {
         // Given
-        Account account = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
-        account.changeId(12345L);
+        Account account = accountService.save(new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES));
+//        account.changeId(12345L);
 
         // When
         // Then
-        assertThatThrownBy(() -> accountNicknameService.updateNickname(account, BasicAccountData.NICKNAME));
+        assertThatThrownBy(() -> accountNicknameService.updateNickname(account, NICKNAME));
     }
 
     @Test
     void updateNickname_같은Nickname으로변경_변경없음() {
         // Given
-        Account account = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account = accountService.save(new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES));
 
         // When
-        accountNicknameService.updateNickname(account, BasicAccountData.NICKNAME);
+        accountNicknameService.updateNickname(account, NICKNAME);
 
         // Then
-        AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(BasicAccountData.USERNAME);
-        AssertionsForClassTypes.assertThat(passwordEncoder.matches(BasicAccountData.PASSWORD, account.getPassword())).isTrue();
-        AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(BasicAccountData.NICKNAME);
-        AssertionsForClassTypes.assertThat(account.getProfileImage()).isEqualTo(BasicAccountData.PROFILE_IMAGE_FILE);
-        AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(BasicAccountData.ROLES);
+        AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(USERNAME);
+        AssertionsForClassTypes.assertThat(passwordEncoder.matches(PASSWORD, account.getPassword())).isTrue();
+        AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(NICKNAME);
+        AssertionsForClassTypes.assertThat(account.getProfileImage()).isEqualTo(URL_PROFILE_IMAGE);
+        AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
     @Test
     void updateNickname_NULL로변경_변경없음() {
         // Given
-        Account account = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account = accountService.save(new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES));
 
         // When
         accountNicknameService.updateNickname(account, null);
 
         // Then
-        AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(BasicAccountData.USERNAME);
-        AssertionsForClassTypes.assertThat(passwordEncoder.matches(BasicAccountData.PASSWORD, account.getPassword())).isTrue();
-        AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(BasicAccountData.NICKNAME);
-        AssertionsForClassTypes.assertThat(account.getProfileImage()).isEqualTo(BasicAccountData.PROFILE_IMAGE_FILE);
-        AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(BasicAccountData.ROLES);
+        AssertionsForClassTypes.assertThat(account.getUsername()).isEqualTo(USERNAME);
+        AssertionsForClassTypes.assertThat(passwordEncoder.matches(PASSWORD, account.getPassword())).isTrue();
+        AssertionsForClassTypes.assertThat(account.getNickname()).isEqualTo(NICKNAME);
+        AssertionsForClassTypes.assertThat(account.getProfileImage()).isEqualTo(URL_PROFILE_IMAGE);
+        AssertionsForClassTypes.assertThat(account.getRoles()).isEqualTo(ROLES);
     }
 
     @Test
@@ -426,11 +427,11 @@ class AccountServiceTest extends BaseTest {
         // Given
         String account1Username = "account1Username";
         String account1Nickname = "account1Nickname";
-        Account account1 = accountService.save(new Account(account1Username, BasicAccountData.PASSWORD, account1Nickname, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account1 = accountService.save(new Account(ACCOUNT_ID, account1Username, PASSWORD, account1Nickname, URL_PROFILE_IMAGE, ROLES));
 
         String account2Username = "account2Username";
         String account2Nickname = "account2Nickname";
-        Account account2 = accountService.save(new Account(account2Username, BasicAccountData.PASSWORD, account2Nickname, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account2 = accountService.save(new Account(ACCOUNT_ID, account2Username, PASSWORD, account2Nickname, URL_PROFILE_IMAGE, ROLES));
 
         // When
         // Then

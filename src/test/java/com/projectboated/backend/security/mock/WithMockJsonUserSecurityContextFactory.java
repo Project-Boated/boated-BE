@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.projectboated.backend.common.data.BasicAccountData.ACCOUNT_ID;
+
 @Component
 public class WithMockJsonUserSecurityContextFactory implements WithSecurityContextFactory<WithMockJsonUser> {
 
@@ -35,7 +37,7 @@ public class WithMockJsonUserSecurityContextFactory implements WithSecurityConte
 
         ProfileImage profileImage = profileImageService.save(new UrlProfileImage(annotation.profileImageUrl()));
 
-        Account account = new Account(annotation.username(),
+        Account account = new Account(ACCOUNT_ID, annotation.username(),
                 annotation.password(),
                 annotation.nickname(),
                 profileImage,

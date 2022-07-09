@@ -1,14 +1,13 @@
 package com.projectboated.backend.domain.accountproject.repository;
 
-import com.projectboated.backend.common.data.BasicAccountData;
+import com.projectboated.backend.common.basetest.BaseTest;
 import com.projectboated.backend.common.data.BasicProjectData;
 import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
-import com.projectboated.backend.domain.project.repository.ProjectRepository;
-import com.projectboated.backend.common.basetest.BaseTest;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.project.entity.AccountProject;
 import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
+import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.springframework.context.annotation.ComponentScan.*;
+import static com.projectboated.backend.common.data.BasicAccountData.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.context.annotation.ComponentScan.Filter;
 
 @DataJpaTest(includeFilters = @Filter(
         type = FilterType.ANNOTATION,
@@ -40,7 +40,7 @@ class AccountProjectRepositoryTest extends BaseTest {
     @Test
     void findCrewsFromProject_crew찾기_정상() throws Exception {
         // Given
-        Account captain = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
+        Account captain = new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES);
         accountRepository.save(captain);
 
         Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
@@ -48,7 +48,7 @@ class AccountProjectRepositoryTest extends BaseTest {
 
         int crewsNumber = 3;
         for(int i = 0; i< crewsNumber; i++) {
-            Account crew = new Account(BasicAccountData.USERNAME + i, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME + i, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
+            Account crew = new Account(ACCOUNT_ID, USERNAME + i, PASSWORD, NICKNAME + i, URL_PROFILE_IMAGE, ROLES);
             accountRepository.save(crew);
             AccountProject accountProject = new AccountProject(crew, project);
             accountProjectRepository.save(accountProject);
@@ -64,7 +64,7 @@ class AccountProjectRepositoryTest extends BaseTest {
     @Test
     void delete_accountProject삭제_삭제됨() throws Exception {
         // Given
-        Account captain = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
+        Account captain = new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES);
         accountRepository.save(captain);
 
         Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);

@@ -17,6 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.projectboated.backend.common.data.BasicAccountData.ACCOUNT_ID;
 import static org.assertj.core.api.Assertions.*;
 
 @DataJpaTest
@@ -37,9 +38,9 @@ class ProjectQueryDslRepositoryImplTest {
     @Test
     public void getMyProject_모든경우프로젝트1개있음_프로젝트4개조회() {
         // Given
-        Account account1 = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, null, null);
+        Account account1 = new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, null, null);
         accountRepository.save(account1);
-        Account account2 = new Account("crewUsername", BasicAccountData.PASSWORD, "crewNickname", null, null);
+        Account account2 = new Account(ACCOUNT_ID, "crewUsername", BasicAccountData.PASSWORD, "crewNickname", null, null);
         accountRepository.save(account2);
 
         Project project1 = new Project(BasicProjectData.PROJECT_NAME+1, BasicProjectData.PROJECT_DESCRIPTION, account1, LocalDateTime.now());
@@ -78,9 +79,9 @@ class ProjectQueryDslRepositoryImplTest {
     @Test
     public void getMyProject_모든경우프로젝트1개있음_crew인종료되지않은프로젝트1개조회_1개조회() {
         // Given
-        Account account1 = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, null, null);
+        Account account1 = new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, null, null);
         accountRepository.save(account1);
-        Account account2 = new Account("crewUsername", BasicAccountData.PASSWORD, "crewNickname", null, null);
+        Account account2 = new Account(ACCOUNT_ID, "crewUsername", BasicAccountData.PASSWORD, "crewNickname", null, null);
         accountRepository.save(account2);
 
         Project project1 = new Project(BasicProjectData.PROJECT_NAME+1, BasicProjectData.PROJECT_DESCRIPTION, account1, LocalDateTime.now());
@@ -119,9 +120,9 @@ class ProjectQueryDslRepositoryImplTest {
     @Test
     public void getMyProject_모든경우프로젝트1개있음_crew인종료된프로젝트1개조회_1개조회() {
         // Given
-        Account account1 = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, null, null);
+        Account account1 = new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, null, null);
         accountRepository.save(account1);
-        Account account2 = new Account("crewUsername", BasicAccountData.PASSWORD, "crewNickname", null, null);
+        Account account2 = new Account(ACCOUNT_ID, "crewUsername", BasicAccountData.PASSWORD, "crewNickname", null, null);
         accountRepository.save(account2);
 
         Project project1 = new Project(BasicProjectData.PROJECT_NAME+1, BasicProjectData.PROJECT_DESCRIPTION, account1, LocalDateTime.now());
@@ -160,9 +161,9 @@ class ProjectQueryDslRepositoryImplTest {
     @Test
     public void getMyProject_모든경우프로젝트1개있음_captain인종료되지않은프로젝트1개조회_1개조회() {
         // Given
-        Account account1 = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, null, null);
+        Account account1 = new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, null, null);
         accountRepository.save(account1);
-        Account account2 = new Account("crewUsername", BasicAccountData.PASSWORD, "crewNickname", null, null);
+        Account account2 = new Account(ACCOUNT_ID, "crewUsername", BasicAccountData.PASSWORD, "crewNickname", null, null);
         accountRepository.save(account2);
 
         Project project1 = new Project(BasicProjectData.PROJECT_NAME+1, BasicProjectData.PROJECT_DESCRIPTION, account1, LocalDateTime.now());
@@ -201,9 +202,9 @@ class ProjectQueryDslRepositoryImplTest {
     @Test
     public void getMyProject_모든경우프로젝트1개있음_captain인종료된프로젝트1개조회_1개조회() {
         // Given
-        Account account1 = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, null, null);
+        Account account1 = new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, null, null);
         accountRepository.save(account1);
-        Account account2 = new Account("crewUsername", BasicAccountData.PASSWORD, "crewNickname", null, null);
+        Account account2 = new Account(ACCOUNT_ID, "crewUsername", BasicAccountData.PASSWORD, "crewNickname", null, null);
         accountRepository.save(account2);
 
         Project project1 = new Project(BasicProjectData.PROJECT_NAME+1, BasicProjectData.PROJECT_DESCRIPTION, account1, LocalDateTime.now());
@@ -242,7 +243,7 @@ class ProjectQueryDslRepositoryImplTest {
     @Test
     public void getMyProject_captain인종료되지않은프로젝트1개있음_프로젝트1개조회() {
         // Given
-        Account captain = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, null, null);
+        Account captain = new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, null, null);
         accountRepository.save(captain);
 
         Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, LocalDateTime.now());
@@ -266,7 +267,7 @@ class ProjectQueryDslRepositoryImplTest {
     @Test
     public void getMyProject_captain인종료된프로젝트1개있음_로젝트1개조회() {
         // Given
-        Account captain = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, null, null);
+        Account captain = new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, null, null);
         accountRepository.save(captain);
 
         Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, LocalDateTime.now());
@@ -291,9 +292,9 @@ class ProjectQueryDslRepositoryImplTest {
     @Test
     public void getMyProject_crew인종료되지않은프로젝트1개있음_프로젝트1개조회() {
         // Given
-        Account captain = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, null, null);
+        Account captain = new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, null, null);
         accountRepository.save(captain);
-        Account crew = new Account("crewUsername", BasicAccountData.PASSWORD, "crewNickname", null, null);
+        Account crew = new Account(ACCOUNT_ID, "crewUsername", BasicAccountData.PASSWORD, "crewNickname", null, null);
         accountRepository.save(crew);
 
         Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, LocalDateTime.now());
@@ -320,9 +321,9 @@ class ProjectQueryDslRepositoryImplTest {
     @Test
     public void getMyProject_crew인종료된프로젝트1개있음_프로젝트1개조회() {
         // Given
-        Account captain = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, null, null);
+        Account captain = new Account(ACCOUNT_ID, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, null, null);
         accountRepository.save(captain);
-        Account crew = new Account("crewUsername", BasicAccountData.PASSWORD, "crewNickname", null, null);
+        Account crew = new Account(ACCOUNT_ID, "crewUsername", BasicAccountData.PASSWORD, "crewNickname", null, null);
         accountRepository.save(crew);
 
         Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, LocalDateTime.now());
