@@ -2,7 +2,6 @@ package com.projectboated.backend.domain.account.account.entity;
 
 import com.projectboated.backend.domain.account.profileimage.entity.ProfileImage;
 import com.projectboated.backend.domain.account.profileimage.entity.UrlProfileImage;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -117,7 +116,6 @@ class AccountTest {
     }
 
     @Test
-    @Disabled
     void changeProfileImage_새로운profileImage_ProfileUrl업데이트() {
         // Given
         Account account = Account.builder()

@@ -41,7 +41,7 @@ public class ProjectCaptainService {
         }
 
         accountProjectRepository.save(new AccountProject(account, project));
-        accountProjectRepository.delete(project, newCaptain);
+        accountProjectRepository.deleteByProjectAndAccount(project, newCaptain);
         project.changeCaptain(newCaptain);
     }
 

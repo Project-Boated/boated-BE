@@ -39,7 +39,7 @@ class ProjectMyControllerTest extends AcceptanceTest {
         // Then
         given(this.spec)
             .param("captain", "term,not-term")
-            .param("crew", "term,not-term")
+            .param("crew", "te  rm,not-term")
             .param("page", "0")
             .param("size", "1")
             .param("sort", "name,desc")

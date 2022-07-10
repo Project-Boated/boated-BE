@@ -1,88 +1,22 @@
 package com.projectboated.backend.domain.project.repository;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.account.account.entity.QAccount;
 import com.projectboated.backend.domain.project.entity.AccountProject;
 import com.projectboated.backend.domain.project.entity.Project;
-import com.projectboated.backend.domain.project.entity.QProject;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import javax.persistence.EntityManager;
-import java.util.List;
+public interface AccountProjectRepository extends JpaRepository<AccountProject, Long>, AccountProjectQueryDslRepository {
 
-import static com.projectboated.backend.domain.account.account.entity.QAccount.account;
-import static com.projectboated.backend.domain.project.entity.QAccountProject.accountProject;
-import static com.projectboated.backend.domain.project.entity.QProject.project;
+    @Modifying
+    @Query("delete from AccountProject ap where ap.project=:project and ap.account=:account")
+    void deleteByProjectAndAccount(@Param("project") Project project, @Param("account") Account account);
 
-@Repository
-@Transactional
-public class AccountProjectRepository {
+    @Query("select count(ap) from AccountProject ap where ap.project.id=:projectId and ap.account.id=:accountId")
+    Long countByProjectIdAndAccountId(@Param("projectId") long projectId, @Param("accountId") long accountId);
 
-    private final EntityManager em;
-    private final JPAQueryFactory queryFactory;
-
-    public AccountProjectRepository(EntityManager em) {
-        this.em = em;
-        queryFactory = new JPAQueryFactory(em);
-    }
-
-    public AccountProject save(AccountProject accountProject) {
-        em.persist(accountProject);
-        return accountProject;
-    }
-
-    public List<Account> findCrewsFromProject(Project project) {
-        return queryFactory
-                .select(account)
-                .from(accountProject)
-                .where(accountProject.project.eq(project))
-                .fetch();
-    }
-
-    public long delete(Project project, Account account) {
-        return queryFactory
-                .delete(accountProject)
-                .where(QProject.project.eq(project).and(QAccount.account.eq(account)))
-                .execute();
-    }
-
-    public boolean existsAccountInProject(Account crew, Project project) {
-        return queryFactory
-                .selectFrom(accountProject)
-                .where(accountProject.project.eq(project).and(accountProject.account.eq(crew))) != null;
-    }
-
-    public List<Project> findProjectFromCrew(Account account) {
-        return queryFactory
-                .select(project)
-                .from(accountProject)
-                .where(accountProject.account.eq(account))
-                .fetch();
-    }
-
-    public List<Project> findProjectFromCrewNotTerminated(Account account) {
-        return queryFactory
-                .select(project)
-                .from(accountProject)
-                .where(accountProject.account.eq(account).and(accountProject.project.isTerminated.eq(false)))
-                .fetch();
-    }
-
-    public List<Project> findProjectFromCrewTerminated(Account account) {
-        return queryFactory
-                .select(project)
-                .from(accountProject)
-                .where(accountProject.account.eq(account).and(accountProject.project.isTerminated.eq(true)))
-                .fetch();
-    }
-
-    public Long countByCrewInProject(Long crewId, Long projectId) {
-        return (Long) em.createQuery("select count(ap) from AccountProject ap " +
-                "where ap.account.id=:crewId and ap.project.id=:projectId")
-                .setParameter("crewId", crewId)
-                .setParameter("projectId", projectId)
-                .getSingleResult();
-    }
+    @Query("select count(ap) from AccountProject ap where ap.account.id=:crewId and ap.project.id=:projectId")
+    Long countByCrewInProject(@Param("crewId") Long crewId, @Param("projectId") Long projectId);
 }

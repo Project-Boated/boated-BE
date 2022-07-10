@@ -1,81 +1,98 @@
 package com.projectboated.backend.domain.project.repository;
 
-import com.projectboated.backend.common.basetest.BaseTest;
-import com.projectboated.backend.common.data.BasicDataProject;
+import com.projectboated.backend.common.basetest.RepositoryTest;
 import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.project.entity.AccountProject;
 import com.projectboated.backend.domain.project.entity.Project;
-import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
-import com.projectboated.backend.domain.project.repository.ProjectRepository;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-import static com.projectboated.backend.common.data.BasicDataAccount.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.context.annotation.ComponentScan.Filter;
 
-@DataJpaTest(includeFilters = @Filter(
-        type = FilterType.ANNOTATION,
-        classes = Repository.class
-))
-@Disabled
-class AccountProjectRepositoryTest extends BaseTest {
-
-    @Autowired
-    AccountRepository accountRepository;
-
-    @Autowired
-    ProjectRepository projectRepository;
-
-    @Autowired
-    AccountProjectRepository accountProjectRepository;
+@DisplayName("AccountProject : Persistence 단위 테스트")
+class AccountProjectRepositoryTest extends RepositoryTest {
 
     @Test
-    void findCrewsFromProject_crew찾기_정상() throws Exception {
+    void deleteByProjectAndAccount_존재하는Project와Account_delete정상() {
         // Given
-        Account captain = new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES);
-        accountRepository.save(captain);
+        Account account = insertDefaultAccount();
+        Project project = insertDefaultProject(account);
 
-        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
-        projectRepository.save(project);
-
-        int crewsNumber = 3;
-        for(int i = 0; i< crewsNumber; i++) {
-            Account crew = new Account(ACCOUNT_ID, USERNAME + i, PASSWORD, NICKNAME + i, URL_PROFILE_IMAGE, ROLES);
-            accountRepository.save(crew);
-            AccountProject accountProject = new AccountProject(crew, project);
-            accountProjectRepository.save(accountProject);
-        }
+        AccountProject accountProject = new AccountProject(account, project);
+        accountProjectRepository.save(accountProject);
 
         // When
-        List<Account> crews = accountProjectRepository.findCrewsFromProject(project);
+        accountProjectRepository.deleteByProjectAndAccount(project, account);
+        flushAndClear();
 
         // Then
-        assertThat(crews.size()).isEqualTo(crewsNumber);
+        assertThat(accountProjectRepository.findById(accountProject.getId())).isEmpty();
+    }
+    
+    @Test
+    void countByProjectAndAccount_1개존재하는Project와Account_return_1() {
+        // Given
+        Account account = insertDefaultAccount();
+        Project project = insertDefaultProject(account);
+
+        Account account2 = insertDefaultAccount2();
+        accountProjectRepository.save(AccountProject.builder()
+                .project(project)
+                .account(account2)
+                .build());
+
+        // When
+        long result = accountProjectRepository.countByProjectIdAndAccountId(project.getId(), account2.getId());
+
+        // Then
+        assertThat(result).isEqualTo(1);
     }
 
     @Test
-    void delete_accountProject삭제_삭제됨() throws Exception {
+    void countByProjectAndAccount_0개존재하는Project와Account_return_0() {
         // Given
-        Account captain = new Account(ACCOUNT_ID, USERNAME, PASSWORD, NICKNAME, URL_PROFILE_IMAGE, ROLES);
-        accountRepository.save(captain);
+        Account account = insertDefaultAccount();
+        Project project = insertDefaultProject(account);
 
-        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
-        projectRepository.save(project);
-
-        accountProjectRepository.save(new AccountProject(captain, project));
+        Account account2 = insertDefaultAccount2();
 
         // When
-        accountProjectRepository.delete(project, captain);
+        long result = accountProjectRepository.countByProjectIdAndAccountId(project.getId(), account2.getId());
 
         // Then
-        assertThat(accountProjectRepository.findCrewsFromProject(project).size()).isEqualTo(0);
+        assertThat(result).isEqualTo(0);
     }
+
+    @Test
+    void countByCrewInProject_crew1명존재_return_1() {
+        // Given
+        Account account = insertDefaultAccount();
+        Project project = insertDefaultProject(account);
+
+        Account account2 = insertDefaultAccount2();
+        accountProjectRepository.save(AccountProject.builder()
+                .project(project)
+                .account(account2)
+                .build());
+
+        // When
+        Long result = accountProjectRepository.countByCrewInProject(account2.getId(), project.getId());
+
+        // Then
+        assertThat(result).isEqualTo(1);
+    }
+
+    @Test
+    void countByCrewInProject_crew0명존재_return_0() {
+        // Given
+        Account account = insertDefaultAccount();
+        Project project = insertDefaultProject(account);
+
+        // When
+        Long result = accountProjectRepository.countByCrewInProject(123L, project.getId());
+
+        // Then
+        assertThat(result).isEqualTo(0);
+    }
+
 }

@@ -69,7 +69,9 @@ public class ProjectService {
             throw new ProjectNameSameInAccountException(ErrorCode.PROJECT_NAME_EXISTS_IN_ACCOUNT);
         }
 
-        project.changeProjectInform(projectUpdateCond.getName(), projectUpdateCond.getDescription(), projectUpdateCond.getDeadline());
+        project.changeName(projectUpdateCond.getName());
+        project.changeDescription(projectUpdateCond.getDescription());
+        project.changeDeadline(projectUpdateCond.getDeadline());
     }
 
     private boolean isSameProjectNameInAccount(ProjectUpdateCond projectUpdateCond, Project project) {
@@ -84,7 +86,7 @@ public class ProjectService {
             throw new ProjectAccessDeniedException.ProjectFindCrewsAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
-        return accountProjectRepository.findCrewsFromProject(project);
+        return accountProjectRepository.findCrewByProject(project);
     }
 
     @Transactional
@@ -99,7 +101,7 @@ public class ProjectService {
         Account crew = accountRepository.findByNickname(crewNickname)
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND_BY_USERNAME));
 
-        accountProjectRepository.delete(project, crew);
+        accountProjectRepository.deleteByProjectAndAccount(project, crew);
     }
 
     @Transactional
@@ -114,7 +116,7 @@ public class ProjectService {
             throw new ProjectUpdateAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
-        project.terminateProject();
+        project.terminate();
     }
 
     @Transactional
@@ -129,7 +131,7 @@ public class ProjectService {
             throw new ProjectUpdateAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
-        project.cancelTerminateProject();
+        project.cancelTerminate();
     }
 
     public Project findById(Long projectId, Account account) {

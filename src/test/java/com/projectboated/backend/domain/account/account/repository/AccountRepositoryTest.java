@@ -4,7 +4,6 @@ import com.projectboated.backend.common.basetest.RepositoryTest;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
@@ -13,9 +12,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Account : Persistence 단위 테스트")
 class AccountRepositoryTest extends RepositoryTest {
-
-    @Autowired
-    AccountRepository accountRepository;
 
     @Test
     void findByUsername_username이같은account존재_return_account() {
@@ -116,14 +112,6 @@ class AccountRepositoryTest extends RepositoryTest {
 
         // Then
         assertThat(result).isFalse();
-    }
-
-    private void insertDefaultAccount() {
-        accountRepository.save(ACCOUNT);
-    }
-
-    private void insertAccount(Account account) {
-        accountRepository.save(account);
     }
 
 }

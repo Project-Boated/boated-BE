@@ -43,16 +43,20 @@ public class Project extends BaseTimeEntity {
         this.isTerminated = false;
     }
 
-    public void changeProjectInform(String name, String description, LocalDateTime deadline) {
+    public void changeName(String name) {
         if (name != null) {
             this.name = name;
         }
+    }
+
+    public void changeDescription(String description) {
         if (description != null) {
             this.description = description;
         }
-        if (deadline != null) {
-            this.deadline = deadline;
-        }
+    }
+
+    public void changeDeadline(LocalDateTime deadLine) {
+        this.deadline = deadLine;
     }
 
     public void changeCaptain(Account account) {
@@ -60,17 +64,17 @@ public class Project extends BaseTimeEntity {
     }
 
     public void changeKanban(Kanban kanban) {
-        if (!this.kanban.equals(kanban)) {
+        if (this.kanban==null || !this.kanban.equals(kanban)) {
             this.kanban = kanban;
             kanban.changeProject(this);
         }
     }
 
-    public void terminateProject() {
+    public void terminate() {
         isTerminated = true;
     }
 
-    public void cancelTerminateProject() {
+    public void cancelTerminate() {
         isTerminated = false;
     }
 }
