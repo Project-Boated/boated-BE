@@ -50,6 +50,9 @@ public enum ErrorCode {
     KANBAN_LANE_EXISTS_UPPER_5(400, "KL001", "칸반 lane의 개수가 이미 5개입니다"),
     KANBAN_LANE_NOT_FOUND(400, "KL002", "칸반 lane을 찾을 수 없습니다"),
 
+    // Upload File
+    UPLOAD_FILE_NOT_FOUND_EXT(400, "UF001", "upload file에 ext를 찾을 수 없습니다."),
+
     // For Testing
     FOR_TESTING(507, "T001", "테스트용입니다.");
 

@@ -2,6 +2,7 @@ package com.projectboated.backend.domain.kanban.kanban.entity;
 
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
@@ -26,19 +27,15 @@ public class Kanban extends BaseTimeEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "kanban")
     private List<KanbanLane> lanes = new ArrayList<>();
 
+    @Builder
     public Kanban(Project project) {
-        this.project = project;
+        changeProject(project);
     }
 
     public void changeProject(Project project) {
-        if (!this.project.equals(project)) {
+        if (this.project==null || !this.project.equals(project)) {
             this.project = project;
             project.changeKanban(this);
         }
-    }
-
-    public void addLane(KanbanLane kanbanLane) {
-        this.lanes.add(kanbanLane);
-        kanbanLane.changeKanban(this);
     }
 }

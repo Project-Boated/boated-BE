@@ -1,7 +1,7 @@
 package com.projectboated.backend.web.project.controller;
 
-import com.projectboated.backend.common.data.BasicAccountData;
-import com.projectboated.backend.common.data.BasicProjectData;
+import com.projectboated.backend.common.data.BasicDataAccount;
+import com.projectboated.backend.common.data.BasicDataProject;
 import com.projectboated.backend.common.utils.InvitationTestUtils;
 import com.projectboated.backend.common.utils.ProjectTestUtils;
 import io.restassured.http.ContentType;
@@ -25,12 +25,12 @@ class ProjectCaptainControllerTest extends AcceptanceTest {
         String crewUsername = "crewUsername";
         String crewNickname = "crewNickname";
 
-        AccountTestUtils.createAccount(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_URL);
-        AccountTestUtils.createAccount(port, crewUsername, BasicAccountData.PASSWORD, crewNickname, BasicAccountData.PROFILE_IMAGE_URL);
-        Cookie crewCookie = AccountTestUtils.login(port, crewUsername, BasicAccountData.PASSWORD);
-        Cookie captainCookie = AccountTestUtils.login(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD);
+        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, crewUsername, BasicDataAccount.PASSWORD, crewNickname, BasicDataAccount.PROFILE_IMAGE_URL);
+        Cookie crewCookie = AccountTestUtils.login(port, crewUsername, BasicDataAccount.PASSWORD);
+        Cookie captainCookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
 
-        int projectId = ProjectTestUtils.createProject(port, captainCookie, BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, BasicProjectData.PROJECT_DEADLINE);
+        int projectId = ProjectTestUtils.createProject(port, captainCookie, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
         int invitationId = InvitationTestUtils.createInvitation(port, captainCookie, (long) projectId, crewNickname);
         InvitationTestUtils.acceptInvitation(port, crewCookie, (long)invitationId);
 

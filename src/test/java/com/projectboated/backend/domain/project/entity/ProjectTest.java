@@ -1,80 +1,236 @@
 package com.projectboated.backend.domain.project.entity;
 
-import com.projectboated.backend.common.basetest.BaseTest;
-import com.projectboated.backend.common.data.BasicAccountData;
-import com.projectboated.backend.common.data.BasicProjectData;
 import com.projectboated.backend.domain.account.account.entity.Account;
-import org.assertj.core.api.Assertions;
+import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+import static com.projectboated.backend.common.data.BasicDataAccount.*;
+import static com.projectboated.backend.common.data.BasicDataProject.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ProjectTest extends BaseTest {
+@DisplayName("Project : Entity 단위 테스트")
+class ProjectTest {
 
     private String newProjectName = "newName";
     private String newProjectDescription = "newDescription";
-
     private String newCaptainUsername = "newUsername";
     private String newCaptainNickname = "newNickname";
 
     @Test
-    void constructor_Project생성_성공() {
+    void 생성자_Project생성_return_생성된Project() {
         // Given
-        Account captain = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
+        Account captain = createCaptain();
 
         // When
-        Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
+        Project project = new Project(captain, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
 
         // Then
-        assertThat(project.getName()).isEqualTo(BasicProjectData.PROJECT_NAME);
-        assertThat(project.getDescription()).isEqualTo(BasicProjectData.PROJECT_DESCRIPTION);
-        Assertions.assertThat(project.getCaptain()).isEqualTo(captain);
+        assertThat(project.getCaptain()).isEqualTo(captain);
+        assertThat(project.getName()).isEqualTo(PROJECT_NAME);
+        assertThat(project.getDescription()).isEqualTo(PROJECT_DESCRIPTION);
+        assertThat(project.getDeadline()).isEqualTo(PROJECT_DEADLINE);
+        assertThat(project.isTerminated()).isEqualTo(false);
+    }
+
+
+    @Test
+    void changeName_null이아닌name_이름변경() {
+        // Given
+        Account captain = createCaptain();
+
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+
+        // When
+        project.changeName(newProjectName);
+
+        // Then
+        assertThat(project.getName()).isEqualTo(newProjectName);
     }
 
     @Test
-    void changeProjectInform_모든정보업데이트_업데이트성공() throws Exception {
+    void changeName_null인name_이름변경안함() {
         // Given
-        Account captain = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
-        Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
-        
+        Account captain = createCaptain();
+
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+
         // When
-        project.changeProjectInform(newProjectName, newProjectDescription, BasicProjectData.PROJECT_DEADLINE.plus(1, ChronoUnit.DAYS));
-        
+        project.changeName(null);
+
         // Then
-        assertThat(project.getName()).isEqualTo(newProjectName);
+        assertThat(project.getName()).isEqualTo(PROJECT_NAME);
+    }
+
+    @Test
+    void changeDescription_null이아닌description_설명변경() {
+        // Given
+        Account captain = createCaptain();
+
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+
+        // When
+        project.changeDescription(newProjectDescription);
+
+        // Then
         assertThat(project.getDescription()).isEqualTo(newProjectDescription);
     }
 
     @Test
-    void changeProjectInform_모든요청NULL_기존정보유지() throws Exception {
+    void changeDescription_null인description_설명변경안함() {
         // Given
-        Account captain = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
-        Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
+        Account captain = createCaptain();
+
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
 
         // When
-        project.changeProjectInform(null, null, null);
+        project.changeDescription(null);
 
         // Then
-        assertThat(project.getName()).isEqualTo(BasicProjectData.PROJECT_NAME);
-        assertThat(project.getDescription()).isEqualTo(BasicProjectData.PROJECT_DESCRIPTION);
-        assertThat(project.getDeadline()).isEqualTo(BasicProjectData.PROJECT_DEADLINE);
+        assertThat(project.getDescription()).isEqualTo(PROJECT_DESCRIPTION);
     }
 
     @Test
-    void changeCaptain_captain바꾸기_바꾸기성공() throws Exception {
+    void changeDeadline_다른deadline입력_deadline변경() {
         // Given
-        Account existingCaptain = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
-        Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, existingCaptain, BasicProjectData.PROJECT_DEADLINE);
+        Account captain = createCaptain();
+
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
 
         // When
-        Account newCaptain = new Account(newCaptainUsername, BasicAccountData.PASSWORD, newCaptainNickname, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
+        LocalDateTime newDeadline = LocalDateTime.now().plus(1, ChronoUnit.DAYS);
+        project.changeDeadline(newDeadline);
+
+        // Then
+        assertThat(project.getDeadline()).isEqualTo(newDeadline);
+    }
+
+    @Test
+    void changeCaptain_다른Captain입력_Captain변경() {
+        // Given
+        Account captain = createCaptain();
+
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+
+        Account newCaptain = ACCOUNT2;
+
+        // When
         project.changeCaptain(newCaptain);
 
         // Then
-        Assertions.assertThat(project.getCaptain().getUsername()).isEqualTo(newCaptainUsername);
-        Assertions.assertThat(project.getCaptain().getNickname()).isEqualTo(newCaptainNickname);
+        assertThat(project.getCaptain()).isEqualTo(newCaptain);
+    }
+
+    @Test
+    void terminate_terminate되지않은project_terminate됨() {
+        // Given
+        Account captain = createCaptain();
+
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+
+        // When
+        project.terminate();
+
+        // Then
+        assertThat(project.isTerminated()).isTrue();
+    }
+
+    @Test
+    void cancelTerminate_terminate된project_terminate취소() {
+        // Given
+        Account captain = createCaptain();
+
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+
+        project.terminate();
+
+        // When
+        project.cancelTerminate();
+
+        // Then
+        assertThat(project.isTerminated()).isFalse();
+    }
+    
+    @Test
+    void changeKanban() {
+        // Given
+        Account captain = createCaptain();
+
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+        Kanban kanban = Kanban.builder()
+                .project(project)
+                .build();
+
+        Project newProject = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME2)
+                .description(PROJECT_DESCRIPTION2)
+                .deadline(PROJECT_DEADLINE2)
+                .build();
+
+        // When
+        kanban.changeProject(newProject);
+        
+        // Then
+        assertThat(kanban.getProject()).isEqualTo(newProject);
+    }
+
+    private Account createCaptain() {
+        return Account.builder()
+                .username(USERNAME)
+                .password(PASSWORD)
+                .nickname(NICKNAME)
+                .profileImageFile(URL_PROFILE_IMAGE)
+                .roles(ROLES)
+                .build();
     }
 
 }

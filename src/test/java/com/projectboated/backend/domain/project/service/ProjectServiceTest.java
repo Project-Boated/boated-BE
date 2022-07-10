@@ -1,8 +1,8 @@
 package com.projectboated.backend.domain.project.service;
 
 import com.projectboated.backend.common.basetest.BaseTest;
-import com.projectboated.backend.common.data.BasicAccountData;
-import com.projectboated.backend.common.data.BasicProjectData;
+import com.projectboated.backend.common.data.BasicDataAccount;
+import com.projectboated.backend.common.data.BasicDataProject;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.account.account.service.AccountService;
@@ -32,6 +32,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -74,9 +75,9 @@ class ProjectServiceTest extends BaseTest {
     @Test
     void save_project저장_성공() throws Exception {
         // Given
-        Account account = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
 
-        Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, account, BasicProjectData.PROJECT_DEADLINE);
+        Project project = new Project(account, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
 
         // When
         Project saveProject = projectService.save(project);
@@ -90,30 +91,30 @@ class ProjectServiceTest extends BaseTest {
     @Test
     void save_이미존재하는Name으로생성_오류발생() throws Exception {
         // Given
-        Account captain = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
-        Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
+        Account captain = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
+        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
 
         projectRepository.save(project);
 
         // When
         // Then
         String newDescription = "newDescription";
-        assertThatThrownBy(() -> projectService.save(new Project(BasicProjectData.PROJECT_NAME, newDescription, captain, BasicProjectData.PROJECT_DEADLINE)))
+        assertThatThrownBy(() -> projectService.save(new Project(captain, BasicDataProject.PROJECT_NAME, newDescription, BasicDataProject.PROJECT_DEADLINE)))
                 .isInstanceOf(ProjectNameSameInAccountException.class);
     }
 
     @Test
     void update_모든정보Update_업데이트성공() throws Exception {
         // Given
-        Account captain = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account captain = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
 
-        Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
+        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
         projectRepository.save(project);
 
         // When
         String newProjectName = "newProjectName";
         String newProjectDescription = "newProjectDescription";
-        LocalDateTime newDeadline = BasicProjectData.PROJECT_DEADLINE.plus(1, ChronoUnit.DAYS);
+        LocalDateTime newDeadline = BasicDataProject.PROJECT_DEADLINE.plus(1, ChronoUnit.DAYS);
         projectService.update(captain, project.getId(), new ProjectUpdateCond(newProjectName, newProjectDescription, newDeadline));
 
         // Then
@@ -125,34 +126,34 @@ class ProjectServiceTest extends BaseTest {
     @Test
     void update_모든정보NULL_업데이트안됨() throws Exception {
         // Given
-        Account captain = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account captain = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
 
-        Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
+        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
         projectRepository.save(project);
 
         // When
         projectService.update(captain, project.getId(), new ProjectUpdateCond());
 
         // Then
-        assertThat(project.getName()).isEqualTo(BasicProjectData.PROJECT_NAME);
-        assertThat(project.getDescription()).isEqualTo(BasicProjectData.PROJECT_DESCRIPTION);
+        assertThat(project.getName()).isEqualTo(BasicDataProject.PROJECT_NAME);
+        assertThat(project.getDescription()).isEqualTo(BasicDataProject.PROJECT_DESCRIPTION);
     }
 
     @Test
     void update_같은정보로업데이트_성공() throws Exception {
         // Given
-        Account captain = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account captain = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
 
-        Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
+        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
         projectRepository.save(project);
 
         // When
-        projectService.update(captain, project.getId(), new ProjectUpdateCond(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, BasicProjectData.PROJECT_DEADLINE));
+        projectService.update(captain, project.getId(), new ProjectUpdateCond(BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE));
 
         // Then
-        assertThat(project.getName()).isEqualTo(BasicProjectData.PROJECT_NAME);
-        assertThat(project.getDescription()).isEqualTo(BasicProjectData.PROJECT_DESCRIPTION);
-        assertThat(project.getDeadline()).isEqualTo(BasicProjectData.PROJECT_DEADLINE);
+        assertThat(project.getName()).isEqualTo(BasicDataProject.PROJECT_NAME);
+        assertThat(project.getDescription()).isEqualTo(BasicDataProject.PROJECT_DESCRIPTION);
+        assertThat(project.getDeadline()).isEqualTo(BasicDataProject.PROJECT_DEADLINE);
     }
 
     @Test
@@ -162,17 +163,17 @@ class ProjectServiceTest extends BaseTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.update(account, 123L, new ProjectUpdateCond(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, BasicProjectData.PROJECT_DEADLINE)))
+        assertThatThrownBy(() -> projectService.update(account, 123L, new ProjectUpdateCond(BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE)))
                 .isInstanceOf(ProjectNotFoundException.class);
     }
 
     @Test
     void update_captain이아닌Account가요청_오류발생() throws Exception {
         // Given
-        Account account1 = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
-        Account account2 = accountService.save(new Account("username2", BasicAccountData.PASSWORD, "nickname2", BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account account1 = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
+        Account account2 = accountService.save(new Account(ACCOUNT_ID, "username2", BasicDataAccount.PASSWORD, "nickname2", BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
 
-        Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, account1, BasicProjectData.PROJECT_DEADLINE);
+        Project project = new Project(account1, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
         projectRepository.save(project);
 
         // When
@@ -184,17 +185,17 @@ class ProjectServiceTest extends BaseTest {
     @Test
     void update_같은Account에같은Name존재_오류발생() throws Exception {
         // Given
-        Account captain = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account captain = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
 
-        Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
+        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
         projectRepository.save(project);
 
-        Project project2 = new Project("projectName2", "projectDescription2", captain, BasicProjectData.PROJECT_DEADLINE);
+        Project project2 = new Project(captain, "projectName2", "projectDescription2", BasicDataProject.PROJECT_DEADLINE);
         projectRepository.save(project2);
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.update(captain, project2.getId(), new ProjectUpdateCond(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, BasicProjectData.PROJECT_DEADLINE)))
+        assertThatThrownBy(() -> projectService.update(captain, project2.getId(), new ProjectUpdateCond(BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE)))
                 .isInstanceOf(ProjectNameSameInAccountException.class);
     }
 
@@ -202,10 +203,10 @@ class ProjectServiceTest extends BaseTest {
     void findAllCrew_한명의crew가있을때_한명의crew조회() throws Exception {
         // Given
         Account captain = createAccount();
-        Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
+        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
         projectRepository.save(project);
 
-        Account crew = new Account("crew", BasicAccountData.PASSWORD, "crew", BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
+        Account crew = new Account(ACCOUNT_ID, "crew", BasicDataAccount.PASSWORD, "crew", BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES);
         accountRepository.save(crew);
 
         AccountProject accountProject = new AccountProject(crew, project);
@@ -234,10 +235,10 @@ class ProjectServiceTest extends BaseTest {
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
-        Account captain = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account newCaptain = accountService.save(new Account(ACCOUNT_ID, newUsername, newPassword, newNickname, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
+        Account captain = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
 
-        Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
+        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
         projectRepository.save(project);
 
         accountProjectRepository.save(new AccountProject(newCaptain, project));
@@ -255,10 +256,10 @@ class ProjectServiceTest extends BaseTest {
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
-        Account captain = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account newCaptain = accountService.save(new Account(ACCOUNT_ID, newUsername, newPassword, newNickname, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
+        Account captain = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
 
-        Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
+        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
         projectRepository.save(project);
 
         accountProjectRepository.save(new AccountProject(newCaptain, project));
@@ -276,10 +277,10 @@ class ProjectServiceTest extends BaseTest {
         String newUsername = "newUsername";
         String newNickname = "newNickname";
         String newPassword = "newPassword";
-        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
-        Account captain = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account newCaptain = accountService.save(new Account(ACCOUNT_ID, newUsername, newPassword, newNickname, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
+        Account captain = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
 
-        Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
+        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
         projectRepository.save(project);
 
         accountProjectRepository.save(new AccountProject(newCaptain, project));
@@ -297,10 +298,10 @@ class ProjectServiceTest extends BaseTest {
         String newNickname = "newNickname";
         String newPassword = "newPassword";
 
-        Account newCaptain = accountService.save(new Account(newUsername, newPassword, newNickname, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
-        Account captain = accountService.save(new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES));
+        Account newCaptain = accountService.save(new Account(ACCOUNT_ID, newUsername, newPassword, newNickname, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
+        Account captain = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
 
-        Project project = new Project(BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, captain, BasicProjectData.PROJECT_DEADLINE);
+        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
         projectRepository.save(project);
 
         accountProjectRepository.save(new AccountProject(newCaptain, project));
@@ -313,7 +314,7 @@ class ProjectServiceTest extends BaseTest {
 
 
     private Account createAccount() {
-        Account account = new Account(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_FILE, BasicAccountData.ROLES);
+        Account account = new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES);
         accountRepository.save(account);
         return account;
     }

@@ -7,7 +7,6 @@ import io.restassured.http.Cookie;
 import org.junit.jupiter.api.Test;
 import com.projectboated.backend.common.basetest.AcceptanceTest;
 import com.projectboated.backend.common.utils.AccountTestUtils;
-import com.projectboated.backend.common.utils.InvitationTestUtils;
 import com.projectboated.backend.common.utils.ProjectTestUtils;
 import com.projectboated.backend.domain.project.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,8 @@ import java.time.temporal.ChronoUnit;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
-import static com.projectboated.backend.common.data.BasicAccountData.*;
-import static com.projectboated.backend.common.data.BasicProjectData.*;
+import static com.projectboated.backend.common.data.BasicDataAccount.*;
+import static com.projectboated.backend.common.data.BasicDataProject.*;
 import static com.projectboated.backend.web.project.controller.document.ProjectDocument.*;
 
 @AutoConfigureMockMvc

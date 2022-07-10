@@ -1,5 +1,7 @@
 package com.projectboated.backend.domain.uploadfile.entity;
 
+import com.projectboated.backend.domain.common.exception.ErrorCode;
+import com.projectboated.backend.domain.uploadfile.entity.exception.UploadFileNotFoundExt;
 import lombok.*;
 
 import javax.persistence.*;
@@ -35,6 +37,9 @@ public class UploadFile {
 
     private String removeExt(String originalFileName) {
         int lastIndexOfDot = originalFileName.lastIndexOf('.');
+        if(lastIndexOfDot == -1) {
+            throw new UploadFileNotFoundExt(ErrorCode.UPLOAD_FILE_NOT_FOUND_EXT);
+        }
         return originalFileName.substring(0, lastIndexOfDot);
     }
 }

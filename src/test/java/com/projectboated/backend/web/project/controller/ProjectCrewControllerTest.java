@@ -1,8 +1,8 @@
 package com.projectboated.backend.web.project.controller;
 
 import com.projectboated.backend.common.basetest.AcceptanceTest;
-import com.projectboated.backend.common.data.BasicAccountData;
-import com.projectboated.backend.common.data.BasicProjectData;
+import com.projectboated.backend.common.data.BasicDataAccount;
+import com.projectboated.backend.common.data.BasicDataProject;
 import com.projectboated.backend.common.utils.AccountTestUtils;
 import com.projectboated.backend.common.utils.InvitationTestUtils;
 import com.projectboated.backend.common.utils.ProjectTestUtils;
@@ -30,13 +30,13 @@ class ProjectCrewControllerTest extends AcceptanceTest {
     @Test
     void getCrews_project에속한모든crew조회_성공() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_URL);
-        AccountTestUtils.createAccount(port, CREW_USERNAME, BasicAccountData.PASSWORD, CREW_NICKNAME, BasicAccountData.PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, CREW_USERNAME, BasicDataAccount.PASSWORD, CREW_NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
 
-        Cookie captainCookie = AccountTestUtils.login(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD);
-        Cookie crewCookie = AccountTestUtils.login(port, CREW_USERNAME, BasicAccountData.PASSWORD);
+        Cookie captainCookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
+        Cookie crewCookie = AccountTestUtils.login(port, CREW_USERNAME, BasicDataAccount.PASSWORD);
 
-        int projectId = ProjectTestUtils.createProject(port, captainCookie, BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, BasicProjectData.PROJECT_DEADLINE);
+        int projectId = ProjectTestUtils.createProject(port, captainCookie, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
         InvitationTestUtils.createInvitation(port, captainCookie, (long) projectId, CREW_NICKNAME);
 
         long invitationId = InvitationTestUtils.getMyInvitations(port, crewCookie).getBody().jsonPath().getLong("invitations[0].id");
@@ -59,13 +59,13 @@ class ProjectCrewControllerTest extends AcceptanceTest {
     @Test
     void deleteCrew_project에속한모든crew추방_성공() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_URL);
-        AccountTestUtils.createAccount(port, CREW_USERNAME, BasicAccountData.PASSWORD, CREW_NICKNAME, BasicAccountData.PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, CREW_USERNAME, BasicDataAccount.PASSWORD, CREW_NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
 
-        Cookie captainCookie = AccountTestUtils.login(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD);
-        Cookie crewCookie = AccountTestUtils.login(port, CREW_USERNAME, BasicAccountData.PASSWORD);
+        Cookie captainCookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
+        Cookie crewCookie = AccountTestUtils.login(port, CREW_USERNAME, BasicDataAccount.PASSWORD);
 
-        int projectId = ProjectTestUtils.createProject(port, captainCookie, BasicProjectData.PROJECT_NAME, BasicProjectData.PROJECT_DESCRIPTION, BasicProjectData.PROJECT_DEADLINE);
+        int projectId = ProjectTestUtils.createProject(port, captainCookie, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
         InvitationTestUtils.createInvitation(port, captainCookie, (long) projectId, CREW_NICKNAME);
 
         long invitationId = InvitationTestUtils.getMyInvitations(port, crewCookie).getBody().jsonPath().getLong("invitations[0].id");

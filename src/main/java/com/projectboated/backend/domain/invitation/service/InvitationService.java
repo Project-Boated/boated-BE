@@ -52,7 +52,7 @@ public class InvitationService {
                     throw new InvitationExistsAccount(ErrorCode.INVITATION_ACCOUNT_EXISTS);
                 });
 
-        if (!accountProjectRepository.existsAccountInProject(crew, project)) {
+        if (accountProjectRepository.countByProjectIdAndAccountId(project.getId(), crew.getId())!=0) {
             throw new InvitationExistsAccountInProject(ErrorCode.INVITATION_ACCOUNT_EXISTS_IN_PROJECT);
         }
 

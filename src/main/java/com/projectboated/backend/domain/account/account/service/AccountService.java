@@ -108,7 +108,8 @@ public class AccountService {
             findAccount.changeProfileImage(uploadFileProfileImage);
         }
 
-        findAccount.changeProfile(updateCond.getNickname(), updateCond.getNewPassword());
+        findAccount.changeNickname(updateCond.getNickname());
+        findAccount.changePassword(updateCond.getNewPassword());
     }
 
     private boolean checkValidPassword(Account account, String password) {

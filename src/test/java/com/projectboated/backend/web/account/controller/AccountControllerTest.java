@@ -1,6 +1,6 @@
 package com.projectboated.backend.web.account.controller;
 
-import com.projectboated.backend.common.data.BasicAccountData;
+import com.projectboated.backend.common.data.BasicDataAccount;
 import com.projectboated.backend.web.account.account.dto.request.PutNicknameRequest;
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
@@ -36,7 +36,7 @@ class AccountControllerTest extends AcceptanceTest {
         given(this.spec)
                 .filter(documentSignUp())
                 .contentType(ContentType.JSON)
-                .body(new SignUpRequest(BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_URL))
+                .body(new SignUpRequest(BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL))
         .when()
                 .port(port)
                 .post("/api/account/sign-up")
@@ -47,8 +47,8 @@ class AccountControllerTest extends AcceptanceTest {
     @Test
     void getAccountProfile_자신의profile가져오기_성공() throws Exception {
 
-        AccountTestUtils.createAccount(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_URL);
-        Cookie cookie = AccountTestUtils.login(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD);
+        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
 
         given(this.spec)
                 .filter(documentAccountProfileRetrieve())
@@ -59,9 +59,9 @@ class AccountControllerTest extends AcceptanceTest {
                 .get("/api/account/profile")
         .then()
                 .statusCode(HttpStatus.OK.value())
-                .assertThat().body("username", equalTo(BasicAccountData.USERNAME))
-                .assertThat().body("nickname", equalTo(BasicAccountData.NICKNAME))
-                .assertThat().body("profileImageUrl", startsWith(BasicAccountData.PROFILE_IMAGE_URL))
+                .assertThat().body("username", equalTo(BasicDataAccount.USERNAME))
+                .assertThat().body("nickname", equalTo(BasicDataAccount.NICKNAME))
+                .assertThat().body("profileImageUrl", startsWith(BasicDataAccount.PROFILE_IMAGE_URL))
                 .assertThat().body("roles", notNullValue());
     }
 
@@ -71,8 +71,8 @@ class AccountControllerTest extends AcceptanceTest {
         Mockito.when(awsS3ProfileService.uploadProfileImage(Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn("http://test.com");
 
-        AccountTestUtils.createAccount(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_URL);
-        Cookie cookie = AccountTestUtils.login(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD);
+        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
 
         String updateNickname = "updateNickname";
         String updatePassword = "updatePassword";
@@ -86,7 +86,7 @@ class AccountControllerTest extends AcceptanceTest {
         .when()
                 .port(port)
                 .multiPart("nickname", updateNickname)
-                .multiPart("originalPassword", BasicAccountData.PASSWORD)
+                .multiPart("originalPassword", BasicDataAccount.PASSWORD)
                 .multiPart("newPassword", updatePassword)
                 .multiPart("profileImageFile", ResourceUtils.getFile("classpath:profile-image-test.png"), "image/jpg")
                 .patch("/api/account/profile")
@@ -102,7 +102,7 @@ class AccountControllerTest extends AcceptanceTest {
             .get("/api/account/profile")
         .then()
             .statusCode(HttpStatus.OK.value())
-            .assertThat().body("username", equalTo(BasicAccountData.USERNAME))
+            .assertThat().body("username", equalTo(BasicDataAccount.USERNAME))
             .assertThat().body("nickname", equalTo(updateNickname))
             .assertThat().body("profileImageUrl", notNullValue())
             .assertThat().body("roles", notNullValue());
@@ -111,8 +111,8 @@ class AccountControllerTest extends AcceptanceTest {
     @Test
     void deleteAccount_회원탈퇴_성공() throws Exception {
 
-        AccountTestUtils.createAccount(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_URL);
-        Cookie cookie = AccountTestUtils.login(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD);
+        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
 
         given(this.spec)
                 .filter(documentAccountDelete())
@@ -128,8 +128,8 @@ class AccountControllerTest extends AcceptanceTest {
     @Test
     void validationNicknameUnique_중복되지않는닉네임조회_notDupliated() throws Exception {
 
-        AccountTestUtils.createAccount(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_URL);
-        Cookie cookie = AccountTestUtils.login(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD);
+        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
 
         given(this.spec)
                 .filter(documentAccountNicknameUniqueValidation())
@@ -148,8 +148,8 @@ class AccountControllerTest extends AcceptanceTest {
     @Test
     void putNickname_닉네임변경_성공() throws Exception {
 
-        AccountTestUtils.createAccount(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_URL);
-        Cookie cookie = AccountTestUtils.login(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD);
+        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
 
         given(this.spec)
                 .filter(documentAccountPutNickname())
@@ -169,8 +169,8 @@ class AccountControllerTest extends AcceptanceTest {
         Mockito.when(awsS3ProfileService.uploadProfileImage(Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn("http://test.com");
 
-        AccountTestUtils.createAccount(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_URL);
-        Cookie cookie = AccountTestUtils.login(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD);
+        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
 
         given(this.spec)
             .filter(documentAccountProfileImageUpdate())
@@ -187,8 +187,8 @@ class AccountControllerTest extends AcceptanceTest {
 
     @Test
     void getAccountProfileImage_이미지Get_성공() throws IOException {
-        AccountTestUtils.createAccount(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_URL);
-        Cookie cookie = AccountTestUtils.login(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD);
+        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
 
         Mockito.when(awsS3ProfileService.getProfileImageBytes(Mockito.any()))
                 .thenReturn(new AwsS3File("filename", "image/png", "asdf".getBytes()));
@@ -215,8 +215,8 @@ class AccountControllerTest extends AcceptanceTest {
 
     @Test
     void deleteAccountProfileImage_이미지삭제_성공() throws IOException {
-        AccountTestUtils.createAccount(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD, BasicAccountData.NICKNAME, BasicAccountData.PROFILE_IMAGE_URL);
-        Cookie cookie = AccountTestUtils.login(port, BasicAccountData.USERNAME, BasicAccountData.PASSWORD);
+        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
 
         given(this.spec)
             .filter(documentAccountProfileImageDelete())

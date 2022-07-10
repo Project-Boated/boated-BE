@@ -19,7 +19,7 @@ public class AccountProjectService {
     private final AccountProjectRepository accountProjectRepository;
 
     public List<Account> getCrews(Project project) {
-        return accountProjectRepository.findCrewsFromProject(project);
+        return accountProjectRepository.findCrewByProject(project);
     }
 
 }

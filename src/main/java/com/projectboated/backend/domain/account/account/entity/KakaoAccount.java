@@ -22,7 +22,7 @@ public class KakaoAccount extends Account {
 
 	@Builder(builderMethodName = "kakaoBuilder")
 	public KakaoAccount(Long kakaoId, Set<Role> roles, ProfileImage profileImageFile) {
-		super(null, null, null, profileImageFile, roles);
+		super(null, null, null, null, profileImageFile, roles);
 		this.kakaoId = kakaoId;
 	}
 }

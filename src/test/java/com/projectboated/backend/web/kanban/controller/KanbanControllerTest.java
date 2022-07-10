@@ -1,9 +1,5 @@
 package com.projectboated.backend.web.kanban.controller;
 
-import com.projectboated.backend.common.data.BasicAccountData;
-import com.projectboated.backend.common.data.BasicKanbanData;
-import com.projectboated.backend.common.data.BasicProjectData;
-import com.projectboated.backend.common.data.BasicTaskData;
 import com.projectboated.backend.common.utils.KanbanTestUtils;
 import com.projectboated.backend.common.utils.ProjectTestUtils;
 import com.projectboated.backend.common.utils.TaskTestUtils;
@@ -18,10 +14,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static com.projectboated.backend.common.data.BasicAccountData.*;
-import static com.projectboated.backend.common.data.BasicKanbanData.*;
-import static com.projectboated.backend.common.data.BasicProjectData.*;
-import static com.projectboated.backend.common.data.BasicTaskData.*;
+import static com.projectboated.backend.common.data.BasicDataAccount.*;
+import static com.projectboated.backend.common.data.BasicDataKanban.*;
+import static com.projectboated.backend.common.data.BasicDataProject.*;
+import static com.projectboated.backend.common.data.BasicDataTask.*;
 import static io.restassured.RestAssured.given;
 import static com.projectboated.backend.web.project.controller.document.KanbanDocument.*;
 
