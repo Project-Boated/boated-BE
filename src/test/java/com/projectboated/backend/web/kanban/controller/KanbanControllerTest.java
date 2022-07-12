@@ -1,5 +1,7 @@
 package com.projectboated.backend.web.kanban.controller;
 
+import com.projectboated.backend.common.basetest.AcceptanceTest;
+import com.projectboated.backend.common.utils.AccountTestUtils;
 import com.projectboated.backend.common.utils.KanbanTestUtils;
 import com.projectboated.backend.common.utils.ProjectTestUtils;
 import com.projectboated.backend.common.utils.TaskTestUtils;
@@ -7,19 +9,17 @@ import com.projectboated.backend.web.kanban.kanbanlane.dto.request.CreateKanbanL
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
 import org.junit.jupiter.api.Test;
-import com.projectboated.backend.common.basetest.AcceptanceTest;
-import com.projectboated.backend.common.utils.AccountTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
-import static com.projectboated.backend.common.data.BasicDataKanban.*;
+import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME;
 import static com.projectboated.backend.common.data.BasicDataProject.*;
 import static com.projectboated.backend.common.data.BasicDataTask.*;
-import static io.restassured.RestAssured.given;
 import static com.projectboated.backend.web.project.controller.document.KanbanDocument.*;
+import static io.restassured.RestAssured.given;
 
 @AutoConfigureMockMvc
 class KanbanControllerTest extends AcceptanceTest {

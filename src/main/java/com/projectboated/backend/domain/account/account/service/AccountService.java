@@ -48,7 +48,6 @@ public class AccountService {
 
     @Transactional
     public Account save(Account account) {
-
         if (isExistsUsername(account.getUsername())) {
             throw new AccountUsernameAlreadyExistsException(ErrorCode.ACCOUNT_USERNAME_EXISTS);
         }
@@ -62,7 +61,7 @@ public class AccountService {
     }
 
     private boolean isExistsUsername(String username) {
-        return Objects.nonNull(username) && accountRepository.existsByUsername(username);
+        return username!=null && accountRepository.existsByUsername(username);
     }
 
     @Transactional

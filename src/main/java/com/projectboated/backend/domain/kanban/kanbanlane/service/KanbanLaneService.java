@@ -29,11 +29,10 @@ public class KanbanLaneService {
             throw new KanbanLaneSaveAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
-        if (kanbanLaneRepository.countByProject(project) >= 5) {
+        if (kanbanLaneRepository.countByKanban(project.getKanban()) >= 5) {
             throw new KanbanLaneAlreadyExists5(ErrorCode.KANBAN_LANE_EXISTS_UPPER_5);
         }
 
-        kanbanLane.changeProject(project);
         kanbanLane.changeKanban(project.getKanban());
         kanbanLaneRepository.save(kanbanLane);
     }
@@ -47,7 +46,7 @@ public class KanbanLaneService {
             throw new KanbanLaneSaveAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
-        kanbanLaneRepository.deleteCustomLaneById(projectId);
+        kanbanLaneRepository.deleteCustomLaneByKanban(project.getKanban());
     }
 
     private boolean isCaptain(Account account, Project project) {

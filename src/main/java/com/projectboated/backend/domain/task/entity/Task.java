@@ -49,6 +49,7 @@ public class Task extends BaseTimeEntity {
     public void changeKanbanLane(KanbanLane kanbanLane) {
         this.kanbanLane = kanbanLane;
     }
+
     public void changeProject(Project project) {
         this.project = project;
     }

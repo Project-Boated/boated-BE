@@ -15,7 +15,7 @@ import javax.persistence.Entity;
 public class CustomKanbanLane extends KanbanLane{
 
     @Builder
-    public CustomKanbanLane(String name, Project project, Kanban kanban) {
-        super(name, project, kanban);
+    public CustomKanbanLane(String name, Kanban kanban) {
+        super(name, kanban);
     }
 }

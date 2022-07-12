@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface KanbanRepository extends JpaRepository<Kanban, Long> {
-    Optional<Kanban> findByProjectId(Long projectId);
 
     @Modifying
     @Query("delete from Kanban k where k.project=:project")

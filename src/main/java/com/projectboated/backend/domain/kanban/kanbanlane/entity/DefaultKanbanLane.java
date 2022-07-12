@@ -4,7 +4,6 @@ import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import com.projectboated.backend.domain.project.entity.Project;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -15,7 +14,7 @@ import javax.persistence.Entity;
 public class DefaultKanbanLane extends KanbanLane{
 
     @Builder
-    public DefaultKanbanLane(String name, Project project, Kanban kanban) {
-        super(name, project, kanban);
+    public DefaultKanbanLane(String name, Kanban kanban) {
+        super(name, kanban);
     }
 }
