@@ -48,7 +48,7 @@ public class ProjectService {
 
         for (KanbanLaneType kanbanLaneType : KanbanLaneType.values()) {
             String name = kanbanLaneType.name();
-            KanbanLane kanbanLane = new DefaultKanbanLane(name, newProject, newKanban);
+            KanbanLane kanbanLane = new DefaultKanbanLane(name, newKanban);
             kanbanLaneRepository.save(kanbanLane);
         }
 
@@ -151,7 +151,7 @@ public class ProjectService {
             throw new ProjectDeleteAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
-        kanbanLaneRepository.deleteByProject(project);
+        kanbanLaneRepository.deleteByKanban(project.getKanban());
         kanbanRepository.deleteByProject(project);
         projectRepository.delete(project);
     }

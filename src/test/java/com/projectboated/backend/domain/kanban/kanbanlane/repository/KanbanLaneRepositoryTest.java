@@ -1,0 +1,95 @@
+package com.projectboated.backend.domain.kanban.kanbanlane.repository;
+
+import com.projectboated.backend.common.basetest.RepositoryTest;
+import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
+import com.projectboated.backend.domain.project.entity.Project;
+import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
+
+import static com.projectboated.backend.common.data.BasicDataKanbanLane.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
+class KanbanLaneRepositoryTest extends RepositoryTest {
+
+    @Test
+    void findByKanbanAndName_kanban에속한name1개존재_1개조회() {
+        // Given
+        Project project = insertDefaultProjectAndDefaultCaptain();
+        Kanban kanban = insertKanban(project);
+        insertDefaultCustomKanbanLane(kanban);
+
+        // When
+        Optional<KanbanLane> result = kanbanLaneRepository.findByKanbanAndName(kanban, KANBAN_LANE_NAME);
+
+        // Then
+        assertThat(result).isPresent();
+        assertThat(result.get().getKanban()).isEqualTo(kanban);
+        assertThat(result.get().getName()).isEqualTo(KANBAN_LANE_NAME);
+    }
+
+    @Test
+    void findByKanbanAndName_kanban에속하지않은name1개존재_empty() {
+        // Given
+        Account account = insertDefaultAccount();
+
+        Project project = insertDefaultProject(account);
+        Kanban kanban = insertKanban(project);
+        insertCustomKanbanLane(kanban, "lane1");
+
+        Project project2 = insertDefaultProject2(account);
+        Kanban kanban2 = insertKanban(project2);
+        insertCustomKanbanLane(kanban2, "lane2");
+
+        // When
+        Optional<KanbanLane> result = kanbanLaneRepository.findByKanbanAndName(kanban, "lane2");
+
+        // Then
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void countByKanban_kanban에속한lane4개존재_return_4() {
+        // Given
+        Project project = insertDefaultProjectAndDefaultCaptain();
+        Kanban kanban = insertKanban(project);
+        insertDefaultKanbanLanes(kanban);
+
+        // When
+        Long result = kanbanLaneRepository.countByKanban(kanban);
+
+        // Then
+        assertThat(result).isEqualTo(4);
+    }
+
+    @Test
+    void deleteByKanban_Kanban에속한lane4개존재_KanbanLane전체삭제() {
+        // Given
+        Project project = insertDefaultProjectAndDefaultCaptain();
+        Kanban kanban = insertKanban(project);
+        insertDefaultKanbanLanes(kanban);
+
+        // When
+        long result = kanbanLaneRepository.deleteByKanban(kanban);
+
+        // Then
+        assertThat(result).isEqualTo(4);
+    }
+
+    @Test
+    void deleteCustomLaneByKanban_Kanban에속한CustomLane존재_CustomLane삭제() {
+        // Given
+        Project project = insertDefaultProjectAndDefaultCaptain();
+        Kanban kanban = insertKanban(project);
+        insertDefaultCustomKanbanLane(kanban);
+
+        // When
+        kanbanLaneRepository.deleteCustomLaneByKanban(kanban);
+
+        // Then
+        assertThat(kanbanLaneRepository.countByKanban(kanban)).isEqualTo(0);
+    }
+
+}

@@ -14,8 +14,8 @@ public interface AccountProjectRepository extends JpaRepository<AccountProject, 
     @Query("delete from AccountProject ap where ap.project=:project and ap.account=:account")
     void deleteByProjectAndAccount(@Param("project") Project project, @Param("account") Account account);
 
-    @Query("select count(ap) from AccountProject ap where ap.project.id=:projectId and ap.account.id=:accountId")
-    Long countByProjectIdAndAccountId(@Param("projectId") long projectId, @Param("accountId") long accountId);
+    @Query("select count(ap) from AccountProject ap where ap.project=:project and ap.account=:account")
+    Long countByProjectAndAccount(@Param("project") Project project, @Param("account") Account account);
 
     @Query("select count(ap) from AccountProject ap where ap.account.id=:crewId and ap.project.id=:projectId")
     Long countByCrewInProject(@Param("crewId") Long crewId, @Param("projectId") Long projectId);

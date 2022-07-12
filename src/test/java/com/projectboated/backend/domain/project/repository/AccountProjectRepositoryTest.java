@@ -42,7 +42,7 @@ class AccountProjectRepositoryTest extends RepositoryTest {
                 .build());
 
         // When
-        long result = accountProjectRepository.countByProjectIdAndAccountId(project.getId(), account2.getId());
+        long result = accountProjectRepository.countByProjectAndAccount(project, account2);
 
         // Then
         assertThat(result).isEqualTo(1);
@@ -57,7 +57,7 @@ class AccountProjectRepositoryTest extends RepositoryTest {
         Account account2 = insertDefaultAccount2();
 
         // When
-        long result = accountProjectRepository.countByProjectIdAndAccountId(project.getId(), account2.getId());
+        long result = accountProjectRepository.countByProjectAndAccount(project, account2);
 
         // Then
         assertThat(result).isEqualTo(0);

@@ -1,0 +1,1 @@
+alter table kanban_lane drop foreign key fk_kanban_lane_project;

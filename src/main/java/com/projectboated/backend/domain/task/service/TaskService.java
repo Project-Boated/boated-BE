@@ -45,7 +45,7 @@ public class TaskService {
             throw new TaskSaveAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
-        KanbanLane kanbanLane = kanbanLaneRepository.findByProjectAndName(project, "READY")
+        KanbanLane kanbanLane = kanbanLaneRepository.findByKanbanAndName(project.getKanban(), "READY")
                 .orElseThrow(() -> new KanbanLaneNotFoundException(ErrorCode.KANBAN_LANE_NOT_FOUND));
 
         task.changeProject(project);

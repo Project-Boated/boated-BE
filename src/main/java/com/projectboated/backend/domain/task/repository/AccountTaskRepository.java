@@ -9,6 +9,5 @@ import java.util.Optional;
 
 public interface AccountTaskRepository extends JpaRepository<AccountTask, Long> {
     boolean existsByAccountAndTask(Account account, Task task);
-
     Optional<AccountTask> findByTaskAndAccount(Task task, Account account);
 }

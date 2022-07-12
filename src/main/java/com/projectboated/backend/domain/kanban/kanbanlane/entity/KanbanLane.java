@@ -28,29 +28,15 @@ public abstract class KanbanLane extends BaseTimeEntity {
     @JoinColumn(name = "kanban_id")
     private Kanban kanban;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
-    private Project project;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "kanbanLane")
     private List<Task> tasks = new ArrayList<>();
 
-    protected KanbanLane(String name, Project project, Kanban kanban) {
+    protected KanbanLane(String name, Kanban kanban) {
         this.name = name;
-        this.project = project;
         this.kanban = kanban;
-    }
-
-    public void changeProject(Project project) {
-        this.project = project;
     }
 
     public void changeKanban(Kanban kanban) {
         this.kanban = kanban;
-    }
-
-    public void addTask(Task task) {
-        this.tasks.add(task);
-        task.changeKanbanLane(this);
     }
 }

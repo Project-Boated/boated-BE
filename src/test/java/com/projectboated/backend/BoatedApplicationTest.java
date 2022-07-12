@@ -10,7 +10,8 @@ import org.springframework.boot.SpringApplication;
 
 import static org.mockito.Mockito.mockStatic;
 
-class ProjectcompassApplicationTest {
+@DisplayName("Application : Application 동작 테스트")
+class BoatedApplicationTest {
 
     static MockedStatic<SpringApplication> application;
 
