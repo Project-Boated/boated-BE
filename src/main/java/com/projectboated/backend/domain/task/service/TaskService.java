@@ -9,6 +9,7 @@ import com.projectboated.backend.domain.kanban.kanbanlane.repository.KanbanLaneR
 import com.projectboated.backend.domain.kanban.kanbanlane.service.exception.KanbanLaneNotFoundException;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
+import com.projectboated.backend.domain.project.service.AccountProjectService;
 import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
 import com.projectboated.backend.domain.task.entity.AccountTask;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TaskService {
 
     private final AccountRepository accountRepository;
+    private final AccountProjectService accountProjectService;
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
     private final KanbanLaneRepository kanbanLaneRepository;
@@ -41,7 +43,7 @@ public class TaskService {
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
         if (!projectService.isCaptain(findAccount, project) &&
-                !projectService.isCrew(findAccount, projectId)) {
+                !accountProjectService.isCrew(project, findAccount)) {
             throw new TaskSaveAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
@@ -63,7 +65,7 @@ public class TaskService {
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
         if (!projectService.isCaptain(requestAccount, project) &&
-                !projectService.isCrew(requestAccount, projectId)) {
+                !accountProjectService.isCrew(project, requestAccount)) {
             throw new TaskAssignDeniedException(ErrorCode.TASK_ASSIGN_DENIED_EXCEPTION);
         }
 
@@ -98,7 +100,7 @@ public class TaskService {
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
         if (!projectService.isCaptain(requestAccount, project) &&
-                !projectService.isCrew(requestAccount, projectId)) {
+                !accountProjectService.isCrew(project, requestAccount)) {
             throw new TaskAssignDeniedException(ErrorCode.TASK_ASSIGN_DENIED_EXCEPTION);
         }
 

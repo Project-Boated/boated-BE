@@ -1,4 +1,4 @@
-package com.projectboated.backend.web.project.controller.document;
+package com.projectboated.backend.web.kanban.document;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

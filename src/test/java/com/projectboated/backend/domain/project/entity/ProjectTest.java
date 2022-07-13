@@ -195,7 +195,7 @@ class ProjectTest {
     }
     
     @Test
-    void changeKanban() {
+    void changeKanban_새로운kanban_kanban바뀜() {
         // Given
         Account captain = createCaptain();
 
@@ -221,6 +221,44 @@ class ProjectTest {
         
         // Then
         assertThat(kanban.getProject()).isEqualTo(newProject);
+    }
+
+    @Test
+    void isCaptain_captain인경우_return_true() {
+        // Given
+        Account captain = Account.builder()
+                .id(1L)
+                .build();
+        Project project = Project.builder()
+                .captain(captain)
+                .build();
+
+        // When
+        boolean result = project.isCaptain(captain);
+
+        // Then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    void isCaptain_captain이아닌경우_return_false() {
+        // Given
+        Account captain = Account.builder()
+                .id(1L)
+                .build();
+        Project project = Project.builder()
+                .captain(captain)
+                .build();
+
+        Account notCaptain = Account.builder()
+                .id(2L)
+                .build();
+
+        // When
+        boolean result = project.isCaptain(notCaptain);
+
+        // Then
+        assertThat(result).isFalse();
     }
 
     private Account createCaptain() {

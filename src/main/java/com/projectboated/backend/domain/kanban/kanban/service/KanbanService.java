@@ -4,6 +4,7 @@ import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanban.service.exception.KanbanAccessDeniedException;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
+import com.projectboated.backend.domain.project.service.AccountProjectService;
 import lombok.RequiredArgsConstructor;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.projectboated.backend.domain.kanban.kanban.repository.KanbanRepository;
@@ -22,13 +23,14 @@ public class KanbanService {
     private final ProjectRepository projectRepository;
 
     private final ProjectService projectService;
+    private final AccountProjectService accountProjectService;
 
     public Kanban find(Account account, Long projectId) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
         if (!projectService.isCaptain(account, project) &&
-                !projectService.isCrew(account, projectId)) {
+                !accountProjectService.isCrew(project, account)) {
             throw new KanbanAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
         }
 

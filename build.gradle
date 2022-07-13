@@ -160,3 +160,15 @@ bootJar {
     }
 }
 // Spring Rest Docs 끝
+
+// Compiler 추가 옵션 시작
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+            // Graal Compiler setting
+            //<< "-XX:+UnlockExperimentalVMOptions" << "-XX:+EnableJVMCI" << "-XX:+EnableJVMCI"
+        }
+    }
+}
+// Compiler 추가 옵션 끝

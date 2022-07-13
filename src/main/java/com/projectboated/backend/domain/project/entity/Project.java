@@ -11,11 +11,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity @Getter
+@Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Project extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "project_id")
     private Long id;
 
@@ -29,7 +31,9 @@ public class Project extends BaseTimeEntity {
     @JoinColumn(name = "account_id_captain")
     private Account captain;
 
-    @OneToOne(mappedBy = "project")
+    @OneToOne(mappedBy = "project",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true)
     private Kanban kanban;
 
     private boolean isTerminated;
@@ -64,7 +68,7 @@ public class Project extends BaseTimeEntity {
     }
 
     public void changeKanban(Kanban kanban) {
-        if (this.kanban==null || !this.kanban.equals(kanban)) {
+        if (this.kanban == null || !this.kanban.equals(kanban)) {
             this.kanban = kanban;
             kanban.changeProject(this);
         }
@@ -76,5 +80,9 @@ public class Project extends BaseTimeEntity {
 
     public void cancelTerminate() {
         isTerminated = false;
+    }
+
+    public boolean isCaptain(Account captain) {
+        return this.captain.getId() == captain.getId();
     }
 }

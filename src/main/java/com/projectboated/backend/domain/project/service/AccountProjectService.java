@@ -22,4 +22,8 @@ public class AccountProjectService {
         return accountProjectRepository.findCrewByProject(project);
     }
 
+    public boolean isCrew(Project project,Account account) {
+        return accountProjectRepository.countByCrewInProject(account, project) == 1;
+    }
+
 }
