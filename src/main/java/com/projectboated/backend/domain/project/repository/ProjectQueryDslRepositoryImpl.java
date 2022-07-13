@@ -11,7 +11,6 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -20,7 +19,6 @@ import java.util.List;
 import static com.projectboated.backend.domain.project.entity.QAccountProject.accountProject;
 import static com.projectboated.backend.domain.project.entity.QProject.project;
 
-@Repository
 public class ProjectQueryDslRepositoryImpl implements ProjectQueryDslRepository {
 
     private final JPAQueryFactory queryFactory;

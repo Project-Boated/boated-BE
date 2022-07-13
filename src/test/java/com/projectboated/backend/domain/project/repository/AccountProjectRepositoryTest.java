@@ -76,7 +76,7 @@ class AccountProjectRepositoryTest extends RepositoryTest {
                 .build());
 
         // When
-        Long result = accountProjectRepository.countByCrewInProject(account2.getId(), project.getId());
+        Long result = accountProjectRepository.countByCrewInProject(account2, project);
 
         // Then
         assertThat(result).isEqualTo(1);
@@ -89,7 +89,7 @@ class AccountProjectRepositoryTest extends RepositoryTest {
         Project project = insertDefaultProject(account);
 
         // When
-        Long result = accountProjectRepository.countByCrewInProject(123L, project.getId());
+        Long result = accountProjectRepository.countByCrewInProject(account, project);
 
         // Then
         assertThat(result).isEqualTo(0);

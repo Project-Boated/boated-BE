@@ -1,12 +1,15 @@
 package com.projectboated.backend.domain.kanban.kanban.entity;
 
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.DefaultKanbanLane;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT;
+import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME;
 import static com.projectboated.backend.common.data.BasicDataProject.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Kanban : Entity 단위 테스트")
 class KanbanTest {
@@ -20,7 +23,7 @@ class KanbanTest {
         Kanban kanban = new Kanban(project);
 
         // Then
-        Assertions.assertThat(kanban.getProject()).isEqualTo(project);
+        assertThat(kanban.getProject()).isEqualTo(project);
     }
 
     @Test
@@ -34,7 +37,24 @@ class KanbanTest {
         kanban.changeProject(newProject);
 
         // Then
-        Assertions.assertThat(kanban.getProject()).isEqualTo(newProject);
+        assertThat(kanban.getProject()).isEqualTo(newProject);
+    }
+
+    @Test
+    void addKanbanLane_새로운kanbanlane주어짐_kanbanlane추가() {
+        // Given
+        Project project = createProject();
+        Kanban kanban = new Kanban(project);
+        KanbanLane kanbanLane = DefaultKanbanLane.builder()
+                .name(KANBAN_LANE_NAME)
+                .build();
+
+        // When
+        kanban.addKanbanLane(kanbanLane);
+
+        // Then
+        assertThat(kanban.getLanes()).containsExactly(kanbanLane);
+        assertThat(kanbanLane.getKanban()).isEqualTo(kanban);
     }
 
     private Project createProject() {

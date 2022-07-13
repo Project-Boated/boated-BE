@@ -18,7 +18,7 @@ import static com.projectboated.backend.common.data.BasicDataAccount.*;
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME;
 import static com.projectboated.backend.common.data.BasicDataProject.*;
 import static com.projectboated.backend.common.data.BasicDataTask.*;
-import static com.projectboated.backend.web.project.controller.document.KanbanDocument.*;
+import static com.projectboated.backend.web.kanban.document.KanbanDocument.*;
 import static io.restassured.RestAssured.given;
 
 @AutoConfigureMockMvc

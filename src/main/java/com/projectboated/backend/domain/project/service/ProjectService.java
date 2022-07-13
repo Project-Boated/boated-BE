@@ -34,6 +34,7 @@ public class ProjectService {
     private final KanbanRepository kanbanRepository;
     private final KanbanLaneRepository kanbanLaneRepository;
     private final AccountProjectRepository accountProjectRepository;
+    private final AccountProjectService accountProjectService;
 
     @Transactional
     public Project save(Project project) {
@@ -41,18 +42,16 @@ public class ProjectService {
             throw new ProjectNameSameInAccountException(ErrorCode.PROJECT_NAME_EXISTS_IN_ACCOUNT);
         }
 
-        Project newProject = projectRepository.save(project);
-
-        Kanban newKanban = new Kanban(newProject);
-        kanbanRepository.save(newKanban);
+        Kanban newKanban = new Kanban(project);
+        project.changeKanban(newKanban);
 
         for (KanbanLaneType kanbanLaneType : KanbanLaneType.values()) {
             String name = kanbanLaneType.name();
             KanbanLane kanbanLane = new DefaultKanbanLane(name, newKanban);
-            kanbanLaneRepository.save(kanbanLane);
+            newKanban.addKanbanLane(kanbanLane);
         }
 
-        return newProject;
+        return projectRepository.save(project);
     }
 
     @Transactional
@@ -82,7 +81,7 @@ public class ProjectService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if(!isCaptain(account, project) && !isCrew(account, projectId)) {
+        if(!isCaptain(account, project) && !accountProjectService.isCrew(project, account)) {
             throw new ProjectAccessDeniedException.ProjectFindCrewsAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
@@ -151,13 +150,7 @@ public class ProjectService {
             throw new ProjectDeleteAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
         }
 
-        kanbanLaneRepository.deleteByKanban(project.getKanban());
-        kanbanRepository.deleteByProject(project);
         projectRepository.delete(project);
-    }
-
-    public boolean isCrew(Account account, Long projectId) {
-        return accountProjectRepository.countByCrewInProject(account.getId(), projectId) == 1;
     }
 
     public boolean isCaptain(Account account, Project project) {

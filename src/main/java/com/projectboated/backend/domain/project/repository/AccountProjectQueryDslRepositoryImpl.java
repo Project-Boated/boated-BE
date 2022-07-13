@@ -11,7 +11,6 @@ import java.util.List;
 import static com.projectboated.backend.domain.account.account.entity.QAccount.account;
 import static com.projectboated.backend.domain.project.entity.QAccountProject.accountProject;
 
-@Repository
 public class AccountProjectQueryDslRepositoryImpl implements AccountProjectQueryDslRepository{
 
     private final JPAQueryFactory queryFactory;

@@ -24,7 +24,10 @@ public class Kanban extends BaseTimeEntity {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "kanban")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "kanban",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true)
+    @OrderColumn(name = "kanban_lane_index")
     private List<KanbanLane> lanes = new ArrayList<>();
 
     @Builder
@@ -37,5 +40,10 @@ public class Kanban extends BaseTimeEntity {
             this.project = project;
             project.changeKanban(this);
         }
+    }
+
+    public void addKanbanLane(KanbanLane kanbanLane) {
+        this.lanes.add(kanbanLane);
+        kanbanLane.changeKanban(this);
     }
 }
