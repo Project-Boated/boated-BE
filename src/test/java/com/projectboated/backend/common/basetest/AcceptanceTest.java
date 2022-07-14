@@ -13,6 +13,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
@@ -20,6 +21,7 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 @ExtendWith(RestDocumentationExtension.class)
 @AutoConfigureRestDocs
 @ActiveProfiles("test")
+@Transactional
 public class AcceptanceTest {
 
     @LocalServerPort

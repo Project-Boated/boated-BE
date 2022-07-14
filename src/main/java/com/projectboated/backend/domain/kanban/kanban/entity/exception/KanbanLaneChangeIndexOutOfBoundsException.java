@@ -1,4 +1,4 @@
-package com.projectboated.backend.domain.kanban.kanbanlane.service.exception;
+package com.projectboated.backend.domain.kanban.kanban.entity.exception;
 
 import com.projectboated.backend.domain.common.exception.BusinessException;
 import com.projectboated.backend.domain.common.exception.ErrorCode;

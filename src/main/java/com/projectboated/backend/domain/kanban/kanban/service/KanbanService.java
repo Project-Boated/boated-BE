@@ -3,6 +3,7 @@ package com.projectboated.backend.domain.kanban.kanban.service;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanban.service.exception.KanbanAccessDeniedException;
+import com.projectboated.backend.domain.kanban.kanbanlane.service.exception.KanbanLaneChangeIndexDeniedException;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.AccountProjectService;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +36,18 @@ public class KanbanService {
         }
 
         return project.getKanban();
+    }
+
+    @Transactional
+    public void changeKanbanLaneOrder(Account account, Long projectId, int originalIndex, int changeIndex) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+
+        if (!project.isCaptain(account) &&
+                !accountProjectService.isCrew(project, account)) {
+            throw new KanbanLaneChangeIndexDeniedException(ErrorCode.KANBAN_LANE_CHANGE_INDEX_DENIED);
+        }
+
+        project.getKanban().changeKanbanLaneOrder(originalIndex, changeIndex);
     }
 }

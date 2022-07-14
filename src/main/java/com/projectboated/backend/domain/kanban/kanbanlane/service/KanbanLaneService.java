@@ -14,8 +14,6 @@ import com.projectboated.backend.domain.project.service.exception.ProjectNotFoun
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -59,28 +57,22 @@ public class KanbanLaneService {
     }
 
     @Transactional
-    public void changeKanbanLaneIndex(Account account, Long projectId, int originalIndex, int changeIndex) {
+    public void changeTaskOrder(Account account, Long projectId, Long kanbanLaneId, int originalIndex, int changeIndex) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
         if (!project.isCaptain(account) &&
                 !accountProjectService.isCrew(project, account)) {
-            throw new KanbanLaneChangeIndexDeniedException(ErrorCode.KANBAN_LANE_CHANGE_INDEX_DENIED);
+            throw new TaskChangeIndexDeniedException(ErrorCode.TASK_CHANGE_INDEX_DENIED);
         }
 
-        List<KanbanLane> lanes = project.getKanban().getLanes();
-        if (originalIndex < 0 || originalIndex >= lanes.size()) {
-            throw new KanbanLaneOriginalIndexOutOfBoundsException(ErrorCode.KANBAN_LANE_ORIGINAL_INDEX_OUT_OF_BOUNDS);
-        }
-        if (changeIndex < 0 || changeIndex >= lanes.size()) {
-            throw new KanbanLaneChangeIndexOutOfBoundsException(ErrorCode.KANBAN_LANE_CHANGE_INDEX_OUT_OF_BOUNDS);
+        KanbanLane kanbanLane = kanbanLaneRepository.findById(kanbanLaneId)
+                .orElseThrow(() -> new KanbanLaneNotFoundException(ErrorCode.KANBAN_LANE_NOT_FOUND));
+
+        if (project.getId() != kanbanLane.getKanban().getProject().getId()) {
+            throw new ProjectDoesntHaveKanbanLane(ErrorCode.PROJECT_DOESNT_HAVE_KANBAN_LANE);
         }
 
-        KanbanLane targetKanbanLane = lanes.remove(originalIndex);
-        if (changeIndex == lanes.size()) {
-            lanes.add(targetKanbanLane);
-        } else {
-            lanes.add(changeIndex, targetKanbanLane);
-        }
+        kanbanLane.changeTaskOrder(originalIndex, changeIndex);
     }
 }

@@ -84,4 +84,20 @@ class KanbanControllerTest extends AcceptanceTest {
             .statusCode(HttpStatus.OK.value());
     }
 
+    @Test
+    void changeKanbanLaneOrder_칸반lane옮기기_정상() {
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+
+        given(this.spec)
+            .filter(documentKanbanLaneOrderChange())
+            .cookie(cookie)
+        .when()
+            .port(port)
+            .post("/api/projects/{projectId}/kanban/lanes/change/{originalIndex}/{changeIndex}", projectId, 1, 2)
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
+
 }

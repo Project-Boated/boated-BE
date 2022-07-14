@@ -1,15 +1,20 @@
 package com.projectboated.backend.domain.kanban.kanban.entity;
 
+import com.projectboated.backend.domain.kanban.kanban.entity.exception.KanbanLaneChangeIndexOutOfBoundsException;
+import com.projectboated.backend.domain.kanban.kanban.entity.exception.KanbanLaneOriginalIndexOutOfBoundsException;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.DefaultKanbanLane;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.stream.IntStream;
+
 import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT;
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME;
 import static com.projectboated.backend.common.data.BasicDataProject.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("Kanban : Entity 단위 테스트")
 class KanbanTest {
@@ -55,6 +60,115 @@ class KanbanTest {
         // Then
         assertThat(kanban.getLanes()).containsExactly(kanbanLane);
         assertThat(kanbanLane.getKanban()).isEqualTo(kanban);
+    }
+
+    @Test
+    void changeKanbanLaneOrder_originalIndex가마이너스_예외발생() {
+        // Given
+        Project project = createProject();
+        Kanban kanban = new Kanban(project);
+        IntStream.range(0, 10)
+                .forEach(i -> kanban.addKanbanLane(DefaultKanbanLane.builder()
+                        .name(KANBAN_LANE_NAME + i)
+                        .build()));
+
+        // When
+        // Then
+        assertThatThrownBy(() -> kanban.changeKanbanLaneOrder(-1, 4))
+                .isInstanceOf(KanbanLaneOriginalIndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void changeKanbanLaneOrder_originalIndex가범위를벗어남_예외발생() {
+        // Given
+        Project project = createProject();
+        Kanban kanban = new Kanban(project);
+        IntStream.range(0, 10)
+                .forEach(i -> kanban.addKanbanLane(DefaultKanbanLane.builder()
+                        .name(KANBAN_LANE_NAME + i)
+                        .build()));
+
+        // When
+        // Then
+        assertThatThrownBy(() -> kanban.changeKanbanLaneOrder(10, 4))
+                .isInstanceOf(KanbanLaneOriginalIndexOutOfBoundsException.class);
+    }
+    @Test
+    void changeKanbanLaneOrder_changeIndex가마이너스_예외발생() {
+        // Given
+        Project project = createProject();
+        Kanban kanban = new Kanban(project);
+        IntStream.range(0, 10)
+                .forEach(i -> kanban.addKanbanLane(DefaultKanbanLane.builder()
+                        .name(KANBAN_LANE_NAME + i)
+                        .build()));
+
+        // When
+        // Then
+        assertThatThrownBy(() -> kanban.changeKanbanLaneOrder(4, -1))
+                .isInstanceOf(KanbanLaneChangeIndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void changeKanbanLaneOrder_changeIndex가범위를벗어남_예외발생() {
+        // Given
+        Project project = createProject();
+        Kanban kanban = new Kanban(project);
+        IntStream.range(0, 10)
+                .forEach(i -> kanban.addKanbanLane(DefaultKanbanLane.builder()
+                        .name(KANBAN_LANE_NAME + i)
+                        .build()));
+
+        // When
+        // Then
+        assertThatThrownBy(() -> kanban.changeKanbanLaneOrder(8, 10))
+                .isInstanceOf(KanbanLaneChangeIndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void changeKanbanLaneOrder_첫번째index를끝index로옮기기_정상적으로옮겨짐() {
+        // Given
+        Project project = createProject();
+        Kanban kanban = new Kanban(project);
+        IntStream.range(0, 5)
+                .forEach(i -> kanban.addKanbanLane(DefaultKanbanLane.builder()
+                        .name(KANBAN_LANE_NAME + i)
+                        .build()));
+
+        // When
+        kanban.changeKanbanLaneOrder(0, 4);
+
+        // Then
+        assertThat(kanban.getLanes())
+                .extracting("name")
+                .containsExactly(KANBAN_LANE_NAME + 1,
+                        KANBAN_LANE_NAME + 2,
+                        KANBAN_LANE_NAME + 3,
+                        KANBAN_LANE_NAME + 4,
+                        KANBAN_LANE_NAME + 0);
+    }
+
+    @Test
+    void changeKanbanLaneOrder_끝index를첫번째index로옮기기_정상적으로옮겨짐() {
+        // Given
+        Project project = createProject();
+        Kanban kanban = new Kanban(project);
+        IntStream.range(0, 5)
+                .forEach(i -> kanban.addKanbanLane(DefaultKanbanLane.builder()
+                        .name(KANBAN_LANE_NAME + i)
+                        .build()));
+
+        // When
+        kanban.changeKanbanLaneOrder(4, 0);
+
+        // Then
+        assertThat(kanban.getLanes())
+                .extracting("name")
+                .containsExactly(KANBAN_LANE_NAME + 4,
+                        KANBAN_LANE_NAME + 0,
+                        KANBAN_LANE_NAME + 1,
+                        KANBAN_LANE_NAME + 2,
+                        KANBAN_LANE_NAME + 3);
     }
 
     private Project createProject() {

@@ -67,4 +67,14 @@ public final class KanbanDocument {
         );
     }
 
+    public static RestDocumentationFilter documentKanbanLaneOrderChange() {
+        return document("kanban-lanes-order-change",
+                pathParameters(
+                        parameterWithName("projectId").description("프로젝트 고유 번호"),
+                        parameterWithName("originalIndex").description("바꾸고 싶은 index(index번호입니다. id아닙니다)"),
+                        parameterWithName("changeIndex").description("바꿔지게 될 index(index번호입니다. id아닙니다)")
+                )
+        );
+    }
+
 }

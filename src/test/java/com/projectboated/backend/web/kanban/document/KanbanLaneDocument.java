@@ -11,12 +11,13 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class KanbanLaneDocument {
 
-    public static RestDocumentationFilter documentKanbanLaneIndexChange() {
-        return document("kanban-lane-index-change",
+    public static RestDocumentationFilter documentTaskOrderChange() {
+        return document("kanban-lanes-tasks-order-change",
                 pathParameters(
                         parameterWithName("projectId").description("프로젝트 고유 번호"),
+                        parameterWithName("laneId").description("lane 고유 번호"),
                         parameterWithName("originalIndex").description("바꾸고 싶은 index(index번호입니다. id아닙니다)"),
-                        parameterWithName("changeIndex").description("바꾸고 싶은 index(index번호입니다. id아닙니다)")
+                        parameterWithName("changeIndex").description("바꿔지게 될 index(index번호입니다. id아닙니다)")
                 )
         );
     }

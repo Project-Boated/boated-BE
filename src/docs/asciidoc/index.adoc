@@ -631,15 +631,34 @@ include::./adoc/noteCaptainOrCrewOnly.adoc[]
 ==== Request
 
 ===== http-request
-include::{snippets}/kanban-lane-index-change/http-request.adoc[]
+include::{snippets}/kanban-lanes-order-change/http-request.adoc[]
 
 ===== request-path-parameters
-include::{snippets}/kanban-lane-index-change/path-parameters.adoc[]
+include::{snippets}/kanban-lanes-order-change/path-parameters.adoc[]
 
 ==== Response
 
 ===== http-response
-include::{snippets}/kanban-lane-index-change/http-response.adoc[]
+include::{snippets}/kanban-lanes-order-change/http-response.adoc[]
+
+[[resources-kanban-lanes-tasks-order-change]]
+=== 칸반 task 순서 바꾸기
+`POST` 요청을 사용해서 칸반 task의 순서를 바꿀 수 있습니다.
+
+include::./adoc/noteCaptainOrCrewOnly.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/kanban-lanes-tasks-order-change/http-request.adoc[]
+
+===== request-path-parameters
+include::{snippets}/kanban-lanes-tasks-order-change/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/kanban-lanes-tasks-order-change/http-response.adoc[]
 
 
 [[resources-invitations]]
