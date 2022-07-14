@@ -22,4 +22,14 @@ public class KanbanTestUtils {
             .post("/api/projects/{projectId}/kanban/lanes", projectId);
     }
 
+    public static int getFirstKanbanLaneId(int port, Cookie cookie, int projectId) {
+        return given()
+            .cookie(cookie)
+            .accept(ContentType.JSON)
+        .when()
+            .port(port)
+            .get("/api/projects/{projectId}/kanban", projectId)
+        .thenReturn()
+                .jsonPath().getInt("lanes[0].id");
+    }
 }

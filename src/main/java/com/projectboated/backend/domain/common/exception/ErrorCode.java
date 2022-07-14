@@ -27,12 +27,16 @@ public enum ErrorCode {
     PROJECT_NOT_FOUND(400, "P002", "Project를 찾을 수 없습니다"),
     PROJECT_CAPTAIN_UPDATE_DENIED_NOT_CAPTAIN(400, "P003", "Captain을 Update할 수 없습니다. Captain만 가능합니다."),
     PROJECT_CAPTAIN_UPDATE_DENIED_NOT_CREW(400, "P004", "Captain을 Update할 수 없습니다. username이 crew가 아닙니다"),
+    PROJECT_DOESNT_HAVE_KANBAN_LANE(400, "P005", "Project가 해당 kanbanlane을 가지고 있지 않습니다."),
 
     // Task
     TASK_NOT_FOUND(400, "T001", "task를 찾을 수 없습니다."),
     TASK_ASSIGN_DENIED_EXCEPTION(400, "T002", "task를 assign할 수 없습니다. 권한부족"),
     TASK_ALREADY_ASSIGNED(400, "T003", "이미 해당 task에 배정받은 Account입니다."),
     ACCOUNT_TASK_NOT_FOUND(400, "T004", "배정되지 않은 account입니다."),
+    TASK_CHANGE_INDEX_DENIED(400, "T005", "Task Index를 바꿀 수 없습니다. 권한부족"),
+    TASK_ORIGINAL_INDEX_OUT_OF_BOUNDS(400, "T006", "original index가 lane index범위를 벗어났습니다."),
+    TASK_CHANGE_INDEX_OUT_OF_BOUNDS(400, "T007", "change index가 lane index범위를 벗어났습니다."),
 
     // Kakao
     KAKAO_SERVER_EXCEPTION(400, "K001", "카카오 서버 오류입니다."),

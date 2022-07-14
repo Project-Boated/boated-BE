@@ -51,9 +51,9 @@ public class TaskService {
                 .orElseThrow(() -> new KanbanLaneNotFoundException(ErrorCode.KANBAN_LANE_NOT_FOUND));
 
         task.changeProject(project);
-        task.changeKanbanLane(kanbanLane);
+        kanbanLane.addTask(task);
 
-        return taskRepository.save(task);
+        return task;
     }
 
     @Transactional

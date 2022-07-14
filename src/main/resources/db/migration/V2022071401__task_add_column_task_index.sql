@@ -1,0 +1,1 @@
+alter table task add column task_index int;
