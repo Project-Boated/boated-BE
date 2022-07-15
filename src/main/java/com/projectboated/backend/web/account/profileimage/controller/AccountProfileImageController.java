@@ -3,7 +3,7 @@ package com.projectboated.backend.web.account.profileimage.controller;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.account.account.service.exception.AccountProfileImageFileNotExist;
 import com.projectboated.backend.domain.account.profileimage.service.AccountProfileImageService;
-import com.projectboated.backend.domain.account.profileimage.service.AwsS3ProfileImageService;
+import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import com.projectboated.backend.domain.account.profileimage.service.ProfileImageService;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.projectboated.backend.infra.aws.AwsS3File;

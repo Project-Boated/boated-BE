@@ -84,7 +84,7 @@ public class AccountController {
                 .profileImageFile(request.getProfileImageFile())
                 .build();
 
-        accountService.updateProfile(account, updateCondition);
+        accountService.updateProfile(account.getId(), updateCondition);
     }
 
     @DeleteMapping("/api/account/profile")

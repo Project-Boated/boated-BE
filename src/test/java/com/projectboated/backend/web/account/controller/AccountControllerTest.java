@@ -7,7 +7,7 @@ import io.restassured.http.Cookie;
 import com.projectboated.backend.infra.aws.AwsS3File;
 import com.projectboated.backend.common.basetest.AcceptanceTest;
 import com.projectboated.backend.common.utils.AccountTestUtils;
-import com.projectboated.backend.domain.account.profileimage.service.AwsS3ProfileImageService;
+import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import com.projectboated.backend.web.account.account.dto.request.SignUpRequest;
 import com.projectboated.backend.web.account.account.dto.request.ValidationNicknameUniqueRequest;
 import org.junit.jupiter.api.Test;
