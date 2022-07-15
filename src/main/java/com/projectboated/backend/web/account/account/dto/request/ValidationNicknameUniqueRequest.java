@@ -12,7 +12,6 @@ import javax.validation.constraints.Size;
 public class ValidationNicknameUniqueRequest {
 
 	@NotBlank
-	@Size(min = 2, max = 15)
 	private String nickname;
 
 	@Builder
