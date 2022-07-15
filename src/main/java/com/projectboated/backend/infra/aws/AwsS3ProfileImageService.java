@@ -1,4 +1,4 @@
-package com.projectboated.backend.domain.account.profileimage.service;
+package com.projectboated.backend.infra.aws;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.common.exception.business.CommonIOException;
@@ -26,10 +26,14 @@ public class AwsS3ProfileImageService {
     private final AwsS3Service awsS3Service;
     private final AccountRepository accountRepository;
 
-    public String uploadProfileImage(Account account, UploadFileProfileImage profileImage, MultipartFile multipartFile) throws IOException {
+    public String uploadProfileImage(Account account, UploadFileProfileImage profileImage, MultipartFile multipartFile){
         UploadFile uploadFile = profileImage.getUploadFile();
         String path = getProfileSavePath(account, uploadFile);
-        awsS3Service.uploadMultipartFile(path, multipartFile);
+        try {
+            awsS3Service.uploadMultipartFile(path, multipartFile);
+        } catch (IOException e) {
+            throw new CommonIOException(ErrorCode.COMMON_IO_EXCEPTION, e);
+        }
         return path;
     }
 

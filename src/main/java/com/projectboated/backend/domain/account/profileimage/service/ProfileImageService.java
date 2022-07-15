@@ -1,12 +1,12 @@
 package com.projectboated.backend.domain.account.profileimage.service;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.common.exception.business.CommonIOException;
 import com.projectboated.backend.domain.account.profileimage.entity.ProfileImage;
 import com.projectboated.backend.domain.account.profileimage.entity.UploadFileProfileImage;
 import com.projectboated.backend.domain.account.profileimage.repository.ProfileImageRepository;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import com.projectboated.backend.domain.uploadfile.service.UploadFileService;
+import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import lombok.RequiredArgsConstructor;
 import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.UUID;
 
 @Service
@@ -39,16 +38,12 @@ public class ProfileImageService {
         Account findAccount = accountRepository.findById(accountId)
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-        try {
-            UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), UUID.randomUUID().toString(), file.getContentType());
-            UploadFileProfileImage uploadFileProfileImage = new UploadFileProfileImage(uploadFile);
-            uploadFileService.save(uploadFile);
-            save(uploadFileProfileImage);
+        UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), UUID.randomUUID().toString(), file.getContentType());
+        UploadFileProfileImage uploadFileProfileImage = new UploadFileProfileImage(uploadFile);
+        uploadFileService.save(uploadFile);
+        save(uploadFileProfileImage);
 
-            awsS3ProfileImageService.uploadProfileImage(findAccount, uploadFileProfileImage, file);
-            accountProfileImageService.updateProfileImage(findAccount, uploadFileProfileImage);
-        } catch (IOException e) {
-            throw new CommonIOException(ErrorCode.COMMON_IO_EXCEPTION, e);
-        }
+        awsS3ProfileImageService.uploadProfileImage(findAccount, uploadFileProfileImage, file);
+        accountProfileImageService.updateProfileImage(findAccount, uploadFileProfileImage);
     }
 }

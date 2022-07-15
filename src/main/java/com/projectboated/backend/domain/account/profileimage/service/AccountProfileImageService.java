@@ -12,6 +12,7 @@ import com.projectboated.backend.domain.account.profileimage.entity.UrlProfileIm
 import com.projectboated.backend.domain.account.profileimage.repository.ProfileImageRepository;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import com.projectboated.backend.domain.uploadfile.repository.UploadFileRepository;
+import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import com.projectboated.backend.infra.aws.exception.AccountProfileImageNotUploadFile;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;

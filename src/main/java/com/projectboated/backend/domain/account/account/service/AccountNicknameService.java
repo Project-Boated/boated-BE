@@ -20,10 +20,12 @@ public class AccountNicknameService {
 
     @Transactional
     public void updateNickname(Account account, String nickname) {
+        assert nickname != null;
+
         Account findAccount = accountRepository.findById(account.getId())
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-        if (!equalsOrNull(account.getNickname(), nickname) &&
+        if (!account.getNickname().equals(nickname) &&
                 accountRepository.existsByNickname(nickname)) {
             throw new AccountNicknameAlreadyExistsException(ErrorCode.ACCOUNT_NICKNAME_EXISTS);
         }
@@ -31,15 +33,10 @@ public class AccountNicknameService {
         findAccount.changeNickname(nickname);
     }
 
-    public boolean isNotSameAndExistsNickname(String nickname) {
-        return Objects.nonNull(nickname) && accountRepository.existsByNickname(nickname);
-    }
+    public boolean existsByNickname(String nickname) {
+        assert nickname != null;
 
-    public boolean equalsOrNull(String s1, String s2) {
-        if (s1 == null || s2 == null) {
-            return true;
-        }
-        return s1.equals(s2);
+        return accountRepository.existsByNickname(nickname);
     }
 
 }

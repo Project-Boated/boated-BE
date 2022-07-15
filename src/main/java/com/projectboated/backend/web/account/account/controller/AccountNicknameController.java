@@ -27,7 +27,7 @@ public class AccountNicknameController {
     @PostMapping(value = "/api/account/profile/nickname/unique-validation", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ValidationNicknameUniqueResponse validationNicknameUnique(
             @Validated @RequestBody ValidationNicknameUniqueRequest request) {
-        return new ValidationNicknameUniqueResponse(nicknameService.isNotSameAndExistsNickname(request.getNickname()));
+        return new ValidationNicknameUniqueResponse(nicknameService.existsByNickname(request.getNickname()));
     }
 
 }
