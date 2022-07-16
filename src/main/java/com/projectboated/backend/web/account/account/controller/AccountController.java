@@ -6,7 +6,6 @@ import com.projectboated.backend.domain.account.account.service.AccountService;
 import com.projectboated.backend.domain.account.account.service.condition.AccountUpdateCond;
 import com.projectboated.backend.domain.account.profileimage.entity.ProfileImage;
 import com.projectboated.backend.domain.account.profileimage.entity.UrlProfileImage;
-import com.projectboated.backend.domain.account.profileimage.service.AccountProfileImageService;
 import com.projectboated.backend.domain.account.profileimage.service.ProfileImageService;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.projectboated.backend.web.account.account.dto.request.PatchAccountProfileRequest;
@@ -30,7 +29,6 @@ import java.util.Set;
 public class AccountController {
 
     private final AccountService accountService;
-    private final AccountProfileImageService accountProfileImageService;
     private final ProfileImageService profileImageService;
 
     @PostMapping(value = "/api/account/sign-up", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -61,7 +59,7 @@ public class AccountController {
 
         return GetAccountProfileResponse.builder()
                 .account(findAccount)
-                .profileImageUrl(accountProfileImageService.getProfileUrl(findAccount, httpRequest, isProxy))
+                .profileImageUrl(profileImageService.getProfileUrl(findAccount, httpRequest.getHeader("HOST"), isProxy))
                 .build();
     }
 

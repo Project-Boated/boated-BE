@@ -63,7 +63,7 @@ public class KanbanLaneService {
 
         if (!project.isCaptain(account) &&
                 !accountProjectService.isCrew(project, account)) {
-            throw new TaskChangeIndexDeniedException(ErrorCode.TASK_CHANGE_INDEX_DENIED);
+            throw new TaskChangeIndexDeniedException(ErrorCode.TASK_CHANGE_INDEX_ACCESS_DENIED);
         }
 
         KanbanLane kanbanLane = kanbanLaneRepository.findById(kanbanLaneId)

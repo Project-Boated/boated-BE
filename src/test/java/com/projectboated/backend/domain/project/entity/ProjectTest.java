@@ -2,6 +2,7 @@ package com.projectboated.backend.domain.project.entity;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
+import com.projectboated.backend.domain.project.service.condition.ProjectUpdateCond;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +24,13 @@ class ProjectTest {
     @Test
     void 생성자_Project생성_return_생성된Project() {
         // Given
-        Account captain = createCaptain();
+        Account captain = Account.builder()
+                .username(USERNAME)
+                .password(PASSWORD)
+                .nickname(NICKNAME)
+                .profileImageFile(URL_PROFILE_IMAGE)
+                .roles(ROLES)
+                .build();;
 
         // When
         Project project = new Project(captain, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
@@ -40,7 +47,13 @@ class ProjectTest {
     @Test
     void changeName_null이아닌name_이름변경() {
         // Given
-        Account captain = createCaptain();
+        Account captain = Account.builder()
+                .username(USERNAME)
+                .password(PASSWORD)
+                .nickname(NICKNAME)
+                .profileImageFile(URL_PROFILE_IMAGE)
+                .roles(ROLES)
+                .build();;
 
         Project project = Project.builder()
                 .captain(captain)
@@ -59,7 +72,13 @@ class ProjectTest {
     @Test
     void changeName_null인name_이름변경안함() {
         // Given
-        Account captain = createCaptain();
+        Account captain = Account.builder()
+                .username(USERNAME)
+                .password(PASSWORD)
+                .nickname(NICKNAME)
+                .profileImageFile(URL_PROFILE_IMAGE)
+                .roles(ROLES)
+                .build();;
 
         Project project = Project.builder()
                 .captain(captain)
@@ -78,7 +97,13 @@ class ProjectTest {
     @Test
     void changeDescription_null이아닌description_설명변경() {
         // Given
-        Account captain = createCaptain();
+        Account captain = Account.builder()
+                .username(USERNAME)
+                .password(PASSWORD)
+                .nickname(NICKNAME)
+                .profileImageFile(URL_PROFILE_IMAGE)
+                .roles(ROLES)
+                .build();;
 
         Project project = Project.builder()
                 .captain(captain)
@@ -97,7 +122,13 @@ class ProjectTest {
     @Test
     void changeDescription_null인description_설명변경안함() {
         // Given
-        Account captain = createCaptain();
+        Account captain = Account.builder()
+                .username(USERNAME)
+                .password(PASSWORD)
+                .nickname(NICKNAME)
+                .profileImageFile(URL_PROFILE_IMAGE)
+                .roles(ROLES)
+                .build();;
 
         Project project = Project.builder()
                 .captain(captain)
@@ -116,7 +147,13 @@ class ProjectTest {
     @Test
     void changeDeadline_다른deadline입력_deadline변경() {
         // Given
-        Account captain = createCaptain();
+        Account captain = Account.builder()
+                .username(USERNAME)
+                .password(PASSWORD)
+                .nickname(NICKNAME)
+                .profileImageFile(URL_PROFILE_IMAGE)
+                .roles(ROLES)
+                .build();;
 
         Project project = Project.builder()
                 .captain(captain)
@@ -134,9 +171,40 @@ class ProjectTest {
     }
 
     @Test
+    void changeDeadline_null인deadline_deadline변경안함() {
+        // Given
+        Account captain = Account.builder()
+                .username(USERNAME)
+                .password(PASSWORD)
+                .nickname(NICKNAME)
+                .profileImageFile(URL_PROFILE_IMAGE)
+                .roles(ROLES)
+                .build();;
+
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+
+        // When
+        project.changeDeadline(null);
+
+        // Then
+        assertThat(project.getDeadline()).isEqualTo(PROJECT_DEADLINE);
+    }
+
+    @Test
     void changeCaptain_다른Captain입력_Captain변경() {
         // Given
-        Account captain = createCaptain();
+        Account captain = Account.builder()
+                .username(USERNAME)
+                .password(PASSWORD)
+                .nickname(NICKNAME)
+                .profileImageFile(URL_PROFILE_IMAGE)
+                .roles(ROLES)
+                .build();;
 
         Project project = Project.builder()
                 .captain(captain)
@@ -157,7 +225,13 @@ class ProjectTest {
     @Test
     void terminate_terminate되지않은project_terminate됨() {
         // Given
-        Account captain = createCaptain();
+        Account captain = Account.builder()
+                .username(USERNAME)
+                .password(PASSWORD)
+                .nickname(NICKNAME)
+                .profileImageFile(URL_PROFILE_IMAGE)
+                .roles(ROLES)
+                .build();;
 
         Project project = Project.builder()
                 .captain(captain)
@@ -176,7 +250,13 @@ class ProjectTest {
     @Test
     void cancelTerminate_terminate된project_terminate취소() {
         // Given
-        Account captain = createCaptain();
+        Account captain = Account.builder()
+                .username(USERNAME)
+                .password(PASSWORD)
+                .nickname(NICKNAME)
+                .profileImageFile(URL_PROFILE_IMAGE)
+                .roles(ROLES)
+                .build();;
 
         Project project = Project.builder()
                 .captain(captain)
@@ -197,7 +277,13 @@ class ProjectTest {
     @Test
     void changeKanban_새로운kanban_kanban바뀜() {
         // Given
-        Account captain = createCaptain();
+        Account captain = Account.builder()
+                .username(USERNAME)
+                .password(PASSWORD)
+                .nickname(NICKNAME)
+                .profileImageFile(URL_PROFILE_IMAGE)
+                .roles(ROLES)
+                .build();;
 
         Project project = Project.builder()
                 .captain(captain)
@@ -261,14 +347,31 @@ class ProjectTest {
         assertThat(result).isFalse();
     }
 
-    private Account createCaptain() {
-        return Account.builder()
-                .username(USERNAME)
-                .password(PASSWORD)
-                .nickname(NICKNAME)
-                .profileImageFile(URL_PROFILE_IMAGE)
-                .roles(ROLES)
+    @Test
+    void update_전체바꾸기_업데이트성공() {
+        // Given
+        Account captain = Account.builder()
                 .build();
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+
+        // When
+        LocalDateTime newDeadline = LocalDateTime.now().plus(1, ChronoUnit.DAYS);
+        ProjectUpdateCond cond = ProjectUpdateCond.builder()
+                .name(newProjectName)
+                .deadline(newDeadline)
+                .description(newProjectDescription)
+                .build();
+        project.update(cond);
+
+        // Then
+        assertThat(project.getName()).isEqualTo(newProjectName);
+        assertThat(project.getDeadline()).isEqualTo(newDeadline);
+        assertThat(project.getDescription()).isEqualTo(newProjectDescription);
     }
 
 }

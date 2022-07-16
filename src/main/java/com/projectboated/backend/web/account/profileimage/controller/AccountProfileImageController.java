@@ -2,7 +2,6 @@ package com.projectboated.backend.web.account.profileimage.controller;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.account.account.service.exception.AccountProfileImageFileNotExist;
-import com.projectboated.backend.domain.account.profileimage.service.AccountProfileImageService;
 import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import com.projectboated.backend.domain.account.profileimage.service.ProfileImageService;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
@@ -26,16 +25,15 @@ import javax.servlet.http.HttpServletRequest;
 public class AccountProfileImageController {
 
     private final ProfileImageService profileImageService;
-    private final AccountProfileImageService accountProfileImageService;
     private final AwsS3ProfileImageService awsS3ProfileImageService;
 
 
     @PostMapping(value = "/api/account/profile/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public PostAccountProfileImageResponse postAccountProfileImage(@AuthenticationPrincipal Account account,
-                                                                   @ModelAttribute @Validated PostAccountProfileImageRequest postAccountProfileImageRequest,
-                                                                   HttpServletRequest request) {
+                                                                   @ModelAttribute @Validated PostAccountProfileImageRequest request,
+                                                                   HttpServletRequest httpRequest) {
 
-        MultipartFile file = postAccountProfileImageRequest.getFile();
+        MultipartFile file = request.getFile();
         if (file.isEmpty()) {
             throw new AccountProfileImageFileNotExist(ErrorCode.ACCOUNT_PROFILE_IMAGE_FILE_NOT_EXIST);
         }
@@ -47,13 +45,11 @@ public class AccountProfileImageController {
 
         profileImageService.updateProfileImage(account.getId(), file);
 
-        return new PostAccountProfileImageResponse(accountProfileImageService.getProfileUrl(account, request, postAccountProfileImageRequest.isProxy()));
+        return new PostAccountProfileImageResponse(profileImageService.getProfileUrl(account, httpRequest.getHeader("HOST"), request.isProxy()));
     }
 
     @GetMapping("/api/account/profile/profile-image")
     public ResponseEntity<byte[]> getAccountProfileImage(@AuthenticationPrincipal Account account) {
-        accountProfileImageService.checkAccountProfileImageUploadFile(account);
-
         AwsS3File awsS3File = awsS3ProfileImageService.getProfileImageBytes(account);
 
         return ResponseEntity.
@@ -66,7 +62,7 @@ public class AccountProfileImageController {
 
     @DeleteMapping("/api/account/profile/profile-image")
     public void deleteAccountProfileImage(@AuthenticationPrincipal Account account) {
-        accountProfileImageService.deleteProfileImageFile(account);
+        profileImageService.deleteProfileImageFile(account);
     }
 
 }

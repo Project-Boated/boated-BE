@@ -1,16 +1,17 @@
 package com.projectboated.backend.domain.account.profileimage.service;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.account.account.repository.AccountRepository;
+import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
+import com.projectboated.backend.domain.account.account.service.exception.AccountProfileImageFileNotExist;
 import com.projectboated.backend.domain.account.profileimage.entity.ProfileImage;
 import com.projectboated.backend.domain.account.profileimage.entity.UploadFileProfileImage;
 import com.projectboated.backend.domain.account.profileimage.repository.ProfileImageRepository;
+import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
-import com.projectboated.backend.domain.uploadfile.service.UploadFileService;
 import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import lombok.RequiredArgsConstructor;
-import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
-import com.projectboated.backend.domain.account.account.repository.AccountRepository;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,9 +25,8 @@ public class ProfileImageService {
 
     private final ProfileImageRepository profileImageRepository;
     private final AccountRepository accountRepository;
-    private final UploadFileService uploadFileService;
     private final AwsS3ProfileImageService awsS3ProfileImageService;
-    private final AccountProfileImageService accountProfileImageService;
+
 
     @Transactional
     public ProfileImage save(ProfileImage profileImage) {
@@ -35,15 +35,48 @@ public class ProfileImageService {
 
     @Transactional
     public void updateProfileImage(Long accountId, MultipartFile file) {
-        Account findAccount = accountRepository.findById(accountId)
+        Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-        UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), UUID.randomUUID().toString(), file.getContentType());
-        UploadFileProfileImage uploadFileProfileImage = new UploadFileProfileImage(uploadFile);
-        uploadFileService.save(uploadFile);
-        save(uploadFileProfileImage);
+        UploadFile uploadFile = UploadFile.builder()
+                .originalFileName(file.getOriginalFilename())
+                .saveFileName(UUID.randomUUID().toString())
+                .mediaType(file.getContentType())
+                .build();
 
-        awsS3ProfileImageService.uploadProfileImage(findAccount, uploadFileProfileImage, file);
-        accountProfileImageService.updateProfileImage(findAccount, uploadFileProfileImage);
+        UploadFileProfileImage uploadFileProfileImage = new UploadFileProfileImage(uploadFile);
+        profileImageRepository.save(uploadFileProfileImage);
+
+        account.changeProfileImage(uploadFileProfileImage);
+        awsS3ProfileImageService.uploadProfileImage(account, uploadFileProfileImage, file);
+    }
+
+    public String getProfileUrl(Account account, String hostUrl, boolean isProxy) {
+        Account findAccount = accountRepository.findById(account.getId())
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        ProfileImage profileImage = (ProfileImage) Hibernate.unproxy(findAccount.getProfileImage());
+        if (profileImage == null) {
+            return null;
+        }
+
+        return profileImage.getUrl(hostUrl, isProxy);
+    }
+
+    @Transactional
+    public void deleteProfileImageFile(Account account) {
+        Account findAccount = accountRepository.findById(account.getId())
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        if(findAccount.getProfileImage() == null) {
+            throw new AccountProfileImageFileNotExist(ErrorCode.ACCOUNT_PROFILE_IMAGE_FILE_NOT_EXIST);
+        }
+
+        ProfileImage profileImage = (ProfileImage) Hibernate.unproxy(findAccount.getProfileImage());
+        if (profileImage instanceof UploadFileProfileImage uploadFileProfileImage) {
+            awsS3ProfileImageService.deleteProfileImage(findAccount.getId(), uploadFileProfileImage);
+        }
+
+        findAccount.changeProfileImage(null);
     }
 }

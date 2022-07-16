@@ -1,83 +1,59 @@
 package com.projectboated.backend.domain.project.service;
 
-import com.projectboated.backend.common.basetest.BaseTest;
-import com.projectboated.backend.common.data.BasicDataAccount;
-import com.projectboated.backend.common.data.BasicDataProject;
+import com.projectboated.backend.common.basetest.ServiceTest;
 import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.account.account.repository.AccountRepository;
-import com.projectboated.backend.domain.account.account.service.AccountService;
-import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
-import com.projectboated.backend.domain.project.entity.AccountProject;
 import com.projectboated.backend.domain.project.entity.Project;
-import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
+import com.projectboated.backend.domain.project.service.condition.GetMyProjectsCond;
 import com.projectboated.backend.domain.project.service.condition.ProjectUpdateCond;
-import com.projectboated.backend.domain.project.service.exception.ProjectCaptainUpdateDenied;
+import com.projectboated.backend.domain.project.service.dto.MyProjectsDto;
+import com.projectboated.backend.domain.project.service.exception.ProjectDeleteAccessDeniedException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNameSameInAccountException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
 import com.projectboated.backend.domain.project.service.exception.ProjectUpdateAccessDeniedException;
-import com.projectboated.backend.domain.uploadfile.repository.UploadFileRepository;
-import com.projectboated.backend.infra.aws.AwsS3Service;
-import com.projectboated.backend.security.service.KakaoWebService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
+import static com.projectboated.backend.common.data.BasicDataAccount.*;
+import static com.projectboated.backend.common.data.BasicDataProject.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@Transactional
-@ExtendWith(MockitoExtension.class)
-@Disabled
-class ProjectServiceTest extends BaseTest {
+class ProjectServiceTest extends ServiceTest {
 
-    @Autowired
-    AwsS3Service awsS3Service;
-
-    @Autowired
-    KakaoWebService kakaoWebService;
-
-    @Autowired
+    @InjectMocks
     ProjectService projectService;
 
-    @Autowired
-    ProjectCaptainService projectCaptainService;
-
-    @Autowired
+    @Mock
     ProjectRepository projectRepository;
 
-    @Autowired
-    AccountRepository accountRepository;
-
-    @Autowired
-    AccountService accountService;
-
-    @Autowired
-    UploadFileRepository uploadFileRepository;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    AccountProjectRepository accountProjectRepository;
-
     @Test
-    void save_project저장_성공() throws Exception {
+    void save_project저장_성공() {
         // Given
-        Account account = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
+        Account account = Account.builder()
+                .id(ACCOUNT_ID)
+                .username(USERNAME)
+                .nickname(NICKNAME)
+                .password(PASSWORD)
+                .build();
 
-        Project project = new Project(account, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
+        Project project = Project.builder()
+                .captain(account)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+
+        when(projectRepository.existsByNameAndCaptain(PROJECT_NAME, account)).thenReturn(false);
+        when(projectRepository.save(project)).thenReturn(project);
 
         // When
         Project saveProject = projectService.save(project);
@@ -86,36 +62,60 @@ class ProjectServiceTest extends BaseTest {
         assertThat(saveProject.getName()).isEqualTo(project.getName());
         assertThat(saveProject.getDescription()).isEqualTo(project.getDescription());
         assertThat(saveProject.getCaptain().getId()).isEqualTo(project.getCaptain().getId());
+        assertThat(saveProject.getKanban()).isNotNull();
+        assertThat(saveProject.getKanban().getLanes()).hasSize(4);
     }
 
     @Test
-    void save_이미존재하는Name으로생성_오류발생() throws Exception {
+    void save_captain이가진Name으로생성_오류발생() {
         // Given
-        Account captain = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
-        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
+        Account account = Account.builder()
+                .id(ACCOUNT_ID)
+                .username(USERNAME)
+                .nickname(NICKNAME)
+                .password(PASSWORD)
+                .build();
 
-        projectRepository.save(project);
+        Project project = Project.builder()
+                .captain(account)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+
+        when(projectRepository.existsByNameAndCaptain(PROJECT_NAME, account)).thenReturn(true);
 
         // When
         // Then
-        String newDescription = "newDescription";
-        assertThatThrownBy(() -> projectService.save(new Project(captain, BasicDataProject.PROJECT_NAME, newDescription, BasicDataProject.PROJECT_DEADLINE)))
+        assertThatThrownBy(() -> projectService.save(project))
                 .isInstanceOf(ProjectNameSameInAccountException.class);
     }
 
     @Test
-    void update_모든정보Update_업데이트성공() throws Exception {
+    void update_모든정보Update_업데이트성공() {
         // Given
-        Account captain = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
+        Account captain = Account.builder()
+                .id(ACCOUNT_ID)
+                .username(USERNAME)
+                .nickname(NICKNAME)
+                .password(PASSWORD)
+                .build();
 
-        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
-        projectRepository.save(project);
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(projectRepository.existsByNameAndCaptain(any(), any())).thenReturn(false);
 
         // When
         String newProjectName = "newProjectName";
         String newProjectDescription = "newProjectDescription";
-        LocalDateTime newDeadline = BasicDataProject.PROJECT_DEADLINE.plus(1, ChronoUnit.DAYS);
-        projectService.update(captain, project.getId(), new ProjectUpdateCond(newProjectName, newProjectDescription, newDeadline));
+        LocalDateTime newDeadline = PROJECT_DEADLINE.plus(1, ChronoUnit.DAYS);
+        projectService.update(captain, PROJECT_ID, new ProjectUpdateCond(newProjectName, newProjectDescription, newDeadline));
 
         // Then
         assertThat(project.getName()).isEqualTo(newProjectName);
@@ -124,198 +124,252 @@ class ProjectServiceTest extends BaseTest {
     }
 
     @Test
-    void update_모든정보NULL_업데이트안됨() throws Exception {
+    void update_모든정보NULL_업데이트안됨() {
         // Given
-        Account captain = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
+        Account captain = Account.builder()
+                .id(ACCOUNT_ID)
+                .username(USERNAME)
+                .nickname(NICKNAME)
+                .password(PASSWORD)
+                .build();
 
-        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
-        projectRepository.save(project);
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
 
         // When
-        projectService.update(captain, project.getId(), new ProjectUpdateCond());
+        projectService.update(captain, PROJECT_ID, new ProjectUpdateCond(null, null, null));
 
         // Then
-        assertThat(project.getName()).isEqualTo(BasicDataProject.PROJECT_NAME);
-        assertThat(project.getDescription()).isEqualTo(BasicDataProject.PROJECT_DESCRIPTION);
+        assertThat(project.getName()).isEqualTo(PROJECT_NAME);
+        assertThat(project.getDescription()).isEqualTo(PROJECT_DESCRIPTION);
+        assertThat(project.getDeadline()).isEqualTo(PROJECT_DEADLINE);
     }
 
     @Test
-    void update_같은정보로업데이트_성공() throws Exception {
+    void update_존재하지않는projectId_오류발생() {
         // Given
-        Account captain = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
+        Account captain = Account.builder()
+                .id(ACCOUNT_ID)
+                .username(USERNAME)
+                .nickname(NICKNAME)
+                .password(PASSWORD)
+                .build();
 
-        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
-        projectRepository.save(project);
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
 
-        // When
-        projectService.update(captain, project.getId(), new ProjectUpdateCond(BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE));
-
-        // Then
-        assertThat(project.getName()).isEqualTo(BasicDataProject.PROJECT_NAME);
-        assertThat(project.getDescription()).isEqualTo(BasicDataProject.PROJECT_DESCRIPTION);
-        assertThat(project.getDeadline()).isEqualTo(BasicDataProject.PROJECT_DEADLINE);
-    }
-
-    @Test
-    void update_존재하지않는projectId_오류발생() throws Exception {
-        // Given
-        Account account = createAccount();
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.update(account, 123L, new ProjectUpdateCond(BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE)))
+        assertThatThrownBy(() -> projectService.update(captain, PROJECT_ID, new ProjectUpdateCond(PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE)))
                 .isInstanceOf(ProjectNotFoundException.class);
     }
 
     @Test
-    void update_captain이아닌Account가요청_오류발생() throws Exception {
+    void update_captain이아닌Account가요청_오류발생() {
         // Given
-        Account account1 = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
-        Account account2 = accountService.save(new Account(ACCOUNT_ID, "username2", BasicDataAccount.PASSWORD, "nickname2", BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
+        Account captain = Account.builder()
+                .id(ACCOUNT_ID)
+                .username(USERNAME)
+                .nickname(NICKNAME)
+                .password(PASSWORD)
+                .build();
 
-        Project project = new Project(account1, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
-        projectRepository.save(project);
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+
+        Account crew = Account.builder()
+                .id(ACCOUNT_ID2)
+                .username(USERNAME2)
+                .nickname(NICKNAME2)
+                .password(PASSWORD2)
+                .build();
+
+        when(projectRepository.findById(any())).thenReturn(Optional.of(project));
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.update(account2, project.getId(), new ProjectUpdateCond("newProjectName", "newProjectDescription", null)))
+        assertThatThrownBy(() -> projectService.update(crew, project.getId(), new ProjectUpdateCond("newProjectName", "newProjectDescription", null)))
                 .isInstanceOf(ProjectUpdateAccessDeniedException.class);
     }
 
     @Test
-    void update_같은Account에같은Name존재_오류발생() throws Exception {
+    void update_같은Account에같은Name존재_오류발생() {
         // Given
-        Account captain = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
+        Account captain = Account.builder()
+                .id(ACCOUNT_ID)
+                .username(USERNAME)
+                .nickname(NICKNAME)
+                .password(PASSWORD)
+                .build();
 
-        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
-        projectRepository.save(project);
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
 
-        Project project2 = new Project(captain, "projectName2", "projectDescription2", BasicDataProject.PROJECT_DEADLINE);
-        projectRepository.save(project2);
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(projectRepository.existsByNameAndCaptain(any(), any())).thenReturn(true);
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.update(captain, project2.getId(), new ProjectUpdateCond(BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE)))
+        assertThatThrownBy(() -> projectService.update(captain, PROJECT_ID, new ProjectUpdateCond(PROJECT_NAME2, PROJECT_DESCRIPTION2, PROJECT_DEADLINE2)))
                 .isInstanceOf(ProjectNameSameInAccountException.class);
     }
 
     @Test
-    void findAllCrew_한명의crew가있을때_한명의crew조회() throws Exception {
+    void findById_존재하는Id_return_project() {
         // Given
-        Account captain = createAccount();
-        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
-        projectRepository.save(project);
+        Project project = Project.builder()
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
 
-        Account crew = new Account(ACCOUNT_ID, "crew", BasicDataAccount.PASSWORD, "crew", BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES);
-        accountRepository.save(crew);
-
-        AccountProject accountProject = new AccountProject(crew, project);
-        accountProjectRepository.save(accountProject);
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
 
         // When
-        List<Account> crews = projectService.findAllCrews(captain, project.getId());
+        Project byId = projectService.findById(PROJECT_ID);
 
         // Then
-        assertThat(crews.size()).isEqualTo(1);
+        assertThat(byId.getName()).isEqualTo(project.getName());
+        assertThat(byId.getDescription()).isEqualTo(project.getDescription());
+        assertThat(byId.getDeadline()).isEqualTo(project.getDeadline());
     }
 
     @Test
-    void findAllCrew_존재하지않는ProjectId_오류발생() throws Exception {
+    void findById_존재하지않는Id_예외발생() {
         // Given
-        Account captain = createAccount();
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
+
         // When
         // Then
-        assertThatThrownBy(() -> projectService.findAllCrews(captain, 1L))
+        assertThatThrownBy(() -> projectService.findById(PROJECT_ID))
                 .isInstanceOf(ProjectNotFoundException.class);
     }
 
     @Test
-    void updateCaptain_새로운captain으로업데이트_업데이트성공() throws Exception {
+    void delete_ProjectId로찾을수없음_예외발생() {
         // Given
-        String newUsername = "newUsername";
-        String newNickname = "newNickname";
-        String newPassword = "newPassword";
-        Account newCaptain = accountService.save(new Account(ACCOUNT_ID, newUsername, newPassword, newNickname, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
-        Account captain = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
+        Account captain = Account.builder()
+                .id(ACCOUNT_ID)
+                .username(USERNAME)
+                .nickname(NICKNAME)
+                .password(PASSWORD)
+                .build();
 
-        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
-        projectRepository.save(project);
-
-        accountProjectRepository.save(new AccountProject(newCaptain, project));
-
-        // When
-        projectCaptainService.updateCaptain(captain, project.getId(), newCaptain.getUsername());
-
-        // Then
-        assertThat(project.getCaptain().getId()).isEqualTo(newCaptain.getId());
-    }
-
-    @Test
-    void updateCaptain_존재하지않는projectId_오류발생() throws Exception {
-        // Given
-        String newUsername = "newUsername";
-        String newNickname = "newNickname";
-        String newPassword = "newPassword";
-        Account newCaptain = accountService.save(new Account(ACCOUNT_ID, newUsername, newPassword, newNickname, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
-        Account captain = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
-
-        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
-        projectRepository.save(project);
-
-        accountProjectRepository.save(new AccountProject(newCaptain, project));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
 
         // When
         // Then
-        assertThatThrownBy(() -> projectCaptainService.updateCaptain(captain, 2192L, newCaptain.getUsername()))
+        assertThatThrownBy(() -> projectService.delete(captain, PROJECT_ID))
                 .isInstanceOf(ProjectNotFoundException.class);
     }
 
-
     @Test
-    void updateCaptain_captain이아닌account가update_오류발생() throws Exception {
+    void delete_captain이아님_예외발생() {
         // Given
-        String newUsername = "newUsername";
-        String newNickname = "newNickname";
-        String newPassword = "newPassword";
-        Account newCaptain = accountService.save(new Account(ACCOUNT_ID, newUsername, newPassword, newNickname, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
-        Account captain = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
+        Account captain = Account.builder()
+                .id(ACCOUNT_ID)
+                .username(USERNAME)
+                .nickname(NICKNAME)
+                .password(PASSWORD)
+                .build();
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
 
-        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
-        projectRepository.save(project);
+        Account crew = Account.builder()
+                .id(ACCOUNT_ID2)
+                .username(USERNAME2)
+                .nickname(NICKNAME2)
+                .password(PASSWORD2)
+                .build();
 
-        accountProjectRepository.save(new AccountProject(newCaptain, project));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
 
         // When
         // Then
-        assertThatThrownBy(() -> projectCaptainService.updateCaptain(newCaptain, project.getId(), newCaptain.getUsername()))
-                .isInstanceOf(ProjectCaptainUpdateDenied.class);
+        assertThatThrownBy(() -> projectService.delete(crew, PROJECT_ID))
+                .isInstanceOf(ProjectDeleteAccessDeniedException.class);
     }
 
     @Test
-    void updateCaptain_새로운Captain의username을찾을수없음_오류발생() throws Exception {
+    void delete_존재하는projectId와captain이요청_삭제() {
         // Given
-        String newUsername = "newUsername";
-        String newNickname = "newNickname";
-        String newPassword = "newPassword";
+        Account captain = Account.builder()
+                .id(ACCOUNT_ID)
+                .username(USERNAME)
+                .nickname(NICKNAME)
+                .password(PASSWORD)
+                .build();
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
 
-        Account newCaptain = accountService.save(new Account(ACCOUNT_ID, newUsername, newPassword, newNickname, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
-        Account captain = accountService.save(new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES));
-
-        Project project = new Project(captain, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
-        projectRepository.save(project);
-
-        accountProjectRepository.save(new AccountProject(newCaptain, project));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
 
         // When
+        projectService.delete(captain, PROJECT_ID);
+
         // Then
-        assertThatThrownBy(() -> projectCaptainService.updateCaptain(captain, project.getId(), "fail"))
-                .isInstanceOf(AccountNotFoundException.class);
+        verify(projectRepository).delete(any());
     }
 
+    @Test
+    void getMyProjects_내project조회_정상() {
+        // Given
+        Account captain = Account.builder()
+                .id(ACCOUNT_ID)
+                .username(USERNAME)
+                .nickname(NICKNAME)
+                .password(PASSWORD)
+                .build();
 
-    private Account createAccount() {
-        Account account = new Account(ACCOUNT_ID, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.URL_PROFILE_IMAGE, BasicDataAccount.ROLES);
-        accountRepository.save(account);
-        return account;
+        GetMyProjectsCond cond = GetMyProjectsCond.builder()
+                .captainTerm(true)
+                .pageable(PageRequest.of(1, 10))
+                .build();
+
+        List<Project> projects = List.of(Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build());
+
+        when(projectRepository.getMyProjects(captain, cond)).thenReturn(projects);
+
+        // When
+        MyProjectsDto result = projectService.getMyProjects(captain, cond);
+
+        // Then
+        assertThat(result.getProjects()).isEqualTo(projects);
+        assertThat(result.getPage()).isEqualTo(cond.getPageable().getPageNumber());
+        assertThat(result.getSize()).isEqualTo(result.getProjects().size());
     }
+
 }

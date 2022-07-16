@@ -30,7 +30,7 @@ public class KanbanService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if (!projectService.isCaptain(account, project) &&
+        if (!(project.getCaptain().getId() == account.getId()) &&
                 !accountProjectService.isCrew(project, account)) {
             throw new KanbanAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
         }
@@ -45,7 +45,7 @@ public class KanbanService {
 
         if (!project.isCaptain(account) &&
                 !accountProjectService.isCrew(project, account)) {
-            throw new KanbanLaneChangeIndexDeniedException(ErrorCode.KANBAN_LANE_CHANGE_INDEX_DENIED);
+            throw new KanbanLaneChangeIndexDeniedException(ErrorCode.KANBAN_LANE_CHANGE_INDEX_ACCESS_DENIED);
         }
 
         project.getKanban().changeKanbanLaneOrder(originalIndex, changeIndex);
