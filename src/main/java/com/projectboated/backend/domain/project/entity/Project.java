@@ -3,6 +3,7 @@ package com.projectboated.backend.domain.project.entity;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
+import com.projectboated.backend.domain.project.service.condition.ProjectUpdateCond;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -60,7 +61,9 @@ public class Project extends BaseTimeEntity {
     }
 
     public void changeDeadline(LocalDateTime deadLine) {
-        this.deadline = deadLine;
+        if (deadLine != null) {
+            this.deadline = deadLine;
+        }
     }
 
     public void changeCaptain(Account account) {
@@ -84,5 +87,11 @@ public class Project extends BaseTimeEntity {
 
     public boolean isCaptain(Account captain) {
         return this.captain.getId() == captain.getId();
+    }
+
+    public void update(ProjectUpdateCond cond) {
+        this.changeName(cond.getName());
+        this.changeDescription(cond.getDescription());
+        this.changeDeadline(cond.getDeadline());
     }
 }

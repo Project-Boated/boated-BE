@@ -15,4 +15,6 @@ public abstract class ProfileImage {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "profile_image_id")
     private Long id;
+
+    public abstract String getUrl(String hostUrl, Boolean isProxy);
 }

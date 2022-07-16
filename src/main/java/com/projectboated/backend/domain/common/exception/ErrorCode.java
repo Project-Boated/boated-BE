@@ -22,19 +22,24 @@ public enum ErrorCode {
     ACCOUNT_PROFILE_IMAGE_NOT_SUPPORT_TYPE(400, "U011", "Accont의 프로필 이미지가 지원하지 않는 Type입니다."),
     ACCOUNT_NOT_FOUND_BY_USERNAME(400, "U012", "주어진 username으로 account를 찾을 수 없습니다"),
 
+    // UploodFile ProfileImage
+    PROFILE_IMAGE_NEEDS_HOST_URL(400, "UFPI001", "host url이 필요합니다. 헤더에 추가해주세요"),
+
     // Project
     PROJECT_NAME_EXISTS_IN_ACCOUNT(400, "P001", "Account에 같은 이름의 프로젝트가 존재합니다."),
     PROJECT_NOT_FOUND(400, "P002", "Project를 찾을 수 없습니다"),
-    PROJECT_CAPTAIN_UPDATE_DENIED_NOT_CAPTAIN(400, "P003", "Captain을 Update할 수 없습니다. Captain만 가능합니다."),
+    PROJECT_CAPTAIN_UPDATE_ACCESS_DENIED(400, "P003", "Captain을 Update할 수 없습니다. 권한부족."),
     PROJECT_CAPTAIN_UPDATE_DENIED_NOT_CREW(400, "P004", "Captain을 Update할 수 없습니다. username이 crew가 아닙니다"),
     PROJECT_DOESNT_HAVE_KANBAN_LANE(400, "P005", "Project가 해당 kanbanlane을 가지고 있지 않습니다."),
+    PROJECT_UPDATE_ACCESS_DENIED(400, "P006", "Project Update실패, 권한부족"),
+    PROJECT_DELETE_ACCESS_DENIED(400, "P006", "Project Delete실패, 권한부족"),
 
     // Task
     TASK_NOT_FOUND(400, "T001", "task를 찾을 수 없습니다."),
-    TASK_ASSIGN_DENIED_EXCEPTION(400, "T002", "task를 assign할 수 없습니다. 권한부족"),
+    TASK_ASSIGN_ACCESS_DENIED_EXCEPTION(400, "T002", "task를 assign할 수 없습니다. 권한부족"),
     TASK_ALREADY_ASSIGNED(400, "T003", "이미 해당 task에 배정받은 Account입니다."),
     ACCOUNT_TASK_NOT_FOUND(400, "T004", "배정되지 않은 account입니다."),
-    TASK_CHANGE_INDEX_DENIED(400, "T005", "Task Index를 바꿀 수 없습니다. 권한부족"),
+    TASK_CHANGE_INDEX_ACCESS_DENIED(400, "T005", "Task Index를 바꿀 수 없습니다. 권한부족"),
     TASK_ORIGINAL_INDEX_OUT_OF_BOUNDS(400, "T006", "original index가 lane index범위를 벗어났습니다."),
     TASK_CHANGE_INDEX_OUT_OF_BOUNDS(400, "T007", "change index가 lane index범위를 벗어났습니다."),
 
@@ -53,7 +58,7 @@ public enum ErrorCode {
     // Kanban Lane
     KANBAN_LANE_EXISTS_UPPER_5(400, "KL001", "칸반 lane의 개수가 이미 5개입니다"),
     KANBAN_LANE_NOT_FOUND(400, "KL002", "칸반 lane을 찾을 수 없습니다"),
-    KANBAN_LANE_CHANGE_INDEX_DENIED(400, "KL003", "칸반 lane을 바꿀 수 없습니다. 권한부족"),
+    KANBAN_LANE_CHANGE_INDEX_ACCESS_DENIED(400, "KL003", "칸반 lane을 바꿀 수 없습니다. 권한부족"),
     KANBAN_LANE_ORIGINAL_INDEX_OUT_OF_BOUNDS(400, "KL004", "original index가 lane index범위를 벗어났습니다."),
     KANBAN_LANE_CHANGE_INDEX_OUT_OF_BOUNDS(400, "KL005", "change index가 lane index범위를 벗어났습니다."),
 

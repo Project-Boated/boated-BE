@@ -42,7 +42,7 @@ public class TaskService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if (!projectService.isCaptain(findAccount, project) &&
+        if (!(project.getCaptain().getId() == findAccount.getId()) &&
                 !accountProjectService.isCrew(project, findAccount)) {
             throw new TaskSaveAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
         }
@@ -64,9 +64,9 @@ public class TaskService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if (!projectService.isCaptain(requestAccount, project) &&
+        if (!(project.getCaptain().getId() == requestAccount.getId()) &&
                 !accountProjectService.isCrew(project, requestAccount)) {
-            throw new TaskAssignDeniedException(ErrorCode.TASK_ASSIGN_DENIED_EXCEPTION);
+            throw new TaskAssignDeniedException(ErrorCode.TASK_ASSIGN_ACCESS_DENIED_EXCEPTION);
         }
 
         Task task = taskRepository.findById(taskId)
@@ -99,9 +99,9 @@ public class TaskService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if (!projectService.isCaptain(requestAccount, project) &&
+        if (!(project.getCaptain().getId() == requestAccount.getId()) &&
                 !accountProjectService.isCrew(project, requestAccount)) {
-            throw new TaskAssignDeniedException(ErrorCode.TASK_ASSIGN_DENIED_EXCEPTION);
+            throw new TaskAssignDeniedException(ErrorCode.TASK_ASSIGN_ACCESS_DENIED_EXCEPTION);
         }
 
         Task task = taskRepository.findById(taskId)

@@ -44,7 +44,7 @@ public class ProjectController {
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId
     ) {
-        Project project = projectService.findById(projectId, account);
+        Project project = projectService.findById(projectId);
         long taskSize = taskService.taskSize(project);
         return new GetProjectResponse(project,taskSize);
     }

@@ -3,9 +3,9 @@ package com.projectboated.backend.domain.project.service.exception;
 import com.projectboated.backend.domain.common.exception.BusinessException;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
 
-public class ProjectCaptainUpdateDenied extends BusinessException {
+public class ProjectCaptainUpdateAccessDeniedException extends BusinessException {
 
-    public ProjectCaptainUpdateDenied(ErrorCode errorCode) {
+    public ProjectCaptainUpdateAccessDeniedException(ErrorCode errorCode) {
         super(errorCode);
     }
 }

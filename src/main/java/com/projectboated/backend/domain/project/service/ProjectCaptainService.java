@@ -10,7 +10,7 @@ import com.projectboated.backend.domain.project.entity.AccountProject;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
-import com.projectboated.backend.domain.project.service.exception.ProjectCaptainUpdateDenied;
+import com.projectboated.backend.domain.project.service.exception.ProjectCaptainUpdateAccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ProjectCaptainService {
-
-    private final ProjectService projectService;
     private final AccountProjectService accountProjectService;
     private final ProjectRepository projectRepository;
     private final AccountRepository accountRepository;
@@ -30,15 +28,15 @@ public class ProjectCaptainService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if (!projectService.isCaptain(account, project)) {
-            throw new ProjectCaptainUpdateDenied(ErrorCode.PROJECT_CAPTAIN_UPDATE_DENIED_NOT_CAPTAIN);
+        if (project.getCaptain().getId() != account.getId()) {
+            throw new ProjectCaptainUpdateAccessDeniedException(ErrorCode.PROJECT_CAPTAIN_UPDATE_ACCESS_DENIED);
         }
 
         Account newCaptain = accountRepository.findByNickname(newCaptainNickname)
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND_BY_USERNAME));
 
         if(!accountProjectService.isCrew(project, newCaptain)) {
-            throw new ProjectCaptainUpdateDenied(ErrorCode.PROJECT_CAPTAIN_UPDATE_DENIED_NOT_CREW);
+            throw new ProjectCaptainUpdateAccessDeniedException(ErrorCode.PROJECT_CAPTAIN_UPDATE_DENIED_NOT_CREW);
         }
 
         accountProjectRepository.save(new AccountProject(account, project));

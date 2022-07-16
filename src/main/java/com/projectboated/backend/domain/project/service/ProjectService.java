@@ -2,27 +2,24 @@ package com.projectboated.backend.domain.project.service;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
-import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
-import com.projectboated.backend.domain.kanban.kanbanlane.entity.DefaultKanbanLane;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
-import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.DefaultKanbanLane;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLaneType;
-import com.projectboated.backend.domain.kanban.kanbanlane.repository.KanbanLaneRepository;
-import com.projectboated.backend.domain.kanban.kanban.repository.KanbanRepository;
 import com.projectboated.backend.domain.project.entity.Project;
-import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.condition.GetMyProjectsCond;
 import com.projectboated.backend.domain.project.service.condition.ProjectUpdateCond;
 import com.projectboated.backend.domain.project.service.dto.MyProjectsDto;
-import com.projectboated.backend.domain.project.service.exception.*;
+import com.projectboated.backend.domain.project.service.exception.ProjectDeleteAccessDeniedException;
+import com.projectboated.backend.domain.project.service.exception.ProjectNameSameInAccountException;
+import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
+import com.projectboated.backend.domain.project.service.exception.ProjectUpdateAccessDeniedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,11 +27,6 @@ import java.util.Objects;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final AccountRepository accountRepository;
-    private final KanbanRepository kanbanRepository;
-    private final KanbanLaneRepository kanbanLaneRepository;
-    private final AccountProjectRepository accountProjectRepository;
-    private final AccountProjectService accountProjectService;
 
     @Transactional
     public Project save(Project project) {
@@ -47,122 +39,53 @@ public class ProjectService {
 
         for (KanbanLaneType kanbanLaneType : KanbanLaneType.values()) {
             String name = kanbanLaneType.name();
-            KanbanLane kanbanLane = new DefaultKanbanLane(name, newKanban);
-            newKanban.addKanbanLane(kanbanLane);
+            newKanban.addKanbanLane(new DefaultKanbanLane(name, newKanban));
         }
 
         return projectRepository.save(project);
     }
 
     @Transactional
-    public void update(Account account, Long projectId, ProjectUpdateCond projectUpdateCond) {
-
+    public void update(Account account, Long projectId, ProjectUpdateCond cond) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if (!Objects.equals(project.getCaptain().getId(), account.getId())) {
-            throw new ProjectUpdateAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
+        if (project.getCaptain().getId() != account.getId()) {
+            throw new ProjectUpdateAccessDeniedException(ErrorCode.PROJECT_UPDATE_ACCESS_DENIED);
         }
 
-        if(isSameProjectNameInAccount(projectUpdateCond, project)) {
+        if (cond.getName() != null &&
+                !cond.getName().equals(project.getName()) &&
+                projectRepository.existsByNameAndCaptain(cond.getName(), account)) {
             throw new ProjectNameSameInAccountException(ErrorCode.PROJECT_NAME_EXISTS_IN_ACCOUNT);
         }
 
-        project.changeName(projectUpdateCond.getName());
-        project.changeDescription(projectUpdateCond.getDescription());
-        project.changeDeadline(projectUpdateCond.getDeadline());
-    }
-
-    private boolean isSameProjectNameInAccount(ProjectUpdateCond projectUpdateCond, Project project) {
-        return !Objects.equals(project.getName(), projectUpdateCond.getName()) &&
-                projectRepository.existsByName(projectUpdateCond.getName());
-    }
-    public List<Account> findAllCrews(Account account, Long projectId) {
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
-
-        if(!isCaptain(account, project) && !accountProjectService.isCrew(project, account)) {
-            throw new ProjectAccessDeniedException.ProjectFindCrewsAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
-        }
-
-        return accountProjectRepository.findCrewByProject(project);
-    }
-
-    @Transactional
-    public void deleteCrew(Account account, Long projectId, String crewNickname) {
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
-
-        if (!isCaptain(account, project)) {
-            throw new ProjectCaptainUpdateDenied(ErrorCode.COMMON_ACCESS_DENIED);
-        }
-
-        Account crew = accountRepository.findByNickname(crewNickname)
-                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND_BY_USERNAME));
-
-        accountProjectRepository.deleteByProjectAndAccount(project, crew);
-    }
-
-    @Transactional
-    public void terminateProject(Account account, Long projectId) {
-        Account captain = accountRepository.findById(account.getId())
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
-
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
-
-        if (!isCaptain(captain, project)) {
-            throw new ProjectUpdateAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
-        }
-
-        project.terminate();
-    }
-
-    @Transactional
-    public void cancelTerminateProject(Account account, Long projectId) {
-        Account captain = accountRepository.findById(account.getId())
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
-
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
-
-        if (!isCaptain(captain, project)) {
-            throw new ProjectUpdateAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
-        }
-
-        project.cancelTerminate();
-    }
-
-    public Project findById(Long projectId, Account account) {
-        return projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+        project.update(cond);
     }
 
     @Transactional
     public void delete(Account account, Long projectId) {
-        Account findAccount = accountRepository.findById(account.getId())
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
-
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if (!isCaptain(findAccount, project)) {
-            throw new ProjectDeleteAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
+        if (project.getCaptain().getId() != account.getId()) {
+            throw new ProjectDeleteAccessDeniedException(ErrorCode.PROJECT_DELETE_ACCESS_DENIED);
         }
 
         projectRepository.delete(project);
     }
 
-    public boolean isCaptain(Account account, Project project) {
-        return project.getCaptain().getId() == account.getId();
+    public Project findById(Long projectId) {
+        return projectRepository.findById(projectId)
+                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
     }
 
     public MyProjectsDto getMyProjects(Account account, GetMyProjectsCond cond) {
         List<Project> projects = projectRepository.getMyProjects(account, cond);
         return MyProjectsDto.builder()
                 .page(cond.getPageable().getPageNumber())
-                .size(cond.getPageable().getPageSize())
-                .hasNext(projects.size()==cond.getPageable().getPageSize())
+                .size(projects.size())
+                .hasNext(projects.size() == cond.getPageable().getPageSize())
                 .projects(projects)
                 .build();
     }
