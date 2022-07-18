@@ -110,7 +110,7 @@ class ProfileImageServiceTest extends ServiceTest {
         
         // When
         // Then
-        assertThatThrownBy(() -> profileImageService.getProfileUrl(account, "hostUrl", true))
+        assertThatThrownBy(() -> profileImageService.getProfileUrl(account.getId(), "hostUrl", true))
                 .isInstanceOf(AccountNotFoundException.class);
     }
 
@@ -125,7 +125,7 @@ class ProfileImageServiceTest extends ServiceTest {
         when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
 
         // When
-        String result = profileImageService.getProfileUrl(account, "hostUrl", true);
+        String result = profileImageService.getProfileUrl(account.getId(), "hostUrl", true);
 
         // Then
         assertThat(result).isEqualTo(null);
@@ -147,7 +147,7 @@ class ProfileImageServiceTest extends ServiceTest {
         when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
 
         // When
-        profileImageService.getProfileUrl(account, "hostUrl", true);
+        profileImageService.getProfileUrl(account.getId(), "hostUrl", true);
 
         // Then
         verify(accountRepository).findById(ACCOUNT_ID);

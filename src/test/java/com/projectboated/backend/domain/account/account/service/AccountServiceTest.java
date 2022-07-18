@@ -3,6 +3,7 @@ package com.projectboated.backend.domain.account.account.service;
 import com.google.common.net.MediaType;
 import com.projectboated.backend.common.basetest.ServiceTest;
 import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.account.account.entity.KakaoAccount;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.account.account.service.condition.AccountUpdateCond;
 import com.projectboated.backend.domain.account.account.service.exception.AccountNicknameAlreadyExistsException;
@@ -13,6 +14,7 @@ import com.projectboated.backend.domain.account.profileimage.entity.UploadFilePr
 import com.projectboated.backend.domain.account.profileimage.repository.ProfileImageRepository;
 import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
+import com.projectboated.backend.security.service.KakaoWebService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,23 +28,27 @@ import static com.projectboated.backend.common.data.BasicDataAccount.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @DisplayName("Account : Service 단위 테스트")
 class AccountServiceTest extends ServiceTest {
 
-    @Mock
-    PasswordEncoder passwordEncoder;
-
     @InjectMocks
     AccountService accountService;
+
     @Mock
     AwsS3ProfileImageService awsS3ProfileImageService;
+    @Mock
+    KakaoWebService kakaoWebService;
 
     @Mock
     AccountRepository accountRepository;
     @Mock
     ProfileImageRepository profileImageRepository;
+
+    @Mock
+    PasswordEncoder passwordEncoder;
 
     @Test
     void findById_존재하는Id_return_Account1개() {
@@ -320,13 +326,50 @@ class AccountServiceTest extends ServiceTest {
     void delete_account주어짐_삭제성공() {
         // Given
         Account account = Account.builder()
+                .id(ACCOUNT_ID)
                 .username(USERNAME)
                 .nickname(NICKNAME)
                 .password(PASSWORD)
                 .build();
 
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
+
         // When
         // Then
-        accountService.delete(account);
+        accountService.delete(ACCOUNT_ID);
+    }
+
+    @Test
+    void delete_accountId으로account찾을수없음_예외발생() {
+        // Given
+        Account account = Account.builder()
+                .id(ACCOUNT_ID)
+                .username(USERNAME)
+                .nickname(NICKNAME)
+                .password(PASSWORD)
+                .build();
+
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> accountService.delete(ACCOUNT_ID))
+                .isInstanceOf(AccountNotFoundException.class);
+    }
+
+    @Test
+    void delete_카카오account삭제_정상삭제() {
+        // Given
+        KakaoAccount account = KakaoAccount.kakaoBuilder()
+                .kakaoId(ACCOUNT_ID)
+                .build();
+
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
+
+        // When
+        accountService.delete(ACCOUNT_ID);
+
+        // Then
+        verify(kakaoWebService).disconnect(ACCOUNT_ID);
     }
 }

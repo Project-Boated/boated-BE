@@ -33,7 +33,7 @@ class ProjectTest {
                 .build();;
 
         // When
-        Project project = new Project(captain, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+        Project project = new Project(PROJECT_ID, captain, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
 
         // Then
         assertThat(project.getCaptain()).isEqualTo(captain);

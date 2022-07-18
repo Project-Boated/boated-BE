@@ -23,9 +23,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProfileImageService {
 
+    private final AwsS3ProfileImageService awsS3ProfileImageService;
     private final ProfileImageRepository profileImageRepository;
     private final AccountRepository accountRepository;
-    private final AwsS3ProfileImageService awsS3ProfileImageService;
 
 
     @Transactional
@@ -51,11 +51,11 @@ public class ProfileImageService {
         awsS3ProfileImageService.uploadProfileImage(account, uploadFileProfileImage, file);
     }
 
-    public String getProfileUrl(Account account, String hostUrl, boolean isProxy) {
-        Account findAccount = accountRepository.findById(account.getId())
+    public String getProfileUrl(Long accountId, String hostUrl, boolean isProxy) {
+        Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-        ProfileImage profileImage = (ProfileImage) Hibernate.unproxy(findAccount.getProfileImage());
+        ProfileImage profileImage = (ProfileImage) Hibernate.unproxy(account.getProfileImage());
         if (profileImage == null) {
             return null;
         }

@@ -10,10 +10,9 @@ import com.projectboated.backend.domain.account.account.service.exception.Accoun
 import com.projectboated.backend.domain.account.account.service.exception.AccountUsernameAlreadyExistsException;
 import com.projectboated.backend.domain.account.profileimage.entity.UploadFileProfileImage;
 import com.projectboated.backend.domain.account.profileimage.repository.ProfileImageRepository;
-import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
-import com.projectboated.backend.domain.uploadfile.repository.UploadFileRepository;
+import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import com.projectboated.backend.security.service.KakaoWebService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,11 +27,10 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class AccountService {
 
-    private final AccountRepository accountRepository;
-    private final PasswordEncoder passwordEncoder;
     private final KakaoWebService kakaoWebService;
     private final AwsS3ProfileImageService awsS3ProfileService;
-    private final UploadFileRepository uploadFileRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AccountRepository accountRepository;
     private final ProfileImageRepository profileImageRepository;
 
     public Account findById(Long accountId) {
@@ -100,10 +98,14 @@ public class AccountService {
     }
 
     @Transactional
-    public void delete(Account account) {
+    public void delete(Long accountId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+
         if (account instanceof KakaoAccount kakaoAccount) {
             kakaoWebService.disconnect(kakaoAccount.getKakaoId());
         }
+
         accountRepository.delete(account);
     }
 }

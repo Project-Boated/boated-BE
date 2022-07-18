@@ -64,17 +64,36 @@ class ProjectCaptainServiceTest extends ServiceTest {
                 .build();
 
         when(projectRepository.findById(any())).thenReturn(Optional.of(project));
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
         when(accountRepository.findByNickname(any())).thenReturn(Optional.of(crew));
         when(accountProjectService.isCrew(any(), any())).thenReturn(true);
 
         // When
-        projectCaptainService.updateCaptain(captain, project.getId(), crew.getUsername());
+        projectCaptainService.updateCaptain(captain.getId(), project.getId(), crew.getUsername());
 
         // Then
         assertThat(project.getCaptain()).isEqualTo(crew);
 
         verify(accountProjectRepository).save(any());
         verify(accountProjectRepository).deleteByProjectAndAccount(any(), any());
+    }
+
+    @Test
+    void updateCaptain_존재하지않는accountId_오류발생() {
+        // Given
+        Account captain = Account.builder()
+                .id(ACCOUNT_ID)
+                .username(USERNAME)
+                .nickname(NICKNAME)
+                .password(PASSWORD)
+                .build();
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> projectCaptainService.updateCaptain(captain.getId(), PROJECT_ID, captain.getNickname()))
+                .isInstanceOf(AccountNotFoundException.class);
     }
 
     @Test
@@ -99,11 +118,12 @@ class ProjectCaptainServiceTest extends ServiceTest {
                 .password(PASSWORD2)
                 .build();
 
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
 
         // When
         // Then
-        assertThatThrownBy(() -> projectCaptainService.updateCaptain(captain, PROJECT_ID, crew.getNickname()))
+        assertThatThrownBy(() -> projectCaptainService.updateCaptain(captain.getId(), PROJECT_ID, crew.getNickname()))
                 .isInstanceOf(ProjectNotFoundException.class);
     }
 
@@ -130,11 +150,12 @@ class ProjectCaptainServiceTest extends ServiceTest {
                 .password(PASSWORD2)
                 .build();
 
+        when(accountRepository.findById(crew.getId())).thenReturn(Optional.of(crew));
         when(projectRepository.findById(any())).thenReturn(Optional.of(project));
 
         // When
         // Then
-        assertThatThrownBy(() -> projectCaptainService.updateCaptain(crew, project.getId(), crew.getUsername()))
+        assertThatThrownBy(() -> projectCaptainService.updateCaptain(crew.getId(), project.getId(), crew.getUsername()))
                 .isInstanceOf(ProjectCaptainUpdateAccessDeniedException.class);
     }
 
@@ -160,12 +181,13 @@ class ProjectCaptainServiceTest extends ServiceTest {
                 .password(PASSWORD2)
                 .build();
 
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
         when(projectRepository.findById(any())).thenReturn(Optional.of(project));
         when(accountRepository.findByNickname(crew.getNickname())).thenReturn(Optional.empty());
 
         // When
         // Then
-        assertThatThrownBy(() -> projectCaptainService.updateCaptain(captain, project.getId(), crew.getNickname()))
+        assertThatThrownBy(() -> projectCaptainService.updateCaptain(captain.getId(), project.getId(), crew.getNickname()))
                 .isInstanceOf(AccountNotFoundException.class);
     }
 
@@ -193,11 +215,12 @@ class ProjectCaptainServiceTest extends ServiceTest {
 
         when(projectRepository.findById(any())).thenReturn(Optional.of(project));
         when(accountRepository.findByNickname(crew.getNickname())).thenReturn(Optional.of(crew));
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
         when(accountProjectService.isCrew(any(), any())).thenReturn(false);
 
         // When
         // Then
-        assertThatThrownBy(() -> projectCaptainService.updateCaptain(captain, project.getId(), crew.getNickname()))
+        assertThatThrownBy(() -> projectCaptainService.updateCaptain(captain.getId(), project.getId(), crew.getNickname()))
                 .isInstanceOf(ProjectCaptainUpdateAccessDeniedException.class);
     }
 

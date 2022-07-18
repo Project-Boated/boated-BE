@@ -22,7 +22,7 @@ public class ProjectCaptainController {
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
             @RequestBody UpdateProjectCaptainRequest params) {
-        projectCaptainService.updateCaptain(account, projectId, params.getNickname());
+        projectCaptainService.updateCaptain(account.getId(), projectId, params.getNickname());
     }
 
 }

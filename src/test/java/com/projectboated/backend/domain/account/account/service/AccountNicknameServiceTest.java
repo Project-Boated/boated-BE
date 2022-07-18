@@ -39,7 +39,7 @@ class AccountNicknameServiceTest extends ServiceTest {
         // When
         // Then
         String newNickname = "newNickname";
-        nicknameService.updateNickname(account, newNickname);
+        nicknameService.updateNickname(account.getId(), newNickname);
     }
 
     @Test
@@ -55,7 +55,7 @@ class AccountNicknameServiceTest extends ServiceTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> nicknameService.updateNickname(account, "newNickname"))
+        assertThatThrownBy(() -> nicknameService.updateNickname(account.getId(), "newNickname"))
                 .isInstanceOf(AccountNotFoundException.class);
     }
 
@@ -73,7 +73,7 @@ class AccountNicknameServiceTest extends ServiceTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> nicknameService.updateNickname(account, "newNickname"))
+        assertThatThrownBy(() -> nicknameService.updateNickname(account.getId(), "newNickname"))
                 .isInstanceOf(AccountNicknameAlreadyExistsException.class);
     }
 

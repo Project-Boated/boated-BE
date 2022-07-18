@@ -24,12 +24,15 @@ public class ProjectCaptainService {
     private final AccountProjectRepository accountProjectRepository;
 
     @Transactional
-    public void updateCaptain(Account account, Long projectId, String newCaptainNickname) {
+    public void updateCaptain(Long accountId, Long projectId, String newCaptainNickname) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
         if (project.getCaptain().getId() != account.getId()) {
-            throw new ProjectCaptainUpdateAccessDeniedException(ErrorCode.PROJECT_CAPTAIN_UPDATE_ACCESS_DENIED);
+            throw new ProjectCaptainUpdateAccessDeniedException(ErrorCode.PROJECT_ONLY_CAPTAIN);
         }
 
         Account newCaptain = accountRepository.findByNickname(newCaptainNickname)

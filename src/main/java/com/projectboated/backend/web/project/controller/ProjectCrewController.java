@@ -25,8 +25,8 @@ public class ProjectCrewController {
                                      @RequestParam(required = false) boolean isProxy,
                                      @AuthenticationPrincipal Account account,
                                      @PathVariable Long projectId) {
-        List<CrewResponse> crewResponses = projectCrewService.findAllCrews(account, projectId).stream()
-                .map(c -> new CrewResponse(c, profileImageService.getProfileUrl(c, httpRequest.getHeader("HOST"), isProxy)))
+        List<CrewResponse> crewResponses = projectCrewService.findAllCrews(account.getId(), projectId).stream()
+                .map(c -> new CrewResponse(c, profileImageService.getProfileUrl(c.getId(), httpRequest.getHeader("HOST"), isProxy)))
                 .toList();
 
         return new GetCrewsResponse(crewResponses);
