@@ -45,7 +45,7 @@ public class KanbanService {
 
         if (!project.isCaptain(account) &&
                 !accountProjectService.isCrew(project, account)) {
-            throw new KanbanLaneChangeIndexDeniedException(ErrorCode.KANBAN_LANE_CHANGE_INDEX_ACCESS_DENIED);
+            throw new KanbanLaneChangeIndexDeniedException(ErrorCode.PROJECT_ONLY_CAPTAIN_OR_CREW);
         }
 
         project.getKanban().changeKanbanLaneOrder(originalIndex, changeIndex);

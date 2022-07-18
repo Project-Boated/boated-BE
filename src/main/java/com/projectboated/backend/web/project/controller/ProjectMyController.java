@@ -39,7 +39,7 @@ public class ProjectMyController {
                 .pageable(pageable)
                 .build();
 
-        MyProjectsDto myProjects = projectService.getMyProjects(account, cond);
+        MyProjectsDto myProjects = projectService.getMyProjects(account.getId(), cond);
         int page = myProjects.getPage();
         int size = myProjects.getSize();
         boolean hasNext = myProjects.isHasNext();

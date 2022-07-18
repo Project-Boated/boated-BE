@@ -45,7 +45,7 @@ public class AccountProfileImageController {
 
         profileImageService.updateProfileImage(account.getId(), file);
 
-        return new PostAccountProfileImageResponse(profileImageService.getProfileUrl(account, httpRequest.getHeader("HOST"), request.isProxy()));
+        return new PostAccountProfileImageResponse(profileImageService.getProfileUrl(account.getId(), httpRequest.getHeader("HOST"), request.isProxy()));
     }
 
     @GetMapping("/api/account/profile/profile-image")

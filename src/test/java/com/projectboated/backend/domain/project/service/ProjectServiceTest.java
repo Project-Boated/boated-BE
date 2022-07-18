@@ -2,6 +2,8 @@ package com.projectboated.backend.domain.project.service;
 
 import com.projectboated.backend.common.basetest.ServiceTest;
 import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.account.account.repository.AccountRepository;
+import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.condition.GetMyProjectsCond;
@@ -34,6 +36,8 @@ class ProjectServiceTest extends ServiceTest {
 
     @Mock
     ProjectRepository projectRepository;
+    @Mock
+    AccountRepository accountRepository;
 
     @Test
     void save_project저장_성공() {
@@ -108,6 +112,7 @@ class ProjectServiceTest extends ServiceTest {
                 .deadline(PROJECT_DEADLINE)
                 .build();
 
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
         when(projectRepository.existsByNameAndCaptain(any(), any())).thenReturn(false);
 
@@ -115,7 +120,7 @@ class ProjectServiceTest extends ServiceTest {
         String newProjectName = "newProjectName";
         String newProjectDescription = "newProjectDescription";
         LocalDateTime newDeadline = PROJECT_DEADLINE.plus(1, ChronoUnit.DAYS);
-        projectService.update(captain, PROJECT_ID, new ProjectUpdateCond(newProjectName, newProjectDescription, newDeadline));
+        projectService.update(captain.getId(), PROJECT_ID, new ProjectUpdateCond(newProjectName, newProjectDescription, newDeadline));
 
         // Then
         assertThat(project.getName()).isEqualTo(newProjectName);
@@ -140,10 +145,11 @@ class ProjectServiceTest extends ServiceTest {
                 .deadline(PROJECT_DEADLINE)
                 .build();
 
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
 
         // When
-        projectService.update(captain, PROJECT_ID, new ProjectUpdateCond(null, null, null));
+        projectService.update(captain.getId(), PROJECT_ID, new ProjectUpdateCond(null, null, null));
 
         // Then
         assertThat(project.getName()).isEqualTo(PROJECT_NAME);
@@ -168,12 +174,38 @@ class ProjectServiceTest extends ServiceTest {
                 .deadline(PROJECT_DEADLINE)
                 .build();
 
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.update(captain, PROJECT_ID, new ProjectUpdateCond(PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE)))
+        assertThatThrownBy(() -> projectService.update(captain.getId(), PROJECT_ID, new ProjectUpdateCond(PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE)))
                 .isInstanceOf(ProjectNotFoundException.class);
+    }
+
+    @Test
+    void update_찾을수없는account_예외발생() {
+        // Given
+        Account captain = Account.builder()
+                .id(ACCOUNT_ID)
+                .username(USERNAME)
+                .nickname(NICKNAME)
+                .password(PASSWORD)
+                .build();
+
+        Project project = Project.builder()
+                .captain(captain)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> projectService.update(captain.getId(), project.getId(), new ProjectUpdateCond("newProjectName", "newProjectDescription", null)))
+                .isInstanceOf(AccountNotFoundException.class);
     }
 
     @Test
@@ -200,11 +232,12 @@ class ProjectServiceTest extends ServiceTest {
                 .password(PASSWORD2)
                 .build();
 
+        when(accountRepository.findById(crew.getId())).thenReturn(Optional.of(crew));
         when(projectRepository.findById(any())).thenReturn(Optional.of(project));
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.update(crew, project.getId(), new ProjectUpdateCond("newProjectName", "newProjectDescription", null)))
+        assertThatThrownBy(() -> projectService.update(crew.getId(), project.getId(), new ProjectUpdateCond("newProjectName", "newProjectDescription", null)))
                 .isInstanceOf(ProjectUpdateAccessDeniedException.class);
     }
 
@@ -225,12 +258,13 @@ class ProjectServiceTest extends ServiceTest {
                 .deadline(PROJECT_DEADLINE)
                 .build();
 
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
         when(projectRepository.existsByNameAndCaptain(any(), any())).thenReturn(true);
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.update(captain, PROJECT_ID, new ProjectUpdateCond(PROJECT_NAME2, PROJECT_DESCRIPTION2, PROJECT_DEADLINE2)))
+        assertThatThrownBy(() -> projectService.update(captain.getId(), PROJECT_ID, new ProjectUpdateCond(PROJECT_NAME2, PROJECT_DESCRIPTION2, PROJECT_DEADLINE2)))
                 .isInstanceOf(ProjectNameSameInAccountException.class);
     }
 
@@ -255,7 +289,7 @@ class ProjectServiceTest extends ServiceTest {
     }
 
     @Test
-    void findById_존재하지않는Id_예외발생() {
+    void findById_존재하지않는ProjectId_예외발생() {
         // Given
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
 
@@ -264,6 +298,18 @@ class ProjectServiceTest extends ServiceTest {
         assertThatThrownBy(() -> projectService.findById(PROJECT_ID))
                 .isInstanceOf(ProjectNotFoundException.class);
     }
+
+    @Test
+    void delete_존재하지않는AccountId_예외발생() {
+        // Given
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> projectService.delete(ACCOUNT_ID, 123L))
+                .isInstanceOf(AccountNotFoundException.class);
+    }
+
 
     @Test
     void delete_ProjectId로찾을수없음_예외발생() {
@@ -275,11 +321,12 @@ class ProjectServiceTest extends ServiceTest {
                 .password(PASSWORD)
                 .build();
 
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.delete(captain, PROJECT_ID))
+        assertThatThrownBy(() -> projectService.delete(captain.getId(), PROJECT_ID))
                 .isInstanceOf(ProjectNotFoundException.class);
     }
 
@@ -306,11 +353,12 @@ class ProjectServiceTest extends ServiceTest {
                 .password(PASSWORD2)
                 .build();
 
+        when(accountRepository.findById(crew.getId())).thenReturn(Optional.of(crew));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.delete(crew, PROJECT_ID))
+        assertThatThrownBy(() -> projectService.delete(crew.getId(), PROJECT_ID))
                 .isInstanceOf(ProjectDeleteAccessDeniedException.class);
     }
 
@@ -330,13 +378,37 @@ class ProjectServiceTest extends ServiceTest {
                 .deadline(PROJECT_DEADLINE)
                 .build();
 
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
 
         // When
-        projectService.delete(captain, PROJECT_ID);
+        projectService.delete(captain.getId(), PROJECT_ID);
 
         // Then
         verify(projectRepository).delete(any());
+    }
+
+    @Test
+    void getMyProjects_찾을수없는accountId_예외발생() {
+        // Given
+        Account captain = Account.builder()
+                .id(ACCOUNT_ID)
+                .username(USERNAME)
+                .nickname(NICKNAME)
+                .password(PASSWORD)
+                .build();
+
+        GetMyProjectsCond cond = GetMyProjectsCond.builder()
+                .captainTerm(true)
+                .pageable(PageRequest.of(1, 10))
+                .build();
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> projectService.getMyProjects(captain.getId(), cond))
+                .isInstanceOf(AccountNotFoundException.class);
     }
 
     @Test
@@ -361,10 +433,11 @@ class ProjectServiceTest extends ServiceTest {
                 .deadline(PROJECT_DEADLINE)
                 .build());
 
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
         when(projectRepository.getMyProjects(captain, cond)).thenReturn(projects);
 
         // When
-        MyProjectsDto result = projectService.getMyProjects(captain, cond);
+        MyProjectsDto result = projectService.getMyProjects(captain.getId(), cond);
 
         // Then
         assertThat(result.getProjects()).isEqualTo(projects);

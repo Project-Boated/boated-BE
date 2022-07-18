@@ -21,7 +21,7 @@ public class AccountNicknameController {
     public void putNickname(
             @RequestBody @Validated PutNicknameRequest request,
             @AuthenticationPrincipal Account account) {
-        nicknameService.updateNickname(account, request.getNickname());
+        nicknameService.updateNickname(account.getId(), request.getNickname());
     }
 
     @PostMapping(value = "/api/account/profile/nickname/unique-validation", consumes = MediaType.APPLICATION_JSON_VALUE)

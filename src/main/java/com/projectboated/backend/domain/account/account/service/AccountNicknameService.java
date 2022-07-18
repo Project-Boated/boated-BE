@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -19,10 +17,10 @@ public class AccountNicknameService {
     private final AccountRepository accountRepository;
 
     @Transactional
-    public void updateNickname(Account account, String nickname) {
+    public void updateNickname(Long accountId, String nickname) {
         assert nickname != null;
 
-        Account findAccount = accountRepository.findById(account.getId())
+        Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
         if (!account.getNickname().equals(nickname) &&
@@ -30,7 +28,7 @@ public class AccountNicknameService {
             throw new AccountNicknameAlreadyExistsException(ErrorCode.ACCOUNT_NICKNAME_EXISTS);
         }
 
-        findAccount.changeNickname(nickname);
+        account.changeNickname(nickname);
     }
 
     public boolean existsByNickname(String nickname) {

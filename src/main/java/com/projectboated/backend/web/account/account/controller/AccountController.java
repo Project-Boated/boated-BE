@@ -55,11 +55,9 @@ public class AccountController {
     public GetAccountProfileResponse getAccountProfile(HttpServletRequest httpRequest,
                                                        @AuthenticationPrincipal Account account,
                                                        @RequestParam(name = "isProxy", required = false) boolean isProxy) {
-        Account findAccount = accountService.findById(account.getId());
-
         return GetAccountProfileResponse.builder()
-                .account(findAccount)
-                .profileImageUrl(profileImageService.getProfileUrl(findAccount, httpRequest.getHeader("HOST"), isProxy))
+                .account(accountService.findById(account.getId()))
+                .profileImageUrl(profileImageService.getProfileUrl(account.getId(), httpRequest.getHeader("HOST"), isProxy))
                 .build();
     }
 
@@ -87,7 +85,7 @@ public class AccountController {
 
     @DeleteMapping("/api/account/profile")
     public void deleteAccount(@AuthenticationPrincipal Account account, HttpSession session) {
-        accountService.delete(account);
+        accountService.delete(account.getId());
         session.invalidate();
     }
 }

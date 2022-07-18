@@ -61,7 +61,7 @@ public class ProjectController {
                 .deadline(request.getDeadline())
                 .build();
 
-        projectService.update(account, projectId, projectUpdateCond);
+        projectService.update(account.getId(), projectId, projectUpdateCond);
 
         return new PatchProjectResponse(projectId);
     }
@@ -71,6 +71,6 @@ public class ProjectController {
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId
     ) {
-        projectService.delete(account, projectId);
+        projectService.delete(account.getId(), projectId);
     }
 }
