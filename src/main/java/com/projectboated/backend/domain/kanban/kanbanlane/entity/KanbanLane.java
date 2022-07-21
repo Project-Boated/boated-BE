@@ -52,19 +52,23 @@ public class KanbanLane extends BaseTimeEntity {
         task.changeKanbanLane(this);
     }
 
-    public void changeTaskOrder(int originalIndex, int changeIndex) {
-        if (originalIndex < 0 || originalIndex >= tasks.size()) {
-            throw new TaskOriginalIndexOutOfBoundsException(ErrorCode.TASK_ORIGINAL_INDEX_OUT_OF_BOUNDS);
-        }
-        if (changeIndex < 0 || changeIndex >= tasks.size()) {
+    public void addTask(int index, Task task) {
+        if (index < 0 || index > tasks.size()) {
             throw new TaskChangeIndexOutOfBoundsException(ErrorCode.TASK_CHANGE_INDEX_OUT_OF_BOUNDS);
         }
+        this.tasks.add(index, task);
+        task.changeKanbanLane(this);
+    }
 
-        Task task = tasks.remove(originalIndex);
-        if (changeIndex == tasks.size()) {
-            this.tasks.add(task);
-        } else {
-            this.tasks.add(changeIndex, task);
+    public Task removeTask(int index) {
+        if (index < 0 || index >= tasks.size()) {
+            throw new TaskOriginalIndexOutOfBoundsException(ErrorCode.TASK_ORIGINAL_INDEX_OUT_OF_BOUNDS);
         }
+        return tasks.remove(index);
+    }
+
+    public void changeTaskOrder(int originalIndex, int changeIndex) {
+        Task task = this.removeTask(originalIndex);
+        this.addTask(changeIndex, task);
     }
 }

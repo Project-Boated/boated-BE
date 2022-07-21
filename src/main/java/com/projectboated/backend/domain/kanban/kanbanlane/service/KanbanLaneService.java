@@ -2,7 +2,9 @@ package com.projectboated.backend.domain.kanban.kanbanlane.service;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
+import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
+import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.exception.*;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.AccountProjectService;
@@ -57,8 +59,11 @@ public class KanbanLaneService {
     }
 
     @Transactional
-    public void changeTaskOrder(Account account, Long projectId, Long kanbanLaneId, int originalIndex, int changeIndex) {
-        Project project = projectRepository.findById(projectId)
+    public void changeTaskOrder(Long accountId, ChangeTaskOrderRequest request) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        Project project = projectRepository.findById(request.projectId())
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
         if (!project.isCaptain(account) &&
@@ -66,13 +71,6 @@ public class KanbanLaneService {
             throw new TaskChangeIndexDeniedException(ErrorCode.PROJECT_ONLY_CAPTAIN_OR_CREW);
         }
 
-        KanbanLane kanbanLane = kanbanLaneRepository.findById(kanbanLaneId)
-                .orElseThrow(() -> new KanbanLaneNotFoundException(ErrorCode.KANBAN_LANE_NOT_FOUND));
-
-        if (project.getId() != kanbanLane.getKanban().getProject().getId()) {
-            throw new ProjectDoesntHaveKanbanLane(ErrorCode.PROJECT_DOESNT_HAVE_KANBAN_LANE);
-        }
-
-        kanbanLane.changeTaskOrder(originalIndex, changeIndex);
+        project.getKanban().changeTaskOrder(request);
     }
 }

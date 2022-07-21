@@ -8,6 +8,7 @@ import com.projectboated.backend.domain.kanban.kanbanlane.entity.exception.TaskC
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.exception.TaskOriginalIndexOutOfBoundsException;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.entity.Task;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +16,7 @@ import java.util.stream.IntStream;
 
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME;
 import static com.projectboated.backend.common.data.BasicDataTask.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -230,6 +232,141 @@ class DefaultKanbanLaneTest {
                         TASK_NAME + 1,
                         TASK_NAME + 2,
                         TASK_NAME + 3);
+    }
+    
+    @Test
+    void addTask_첫번째에task추가_정상() {
+        // Given
+        DefaultKanbanLane dkl = DefaultKanbanLane
+                .builder()
+                .build();
+
+        // When
+        dkl.addTask(0, new Task(TASK_NAME, TASK_DESCRIPTION, null));
+        
+        // Then
+        assertThat(dkl.getTasks())
+                .extracting("name")
+                .containsExactly(TASK_NAME);
+    }
+
+    @Test
+    void addTask_마지막에task추가_정상() {
+        // Given
+        DefaultKanbanLane dkl = DefaultKanbanLane
+                .builder()
+                .build();
+
+        dkl.addTask(new Task(TASK_NAME+1, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_NAME+2, TASK_DESCRIPTION, null));
+
+        // When
+        dkl.addTask(2, new Task(TASK_NAME+3, TASK_DESCRIPTION, null));
+
+        // Then
+        assertThat(dkl.getTasks())
+                .extracting("name")
+                .containsExactly(TASK_NAME+1, TASK_NAME+2, TASK_NAME+3);
+    }
+
+    @Test
+    void addTask_중간에task추가_정상() {
+        // Given
+        DefaultKanbanLane dkl = DefaultKanbanLane
+                .builder()
+                .build();
+
+        dkl.addTask(new Task(TASK_NAME+1, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_NAME+2, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_NAME+3, TASK_DESCRIPTION, null));
+
+        // When
+        dkl.addTask(2, new Task(TASK_NAME+4, TASK_DESCRIPTION, null));
+
+        // Then
+        assertThat(dkl.getTasks())
+                .extracting("name")
+                .containsExactly(TASK_NAME+1, TASK_NAME+2, TASK_NAME+4, TASK_NAME+3);
+    }
+
+    @Test
+    void addTask_마이너스인덱스_예외발생() {
+        // Given
+        DefaultKanbanLane dkl = DefaultKanbanLane
+                .builder()
+                .build();
+
+        // When
+        // Then
+        assertThatThrownBy(() -> dkl.addTask(-1, new Task(TASK_NAME+4, TASK_DESCRIPTION, null)))
+                .isInstanceOf(TaskChangeIndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void addTask_인덱스벗어남_예외발생() {
+        // Given
+        DefaultKanbanLane dkl = DefaultKanbanLane
+                .builder()
+                .build();
+
+        dkl.addTask(new Task(TASK_NAME+1, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_NAME+2, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_NAME+3, TASK_DESCRIPTION, null));
+
+        // When
+        // Then
+        assertThatThrownBy(() -> dkl.addTask(4, new Task(TASK_NAME+4, TASK_DESCRIPTION, null)))
+                .isInstanceOf(TaskChangeIndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void removeTask_task삭제_정상() {
+        // Given
+        DefaultKanbanLane dkl = DefaultKanbanLane
+                .builder()
+                .build();
+
+        dkl.addTask(new Task(TASK_NAME+1, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_NAME+2, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_NAME+3, TASK_DESCRIPTION, null));
+
+        // When
+        dkl.removeTask(1);
+
+        // Then
+        assertThat(dkl.getTasks())
+                .extracting("name")
+                .containsExactly(TASK_NAME+1, TASK_NAME+3);
+    }
+
+    @Test
+    void removeTask_마이너스인덱스_예외발생() {
+        // Given
+        DefaultKanbanLane dkl = DefaultKanbanLane
+                .builder()
+                .build();
+
+        // When
+        // Then
+        assertThatThrownBy(() -> dkl.removeTask(-1))
+                .isInstanceOf(TaskOriginalIndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void removeTask_인덱스벗어남_예외발생() {
+        // Given
+        DefaultKanbanLane dkl = DefaultKanbanLane
+                .builder()
+                .build();
+
+        dkl.addTask(new Task(TASK_NAME+1, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_NAME+2, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_NAME+3, TASK_DESCRIPTION, null));
+
+        // When
+        // Then
+        assertThatThrownBy(() -> dkl.removeTask(3))
+                .isInstanceOf(TaskOriginalIndexOutOfBoundsException.class);
     }
 
 }

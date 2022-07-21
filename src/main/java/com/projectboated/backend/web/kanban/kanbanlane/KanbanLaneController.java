@@ -2,6 +2,7 @@ package com.projectboated.backend.web.kanban.kanbanlane;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.KanbanLaneService;
+import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,15 +15,23 @@ public class KanbanLaneController {
 
     private final KanbanLaneService kanbanLaneService;
 
-    @PostMapping("/api/projects/{projectId}/kanban/lanes/{laneId}/tasks/change/{originalIndex}/{changeIndex}")
+    @PostMapping("/api/projects/{projectId}/kanban/lanes/tasks/change/{originalLaneIndex}/{originalTaskIndex}/{changeLaneIndex}/{changeTaskIndex}")
     public void changeTaskOrder(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
-            @PathVariable Long laneId,
-            @PathVariable int originalIndex,
-            @PathVariable int changeIndex
+            @PathVariable int originalLaneIndex,
+            @PathVariable int originalTaskIndex,
+            @PathVariable int changeLaneIndex,
+            @PathVariable int changeTaskIndex
     ) {
-        kanbanLaneService.changeTaskOrder(account, projectId, laneId, originalIndex, changeIndex);
+        ChangeTaskOrderRequest request = ChangeTaskOrderRequest.builder()
+                .projectId(projectId)
+                .originalLaneIndex(originalLaneIndex)
+                .originalTaskIndex(originalTaskIndex)
+                .changeLaneIndex(changeLaneIndex)
+                .changeTaskIndex(changeTaskIndex)
+                .build();
+        kanbanLaneService.changeTaskOrder(account.getId(), request);
     }
 
 }
