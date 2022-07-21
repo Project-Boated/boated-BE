@@ -579,8 +579,8 @@ include::{snippets}/kanban-retrieve/http-response.adoc[]
 include::{snippets}/kanban-retrieve/response-fields.adoc[]
 
 [[resources-kanban-lanes-create]]
-=== 칸반 Custom lane 추가
-`POST` 요청을 사용해서 칸반에 Custom lane을 추가할 수 있습니다.
+=== 칸반 lane 추가
+`POST` 요청을 사용해서 칸반에 lane을 추가할 수 있습니다.
 
 include::./adoc/noteCaptainOnly.adoc[]
 
@@ -604,8 +604,8 @@ include::{snippets}/kanban-lane-create/request-fields.adoc[]
 include::{snippets}/kanban-lane-create/http-response.adoc[]
 
 [[resources-kanban-lanes-delete]]
-=== 칸반 Custom lane 삭제
-`DELETE` 요청을 사용해서 칸반에 Custom lane을 삭제할 수 있습니다.
+=== 칸반 lane 삭제
+`DELETE` 요청을 사용해서 칸반에 lane을 삭제할 수 있습니다.
 
 include::./adoc/noteCaptainOnly.adoc[]
 

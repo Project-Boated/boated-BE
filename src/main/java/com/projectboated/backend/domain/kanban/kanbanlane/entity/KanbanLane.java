@@ -7,6 +7,7 @@ import com.projectboated.backend.domain.kanban.kanbanlane.entity.exception.TaskC
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.exception.TaskOriginalIndexOutOfBoundsException;
 import com.projectboated.backend.domain.task.entity.Task;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,8 +18,6 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type")
 public class KanbanLane extends BaseTimeEntity {
 
     @Id
@@ -38,7 +37,8 @@ public class KanbanLane extends BaseTimeEntity {
     @OrderColumn(name = "task_index")
     private List<Task> tasks = new ArrayList<>();
 
-    protected KanbanLane(String name, Kanban kanban) {
+    @Builder
+    public KanbanLane(String name, Kanban kanban) {
         this.name = name;
         this.kanban = kanban;
     }

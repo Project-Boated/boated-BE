@@ -20,8 +20,4 @@ public interface KanbanLaneRepository extends JpaRepository<KanbanLane, Long> {
     @Query("delete from KanbanLane kl where kl.kanban=:kanban")
     int deleteByKanban(@Param("kanban") Kanban kanban);
 
-    @Modifying
-    @Query("delete from CustomKanbanLane ckl where ckl.kanban=:kanban")
-    void deleteCustomLaneByKanban(@Param("kanban") Kanban kanban);
-
 }

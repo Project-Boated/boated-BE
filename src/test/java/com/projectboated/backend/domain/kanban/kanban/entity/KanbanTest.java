@@ -2,7 +2,6 @@ package com.projectboated.backend.domain.kanban.kanban.entity;
 
 import com.projectboated.backend.domain.kanban.kanban.entity.exception.KanbanLaneChangeIndexOutOfBoundsException;
 import com.projectboated.backend.domain.kanban.kanban.entity.exception.KanbanLaneOriginalIndexOutOfBoundsException;
-import com.projectboated.backend.domain.kanban.kanbanlane.entity.DefaultKanbanLane;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
 import com.projectboated.backend.domain.project.entity.Project;
@@ -73,7 +72,7 @@ class KanbanTest {
                 .deadline(PROJECT_DEADLINE)
                 .build();
         Kanban kanban = new Kanban(project);
-        KanbanLane kanbanLane = DefaultKanbanLane.builder()
+        KanbanLane kanbanLane = KanbanLane.builder()
                 .name(KANBAN_LANE_NAME)
                 .build();
 
@@ -96,7 +95,7 @@ class KanbanTest {
                 .build();
         Kanban kanban = new Kanban(project);
         IntStream.range(0, 10)
-                .forEach(i -> kanban.addKanbanLane(DefaultKanbanLane.builder()
+                .forEach(i -> kanban.addKanbanLane(KanbanLane.builder()
                         .name(KANBAN_LANE_NAME + i)
                         .build()));
 
@@ -117,7 +116,7 @@ class KanbanTest {
                 .build();
         Kanban kanban = new Kanban(project);
         IntStream.range(0, 10)
-                .forEach(i -> kanban.addKanbanLane(DefaultKanbanLane.builder()
+                .forEach(i -> kanban.addKanbanLane(KanbanLane.builder()
                         .name(KANBAN_LANE_NAME + i)
                         .build()));
 
@@ -137,7 +136,7 @@ class KanbanTest {
                 .build();
         Kanban kanban = new Kanban(project);
         IntStream.range(0, 10)
-                .forEach(i -> kanban.addKanbanLane(DefaultKanbanLane.builder()
+                .forEach(i -> kanban.addKanbanLane(KanbanLane.builder()
                         .name(KANBAN_LANE_NAME + i)
                         .build()));
 
@@ -158,7 +157,7 @@ class KanbanTest {
                 .build();
         Kanban kanban = new Kanban(project);
         IntStream.range(0, 10)
-                .forEach(i -> kanban.addKanbanLane(DefaultKanbanLane.builder()
+                .forEach(i -> kanban.addKanbanLane(KanbanLane.builder()
                         .name(KANBAN_LANE_NAME + i)
                         .build()));
 
@@ -179,7 +178,7 @@ class KanbanTest {
                 .build();
         Kanban kanban = new Kanban(project);
         IntStream.range(0, 5)
-                .forEach(i -> kanban.addKanbanLane(DefaultKanbanLane.builder()
+                .forEach(i -> kanban.addKanbanLane(KanbanLane.builder()
                         .name(KANBAN_LANE_NAME + i)
                         .build()));
 
@@ -207,7 +206,7 @@ class KanbanTest {
                 .build();
         Kanban kanban = new Kanban(project);
         IntStream.range(0, 5)
-                .forEach(i -> kanban.addKanbanLane(DefaultKanbanLane.builder()
+                .forEach(i -> kanban.addKanbanLane(KanbanLane.builder()
                         .name(KANBAN_LANE_NAME + i)
                         .build()));
 
@@ -235,10 +234,10 @@ class KanbanTest {
                 .build();
         Kanban kanban = new Kanban(project);
 
-        DefaultKanbanLane kanbanLane1 = DefaultKanbanLane.builder()
+        KanbanLane kanbanLane1 = KanbanLane.builder()
                 .name(KANBAN_LANE_NAME)
                 .build();
-        DefaultKanbanLane kanbanLane2 = DefaultKanbanLane.builder()
+        KanbanLane kanbanLane2 = KanbanLane.builder()
                 .name(KANBAN_LANE_NAME)
                 .build();
         kanban.addKanbanLane(kanbanLane1);
@@ -277,10 +276,10 @@ class KanbanTest {
                 .build();
         Kanban kanban = new Kanban(project);
 
-        DefaultKanbanLane kanbanLane1 = DefaultKanbanLane.builder()
+        KanbanLane kanbanLane1 = KanbanLane.builder()
                 .name(KANBAN_LANE_NAME)
                 .build();
-        DefaultKanbanLane kanbanLane2 = DefaultKanbanLane.builder()
+        KanbanLane kanbanLane2 = KanbanLane.builder()
                 .name(KANBAN_LANE_NAME)
                 .build();
         kanban.addKanbanLane(kanbanLane1);
@@ -319,10 +318,10 @@ class KanbanTest {
                 .build();
         Kanban kanban = new Kanban(project);
 
-        DefaultKanbanLane kanbanLane1 = DefaultKanbanLane.builder()
+        KanbanLane kanbanLane1 = KanbanLane.builder()
                 .name(KANBAN_LANE_NAME)
                 .build();
-        DefaultKanbanLane kanbanLane2 = DefaultKanbanLane.builder()
+        KanbanLane kanbanLane2 = KanbanLane.builder()
                 .name(KANBAN_LANE_NAME)
                 .build();
         kanban.addKanbanLane(kanbanLane1);
@@ -361,10 +360,10 @@ class KanbanTest {
                 .build();
         Kanban kanban = new Kanban(project);
 
-        DefaultKanbanLane kanbanLane1 = DefaultKanbanLane.builder()
+        KanbanLane kanbanLane1 = KanbanLane.builder()
                 .name(KANBAN_LANE_NAME)
                 .build();
-        DefaultKanbanLane kanbanLane2 = DefaultKanbanLane.builder()
+        KanbanLane kanbanLane2 = KanbanLane.builder()
                 .name(KANBAN_LANE_NAME)
                 .build();
         kanban.addKanbanLane(kanbanLane1);
@@ -403,10 +402,10 @@ class KanbanTest {
                 .build();
         Kanban kanban = new Kanban(project);
 
-        DefaultKanbanLane kanbanLane1 = DefaultKanbanLane.builder()
+        KanbanLane kanbanLane1 = KanbanLane.builder()
                 .name(KANBAN_LANE_NAME)
                 .build();
-        DefaultKanbanLane kanbanLane2 = DefaultKanbanLane.builder()
+        KanbanLane kanbanLane2 = KanbanLane.builder()
                 .name(KANBAN_LANE_NAME)
                 .build();
         kanban.addKanbanLane(kanbanLane1);

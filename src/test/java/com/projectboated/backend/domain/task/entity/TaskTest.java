@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.task.entity;
 
-import com.projectboated.backend.domain.kanban.kanbanlane.entity.CustomKanbanLane;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ class TaskTest {
                 .deadline(TASK_DEADLINE)
                 .build();
 
-        CustomKanbanLane kanbanLane = CustomKanbanLane.builder()
+        KanbanLane kanbanLane = KanbanLane.builder()
                 .build();
 
         // When

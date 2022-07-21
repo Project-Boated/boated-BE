@@ -35,7 +35,9 @@ public final class KanbanDocument {
     public static RestDocumentationFilter documentKanbanLaneDelete() {
         return document("kanban-lane-delete",
                 pathParameters(
-                        parameterWithName("projectId").description("프로젝트 고유 번호")
+                        parameterWithName("projectId").description("프로젝트 고유 번호"),
+                        parameterWithName("kanbanLaneId").description("kanban lane 고유번호")
+
                 )
         );
     }

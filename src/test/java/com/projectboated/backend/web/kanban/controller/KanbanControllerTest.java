@@ -53,13 +53,14 @@ class KanbanControllerTest extends AcceptanceTest {
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
 
         KanbanTestUtils.createCustomKanbanLane(port, cookie, projectId, KANBAN_LANE_NAME);
+        int firstKanbanLaneId = KanbanTestUtils.getFirstKanbanLaneId(port, cookie, projectId);
 
         given(this.spec)
             .filter(documentKanbanLaneDelete())
             .cookie(cookie)
         .when()
             .port(port)
-            .delete("/api/projects/{projectId}/kanban/lanes", projectId)
+            .delete("/api/projects/{projectId}/kanban/lanes/{kanbanLaneId}", projectId, firstKanbanLaneId)
         .then()
             .statusCode(HttpStatus.OK.value());
     }

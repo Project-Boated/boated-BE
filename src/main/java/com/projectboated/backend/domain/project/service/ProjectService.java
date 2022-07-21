@@ -5,7 +5,7 @@ import com.projectboated.backend.domain.account.account.repository.AccountReposi
 import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
-import com.projectboated.backend.domain.kanban.kanbanlane.entity.DefaultKanbanLane;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLaneType;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
@@ -41,7 +41,7 @@ public class ProjectService {
 
         for (KanbanLaneType kanbanLaneType : KanbanLaneType.values()) {
             String name = kanbanLaneType.name();
-            newKanban.addKanbanLane(new DefaultKanbanLane(name, newKanban));
+            newKanban.addKanbanLane(new KanbanLane(name, newKanban));
         }
 
         return projectRepository.save(project);
