@@ -19,7 +19,7 @@ class KanbanLaneRepositoryTest extends RepositoryTest {
         // Given
         Project project = insertDefaultProjectAndDefaultCaptain();
         Kanban kanban = insertKanban(project);
-        insertDefaultCustomKanbanLane(kanban);
+        insertKanbanLane(kanban);
 
         // When
         Optional<KanbanLane> result = kanbanLaneRepository.findByKanbanAndName(kanban, KANBAN_LANE_NAME);
@@ -37,11 +37,11 @@ class KanbanLaneRepositoryTest extends RepositoryTest {
 
         Project project = insertDefaultProject(account);
         Kanban kanban = insertKanban(project);
-        insertCustomKanbanLane(kanban, "lane1");
+        insertKanbanLane(kanban, "lane1");
 
         Project project2 = insertDefaultProject2(account);
         Kanban kanban2 = insertKanban(project2);
-        insertCustomKanbanLane(kanban2, "lane2");
+        insertKanbanLane(kanban2, "lane2");
 
         // When
         Optional<KanbanLane> result = kanbanLaneRepository.findByKanbanAndName(kanban, "lane2");
@@ -55,7 +55,7 @@ class KanbanLaneRepositoryTest extends RepositoryTest {
         // Given
         Project project = insertDefaultProjectAndDefaultCaptain();
         Kanban kanban = insertKanban(project);
-        insertDefaultKanbanLanes(kanban);
+        insertKanbanLanes(kanban);
 
         // When
         Long result = kanbanLaneRepository.countByKanban(kanban);
@@ -69,27 +69,13 @@ class KanbanLaneRepositoryTest extends RepositoryTest {
         // Given
         Project project = insertDefaultProjectAndDefaultCaptain();
         Kanban kanban = insertKanban(project);
-        insertDefaultKanbanLanes(kanban);
+        insertKanbanLanes(kanban);
 
         // When
         long result = kanbanLaneRepository.deleteByKanban(kanban);
 
         // Then
         assertThat(result).isEqualTo(4);
-    }
-
-    @Test
-    void deleteCustomLaneByKanban_Kanban에속한CustomLane존재_CustomLane삭제() {
-        // Given
-        Project project = insertDefaultProjectAndDefaultCaptain();
-        Kanban kanban = insertKanban(project);
-        insertDefaultCustomKanbanLane(kanban);
-
-        // When
-        kanbanLaneRepository.deleteCustomLaneByKanban(kanban);
-
-        // Then
-        assertThat(kanbanLaneRepository.countByKanban(kanban)).isEqualTo(0);
     }
 
 }

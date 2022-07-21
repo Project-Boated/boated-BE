@@ -1,14 +1,10 @@
 package com.projectboated.backend.domain.kanban.kanbanlane.entity;
 
-import com.projectboated.backend.common.data.BasicDataTask;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
-import com.projectboated.backend.domain.kanban.kanban.entity.exception.KanbanLaneChangeIndexOutOfBoundsException;
-import com.projectboated.backend.domain.kanban.kanban.entity.exception.KanbanLaneOriginalIndexOutOfBoundsException;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.exception.TaskChangeIndexOutOfBoundsException;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.exception.TaskOriginalIndexOutOfBoundsException;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.entity.Task;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,21 +12,20 @@ import java.util.stream.IntStream;
 
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME;
 import static com.projectboated.backend.common.data.BasicDataTask.*;
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@DisplayName("DefaultKanbanLane : Entity 단위 테스트")
-class DefaultKanbanLaneTest {
+@DisplayName("KanbanLane : Entity 단위 테스트")
+class KanbanLaneTest {
 
     @Test
-    void 생성자_DefaultKanbanLane생성_return_생성된DefaultKanbanLane() {
+    void 생성자_KanbanLane생성_return_생성된KanbanLane() {
         // Given
         Project project = Project.builder().build();
         Kanban kanban = Kanban.builder().project(project).build();
 
         // When
-        KanbanLane kanbanLane = new DefaultKanbanLane(KANBAN_LANE_NAME, kanban);
+        KanbanLane kanbanLane = new KanbanLane(KANBAN_LANE_NAME, kanban);
 
         // Then
         assertThat(kanbanLane.getKanban()).isEqualTo(kanban);
@@ -46,7 +41,7 @@ class DefaultKanbanLaneTest {
                 .project(project)
                 .build();
 
-        DefaultKanbanLane dkl = DefaultKanbanLane.builder()
+        KanbanLane dkl = KanbanLane.builder()
                 .kanban(kanban)
                 .build();
 
@@ -71,7 +66,7 @@ class DefaultKanbanLaneTest {
         Kanban kanban = Kanban.builder()
                 .project(project)
                 .build();
-        DefaultKanbanLane dkl = DefaultKanbanLane.builder()
+        KanbanLane dkl = KanbanLane.builder()
                 .kanban(kanban)
                 .build();
 
@@ -97,7 +92,7 @@ class DefaultKanbanLaneTest {
         Kanban kanban = Kanban.builder()
                 .project(project)
                 .build();
-        DefaultKanbanLane dkl = DefaultKanbanLane.builder()
+        KanbanLane dkl = KanbanLane.builder()
                 .kanban(kanban)
                 .build();
         IntStream.range(0, 10)
@@ -119,7 +114,7 @@ class DefaultKanbanLaneTest {
         Kanban kanban = Kanban.builder()
                 .project(project)
                 .build();
-        DefaultKanbanLane dkl = DefaultKanbanLane.builder()
+        KanbanLane dkl = KanbanLane.builder()
                 .kanban(kanban)
                 .build();
         IntStream.range(0, 10)
@@ -141,7 +136,7 @@ class DefaultKanbanLaneTest {
         Kanban kanban = Kanban.builder()
                 .project(project)
                 .build();
-        DefaultKanbanLane dkl = DefaultKanbanLane.builder()
+        KanbanLane dkl = KanbanLane.builder()
                 .kanban(kanban)
                 .build();
         IntStream.range(0, 10)
@@ -162,7 +157,7 @@ class DefaultKanbanLaneTest {
         Kanban kanban = Kanban.builder()
                 .project(project)
                 .build();
-        DefaultKanbanLane dkl = DefaultKanbanLane.builder()
+        KanbanLane dkl = KanbanLane.builder()
                 .kanban(kanban)
                 .build();
         IntStream.range(0, 10)
@@ -184,7 +179,7 @@ class DefaultKanbanLaneTest {
         Kanban kanban = Kanban.builder()
                 .project(project)
                 .build();
-        DefaultKanbanLane dkl = DefaultKanbanLane.builder()
+        KanbanLane dkl = KanbanLane.builder()
                 .kanban(kanban)
                 .build();
         IntStream.range(0, 5)
@@ -213,7 +208,7 @@ class DefaultKanbanLaneTest {
         Kanban kanban = Kanban.builder()
                 .project(project)
                 .build();
-        DefaultKanbanLane dkl = DefaultKanbanLane.builder()
+        KanbanLane dkl = KanbanLane.builder()
                 .kanban(kanban)
                 .build();
         IntStream.range(0, 5)
@@ -237,7 +232,7 @@ class DefaultKanbanLaneTest {
     @Test
     void addTask_첫번째에task추가_정상() {
         // Given
-        DefaultKanbanLane dkl = DefaultKanbanLane
+        KanbanLane dkl = KanbanLane
                 .builder()
                 .build();
 
@@ -253,7 +248,7 @@ class DefaultKanbanLaneTest {
     @Test
     void addTask_마지막에task추가_정상() {
         // Given
-        DefaultKanbanLane dkl = DefaultKanbanLane
+        KanbanLane dkl = KanbanLane
                 .builder()
                 .build();
 
@@ -272,7 +267,7 @@ class DefaultKanbanLaneTest {
     @Test
     void addTask_중간에task추가_정상() {
         // Given
-        DefaultKanbanLane dkl = DefaultKanbanLane
+        KanbanLane dkl = KanbanLane
                 .builder()
                 .build();
 
@@ -292,7 +287,7 @@ class DefaultKanbanLaneTest {
     @Test
     void addTask_마이너스인덱스_예외발생() {
         // Given
-        DefaultKanbanLane dkl = DefaultKanbanLane
+        KanbanLane dkl = KanbanLane
                 .builder()
                 .build();
 
@@ -305,7 +300,7 @@ class DefaultKanbanLaneTest {
     @Test
     void addTask_인덱스벗어남_예외발생() {
         // Given
-        DefaultKanbanLane dkl = DefaultKanbanLane
+        KanbanLane dkl = KanbanLane
                 .builder()
                 .build();
 
@@ -322,7 +317,7 @@ class DefaultKanbanLaneTest {
     @Test
     void removeTask_task삭제_정상() {
         // Given
-        DefaultKanbanLane dkl = DefaultKanbanLane
+        KanbanLane dkl = KanbanLane
                 .builder()
                 .build();
 
@@ -342,7 +337,7 @@ class DefaultKanbanLaneTest {
     @Test
     void removeTask_마이너스인덱스_예외발생() {
         // Given
-        DefaultKanbanLane dkl = DefaultKanbanLane
+        KanbanLane dkl = KanbanLane
                 .builder()
                 .build();
 
@@ -355,7 +350,7 @@ class DefaultKanbanLaneTest {
     @Test
     void removeTask_인덱스벗어남_예외발생() {
         // Given
-        DefaultKanbanLane dkl = DefaultKanbanLane
+        KanbanLane dkl = KanbanLane
                 .builder()
                 .build();
 

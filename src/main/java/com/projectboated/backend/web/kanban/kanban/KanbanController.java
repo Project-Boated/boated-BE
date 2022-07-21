@@ -3,8 +3,6 @@ package com.projectboated.backend.web.kanban.kanban;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanban.service.KanbanService;
-import com.projectboated.backend.domain.kanban.kanbanlane.entity.CustomKanbanLane;
-import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.KanbanLaneService;
 import com.projectboated.backend.web.kanban.kanban.dto.response.GetKanbanResponse;
 import com.projectboated.backend.web.kanban.kanbanlane.dto.request.CreateKanbanLaneRequest;
@@ -30,24 +28,21 @@ public class KanbanController {
     }
 
     @PostMapping(value = "/api/projects/{projectId}/kanban/lanes", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void createCustomKanbanLane(
+    public void createKanbanLane(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
             @RequestBody CreateKanbanLaneRequest request
     ) {
-        KanbanLane kanbanLane = CustomKanbanLane.builder()
-                .name(request.getName())
-                .build();
-
-        kanbanLaneService.save(account, projectId, kanbanLane);
+        kanbanLaneService.createNewLine(account.getId(), projectId, request.getName());
     }
 
-    @DeleteMapping("/api/projects/{projectId}/kanban/lanes")
-    public void deleteCustomKanbanLane(
+    @DeleteMapping("/api/projects/{projectId}/kanban/lanes/{kanbanLaneId}")
+    public void deleteKanbanLane(
             @AuthenticationPrincipal Account account,
-            @PathVariable Long projectId
+            @PathVariable Long projectId,
+            @PathVariable Long kanbanLaneId
     ) {
-        kanbanLaneService.deleteCustomLane(account, projectId);
+        kanbanLaneService.deleteCustomLane(account.getId(), projectId, kanbanLaneId);
     }
 
     @PostMapping("/api/projects/{projectId}/kanban/lanes/change/{originalIndex}/{changeIndex}")

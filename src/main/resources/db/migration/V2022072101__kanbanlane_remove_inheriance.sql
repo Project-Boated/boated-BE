@@ -1,0 +1,1 @@
+alter table kanban_lane drop type;
