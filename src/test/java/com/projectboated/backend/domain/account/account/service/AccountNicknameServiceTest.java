@@ -5,18 +5,20 @@ import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.account.account.service.exception.AccountNicknameAlreadyExistsException;
 import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.util.Optional;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
+@DisplayName("Account(nickname) : Service 단위 테스트")
 class AccountNicknameServiceTest extends ServiceTest {
 
     @InjectMocks
