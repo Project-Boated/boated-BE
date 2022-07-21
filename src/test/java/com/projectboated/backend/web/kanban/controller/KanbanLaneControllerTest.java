@@ -29,7 +29,6 @@ class KanbanLaneControllerTest extends AcceptanceTest {
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
         IntStream.range(0, 5)
                         .forEach((i) -> TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME+i, TASK_DESCRIPTION, TASK_DEADLINE));
-        int firstKanbanId = KanbanTestUtils.getFirstKanbanLaneId(port, cookie, projectId);
 
         // When
         // Then
@@ -38,7 +37,7 @@ class KanbanLaneControllerTest extends AcceptanceTest {
             .cookie(cookie)
         .when()
             .port(port)
-            .post("/api/projects/{projectId}/kanban/lanes/{laneId}/tasks/change/{originalIndex}/{changeIndex}", projectId, firstKanbanId, 1, 2)
+            .post("/api/projects/{projectId}/kanban/lanes/tasks/change/{originalLaneIndex}/{originalTaskIndex}/{changeLaneIndex}/{changeTaskIndex}", projectId, 0, 0, 1, 0)
         .then()
             .statusCode(HttpStatus.OK.value());
     }

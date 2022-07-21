@@ -15,9 +15,10 @@ public final class KanbanLaneDocument {
         return document("kanban-lanes-tasks-order-change",
                 pathParameters(
                         parameterWithName("projectId").description("프로젝트 고유 번호"),
-                        parameterWithName("laneId").description("lane 고유 번호"),
-                        parameterWithName("originalIndex").description("바꾸고 싶은 index(index번호입니다. id아닙니다)"),
-                        parameterWithName("changeIndex").description("바꿔지게 될 index(index번호입니다. id아닙니다)")
+                        parameterWithName("originalLaneIndex").description("바꾸고 싶은 task의 lane index(index번호입니다. id아닙니다)"),
+                        parameterWithName("originalTaskIndex").description("바꾸고 싶은 task의 index(index번호입니다. id아닙니다)"),
+                        parameterWithName("changeLaneIndex").description("바꿔지게 될 task의 lane index(index번호입니다. id아닙니다)"),
+                        parameterWithName("changeTaskIndex").description("바꿔지게 될 task의 index(index번호입니다. id아닙니다)")
                 )
         );
     }
