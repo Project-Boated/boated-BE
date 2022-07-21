@@ -4,13 +4,12 @@ import com.projectboated.backend.common.basetest.ServiceTest;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
-import com.projectboated.backend.domain.project.entity.AccountProject;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.exception.ProjectCaptainUpdateAccessDeniedException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -18,14 +17,14 @@ import org.mockito.Mock;
 import java.util.Optional;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
-import static com.projectboated.backend.common.data.BasicDataAccount.PASSWORD;
 import static com.projectboated.backend.common.data.BasicDataProject.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@DisplayName("Project(captain) : Service 단위 테스트")
 class ProjectCaptainServiceTest extends ServiceTest {
 
     @InjectMocks

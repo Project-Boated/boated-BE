@@ -9,11 +9,10 @@ import com.projectboated.backend.domain.project.repository.AccountProjectReposit
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.exception.ProjectFindAllCrewsAccessDeniedException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +21,11 @@ import java.util.stream.IntStream;
 import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
 import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID2;
 import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
 
+@DisplayName("Project(crew) : Service 단위 테스트")
 class ProjectCrewServiceTest extends ServiceTest {
 
     @InjectMocks

@@ -10,15 +10,13 @@ import com.projectboated.backend.domain.account.profileimage.entity.UrlProfileIm
 import com.projectboated.backend.domain.account.profileimage.repository.ProfileImageRepository;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.verification.VerificationMode;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
-import java.awt.*;
 import java.util.Optional;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
@@ -27,6 +25,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
+@DisplayName("ProfileImage : Service 단위 테스트")
 class ProfileImageServiceTest extends ServiceTest {
 
     @InjectMocks

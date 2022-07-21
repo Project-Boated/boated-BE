@@ -13,6 +13,7 @@ import com.projectboated.backend.domain.project.service.exception.ProjectDeleteA
 import com.projectboated.backend.domain.project.service.exception.ProjectNameSameInAccountException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
 import com.projectboated.backend.domain.project.service.exception.ProjectUpdateAccessDeniedException;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -29,6 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
+@DisplayName("Project : Service 단위 테스트")
 class ProjectServiceTest extends ServiceTest {
 
     @InjectMocks
