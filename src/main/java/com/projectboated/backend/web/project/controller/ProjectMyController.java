@@ -1,10 +1,9 @@
 package com.projectboated.backend.web.project.controller;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.project.service.AccountProjectService;
-import com.projectboated.backend.domain.project.service.condition.GetMyProjectsCond;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.service.ProjectService;
+import com.projectboated.backend.domain.project.service.condition.GetMyProjectsCond;
 import com.projectboated.backend.domain.project.service.dto.MyProjectsDto;
 import com.projectboated.backend.web.project.dto.common.ProjectResponse;
 import com.projectboated.backend.web.project.dto.response.GetMyProjectsResponse;
@@ -22,7 +21,6 @@ import java.util.List;
 public class ProjectMyController {
 
     private final ProjectService projectService;
-    private final AccountProjectService accountProjectService;
 
     @GetMapping("/api/projects/my")
     public GetMyProjectsResponse getMyProjects(
@@ -46,7 +44,7 @@ public class ProjectMyController {
         List<Project> projects = myProjects.getProjects();
 
         List<ProjectResponse> projectResponses = projects.stream()
-                .map(p -> new ProjectResponse(p, accountProjectService.getCrews(p)))
+                .map(p -> new ProjectResponse(p, projectService.getCrews(p)))
                 .toList();
 
         return new GetMyProjectsResponse(page, size, hasNext, projectResponses);

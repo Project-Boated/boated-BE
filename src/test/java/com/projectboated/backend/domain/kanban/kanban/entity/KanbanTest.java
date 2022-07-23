@@ -4,6 +4,7 @@ import com.projectboated.backend.domain.kanban.kanban.entity.exception.KanbanLan
 import com.projectboated.backend.domain.kanban.kanban.entity.exception.KanbanLaneOriginalIndexOutOfBoundsException;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
+import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.KanbanLaneUpdateRequest;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.entity.Task;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +14,7 @@ import java.util.stream.IntStream;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT;
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME;
+import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME2;
 import static com.projectboated.backend.common.data.BasicDataProject.*;
 import static com.projectboated.backend.common.data.BasicDataTask.TASK_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -443,6 +445,82 @@ class KanbanTest {
                 .containsExactly(TASK_NAME+2);
         assertThat(kanbanLane2.getTasks()).extracting("name")
                 .containsExactly(TASK_NAME+3, TASK_NAME+1, TASK_NAME+4);
+    }
+
+    @Test
+    void updateLane_index마이너스_예외발생() {
+        // Given
+        Project project = Project.builder()
+                .captain(ACCOUNT)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+        Kanban kanban = new Kanban(project);
+
+        KanbanLane kanbanLane1 = KanbanLane.builder()
+                .name(KANBAN_LANE_NAME)
+                .build();
+        kanban.addKanbanLane(kanbanLane1);
+
+        // When
+        // Then
+        KanbanLaneUpdateRequest request = KanbanLaneUpdateRequest.builder()
+                .build();
+
+        assertThatThrownBy(() -> kanban.updateLane(-1, request))
+                .isInstanceOf(KanbanLaneChangeIndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void updateLane_index범위밖요청_예외발생() {
+        // Given
+        Project project = Project.builder()
+                .captain(ACCOUNT)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+        Kanban kanban = new Kanban(project);
+
+        KanbanLane kanbanLane1 = KanbanLane.builder()
+                .name(KANBAN_LANE_NAME)
+                .build();
+        kanban.addKanbanLane(kanbanLane1);
+
+        // When
+        // Then
+        KanbanLaneUpdateRequest request = KanbanLaneUpdateRequest.builder()
+                .build();
+
+        assertThatThrownBy(() -> kanban.updateLane(1, request))
+                .isInstanceOf(KanbanLaneChangeIndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void updateLane_name만바꾸기_정상요청() {
+        // Given
+        Project project = Project.builder()
+                .captain(ACCOUNT)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+        Kanban kanban = new Kanban(project);
+
+        KanbanLane kanbanLane1 = KanbanLane.builder()
+                .name(KANBAN_LANE_NAME)
+                .build();
+        kanban.addKanbanLane(kanbanLane1);
+
+        // When
+        KanbanLaneUpdateRequest request = KanbanLaneUpdateRequest.builder()
+                .name(KANBAN_LANE_NAME2)
+                .build();
+        kanban.updateLane(0, request);
+
+        // Then
+        assertThat(kanban.getLanes().get(0).getName()).isEqualTo(KANBAN_LANE_NAME2);
     }
 
 }

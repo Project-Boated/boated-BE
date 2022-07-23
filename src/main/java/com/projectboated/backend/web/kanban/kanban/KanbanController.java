@@ -42,7 +42,7 @@ public class KanbanController {
             @PathVariable Long projectId,
             @PathVariable Long kanbanLaneId
     ) {
-        kanbanLaneService.deleteCustomLane(account.getId(), projectId, kanbanLaneId);
+        kanbanLaneService.deleteKanbanLane(account.getId(), projectId, kanbanLaneId);
     }
 
     @PostMapping("/api/projects/{projectId}/kanban/lanes/change/{originalIndex}/{changeIndex}")

@@ -5,6 +5,7 @@ import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.exception.TaskChangeIndexOutOfBoundsException;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.exception.TaskOriginalIndexOutOfBoundsException;
+import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.KanbanLaneUpdateRequest;
 import com.projectboated.backend.domain.task.entity.Task;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -38,7 +39,8 @@ public class KanbanLane extends BaseTimeEntity {
     private List<Task> tasks = new ArrayList<>();
 
     @Builder
-    public KanbanLane(String name, Kanban kanban) {
+    public KanbanLane(Long id, String name, Kanban kanban) {
+        this.id = id;
         this.name = name;
         this.kanban = kanban;
     }
@@ -70,5 +72,11 @@ public class KanbanLane extends BaseTimeEntity {
     public void changeTaskOrder(int originalIndex, int changeIndex) {
         Task task = this.removeTask(originalIndex);
         this.addTask(changeIndex, task);
+    }
+
+    public void update(KanbanLaneUpdateRequest request) {
+        if (request.getName() != null) {
+            this.name = request.getName();
+        }
     }
 }

@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectCrewService {
 
-    private final AccountProjectService accountProjectService;
+    private final ProjectService projectService;
     private final ProjectRepository projectRepository;
     private final AccountProjectRepository accountProjectRepository;
     private final AccountRepository accountRepository;
@@ -33,8 +33,7 @@ public class ProjectCrewService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if (!project.isCaptain(account) &&
-                !accountProjectService.isCrew(project, account)) {
+        if (!projectService.isCaptainOrCrew(project, account)) {
             throw new ProjectFindAllCrewsAccessDeniedException(ErrorCode.PROJECT_ONLY_CAPTAIN_OR_CREW);
         }
 

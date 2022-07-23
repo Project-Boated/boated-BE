@@ -32,7 +32,7 @@ class ProjectCrewServiceTest extends ServiceTest {
     ProjectCrewService projectCrewService;
 
     @Mock
-    AccountProjectService accountProjectService;
+    ProjectService projectService;
 
     @Mock
     AccountRepository accountRepository;
@@ -90,7 +90,7 @@ class ProjectCrewServiceTest extends ServiceTest {
 
         when(accountRepository.findById(requestAccount.getId())).thenReturn(Optional.of(requestAccount));
         when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
-        when(accountProjectService.isCrew(project, requestAccount)).thenReturn(false);
+        when(projectService.isCaptainOrCrew(project, requestAccount)).thenReturn(false);
 
         // When
         // Then
@@ -118,6 +118,7 @@ class ProjectCrewServiceTest extends ServiceTest {
         when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
         when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
         when(accountProjectRepository.findCrewByProject(project)).thenReturn(crews);
+        when(projectService.isCaptainOrCrew(project, captain)).thenReturn(true);
 
         // When
         List<Account> results = projectCrewService.findAllCrews(captain.getId(), project.getId());
@@ -151,8 +152,9 @@ class ProjectCrewServiceTest extends ServiceTest {
 
         when(accountRepository.findById(crew.getId())).thenReturn(Optional.of(crew));
         when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
-        when(accountProjectService.isCrew(project, crew)).thenReturn(true);
+        when(projectService.isCaptainOrCrew(project, crew)).thenReturn(true);
         when(accountProjectRepository.findCrewByProject(project)).thenReturn(crews);
+        when(projectService.isCaptainOrCrew(project, crew)).thenReturn(true);
 
         // When
         List<Account> results = projectCrewService.findAllCrews(crew.getId(), project.getId());
