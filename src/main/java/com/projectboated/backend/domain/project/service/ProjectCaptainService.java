@@ -31,7 +31,7 @@ public class ProjectCaptainService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if (project.getCaptain().getId() != account.getId()) {
+        if (!project.isCaptain(account)) {
             throw new ProjectCaptainUpdateAccessDeniedException(ErrorCode.PROJECT_ONLY_CAPTAIN);
         }
 

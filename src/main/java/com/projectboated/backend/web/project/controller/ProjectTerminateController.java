@@ -19,14 +19,14 @@ public class ProjectTerminateController {
     @PostMapping("/api/projects/{projectId}/terminate")
     public TerminateProjectResponse terminateProject(@AuthenticationPrincipal Account account,
                                                      @PathVariable Long projectId) {
-        terminateProject.terminateProject(account, projectId);
+        terminateProject.terminateProject(account.getId(), projectId);
         return new TerminateProjectResponse(projectId);
     }
 
     @PostMapping("/api/projects/{projectId}/cancel-terminate")
     public CancelTerminateProjectResponse cancelTerminateProject(@AuthenticationPrincipal Account account,
                                                                  @PathVariable Long projectId) {
-        terminateProject.cancelTerminateProject(account, projectId);
+        terminateProject.cancelTerminateProject(account.getId(), projectId);
         return new CancelTerminateProjectResponse(projectId);
     }
 

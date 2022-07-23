@@ -5,6 +5,7 @@ import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.condition.GetMyProjectsCond;
 import com.projectboated.backend.domain.project.service.condition.ProjectUpdateCond;
@@ -40,6 +41,8 @@ class ProjectServiceTest extends ServiceTest {
     ProjectRepository projectRepository;
     @Mock
     AccountRepository accountRepository;
+    @Mock
+    AccountProjectRepository accountProjectRepository;
 
     @Test
     void save_project저장_성공() {
@@ -445,6 +448,98 @@ class ProjectServiceTest extends ServiceTest {
         assertThat(result.getProjects()).isEqualTo(projects);
         assertThat(result.getPage()).isEqualTo(cond.getPageable().getPageNumber());
         assertThat(result.getSize()).isEqualTo(result.getProjects().size());
+    }
+
+    @Test
+    void isCrew_crew가존재할때_return_true() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(account);
+
+        when(accountProjectRepository.countByCrewInProject(account, project)).thenReturn(1L);
+
+        // When
+        boolean result = projectService.isCrew(project, account);
+
+        // Then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    void isCrew_crew가존재하지않을때_return_false() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(account);
+
+        when(accountProjectRepository.countByCrewInProject(account, project)).thenReturn(0L);
+
+        // When
+        boolean result = projectService.isCrew(project, account);
+
+        // Then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    void isCaptainOrCrew_captain인경우_return_true() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(account);
+
+        // When
+        boolean result = projectService.isCaptainOrCrew(project, account);
+
+        // Then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    void isCaptainOrCrew_crew인경우_return_true() {
+        // Given
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(captain);
+        Account crew = createAccount(ACCOUNT_ID2);
+
+        when(accountProjectRepository.countByCrewInProject(crew, project)).thenReturn(1L);
+
+        // When
+        boolean result = projectService.isCaptainOrCrew(project, crew);
+
+        // Then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    void isCaptainOrCrew_captain과crew가아닌경우_return_false() {
+        // Given
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(captain);
+        Account crew = createAccount(ACCOUNT_ID2);
+
+        when(accountProjectRepository.countByCrewInProject(crew, project)).thenReturn(0L);
+
+        // When
+        boolean result = projectService.isCaptainOrCrew(project, crew);
+
+        // Then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    void getCrews_crew1개_return_1개() {
+        // Given
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(captain);
+        Account crew = createAccount(ACCOUNT_ID2);
+
+        when(accountProjectRepository.findCrewByProject(project)).thenReturn(List.of(crew));
+
+        // When
+        List<Account> result = projectService.getCrews(project);
+
+        // Then
+        assertThat(result).extracting("id")
+                .containsExactly(ACCOUNT_ID2);
     }
 
 }

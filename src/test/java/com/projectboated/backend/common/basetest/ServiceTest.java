@@ -13,6 +13,7 @@ import java.util.stream.IntStream;
 
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID;
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME;
+import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 
 @ExtendWith(MockitoExtension.class)
 public class ServiceTest extends BaseTest {
@@ -26,6 +27,7 @@ public class ServiceTest extends BaseTest {
 
     protected Project createProject(Account account) {
         return Project.builder()
+                .id(PROJECT_ID)
                 .captain(account)
                 .build();
     }
