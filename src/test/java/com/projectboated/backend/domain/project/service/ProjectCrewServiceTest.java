@@ -7,6 +7,7 @@ import com.projectboated.backend.domain.account.account.service.exception.Accoun
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
+import com.projectboated.backend.domain.project.service.exception.ProjectDeleteCrewAccessDeniedException;
 import com.projectboated.backend.domain.project.service.exception.ProjectFindAllCrewsAccessDeniedException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
 import org.junit.jupiter.api.DisplayName;
@@ -18,11 +19,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
-import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID2;
+import static com.projectboated.backend.common.data.BasicDataAccount.*;
 import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @DisplayName("Project(crew) : Service 단위 테스트")
@@ -163,6 +164,82 @@ class ProjectCrewServiceTest extends ServiceTest {
         assertThat(results)
                 .extracting("id")
                 .containsExactly(ACCOUNT_ID + 1, ACCOUNT_ID + 2, ACCOUNT_ID + 3, ACCOUNT_ID + 4);
+    }
+    
+    @Test
+    void deleteCrew_accountId찾을수없음_예외발생() {
+        // Given
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.empty());
+        
+        // When
+        // Then
+        assertThatThrownBy(() -> projectCrewService.deleteCrew(ACCOUNT_ID, PROJECT_ID, NICKNAME))
+                .isInstanceOf(AccountNotFoundException.class);
+    }
+
+    @Test
+    void deleteCrew_projectId찾을수없음_예외발생() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> projectCrewService.deleteCrew(ACCOUNT_ID, PROJECT_ID, NICKNAME))
+                .isInstanceOf(ProjectNotFoundException.class);
+    }
+
+    @Test
+    void deleteCrew_captain이아닌경우_예외발생() {
+        // Given
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(captain);
+        Account account = createAccount(ACCOUNT_ID2);
+
+        when(accountRepository.findById(ACCOUNT_ID2)).thenReturn(Optional.of(account));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+
+        // When
+        // Then
+        assertThatThrownBy(() -> projectCrewService.deleteCrew(ACCOUNT_ID2, PROJECT_ID, NICKNAME))
+                .isInstanceOf(ProjectDeleteCrewAccessDeniedException.class);
+    }
+
+    @Test
+    void deleteCrew_nickname으로crew를못찾을때_예외발생() {
+        // Given
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(captain);
+        Account account = createAccount(ACCOUNT_ID2);
+
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(captain));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(accountRepository.findByNickname(NICKNAME)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> projectCrewService.deleteCrew(ACCOUNT_ID, PROJECT_ID, NICKNAME))
+                .isInstanceOf(AccountNotFoundException.class);
+    }
+
+    @Test
+    void deleteCrew_정상Request_정상delete() {
+        // Given
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(captain);
+        Account account = createAccount(ACCOUNT_ID2);
+
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(captain));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(accountRepository.findByNickname(NICKNAME)).thenReturn(Optional.of(account));
+
+        // When
+        projectCrewService.deleteCrew(ACCOUNT_ID, PROJECT_ID, NICKNAME);
+
+        // Then
+        verify(accountProjectRepository).deleteByProjectAndAccount(project, account);
     }
 
 }

@@ -1,6 +1,8 @@
 package com.projectboated.backend.domain.kanban.kanban.service;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.account.account.repository.AccountRepository;
+import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanban.service.exception.KanbanAccessDeniedException;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.exception.KanbanLaneChangeIndexDeniedException;
@@ -18,10 +20,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class KanbanService {
 
-    private final ProjectRepository projectRepository;
     private final ProjectService projectService;
+    private final AccountRepository accountRepository;
+    private final ProjectRepository projectRepository;
 
-    public Kanban find(Account account, Long projectId) {
+    public Kanban findByProjectId(Long accountId, Long projectId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
@@ -33,7 +39,10 @@ public class KanbanService {
     }
 
     @Transactional
-    public void changeKanbanLaneOrder(Account account, Long projectId, int originalIndex, int changeIndex) {
+    public void changeKanbanLaneOrder(Long accountId, Long projectId, int originalIndex, int changeIndex) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 

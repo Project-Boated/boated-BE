@@ -23,7 +23,7 @@ public class KanbanController {
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId
     ) {
-        Kanban kanban = kanbanService.find(account, projectId);
+        Kanban kanban = kanbanService.findByProjectId(account.getId(), projectId);
         return new GetKanbanResponse(kanban.getLanes());
     }
 
@@ -52,7 +52,7 @@ public class KanbanController {
             @PathVariable int originalIndex,
             @PathVariable int changeIndex
     ) {
-        kanbanService.changeKanbanLaneOrder(account, projectId, originalIndex, changeIndex);
+        kanbanService.changeKanbanLaneOrder(account.getId(), projectId, originalIndex, changeIndex);
     }
 
 }

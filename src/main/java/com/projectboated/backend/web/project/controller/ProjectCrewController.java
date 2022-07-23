@@ -36,6 +36,6 @@ public class ProjectCrewController {
     public void deleteCrew(@AuthenticationPrincipal Account account,
                            @PathVariable Long projectId,
                            @PathVariable String crewNickname) {
-        projectCrewService.deleteCrew(account, projectId, crewNickname);
+        projectCrewService.deleteCrew(account.getId(), projectId, crewNickname);
     }
 }

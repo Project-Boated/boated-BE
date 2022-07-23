@@ -8,6 +8,7 @@ import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.exception.ProjectCaptainUpdateAccessDeniedException;
+import com.projectboated.backend.domain.project.service.exception.ProjectDeleteCrewAccessDeniedException;
 import com.projectboated.backend.domain.project.service.exception.ProjectFindAllCrewsAccessDeniedException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -41,12 +42,15 @@ public class ProjectCrewService {
     }
 
     @Transactional
-    public void deleteCrew(Account account, Long projectId, String crewNickname) {
+    public void deleteCrew(Long accountId, Long projectId, String crewNickname) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if (!(project.getCaptain().getId() == account.getId())) {
-            throw new ProjectCaptainUpdateAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
+        if (!project.isCaptain(account)) {
+            throw new ProjectDeleteCrewAccessDeniedException(ErrorCode.PROJECT_ONLY_CAPTAIN);
         }
 
         Account crew = accountRepository.findByNickname(crewNickname)
