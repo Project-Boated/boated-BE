@@ -8,6 +8,7 @@ import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLaneType;
 import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.condition.GetMyProjectsCond;
 import com.projectboated.backend.domain.project.service.condition.ProjectUpdateCond;
@@ -29,6 +30,7 @@ public class ProjectService {
 
     private final AccountRepository accountRepository;
     private final ProjectRepository projectRepository;
+    private final AccountProjectRepository accountProjectRepository;
 
     @Transactional
     public Project save(Project project) {
@@ -40,8 +42,11 @@ public class ProjectService {
         project.changeKanban(newKanban);
 
         for (KanbanLaneType kanbanLaneType : KanbanLaneType.values()) {
-            String name = kanbanLaneType.name();
-            newKanban.addKanbanLane(new KanbanLane(name, newKanban));
+            KanbanLane kanbanLane = KanbanLane.builder()
+                    .name(kanbanLaneType.name())
+                    .kanban(newKanban)
+                    .build();
+            newKanban.addKanbanLane(kanbanLane);
         }
 
         return projectRepository.save(project);
@@ -99,5 +104,17 @@ public class ProjectService {
                 .hasNext(projects.size() == cond.getPageable().getPageSize())
                 .projects(projects)
                 .build();
+    }
+
+    public boolean isCrew(Project project,Account account) {
+        return accountProjectRepository.countByCrewInProject(account, project) == 1;
+    }
+
+    public boolean isCaptainOrCrew(Project project, Account account) {
+        return project.isCaptain(account) || isCrew(project, account);
+    }
+
+    public List<Account> getCrews(Project project) {
+        return accountProjectRepository.findCrewByProject(project);
     }
 }

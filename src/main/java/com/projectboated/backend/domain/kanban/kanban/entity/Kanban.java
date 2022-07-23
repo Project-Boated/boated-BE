@@ -5,6 +5,7 @@ import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.kanban.kanban.entity.exception.KanbanLaneChangeIndexOutOfBoundsException;
 import com.projectboated.backend.domain.kanban.kanban.entity.exception.KanbanLaneOriginalIndexOutOfBoundsException;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
+import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.KanbanLaneUpdateRequest;
 import com.projectboated.backend.domain.task.entity.Task;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -81,5 +82,12 @@ public class Kanban extends BaseTimeEntity {
 
         Task removed = lanes.get(originalLaneIndex).removeTask(request.originalTaskIndex());
         lanes.get(changeLaneIndex).addTask(request.changeTaskIndex(), removed);
+    }
+
+    public void updateLane(int index, KanbanLaneUpdateRequest request) {
+        if (index < 0 || index >= lanes.size()) {
+            throw new KanbanLaneChangeIndexOutOfBoundsException(ErrorCode.KANBAN_LANE_CHANGE_INDEX_OUT_OF_BOUNDS);
+        }
+        this.lanes.get(index).update(request);
     }
 }

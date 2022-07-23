@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ProjectCaptainService {
-    private final AccountProjectService accountProjectService;
+    private final ProjectService projectService;
     private final ProjectRepository projectRepository;
     private final AccountRepository accountRepository;
     private final AccountProjectRepository accountProjectRepository;
@@ -38,7 +38,7 @@ public class ProjectCaptainService {
         Account newCaptain = accountRepository.findByNickname(newCaptainNickname)
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND_BY_USERNAME));
 
-        if(!accountProjectService.isCrew(project, newCaptain)) {
+        if(!projectService.isCrew(project, newCaptain)) {
             throw new ProjectCaptainUpdateAccessDeniedException(ErrorCode.PROJECT_CAPTAIN_UPDATE_DENIED_NOT_CREW);
         }
 
