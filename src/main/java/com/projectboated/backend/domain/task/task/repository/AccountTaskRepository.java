@@ -1,8 +1,9 @@
-package com.projectboated.backend.domain.task.repository;
+package com.projectboated.backend.domain.task.task.repository;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.task.entity.AccountTask;
-import com.projectboated.backend.domain.task.entity.Task;
+import com.projectboated.backend.domain.task.task.entity.AccountTask;
+import com.projectboated.backend.domain.task.task.entity.Task;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

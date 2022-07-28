@@ -6,7 +6,7 @@ import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.exception.TaskChangeIndexOutOfBoundsException;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.exception.TaskOriginalIndexOutOfBoundsException;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.KanbanLaneUpdateRequest;
-import com.projectboated.backend.domain.task.entity.Task;
+import com.projectboated.backend.domain.task.task.entity.Task;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,11 +1,11 @@
 package com.projectboated.backend.common.utils;
 
-import com.projectboated.backend.web.task.dto.request.AssignAccountTaskRequest;
+import com.projectboated.backend.web.task.task.dto.request.AssignAccountTaskRequest;
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import com.projectboated.backend.web.task.dto.request.CreateTaskRequest;
+import com.projectboated.backend.web.task.task.dto.request.CreateTaskRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

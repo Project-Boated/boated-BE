@@ -1,7 +1,7 @@
-package com.projectboated.backend.web.task.dto.common;
+package com.projectboated.backend.web.task.task.dto.common;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.projectboated.backend.domain.task.entity.Task;
+import com.projectboated.backend.domain.task.task.entity.Task;
 import lombok.Getter;
 
 import java.time.LocalDate;
