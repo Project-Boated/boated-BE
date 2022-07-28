@@ -205,7 +205,7 @@ class KanbanLaneServiceTest extends ServiceTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> kanbanLaneService.deleteKanbanLane(ACCOUNT_ID, PROJECT_ID, KANBAN_LANE_ID+6))
+        assertThatThrownBy(() -> kanbanLaneService.deleteKanbanLane(ACCOUNT_ID, PROJECT_ID, KANBAN_LANE_ID + 6))
                 .isInstanceOf(KanbanLaneNotInProjectException.class);
 
         verify(accountRepository).findById(ACCOUNT_ID);
@@ -224,25 +224,25 @@ class KanbanLaneServiceTest extends ServiceTest {
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
 
         // When
-        kanbanLaneService.deleteKanbanLane(ACCOUNT_ID, PROJECT_ID, KANBAN_LANE_ID+1);
+        kanbanLaneService.deleteKanbanLane(ACCOUNT_ID, PROJECT_ID, KANBAN_LANE_ID + 1);
 
         // Then
         verify(accountRepository).findById(ACCOUNT_ID);
         verify(projectRepository).findById(PROJECT_ID);
-        verify(kanbanLaneRepository).deleteById(KANBAN_LANE_ID+1);
+        verify(kanbanLaneRepository).deleteById(KANBAN_LANE_ID + 1);
     }
 
     @Test
-    void changeTaskOrder_accountId찾을수없음_예외발생() {
+    void changeTaskOrder_요청한Account찾을수없음_예외발생() {
         // Given
         when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.empty());
 
         // When
         ChangeTaskOrderRequest request = ChangeTaskOrderRequest.builder()
                 .projectId(PROJECT_ID)
+                .originalLaneId(0L)
                 .originalTaskIndex(0)
-                .changeTaskIndex(0)
-                .changeLaneIndex(0)
+                .changeLaneId(0L)
                 .changeTaskIndex(1)
                 .build();
 
@@ -254,7 +254,7 @@ class KanbanLaneServiceTest extends ServiceTest {
     }
 
     @Test
-    void changeTaskOrder_projectId찾을수없음_예외발생() {
+    void changeTaskOrder_project찾을수없음_예외발생() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
 
@@ -264,9 +264,9 @@ class KanbanLaneServiceTest extends ServiceTest {
         // When
         ChangeTaskOrderRequest request = ChangeTaskOrderRequest.builder()
                 .projectId(PROJECT_ID)
+                .originalLaneId(0L)
                 .originalTaskIndex(0)
-                .changeTaskIndex(0)
-                .changeLaneIndex(0)
+                .changeLaneId(0L)
                 .changeTaskIndex(1)
                 .build();
 
@@ -292,9 +292,9 @@ class KanbanLaneServiceTest extends ServiceTest {
         // When
         ChangeTaskOrderRequest request = ChangeTaskOrderRequest.builder()
                 .projectId(PROJECT_ID)
+                .originalLaneId(0L)
                 .originalTaskIndex(0)
-                .changeTaskIndex(0)
-                .changeLaneIndex(0)
+                .changeLaneId(0L)
                 .changeTaskIndex(1)
                 .build();
 
@@ -308,6 +308,82 @@ class KanbanLaneServiceTest extends ServiceTest {
     }
 
     @Test
+    void changeTaskOrder_originalKanbanLane을찾을수없음_예외발생() {
+        // Given
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(captain);
+        Kanban kanban = createKanban(project);
+        List<KanbanLane> kanbanLanes = addKanbanLane(kanban, 1);
+        kanbanLanes.get(0).addTask(createTask(TASK_NAME));
+        kanbanLanes.get(0).addTask(createTask(TASK_NAME2));
+
+        long originalLaneId = 0L;
+        long changeLaneId = 1L;
+
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(captain));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(projectService.isCaptainOrCrew(project, captain)).thenReturn(true);
+        when(kanbanLaneRepository.findByProjectIdAndKanbanLaneId(project.getId(), originalLaneId)).thenReturn(Optional.empty());
+
+        // When
+        ChangeTaskOrderRequest request = ChangeTaskOrderRequest.builder()
+                .projectId(PROJECT_ID)
+                .originalLaneId(originalLaneId)
+                .originalTaskIndex(0)
+                .changeLaneId(changeLaneId)
+                .changeTaskIndex(1)
+                .build();
+
+        // Then
+        assertThatThrownBy(() -> kanbanLaneService.changeTaskOrder(ACCOUNT_ID, request))
+                .isInstanceOf(KanbanLaneNotFoundException.class);
+
+        verify(accountRepository).findById(ACCOUNT_ID);
+        verify(projectRepository).findById(PROJECT_ID);
+        verify(projectService).isCaptainOrCrew(project, captain);
+        verify(kanbanLaneRepository).findByProjectIdAndKanbanLaneId(project.getId(), originalLaneId);
+    }
+
+    @Test
+    void changeTaskOrder_changeKanbanLane을찾을수없음_예외발생() {
+        // Given
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(captain);
+        Kanban kanban = createKanban(project);
+        List<KanbanLane> kanbanLanes = addKanbanLane(kanban, 1);
+        kanbanLanes.get(0).addTask(createTask(TASK_NAME));
+        kanbanLanes.get(0).addTask(createTask(TASK_NAME2));
+
+        long originalLaneId = 0L;
+        long changeLaneId = 1L;
+
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(captain));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(projectService.isCaptainOrCrew(project, captain)).thenReturn(true);
+        when(kanbanLaneRepository.findByProjectIdAndKanbanLaneId(project.getId(), originalLaneId)).thenReturn(Optional.of(kanbanLanes.get(0)));
+        when(kanbanLaneRepository.findByProjectIdAndKanbanLaneId(project.getId(), changeLaneId)).thenReturn(Optional.empty());
+
+        // When
+        ChangeTaskOrderRequest request = ChangeTaskOrderRequest.builder()
+                .projectId(PROJECT_ID)
+                .originalLaneId(originalLaneId)
+                .originalTaskIndex(0)
+                .changeLaneId(changeLaneId)
+                .changeTaskIndex(1)
+                .build();
+
+        // Then
+        assertThatThrownBy(() -> kanbanLaneService.changeTaskOrder(ACCOUNT_ID, request))
+                .isInstanceOf(KanbanLaneNotFoundException.class);
+
+        verify(accountRepository).findById(ACCOUNT_ID);
+        verify(projectRepository).findById(PROJECT_ID);
+        verify(projectService).isCaptainOrCrew(project, captain);
+        verify(kanbanLaneRepository).findByProjectIdAndKanbanLaneId(project.getId(), originalLaneId);
+        verify(kanbanLaneRepository).findByProjectIdAndKanbanLaneId(project.getId(), changeLaneId);
+    }
+
+    @Test
     void changeTaskOrder_정상입력_change성공() {
         // Given
         Account captain = createAccount(ACCOUNT_ID);
@@ -317,16 +393,21 @@ class KanbanLaneServiceTest extends ServiceTest {
         kanbanLanes.get(0).addTask(createTask(TASK_NAME));
         kanbanLanes.get(0).addTask(createTask(TASK_NAME2));
 
+        long originalLaneId = 0L;
+        long changeLaneId = 0L;
+
         when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(captain));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
         when(projectService.isCaptainOrCrew(project, captain)).thenReturn(true);
+        when(kanbanLaneRepository.findByProjectIdAndKanbanLaneId(project.getId(), originalLaneId)).thenReturn(Optional.of(kanbanLanes.get(0)));
+        when(kanbanLaneRepository.findByProjectIdAndKanbanLaneId(project.getId(), changeLaneId)).thenReturn(Optional.of(kanbanLanes.get(0)));
 
         // When
         ChangeTaskOrderRequest request = ChangeTaskOrderRequest.builder()
                 .projectId(PROJECT_ID)
+                .originalLaneId(originalLaneId)
                 .originalTaskIndex(0)
-                .changeTaskIndex(0)
-                .changeLaneIndex(0)
+                .changeLaneId(changeLaneId)
                 .changeTaskIndex(1)
                 .build();
 
@@ -334,7 +415,7 @@ class KanbanLaneServiceTest extends ServiceTest {
 
         // Then
         assertThat(kanbanLanes.get(0).getTasks()).extracting("name")
-                        .containsExactly(TASK_NAME2, TASK_NAME);
+                .containsExactly(TASK_NAME2, TASK_NAME);
 
         verify(accountRepository).findById(ACCOUNT_ID);
         verify(projectRepository).findById(PROJECT_ID);

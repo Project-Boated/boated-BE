@@ -15,20 +15,20 @@ public class KanbanLaneController {
 
     private final KanbanLaneService kanbanLaneService;
 
-    @PostMapping("/api/projects/{projectId}/kanban/lanes/tasks/change/{originalLaneIndex}/{originalTaskIndex}/{changeLaneIndex}/{changeTaskIndex}")
+    @PostMapping("/api/projects/{projectId}/kanban/lanes/tasks/change/{originalLaneId}/{originalTaskIndex}/{changeLaneId}/{changeTaskIndex}")
     public void changeTaskOrder(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
-            @PathVariable int originalLaneIndex,
+            @PathVariable Long originalLaneId,
             @PathVariable int originalTaskIndex,
-            @PathVariable int changeLaneIndex,
+            @PathVariable Long changeLaneId,
             @PathVariable int changeTaskIndex
     ) {
         ChangeTaskOrderRequest request = ChangeTaskOrderRequest.builder()
                 .projectId(projectId)
-                .originalLaneIndex(originalLaneIndex)
+                .originalLaneId(originalLaneId)
                 .originalTaskIndex(originalTaskIndex)
-                .changeLaneIndex(changeLaneIndex)
+                .changeLaneId(changeLaneId)
                 .changeTaskIndex(changeTaskIndex)
                 .build();
         kanbanLaneService.changeTaskOrder(account.getId(), request);

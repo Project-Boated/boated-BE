@@ -225,7 +225,7 @@ class KanbanTest {
                         KANBAN_LANE_NAME + 3);
     }
 
-    @Test
+    /*@Test
     void changeTaskOrder_originalLaneIndex마이너스_예외발생() {
         // Given
         Project project = Project.builder()
@@ -445,7 +445,7 @@ class KanbanTest {
                 .containsExactly(TASK_NAME+2);
         assertThat(kanbanLane2.getTasks()).extracting("name")
                 .containsExactly(TASK_NAME+3, TASK_NAME+1, TASK_NAME+4);
-    }
+    }*/
 
     @Test
     void updateLane_index마이너스_예외발생() {
