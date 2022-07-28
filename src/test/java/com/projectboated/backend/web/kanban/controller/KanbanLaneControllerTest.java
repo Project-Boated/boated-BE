@@ -54,6 +54,7 @@ class KanbanLaneControllerTest extends AcceptanceTest {
         AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+        int kanbanLaneId = KanbanTestUtils.getFirstKanbanLaneId(port, cookie, projectId);
 
         // When
         // Then
@@ -64,7 +65,7 @@ class KanbanLaneControllerTest extends AcceptanceTest {
             .cookie(cookie)
         .when()
             .port(port)
-            .put("/api/projects/{projectId}/kanban/lanes/{kanbanLaneIndex}", projectId, 0)
+            .put("/api/projects/{projectId}/kanban/lanes/{kanbanLaneId}", projectId, kanbanLaneId)
         .then()
             .statusCode(HttpStatus.OK.value());
     }

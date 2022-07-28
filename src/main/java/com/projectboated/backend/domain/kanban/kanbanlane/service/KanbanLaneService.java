@@ -106,7 +106,10 @@ public class KanbanLaneService {
             throw new KanbanLaneUpdateAccessDeniedException(ErrorCode.PROJECT_ONLY_CAPTAIN);
         }
 
-        project.getKanban().updateLane(request.getKanbanLaneIndex(), request);
+        KanbanLane kanbanLane = kanbanLaneRepository.findByProjectIdAndKanbanLaneId(request.getProjectId(), request.getKanbanLaneId())
+                .orElseThrow(KanbanLaneNotFoundException::new);
+
+        kanbanLane.update(request);
     }
 
     private boolean isInProject(KanbanLane kanbanLane, Project project) {

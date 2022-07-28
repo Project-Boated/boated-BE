@@ -29,7 +29,7 @@ public final class KanbanLaneDocument {
         return document("kanban-lanes-update",
                 pathParameters(
                         parameterWithName("projectId").description("프로젝트 고유 번호"),
-                        parameterWithName("kanbanLaneIndex").description("업데이트할 lane의 index(index번호입니다. id아닙니다)")
+                        parameterWithName("kanbanLaneId").description("업데이트할 lane의 고유번호")
                 ),
                 requestFields(
                         fieldWithPath("name").type(JsonFieldType.STRING).description("바꾸고 싶은 name")

@@ -428,7 +428,7 @@ class KanbanLaneServiceTest extends ServiceTest {
         String newName = "newName";
         KanbanLaneUpdateRequest request = KanbanLaneUpdateRequest.builder()
                 .projectId(PROJECT_ID)
-                .kanbanLaneIndex(0)
+                .kanbanLaneId(0L)
                 .name(newName)
                 .build();
 
@@ -450,7 +450,7 @@ class KanbanLaneServiceTest extends ServiceTest {
         String newName = "newName";
         KanbanLaneUpdateRequest request = KanbanLaneUpdateRequest.builder()
                 .projectId(PROJECT_ID)
-                .kanbanLaneIndex(0)
+                .kanbanLaneId(0L)
                 .name(newName)
                 .build();
 
@@ -476,7 +476,7 @@ class KanbanLaneServiceTest extends ServiceTest {
         String newName = "newName";
         KanbanLaneUpdateRequest request = KanbanLaneUpdateRequest.builder()
                 .projectId(PROJECT_ID)
-                .kanbanLaneIndex(0)
+                .kanbanLaneId(0L)
                 .name(newName)
                 .build();
 
@@ -493,6 +493,34 @@ class KanbanLaneServiceTest extends ServiceTest {
     }
 
     @Test
+    void updateKanbanLane_kanbanLane을찾을수없음_예외발생() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(account);
+        Kanban kanban = createKanban(project);
+        List<KanbanLane> kanbanLanes = addKanbanLane(kanban, 5);
+
+        KanbanLaneUpdateRequest request = KanbanLaneUpdateRequest.builder()
+                .projectId(PROJECT_ID)
+                .kanbanLaneId(0L)
+                .name("newName")
+                .build();
+
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(kanbanLaneRepository.findByProjectIdAndKanbanLaneId(request.getProjectId(), request.getKanbanLaneId())).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> kanbanLaneService.updateKanbanLane(ACCOUNT_ID, request))
+                .isInstanceOf(KanbanLaneNotFoundException.class);
+
+        verify(accountRepository).findById(ACCOUNT_ID);
+        verify(projectRepository).findById(PROJECT_ID);
+        verify(kanbanLaneRepository).findByProjectIdAndKanbanLaneId(request.getProjectId(), request.getKanbanLaneId());
+    }
+
+    @Test
     void updateKanbanLane_정상적인입력_정상update() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
@@ -500,24 +528,25 @@ class KanbanLaneServiceTest extends ServiceTest {
         Kanban kanban = createKanban(project);
         List<KanbanLane> kanbanLanes = addKanbanLane(kanban, 5);
 
-        String newName = "newName";
         KanbanLaneUpdateRequest request = KanbanLaneUpdateRequest.builder()
                 .projectId(PROJECT_ID)
-                .kanbanLaneIndex(0)
-                .name(newName)
+                .kanbanLaneId(0L)
+                .name("newName")
                 .build();
 
         when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(kanbanLaneRepository.findByProjectIdAndKanbanLaneId(request.getProjectId(), request.getKanbanLaneId())).thenReturn(Optional.of(kanbanLanes.get(0)));
 
         // When
         kanbanLaneService.updateKanbanLane(ACCOUNT_ID, request);
 
         // Then
-        assertThat(kanbanLanes.get(0).getName()).isEqualTo(newName);
+        assertThat(kanbanLanes.get(0).getName()).isEqualTo(request.getName());
 
         verify(accountRepository).findById(ACCOUNT_ID);
         verify(projectRepository).findById(PROJECT_ID);
+        verify(kanbanLaneRepository).findByProjectIdAndKanbanLaneId(request.getProjectId(), request.getKanbanLaneId());
     }
 
 }

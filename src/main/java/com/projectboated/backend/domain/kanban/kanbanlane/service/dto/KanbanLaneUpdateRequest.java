@@ -7,13 +7,13 @@ import lombok.Getter;
 public class KanbanLaneUpdateRequest {
 
     private final Long projectId;
-    private final int kanbanLaneIndex;
+    private final Long kanbanLaneId;
     private final String name;
 
     @Builder
-    public KanbanLaneUpdateRequest(Long projectId, int kanbanLaneIndex, String name) {
+    public KanbanLaneUpdateRequest(Long projectId, Long kanbanLaneId, String name) {
         this.projectId = projectId;
-        this.kanbanLaneIndex = kanbanLaneIndex;
+        this.kanbanLaneId = kanbanLaneId;
         this.name = name;
     }
 }

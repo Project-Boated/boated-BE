@@ -34,16 +34,16 @@ public class KanbanLaneController {
         kanbanLaneService.changeTaskOrder(account.getId(), request);
     }
 
-    @PutMapping("/api/projects/{projectId}/kanban/lanes/{kanbanLaneIndex}")
+    @PutMapping("/api/projects/{projectId}/kanban/lanes/{kanbanLaneId}")
     public void updateKanbanLane(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
-            @PathVariable int kanbanLaneIndex,
+            @PathVariable Long kanbanLaneId,
             @RequestBody UpdateKanbanLaneRequest request
     ) {
         KanbanLaneUpdateRequest kluRequest = KanbanLaneUpdateRequest.builder()
                 .projectId(projectId)
-                .kanbanLaneIndex(kanbanLaneIndex)
+                .kanbanLaneId(kanbanLaneId)
                 .name(request.getName())
                 .build();
 
