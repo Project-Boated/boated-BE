@@ -13,6 +13,8 @@ import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
+import com.projectboated.backend.domain.task.task.entity.Task;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,8 +84,14 @@ public class KanbanLaneService {
         if (!projectService.isCaptainOrCrew(project, account)) {
             throw new TaskChangeOrderAccessDeniedException(ErrorCode.PROJECT_ONLY_CAPTAIN_OR_CREW);
         }
-
-        project.getKanban().changeTaskOrder(request);
+    
+        KanbanLane originalKanbanLane = kanbanLaneRepository.findByProjectIdAndKanbanLaneId(project.getId(), request.originalLaneId())
+                                                    .orElseThrow(KanbanLaneNotFoundException::new);
+        KanbanLane changeKanbanLane = kanbanLaneRepository.findByProjectIdAndKanbanLaneId(project.getId(), request.changeLaneId())
+                                                    .orElseThrow(KanbanLaneNotFoundException::new);
+    
+        Task task = originalKanbanLane.removeTask(request.originalTaskIndex());
+        changeKanbanLane.addTask(request.changeTaskIndex(), task);
     }
 
     @Transactional
@@ -98,7 +106,10 @@ public class KanbanLaneService {
             throw new KanbanLaneUpdateAccessDeniedException(ErrorCode.PROJECT_ONLY_CAPTAIN);
         }
 
-        project.getKanban().updateLane(request.getKanbanLaneIndex(), request);
+        KanbanLane kanbanLane = kanbanLaneRepository.findByProjectIdAndKanbanLaneId(request.getProjectId(), request.getKanbanLaneId())
+                .orElseThrow(KanbanLaneNotFoundException::new);
+
+        kanbanLane.update(request);
     }
 
     private boolean isInProject(KanbanLane kanbanLane, Project project) {

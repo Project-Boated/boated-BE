@@ -17,9 +17,9 @@ public final class KanbanLaneDocument {
         return document("kanban-lanes-tasks-order-change",
                 pathParameters(
                         parameterWithName("projectId").description("프로젝트 고유 번호"),
-                        parameterWithName("originalLaneIndex").description("바꾸고 싶은 task의 lane index(index번호입니다. id아닙니다)"),
+                        parameterWithName("originalLaneId").description("바꾸고 싶은 lane의 고유번호"),
                         parameterWithName("originalTaskIndex").description("바꾸고 싶은 task의 index(index번호입니다. id아닙니다)"),
-                        parameterWithName("changeLaneIndex").description("바꿔지게 될 task의 lane index(index번호입니다. id아닙니다)"),
+                        parameterWithName("changeLaneId").description("바꿔지게 될 lane의 고유번호"),
                         parameterWithName("changeTaskIndex").description("바꿔지게 될 task의 index(index번호입니다. id아닙니다)")
                 )
         );
@@ -29,7 +29,7 @@ public final class KanbanLaneDocument {
         return document("kanban-lanes-update",
                 pathParameters(
                         parameterWithName("projectId").description("프로젝트 고유 번호"),
-                        parameterWithName("kanbanLaneIndex").description("업데이트할 lane의 index(index번호입니다. id아닙니다)")
+                        parameterWithName("kanbanLaneId").description("업데이트할 lane의 고유번호")
                 ),
                 requestFields(
                         fieldWithPath("name").type(JsonFieldType.STRING).description("바꾸고 싶은 name")

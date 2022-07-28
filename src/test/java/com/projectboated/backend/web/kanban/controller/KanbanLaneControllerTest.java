@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import java.util.List;
 import java.util.stream.IntStream;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
@@ -33,6 +34,7 @@ class KanbanLaneControllerTest extends AcceptanceTest {
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
         IntStream.range(0, 5)
                         .forEach((i) -> TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME+i, TASK_DESCRIPTION, TASK_DEADLINE));
+        int kanbanLaneId = KanbanTestUtils.getFirstKanbanLanesId(port, cookie, projectId).get(0);
 
         // When
         // Then
@@ -41,7 +43,7 @@ class KanbanLaneControllerTest extends AcceptanceTest {
             .cookie(cookie)
         .when()
             .port(port)
-            .post("/api/projects/{projectId}/kanban/lanes/tasks/change/{originalLaneIndex}/{originalTaskIndex}/{changeLaneIndex}/{changeTaskIndex}", projectId, 0, 0, 1, 0)
+            .post("/api/projects/{projectId}/kanban/lanes/tasks/change/{originalLaneId}/{originalTaskIndex}/{changeLaneId}/{changeTaskIndex}", projectId, kanbanLaneId, 0, kanbanLaneId, 0)
         .then()
             .statusCode(HttpStatus.OK.value());
     }
@@ -52,6 +54,7 @@ class KanbanLaneControllerTest extends AcceptanceTest {
         AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+        int kanbanLaneId = KanbanTestUtils.getFirstKanbanLaneId(port, cookie, projectId);
 
         // When
         // Then
@@ -62,7 +65,7 @@ class KanbanLaneControllerTest extends AcceptanceTest {
             .cookie(cookie)
         .when()
             .port(port)
-            .put("/api/projects/{projectId}/kanban/lanes/{kanbanLaneIndex}", projectId, 0)
+            .put("/api/projects/{projectId}/kanban/lanes/{kanbanLaneId}", projectId, kanbanLaneId)
         .then()
             .statusCode(HttpStatus.OK.value());
     }

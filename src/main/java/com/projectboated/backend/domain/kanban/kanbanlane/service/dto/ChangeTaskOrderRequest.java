@@ -5,9 +5,12 @@ import lombok.Builder;
 @Builder
 public record ChangeTaskOrderRequest(
         long projectId,
-        int originalLaneIndex,
+		
+        Long originalLaneId,
         int originalTaskIndex,
-        int changeLaneIndex,
+		
+        Long changeLaneId,
         int changeTaskIndex
+		
 ) {
 }
