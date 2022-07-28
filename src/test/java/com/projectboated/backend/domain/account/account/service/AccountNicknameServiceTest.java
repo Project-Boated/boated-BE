@@ -15,8 +15,7 @@ import java.util.Optional;
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @DisplayName("Account(nickname) : Service 단위 테스트")
 class AccountNicknameServiceTest extends ServiceTest {
@@ -36,12 +35,14 @@ class AccountNicknameServiceTest extends ServiceTest {
                 .password(PASSWORD)
                 .build();
 
-        when(accountRepository.findById(any())).thenReturn(Optional.of(account));
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
 
         // When
         // Then
         String newNickname = "newNickname";
         nicknameService.updateNickname(account.getId(), newNickname);
+        
+        verify(accountRepository).findById(account.getId());
     }
 
     @Test
@@ -53,12 +54,14 @@ class AccountNicknameServiceTest extends ServiceTest {
                 .password(PASSWORD)
                 .build();
 
-        when(accountRepository.findById(any())).thenReturn(Optional.empty());
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.empty());
 
         // When
         // Then
         assertThatThrownBy(() -> nicknameService.updateNickname(account.getId(), "newNickname"))
                 .isInstanceOf(AccountNotFoundException.class);
+    
+        verify(accountRepository).findById(account.getId());
     }
 
     @Test
@@ -69,38 +72,79 @@ class AccountNicknameServiceTest extends ServiceTest {
                 .nickname(NICKNAME)
                 .password(PASSWORD)
                 .build();
+    
+        String newNickname = "newNickname";
 
-        when(accountRepository.findById(any())).thenReturn(Optional.of(account));
-        when(accountRepository.existsByNickname(any())).thenReturn(true);
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(accountRepository.existsByNickname(newNickname)).thenReturn(true);
 
         // When
         // Then
-        assertThatThrownBy(() -> nicknameService.updateNickname(account.getId(), "newNickname"))
+        assertThatThrownBy(() -> nicknameService.updateNickname(account.getId(), newNickname))
                 .isInstanceOf(AccountNicknameAlreadyExistsException.class);
+    
+        verify(accountRepository).findById(account.getId());
+    }
+    
+    @Test
+    void updateNickname_같은닉네임주어짐_정상update() {
+        // Given
+        Account account = Account.builder()
+                .username(USERNAME)
+                .nickname(NICKNAME)
+                .password(PASSWORD)
+                .build();
+
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+
+        // When
+        nicknameService.updateNickname(account.getId(), NICKNAME);
+        
+        // Then
+        assertThat(account.getNickname()).isEqualTo(NICKNAME);
+    
+        verify(accountRepository).findById(account.getId());
     }
 
     @Test
+    void existsByNickname_nickname이null로주어진경우_assert예외발생() {
+        // Given
+        // When
+        // Then
+        assertThatThrownBy(() -> nicknameService.existsByNickname(null))
+            .isInstanceOf(AssertionError.class);
+    }
+    
+    @Test
     void existsByNickname_nickname이존재하는경우_return_true() {
         // Given
-        when(accountRepository.existsByNickname(any())).thenReturn(true);
+        String nickname = "nickname";
+        
+        when(accountRepository.existsByNickname(nickname)).thenReturn(true);
 
         // When
-        boolean result = nicknameService.existsByNickname("nickname");
+        boolean result = nicknameService.existsByNickname(nickname);
 
         // Then
         assertThat(result).isTrue();
+        
+        verify(accountRepository).existsByNickname(nickname);
     }
 
     @Test
     void existsByNickname_nickname이존재하지않는경우_return_false() {
         // Given
+        String nickname = "nickname";
+        
         when(accountRepository.existsByNickname(any())).thenReturn(false);
 
         // When
-        boolean result = nicknameService.existsByNickname("nickname");
+        boolean result = nicknameService.existsByNickname(nickname);
 
         // Then
         assertThat(result).isFalse();
+        
+        verify(accountRepository).existsByNickname(nickname);
     }
 
 }

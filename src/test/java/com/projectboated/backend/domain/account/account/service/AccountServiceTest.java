@@ -95,6 +95,51 @@ class AccountServiceTest extends ServiceTest {
     }
 
     @Test
+    void save_username이null인경우_assertionError() {
+        // Given
+        Account account = Account.builder()
+                .username(null)
+                .nickname(NICKNAME)
+                .password(PASSWORD)
+                .build();
+
+        // When
+        // Then
+        assertThatThrownBy(() -> accountService.save(account))
+                .isInstanceOf(AssertionError.class);
+    }
+    
+    @Test
+    void save_nickname이null인경우_assertionError() {
+        // Given
+        Account account = Account.builder()
+                .username(USERNAME)
+                .nickname(null)
+                .password(PASSWORD)
+                .build();
+
+        // When
+        // Then
+        assertThatThrownBy(() -> accountService.save(account))
+                .isInstanceOf(AssertionError.class);
+    }
+    
+    @Test
+    void save_password가null인경우_assertionError() {
+        // Given
+        Account account = Account.builder()
+                .username(USERNAME)
+                .nickname(NICKNAME)
+                .password(null)
+                .build();
+
+        // When
+        // Then
+        assertThatThrownBy(() -> accountService.save(account))
+                .isInstanceOf(AssertionError.class);
+    }
+    
+    @Test
     void save_존재하는username_예외발생() {
         // Given
         Account account = Account.builder()

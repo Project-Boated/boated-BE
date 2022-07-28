@@ -18,8 +18,6 @@ public class AccountNicknameService {
 
     @Transactional
     public void updateNickname(Long accountId, String nickname) {
-        assert nickname != null;
-
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
@@ -32,8 +30,8 @@ public class AccountNicknameService {
     }
 
     public boolean existsByNickname(String nickname) {
-        assert nickname != null;
-
+        assert nickname!=null;
+        
         return accountRepository.existsByNickname(nickname);
     }
 
