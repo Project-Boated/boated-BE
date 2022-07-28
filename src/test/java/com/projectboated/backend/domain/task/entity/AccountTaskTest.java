@@ -1,13 +1,13 @@
 package com.projectboated.backend.domain.task.entity;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.task.task.entity.AccountTask;
+import com.projectboated.backend.domain.task.task.entity.Task;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.projectboated.backend.common.data.BasicDataTask.*;
-import static com.projectboated.backend.common.data.BasicDataTask.TASK_DEADLINE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("AccountTask : Entity 단위 테스트")
 class AccountTaskTest {
@@ -18,7 +18,7 @@ class AccountTaskTest {
         Account account = Account.builder()
                 .build();
         Task task = Task.builder()
-                .build();
+						.build();
 
         // When
         AccountTask accountTask = new AccountTask(account, task);

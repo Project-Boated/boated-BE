@@ -1,4 +1,4 @@
-package com.projectboated.backend.domain.task.service;
+package com.projectboated.backend.domain.task.task.service;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
@@ -11,11 +11,17 @@ import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
-import com.projectboated.backend.domain.task.entity.AccountTask;
-import com.projectboated.backend.domain.task.entity.Task;
-import com.projectboated.backend.domain.task.repository.AccountTaskRepository;
-import com.projectboated.backend.domain.task.repository.TaskRepository;
+import com.projectboated.backend.domain.task.task.entity.AccountTask;
+import com.projectboated.backend.domain.task.task.entity.Task;
+import com.projectboated.backend.domain.task.task.repository.AccountTaskRepository;
+import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import com.projectboated.backend.domain.task.service.exception.*;
+import com.projectboated.backend.domain.task.task.service.exception.AccountTaskNotFoundException;
+import com.projectboated.backend.domain.task.task.service.exception.TaskAlreadyAssignedException;
+import com.projectboated.backend.domain.task.task.service.exception.TaskAssignDeniedException;
+import com.projectboated.backend.domain.task.task.service.exception.TaskNotFoundException;
+import com.projectboated.backend.domain.task.task.service.exception.TaskSaveAccessDeniedException;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,9 +82,9 @@ public class TaskService {
         }
 
         AccountTask accountTask = AccountTask.builder()
-                .account(assignAccount)
-                .task(task)
-                .build();
+											 .account(assignAccount)
+											 .task(task)
+											 .build();
 
         accountTaskRepository.save(accountTask);
     }

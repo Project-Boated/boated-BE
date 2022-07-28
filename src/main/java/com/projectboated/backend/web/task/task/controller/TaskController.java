@@ -1,11 +1,11 @@
-package com.projectboated.backend.web.task.controller;
+package com.projectboated.backend.web.task.task.controller;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.task.entity.Task;
-import com.projectboated.backend.domain.task.service.TaskService;
-import com.projectboated.backend.web.task.dto.request.AssignAccountTaskRequest;
-import com.projectboated.backend.web.task.dto.request.CreateTaskRequest;
-import com.projectboated.backend.web.task.dto.response.CreateTaskResponse;
+import com.projectboated.backend.domain.task.task.entity.Task;
+import com.projectboated.backend.domain.task.task.service.TaskService;
+import com.projectboated.backend.web.task.task.dto.request.AssignAccountTaskRequest;
+import com.projectboated.backend.web.task.task.dto.request.CreateTaskRequest;
+import com.projectboated.backend.web.task.task.dto.response.CreateTaskResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

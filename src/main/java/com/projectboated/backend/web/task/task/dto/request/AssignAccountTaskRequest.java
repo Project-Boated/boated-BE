@@ -1,4 +1,4 @@
-package com.projectboated.backend.web.task.dto.request;
+package com.projectboated.backend.web.task.task.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

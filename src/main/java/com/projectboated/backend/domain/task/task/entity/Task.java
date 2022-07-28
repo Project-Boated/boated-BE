@@ -1,4 +1,4 @@
-package com.projectboated.backend.domain.task.entity;
+package com.projectboated.backend.domain.task.task.entity;
 
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import lombok.AccessLevel;
@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
 import com.projectboated.backend.domain.project.entity.Project;
-import net.bytebuddy.agent.builder.AgentBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

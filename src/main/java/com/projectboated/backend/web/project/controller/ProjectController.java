@@ -1,7 +1,7 @@
 package com.projectboated.backend.web.project.controller;
 
 import com.projectboated.backend.domain.project.service.condition.ProjectUpdateCond;
-import com.projectboated.backend.domain.task.service.TaskService;
+import com.projectboated.backend.domain.task.task.service.TaskService;
 import com.projectboated.backend.web.project.dto.request.CreateProjectRequest;
 import com.projectboated.backend.web.project.dto.request.PatchProjectRequest;
 import lombok.RequiredArgsConstructor;

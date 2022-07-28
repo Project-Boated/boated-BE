@@ -2,6 +2,8 @@ package com.projectboated.backend.domain.task.entity;
 
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.domain.task.task.entity.Task;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,10 +18,10 @@ class TaskTest {
         // Given
         // When
         Task task = Task.builder()
-                .name(TASK_NAME)
-                .description(TASK_DESCRIPTION)
-                .deadline(TASK_DEADLINE)
-                .build();
+						.name(TASK_NAME)
+						.description(TASK_DESCRIPTION)
+						.deadline(TASK_DEADLINE)
+						.build();
 
         // Then
         assertThat(task.getName()).isEqualTo(TASK_NAME);
