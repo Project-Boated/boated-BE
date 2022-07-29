@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/projects/{projectId}/kanban")
 public class KanbanController {
 
     private final KanbanService kanbanService;
     private final KanbanLaneService kanbanLaneService;
 
-    @GetMapping("/api/projects/{projectId}/kanban")
+    @GetMapping
     public GetKanbanResponse getKanban(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId
@@ -27,7 +28,7 @@ public class KanbanController {
         return new GetKanbanResponse(kanban.getLanes());
     }
 
-    @PostMapping(value = "/api/projects/{projectId}/kanban/lanes", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/lanes", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createKanbanLane(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
@@ -36,7 +37,7 @@ public class KanbanController {
         kanbanLaneService.createNewLine(account.getId(), projectId, request.getName());
     }
 
-    @DeleteMapping("/api/projects/{projectId}/kanban/lanes/{kanbanLaneId}")
+    @DeleteMapping("/lanes/{kanbanLaneId}")
     public void deleteKanbanLane(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
@@ -45,7 +46,7 @@ public class KanbanController {
         kanbanLaneService.deleteKanbanLane(account.getId(), projectId, kanbanLaneId);
     }
 
-    @PostMapping("/api/projects/{projectId}/kanban/lanes/change/{originalIndex}/{changeIndex}")
+    @PostMapping("/lanes/change/{originalIndex}/{changeIndex}")
     public void changeKanbanLaneOrder(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,

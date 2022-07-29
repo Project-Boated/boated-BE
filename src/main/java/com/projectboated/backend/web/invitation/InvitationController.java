@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class InvitationController {
 
     private final InvitationService invitationService;
 
-    @PostMapping("/api/projects/{projectId}/crews")
+    @PostMapping("/projects/{projectId}/crews")
     public CreateInvitationResponse createInvitation(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
@@ -27,19 +28,19 @@ public class InvitationController {
         return new CreateInvitationResponse(invitation.getId());
     }
 
-    @GetMapping("/api/account/invitations")
+    @GetMapping("/account/invitations")
     public GetMyInvitationResponse getMyInvitation(@AuthenticationPrincipal Account account) {
         return new GetMyInvitationResponse(invitationService.findByAccount(account));
     }
 
-    @PostMapping("/api/account/invitations/{invitationId}/accept")
+    @PostMapping("/account/invitations/{invitationId}/accept")
     public AcceptInvitationResponse acceptInvitation(@AuthenticationPrincipal Account account,
                                                      @PathVariable Long invitationId) {
         Long projectId = invitationService.accept(account, invitationId);
         return new AcceptInvitationResponse(projectId);
     }
 
-    @PostMapping("/api/account/invitations/{invitationId}/reject")
+    @PostMapping("/account/invitations/{invitationId}/reject")
     public RejectInvitationResponse rejectInvitation(@AuthenticationPrincipal Account account,
                                                      @PathVariable Long invitationId) {
         Long projectId = invitationService.reject(account, invitationId);

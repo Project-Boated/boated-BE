@@ -9,18 +9,16 @@ import com.projectboated.backend.web.task.task.dto.response.CreateTaskResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/projects/{projectId}/kanban/lanes/tasks")
 public class TaskController {
 
     private final TaskService taskService;
 
-    @PostMapping(value = "/api/projects/{projectId}/kanban/lanes/tasks", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public CreateTaskResponse createTask(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
@@ -37,7 +35,7 @@ public class TaskController {
         return new CreateTaskResponse(newTask);
     }
 
-    @PostMapping(value = "/api/projects/{projectId}/kanban/lanes/tasks/{taskId}/assign", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{taskId}/assign", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void assignAccountTask(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
@@ -48,7 +46,7 @@ public class TaskController {
         taskService.assignAccount(account, projectId, taskId, nickname);
     }
 
-    @PostMapping(value = "/api/projects/{projectId}/kanban/lanes/tasks/{taskId}/cancel-assign", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{taskId}/cancel-assign", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void cancelAssignAccountTask(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,

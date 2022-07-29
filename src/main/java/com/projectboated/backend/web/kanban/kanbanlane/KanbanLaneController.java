@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/projects/{projectId}/kanban/lanes")
 public class KanbanLaneController {
 
     private final KanbanLaneService kanbanLaneService;
 
-    @PostMapping("/api/projects/{projectId}/kanban/lanes/tasks/change/{originalLaneId}/{originalTaskIndex}/{changeLaneId}/{changeTaskIndex}")
+    @PostMapping("/tasks/change/{originalLaneId}/{originalTaskIndex}/{changeLaneId}/{changeTaskIndex}")
     public void changeTaskOrder(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
@@ -34,7 +35,7 @@ public class KanbanLaneController {
         kanbanLaneService.changeTaskOrder(account.getId(), request);
     }
 
-    @PutMapping("/api/projects/{projectId}/kanban/lanes/{kanbanLaneId}")
+    @PutMapping("/{kanbanLaneId}")
     public void updateKanbanLane(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
