@@ -22,13 +22,14 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/account/profile/profile-image")
 public class AccountProfileImageController {
 
     private final ProfileImageService profileImageService;
     private final AwsS3ProfileImageService awsS3ProfileImageService;
 
 
-    @PostMapping(value = "/api/account/profile/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public PostAccountProfileImageResponse postAccountProfileImage(@AuthenticationPrincipal Account account,
                                                                    @ModelAttribute @Validated PostAccountProfileImageRequest request,
                                                                    HttpServletRequest httpRequest) {
@@ -48,7 +49,7 @@ public class AccountProfileImageController {
         return new PostAccountProfileImageResponse(profileImageService.getProfileUrl(account.getId(), httpRequest.getHeader("HOST"), request.isProxy()));
     }
 
-    @GetMapping("/api/account/profile/profile-image")
+    @GetMapping
     public ResponseEntity<byte[]> getAccountProfileImage(@AuthenticationPrincipal Account account) {
         AwsS3File awsS3File = awsS3ProfileImageService.getProfileImageBytes(account);
 
@@ -60,7 +61,7 @@ public class AccountProfileImageController {
                 .body(awsS3File.getBytes());
     }
 
-    @DeleteMapping("/api/account/profile/profile-image")
+    @DeleteMapping
     public void deleteAccountProfileImage(@AuthenticationPrincipal Account account) {
         profileImageService.deleteProfileImageFile(account);
     }

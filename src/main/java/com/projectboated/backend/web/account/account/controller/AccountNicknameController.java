@@ -13,18 +13,19 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/account/profile/nickname")
 public class AccountNicknameController {
 
     private final AccountNicknameService nicknameService;
 
-    @PutMapping(value = "/api/account/profile/nickname", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void putNickname(
             @RequestBody @Validated PutNicknameRequest request,
             @AuthenticationPrincipal Account account) {
         nicknameService.updateNickname(account.getId(), request.getNickname());
     }
 
-    @PostMapping(value = "/api/account/profile/nickname/unique-validation", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/unique-validation", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ValidationNicknameUniqueResponse validationNicknameUnique(
             @Validated @RequestBody ValidationNicknameUniqueRequest request) {
         return new ValidationNicknameUniqueResponse(nicknameService.existsByNickname(request.getNickname()));

@@ -8,22 +8,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/projects/{projectId}")
 public class ProjectTerminateController {
 
     private final ProjectTerminateService terminateProject;
 
-    @PostMapping("/api/projects/{projectId}/terminate")
+    @PostMapping("/terminate")
     public TerminateProjectResponse terminateProject(@AuthenticationPrincipal Account account,
                                                      @PathVariable Long projectId) {
         terminateProject.terminateProject(account.getId(), projectId);
         return new TerminateProjectResponse(projectId);
     }
 
-    @PostMapping("/api/projects/{projectId}/cancel-terminate")
+    @PostMapping("/cancel-terminate")
     public CancelTerminateProjectResponse cancelTerminateProject(@AuthenticationPrincipal Account account,
                                                                  @PathVariable Long projectId) {
         terminateProject.cancelTerminateProject(account.getId(), projectId);

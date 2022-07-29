@@ -18,12 +18,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/projects")
 public class ProjectController {
 
     private final ProjectService projectService;
     private final TaskService taskService;
 
-    @PostMapping(value = "/api/projects", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public CreateProjectResponse createProject(
             @AuthenticationPrincipal Account account,
             @RequestBody @Validated CreateProjectRequest request
@@ -39,7 +40,7 @@ public class ProjectController {
         return new CreateProjectResponse(project);
     }
 
-    @GetMapping("/api/projects/{projectId}")
+    @GetMapping("/{projectId}")
     public GetProjectResponse getProject(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId
@@ -49,7 +50,7 @@ public class ProjectController {
         return new GetProjectResponse(project,taskSize);
     }
 
-    @PatchMapping(value = "/api/projects/{projectId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/{projectId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public PatchProjectResponse patchProject(
             @AuthenticationPrincipal Account account,
             @RequestBody @Validated PatchProjectRequest request,
@@ -66,7 +67,7 @@ public class ProjectController {
         return new PatchProjectResponse(projectId);
     }
 
-    @DeleteMapping("/api/projects/{projectId}")
+    @DeleteMapping("/{projectId}")
     public void deleteProject(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId

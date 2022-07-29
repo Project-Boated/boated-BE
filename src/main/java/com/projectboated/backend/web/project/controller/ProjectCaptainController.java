@@ -6,18 +6,16 @@ import com.projectboated.backend.web.project.dto.request.UpdateProjectCaptainReq
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/projects/{projectId}/captain")
 public class ProjectCaptainController {
 
     private final ProjectCaptainService projectCaptainService;
 
-    @PutMapping(value = "/api/projects/{projectId}/captain", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateProjectCaptain(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,

@@ -26,12 +26,13 @@ import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/account")
 public class AccountController {
 
     private final AccountService accountService;
     private final ProfileImageService profileImageService;
 
-    @PostMapping(value = "/api/account/sign-up", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/sign-up", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void signUp(@RequestBody @Validated SignUpRequest request) {
         String username = request.getUsername();
         String password = request.getPassword();
@@ -51,7 +52,7 @@ public class AccountController {
         accountService.save(newAccount);
     }
 
-    @GetMapping("/api/account/profile")
+    @GetMapping("/profile")
     public GetAccountProfileResponse getAccountProfile(HttpServletRequest httpRequest,
                                                        @AuthenticationPrincipal Account account,
                                                        @RequestParam(name = "isProxy", required = false) boolean isProxy) {
@@ -61,7 +62,7 @@ public class AccountController {
                 .build();
     }
 
-    @PatchMapping(value = "/api/account/profile")
+    @PatchMapping(value = "/profile")
     public void patchAccountProfile(
             @AuthenticationPrincipal Account account,
             @ModelAttribute @Validated PatchAccountProfileRequest request
@@ -83,7 +84,7 @@ public class AccountController {
         accountService.updateProfile(account.getId(), updateCondition);
     }
 
-    @DeleteMapping("/api/account/profile")
+    @DeleteMapping("/profile")
     public void deleteAccount(@AuthenticationPrincipal Account account, HttpSession session) {
         accountService.delete(account.getId());
         session.invalidate();

@@ -15,12 +15,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/projects/{projectId}/crews")
 public class ProjectCrewController {
 
     private final ProjectCrewService projectCrewService;
     private final ProfileImageService profileImageService;
 
-    @GetMapping("/api/projects/{projectId}/crews")
+    @GetMapping
     public GetCrewsResponse getCrews(HttpServletRequest httpRequest,
                                      @RequestParam(required = false) boolean isProxy,
                                      @AuthenticationPrincipal Account account,
@@ -32,7 +33,7 @@ public class ProjectCrewController {
         return new GetCrewsResponse(crewResponses);
     }
 
-    @DeleteMapping("/api/projects/{projectId}/crews/{crewNickname}")
+    @DeleteMapping("/{crewNickname}")
     public void deleteCrew(@AuthenticationPrincipal Account account,
                            @PathVariable Long projectId,
                            @PathVariable String crewNickname) {
