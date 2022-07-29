@@ -872,3 +872,24 @@ include::{snippets}/tasks-assign-cancel/request-fields.adoc[]
 
 ===== http-response
 include::{snippets}/tasks-assign-cancel/http-response.adoc[]
+
+[[resources-tasks-like]]
+=== Task찜하기
+`POST` 요청을 사용해서 Task를 찜할 수 있습니다.
+
+include::./adoc/noteCaptainOrCrewOnly.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/tasks-like/http-request.adoc[]
+
+===== request-path-parameters
+include::{snippets}/tasks-like/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/tasks-like/http-response.adoc[]
+
+
