@@ -61,4 +61,12 @@ public class ServiceTest extends BaseTest {
                 .build();
     }
 
+    protected Task createTask(KanbanLane kanbanLane, String name) {
+        Task task = Task.builder()
+                .name(name)
+                .build();
+        kanbanLane.addTask(task);
+        return task;
+    }
+
 }

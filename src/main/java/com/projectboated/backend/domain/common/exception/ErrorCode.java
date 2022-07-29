@@ -40,6 +40,9 @@ public enum ErrorCode {
     TASK_ORIGINAL_INDEX_OUT_OF_BOUNDS(400, "T006", "original index가 lane index범위를 벗어났습니다."),
     TASK_CHANGE_INDEX_OUT_OF_BOUNDS(400, "T007", "change index가 lane index범위를 벗어났습니다."),
 
+    // Task Like
+    TASK_LIKE_ALREADY_EXISTS(400, "TL001", "이미 찜한 task입니다."),
+
     // Kakao
     KAKAO_SERVER_EXCEPTION(400, "K001", "카카오 서버 오류입니다."),
 
