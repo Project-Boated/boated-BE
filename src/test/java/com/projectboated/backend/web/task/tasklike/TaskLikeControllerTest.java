@@ -1,4 +1,4 @@
-package com.projectboated.backend.web.task.controller;
+package com.projectboated.backend.web.task.tasklike;
 
 import com.projectboated.backend.common.basetest.AcceptanceTest;
 import com.projectboated.backend.common.utils.AccountTestUtils;
@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
 import static com.projectboated.backend.common.data.BasicDataProject.*;
 import static com.projectboated.backend.common.data.BasicDataTask.*;
-import static com.projectboated.backend.web.task.controller.document.TaskLikeController.documentTaskLike;
+import static com.projectboated.backend.web.task.tasklike.document.TaskLikeController.documentTaskLike;
 import static io.restassured.RestAssured.given;
 
 class TaskLikeControllerTest extends AcceptanceTest {

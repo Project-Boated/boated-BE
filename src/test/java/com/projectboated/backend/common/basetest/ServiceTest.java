@@ -14,6 +14,8 @@ import java.util.stream.IntStream;
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID;
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME;
 import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
+import static com.projectboated.backend.common.data.BasicDataTask.*;
+import static com.projectboated.backend.common.data.BasicDataTask.TASK_DEADLINE;
 
 @ExtendWith(MockitoExtension.class)
 public class ServiceTest extends BaseTest {
@@ -48,6 +50,15 @@ public class ServiceTest extends BaseTest {
                 .toList();
     }
 
+    protected KanbanLane addKanbanLane(Kanban kanban) {
+        KanbanLane kanbanLane = KanbanLane.builder()
+                .id(KANBAN_LANE_ID)
+                .name(KANBAN_LANE_NAME)
+                .build();
+        kanban.addKanbanLane(kanbanLane);
+        return kanbanLane;
+    }
+
     protected KanbanLane createKanbanLane(Kanban kanban) {
         return KanbanLane.builder()
                 .kanban(kanban)
@@ -61,12 +72,14 @@ public class ServiceTest extends BaseTest {
                 .build();
     }
 
-    protected Task createTask(KanbanLane kanbanLane, String name) {
+    protected Task addTask(KanbanLane kanbanLane, String name) {
         Task task = Task.builder()
+                .id(TASK_ID)
                 .name(name)
+                .description(TASK_DESCRIPTION)
+                .deadline(TASK_DEADLINE)
                 .build();
         kanbanLane.addTask(task);
         return task;
     }
-
 }

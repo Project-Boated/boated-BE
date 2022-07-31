@@ -24,7 +24,6 @@ import static io.restassured.RestAssured.given;
 import static com.projectboated.backend.web.account.controller.document.AccountDocument.*;
 import static org.hamcrest.Matchers.*;
 
-@ExtendWith(MockitoExtension.class)
 class AccountControllerTest extends AcceptanceTest {
 
     @MockBean

@@ -238,7 +238,7 @@ class KanbanLaneTest {
                 .build();
 
         // When
-        dkl.addTask(0, new Task(TASK_NAME, TASK_DESCRIPTION, null));
+        dkl.addTask(0, new Task(TASK_ID, TASK_NAME, TASK_DESCRIPTION, null));
         
         // Then
         assertThat(dkl.getTasks())
@@ -253,11 +253,11 @@ class KanbanLaneTest {
                 .builder()
                 .build();
 
-        dkl.addTask(new Task(TASK_NAME+1, TASK_DESCRIPTION, null));
-        dkl.addTask(new Task(TASK_NAME+2, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_ID, TASK_NAME+1, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_ID2, TASK_NAME+2, TASK_DESCRIPTION, null));
 
         // When
-        dkl.addTask(2, new Task(TASK_NAME+3, TASK_DESCRIPTION, null));
+        dkl.addTask(2, new Task(TASK_ID, TASK_NAME+3, TASK_DESCRIPTION, null));
 
         // Then
         assertThat(dkl.getTasks())
@@ -272,12 +272,12 @@ class KanbanLaneTest {
                 .builder()
                 .build();
 
-        dkl.addTask(new Task(TASK_NAME+1, TASK_DESCRIPTION, null));
-        dkl.addTask(new Task(TASK_NAME+2, TASK_DESCRIPTION, null));
-        dkl.addTask(new Task(TASK_NAME+3, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_ID, TASK_NAME+1, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_ID, TASK_NAME+2, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_ID, TASK_NAME+3, TASK_DESCRIPTION, null));
 
         // When
-        dkl.addTask(2, new Task(TASK_NAME+4, TASK_DESCRIPTION, null));
+        dkl.addTask(2, new Task(TASK_ID, TASK_NAME+4, TASK_DESCRIPTION, null));
 
         // Then
         assertThat(dkl.getTasks())
@@ -294,7 +294,7 @@ class KanbanLaneTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> dkl.addTask(-1, new Task(TASK_NAME+4, TASK_DESCRIPTION, null)))
+        assertThatThrownBy(() -> dkl.addTask(-1, new Task(TASK_ID, TASK_NAME+4, TASK_DESCRIPTION, null)))
                 .isInstanceOf(TaskChangeIndexOutOfBoundsException.class);
     }
 
@@ -305,13 +305,13 @@ class KanbanLaneTest {
                 .builder()
                 .build();
 
-        dkl.addTask(new Task(TASK_NAME+1, TASK_DESCRIPTION, null));
-        dkl.addTask(new Task(TASK_NAME+2, TASK_DESCRIPTION, null));
-        dkl.addTask(new Task(TASK_NAME+3, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_ID, TASK_NAME+1, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_ID, TASK_NAME+2, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_ID, TASK_NAME+3, TASK_DESCRIPTION, null));
 
         // When
         // Then
-        assertThatThrownBy(() -> dkl.addTask(4, new Task(TASK_NAME+4, TASK_DESCRIPTION, null)))
+        assertThatThrownBy(() -> dkl.addTask(4, new Task(TASK_ID, TASK_NAME+4, TASK_DESCRIPTION, null)))
                 .isInstanceOf(TaskChangeIndexOutOfBoundsException.class);
     }
 
@@ -322,9 +322,9 @@ class KanbanLaneTest {
                 .builder()
                 .build();
 
-        dkl.addTask(new Task(TASK_NAME+1, TASK_DESCRIPTION, null));
-        dkl.addTask(new Task(TASK_NAME+2, TASK_DESCRIPTION, null));
-        dkl.addTask(new Task(TASK_NAME+3, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_ID, TASK_NAME+1, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_ID, TASK_NAME+2, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_ID, TASK_NAME+3, TASK_DESCRIPTION, null));
 
         // When
         dkl.removeTask(1);
@@ -355,9 +355,9 @@ class KanbanLaneTest {
                 .builder()
                 .build();
 
-        dkl.addTask(new Task(TASK_NAME+1, TASK_DESCRIPTION, null));
-        dkl.addTask(new Task(TASK_NAME+2, TASK_DESCRIPTION, null));
-        dkl.addTask(new Task(TASK_NAME+3, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_ID, TASK_NAME+1, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_ID, TASK_NAME+2, TASK_DESCRIPTION, null));
+        dkl.addTask(new Task(TASK_ID, TASK_NAME+3, TASK_DESCRIPTION, null));
 
         // When
         // Then

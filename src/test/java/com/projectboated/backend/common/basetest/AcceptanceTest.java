@@ -6,6 +6,7 @@ import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +23,7 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 @AutoConfigureRestDocs
 @ActiveProfiles("test")
 @Transactional
+@ExtendWith(MockitoExtension.class)
 public class AcceptanceTest {
 
     @LocalServerPort
