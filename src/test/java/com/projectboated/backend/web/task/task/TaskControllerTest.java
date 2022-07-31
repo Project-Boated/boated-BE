@@ -1,4 +1,4 @@
-package com.projectboated.backend.web.task.controller;
+package com.projectboated.backend.web.task.task;
 
 import com.projectboated.backend.common.basetest.AcceptanceTest;
 import com.projectboated.backend.common.data.BasicDataAccount;
@@ -22,7 +22,7 @@ import static com.projectboated.backend.common.data.BasicDataAccount.*;
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME;
 import static com.projectboated.backend.common.data.BasicDataProject.*;
 import static com.projectboated.backend.common.data.BasicDataTask.*;
-import static com.projectboated.backend.web.task.controller.document.TaskDocument.*;
+import static com.projectboated.backend.web.task.task.document.TaskDocument.*;
 import static io.restassured.RestAssured.given;
 
 @AutoConfigureMockMvc

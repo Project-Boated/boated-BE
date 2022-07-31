@@ -132,7 +132,7 @@ class TaskLikeServiceTest extends ServiceTest {
         Project project = createProject(captain);
         Kanban kanban = createKanban(project);
         List<KanbanLane> kanbanLanes = addKanbanLane(kanban, 1);
-        Task task = createTask(kanbanLanes.get(0), "task");
+        Task task = addTask(kanbanLanes.get(0), "task");
 
         when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(captain));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
@@ -159,7 +159,7 @@ class TaskLikeServiceTest extends ServiceTest {
         Project project = createProject(captain);
         Kanban kanban = createKanban(project);
         List<KanbanLane> kanbanLanes = addKanbanLane(kanban, 1);
-        Task task = createTask(kanbanLanes.get(0), "task");
+        Task task = addTask(kanbanLanes.get(0), "task");
 
         when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(captain));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));

@@ -39,7 +39,8 @@ public class Task extends BaseTimeEntity {
     private List<AccountTask> assignedAccounts = new ArrayList<>();
 
     @Builder
-    public Task(String name, String description, LocalDateTime deadline) {
+    public Task(Long id, String name, String description, LocalDateTime deadline) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.deadline = deadline;

@@ -1,14 +1,12 @@
 package com.projectboated.backend.domain.task.tasklike.entity;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.Task;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.projectboated.backend.common.data.BasicDataTask.TASK_ID;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("TaskLike : Entity 단위 테스트")
 class TaskLikeTest {

@@ -892,4 +892,32 @@ include::{snippets}/tasks-like/path-parameters.adoc[]
 ===== http-response
 include::{snippets}/tasks-like/http-response.adoc[]
 
+[[resources-tasks-files]]
+== 프로젝트 Task File
 
+[[resources-tasks-files-upload]]
+=== Task File Upload
+`POST` 요청을 사용해서 Task에 file을 업로드할 수 있습니다.
+
+include::./adoc/noteCaptainOrCrewOnly.adoc[]
+
+include::./adoc/noteFileSize.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/tasks-files-create/http-request.adoc[]
+
+===== request-headers
+include::{snippets}/tasks-files-create/request-headers.adoc[]
+
+===== request-path-parameters
+include::{snippets}/tasks-files-create/path-parameters.adoc[]
+
+===== request-parts
+include::{snippets}/tasks-files-create/request-parts.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/tasks-files-create/http-response.adoc[]

@@ -46,12 +46,17 @@ public class AwsS3Service {
         amazonS3.deleteObject(BUCKET_NAME, key);
     }
 
-    public void uploadMultipartFile(String key, MultipartFile multipartFile) throws IOException {
+    public void uploadFile(String key, MultipartFile multipartFile) {
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(multipartFile.getSize());
         objectMetadata.setContentType(multipartFile.getContentType());
 
-        Upload upload = transferManager.upload(BUCKET_NAME, key, multipartFile.getInputStream(), objectMetadata);
+        Upload upload = null;
+        try {
+            upload = transferManager.upload(BUCKET_NAME, key, multipartFile.getInputStream(), objectMetadata);
+        } catch (IOException e) {
+            throw new FileUploadInterruptException(ErrorCode.FILE_UPLOAD_INTERRUPT, e);
+        }
         try {
             upload.waitForUploadResult();
         } catch (InterruptedException e) {

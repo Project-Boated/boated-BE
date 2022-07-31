@@ -1,8 +1,6 @@
-package com.projectboated.backend.web.task.controller.document;
+package com.projectboated.backend.web.task.task.document;
 
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.restassured3.RestDocumentationFilter;

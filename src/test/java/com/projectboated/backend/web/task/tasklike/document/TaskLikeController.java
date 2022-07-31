@@ -1,4 +1,4 @@
-package com.projectboated.backend.web.task.controller.document;
+package com.projectboated.backend.web.task.tasklike.document;
 
 import org.springframework.restdocs.restassured3.RestDocumentationFilter;
 

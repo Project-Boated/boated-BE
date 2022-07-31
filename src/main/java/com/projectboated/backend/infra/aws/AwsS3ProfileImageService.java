@@ -3,8 +3,6 @@ package com.projectboated.backend.infra.aws;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.common.exception.business.CommonIOException;
 import lombok.RequiredArgsConstructor;
-import com.projectboated.backend.infra.aws.AwsS3File;
-import com.projectboated.backend.infra.aws.AwsS3Service;
 import com.projectboated.backend.infra.aws.exception.AccountProfileImageNotUploadFile;
 import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
@@ -29,11 +27,7 @@ public class AwsS3ProfileImageService {
     public String uploadProfileImage(Account account, UploadFileProfileImage profileImage, MultipartFile multipartFile){
         UploadFile uploadFile = profileImage.getUploadFile();
         String path = getProfileSavePath(account, uploadFile);
-        try {
-            awsS3Service.uploadMultipartFile(path, multipartFile);
-        } catch (IOException e) {
-            throw new CommonIOException(ErrorCode.COMMON_IO_EXCEPTION, e);
-        }
+        awsS3Service.uploadFile(path, multipartFile);
         return path;
     }
 
