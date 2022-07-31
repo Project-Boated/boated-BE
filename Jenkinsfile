@@ -48,7 +48,12 @@ pipeline {
                 sh 'docker push public.ecr.aws/g7j4u9e2/boated-be-deploy:latest'
             }
         }
-        stage('Server work') {
+        stage('Develop Server work') {
+            steps {
+                sh 'ssh ubuntu@129.154.199.99 "cd boated ; sh boated-be.sh"'
+            }
+        }
+        stage('Deploy Server work') {
             steps {
                 sh 'ssh ubuntu@15.164.89.188 "cd boated ; sh boated-be.sh"'
             }
