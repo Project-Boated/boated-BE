@@ -3,7 +3,6 @@ package com.projectboated.backend.domain.task.tasklike.service;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.ProjectService;
@@ -13,8 +12,10 @@ import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import com.projectboated.backend.domain.task.task.service.exception.TaskNotFoundException;
 import com.projectboated.backend.domain.task.tasklike.entity.TaskLike;
 import com.projectboated.backend.domain.task.tasklike.repository.TaskLikeRepository;
+import com.projectboated.backend.domain.task.tasklike.service.exception.CancelTaskLikeAccessDeniedException;
 import com.projectboated.backend.domain.task.tasklike.service.exception.TaskLikeAccessDeniedException;
 import com.projectboated.backend.domain.task.tasklike.service.exception.TaskLikeAlreadyExistsException;
+import com.projectboated.backend.domain.task.tasklike.service.exception.TaskLikeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,4 +59,23 @@ public class TaskLikeService {
         taskLikeRepository.save(taskLike);
     }
 
+    @Transactional
+    public void cancelTaskLike(Long accountId, Long projectId, Long taskId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(AccountNotFoundException::new);
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
+
+        if (!projectService.isCaptainOrCrew(project, account)) {
+            throw new CancelTaskLikeAccessDeniedException();
+        }
+
+        Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
+                .orElseThrow(TaskNotFoundException::new);
+
+        TaskLike taskLike = taskLikeRepository.findByAccountAndTask(account, task)
+                .orElseThrow(TaskLikeNotFoundException::new);
+        taskLikeRepository.delete(taskLike);
+    }
 }

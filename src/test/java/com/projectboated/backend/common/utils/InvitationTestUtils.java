@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 
 import static io.restassured.RestAssured.given;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class InvitationTestUtils {
+public abstract class InvitationTestUtils {
     public static int createInvitation(int port, Cookie captainCookie, Long projectId, String crewNickname) {
         return given()
             .accept(ContentType.JSON)

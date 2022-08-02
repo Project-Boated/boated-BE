@@ -17,4 +17,13 @@ public abstract class TaskLikeController {
         );
     }
 
+    public static RestDocumentationFilter documentCancelTaskLike() {
+        return document("tasks-like-cancel",
+                pathParameters(
+                        parameterWithName("projectId").description("찜을 취소할 프로젝트의 id"),
+                        parameterWithName("taskId").description("찜을 취소할 task의 id")
+                )
+        );
+    }
+
 }

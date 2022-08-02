@@ -28,8 +28,6 @@ public class DatabaseCleanUp {
         tables.remove("url_profile_image");
         tables.remove("upload_file_profile_image");
         tables.remove("kakao_account");
-        tables.remove("custom_kanban_lane");
-        tables.remove("default_kanban_lane");
     }
 
     @Transactional

@@ -9,8 +9,7 @@ import org.springframework.http.MediaType;
 
 import static io.restassured.RestAssured.given;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class AccountTestUtils {
+public abstract class AccountTestUtils {
 
     public static void createAccount(int port, String username, String password, String nickname, String profileImageUrl) {
         given()

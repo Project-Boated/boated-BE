@@ -5,6 +5,7 @@ import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.Task;
+import com.projectboated.backend.domain.task.tasklike.entity.TaskLike;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -81,5 +82,12 @@ public class ServiceTest extends BaseTest {
                 .build();
         kanbanLane.addTask(task);
         return task;
+    }
+
+    protected TaskLike createTaskLike(Account account, Task task) {
+        return TaskLike.builder()
+                .account(account)
+                .task(task)
+                .build();
     }
 }

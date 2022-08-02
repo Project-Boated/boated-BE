@@ -28,9 +28,6 @@ import static com.projectboated.backend.web.project.controller.document.ProjectD
 class ProjectControllerTest extends AcceptanceTest {
 
     @Autowired
-    ProjectTestUtils projectTestUtils;
-
-    @Autowired
     MockMvc mockMvc;
 
     @Autowired
