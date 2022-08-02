@@ -15,8 +15,10 @@ import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import com.projectboated.backend.domain.task.task.service.exception.TaskNotFoundException;
 import com.projectboated.backend.domain.task.tasklike.entity.TaskLike;
 import com.projectboated.backend.domain.task.tasklike.repository.TaskLikeRepository;
+import com.projectboated.backend.domain.task.tasklike.service.exception.CancelTaskLikeAccessDeniedException;
 import com.projectboated.backend.domain.task.tasklike.service.exception.TaskLikeAccessDeniedException;
 import com.projectboated.backend.domain.task.tasklike.service.exception.TaskLikeAlreadyExistsException;
+import com.projectboated.backend.domain.task.tasklike.service.exception.TaskLikeNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -29,6 +31,7 @@ import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
 import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID2;
 import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 import static com.projectboated.backend.common.data.BasicDataTask.TASK_ID;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -178,6 +181,129 @@ class TaskLikeServiceTest extends ServiceTest {
         verify(taskRepository).findByProjectIdAndTaskId(PROJECT_ID, TASK_ID);
         verify(taskLikeRepository).findByAccountAndTask(captain, task);
         verify(taskLikeRepository).save(any());
+    }
+
+    @Test
+    void cancelTaskLike_찾을수없는Account_예외발생() {
+        // Given
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskLikeService.cancelTaskLike(ACCOUNT_ID, PROJECT_ID, TASK_ID))
+                .isInstanceOf(AccountNotFoundException.class);
+
+        verify(accountRepository).findById(ACCOUNT_ID);
+    }
+
+    @Test
+    void cancelTaskLike_찾을수없는Project_예외발생() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskLikeService.cancelTaskLike(ACCOUNT_ID, PROJECT_ID, TASK_ID))
+                .isInstanceOf(ProjectNotFoundException.class);
+
+        verify(accountRepository).findById(ACCOUNT_ID);
+        verify(projectRepository).findById(PROJECT_ID);
+    }
+
+    @Test
+    void cancelTaskLike_captain이나Crew가아닌경우_예외발생() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(account);
+
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(projectService.isCaptainOrCrew(project, account)).thenReturn(false);
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskLikeService.cancelTaskLike(ACCOUNT_ID, PROJECT_ID, TASK_ID))
+                .isInstanceOf(CancelTaskLikeAccessDeniedException.class);
+
+        verify(accountRepository).findById(ACCOUNT_ID);
+        verify(projectRepository).findById(PROJECT_ID);
+        verify(projectService).isCaptainOrCrew(project, account);
+    }
+
+    @Test
+    void cancelTaskLike_task를찾을수없는경우_예외발생() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(account);
+
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(projectService.isCaptainOrCrew(project, account)).thenReturn(true);
+        when(taskRepository.findByProjectIdAndTaskId(PROJECT_ID, TASK_ID)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskLikeService.cancelTaskLike(ACCOUNT_ID, PROJECT_ID, TASK_ID))
+                .isInstanceOf(TaskNotFoundException.class);
+
+        verify(accountRepository).findById(ACCOUNT_ID);
+        verify(projectRepository).findById(PROJECT_ID);
+        verify(projectService).isCaptainOrCrew(project, account);
+        verify(taskRepository).findByProjectIdAndTaskId(PROJECT_ID, TASK_ID);
+    }
+
+    @Test
+    void cancelTaskLike_taskLike를찾을수없는경우_예외발생() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(account);
+        Task task = createTask("task");
+
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(projectService.isCaptainOrCrew(project, account)).thenReturn(true);
+        when(taskRepository.findByProjectIdAndTaskId(PROJECT_ID, TASK_ID)).thenReturn(Optional.of(task));
+        when(taskLikeRepository.findByAccountAndTask(account, task)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskLikeService.cancelTaskLike(ACCOUNT_ID, PROJECT_ID, TASK_ID))
+                .isInstanceOf(TaskLikeNotFoundException.class);
+
+        verify(accountRepository).findById(ACCOUNT_ID);
+        verify(projectRepository).findById(PROJECT_ID);
+        verify(projectService).isCaptainOrCrew(project, account);
+        verify(taskRepository).findByProjectIdAndTaskId(PROJECT_ID, TASK_ID);
+        verify(taskLikeRepository).findByAccountAndTask(account, task);
+    }
+
+    @Test
+    void cancelTaskLike_정상적인request_cancel성공() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(account);
+        Task task = createTask("task");
+        TaskLike taskLike = createTaskLike(account, task);
+
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(projectService.isCaptainOrCrew(project, account)).thenReturn(true);
+        when(taskRepository.findByProjectIdAndTaskId(PROJECT_ID, TASK_ID)).thenReturn(Optional.of(task));
+        when(taskLikeRepository.findByAccountAndTask(account, task)).thenReturn(Optional.of(taskLike));
+
+        // When
+        taskLikeService.cancelTaskLike(ACCOUNT_ID, PROJECT_ID, TASK_ID);
+
+        // Then
+        verify(accountRepository).findById(ACCOUNT_ID);
+        verify(projectRepository).findById(PROJECT_ID);
+        verify(projectService).isCaptainOrCrew(project, account);
+        verify(taskRepository).findByProjectIdAndTaskId(PROJECT_ID, TASK_ID);
+        verify(taskLikeRepository).findByAccountAndTask(account, task);
+        verify(taskLikeRepository).delete(taskLike);
     }
 
 }
