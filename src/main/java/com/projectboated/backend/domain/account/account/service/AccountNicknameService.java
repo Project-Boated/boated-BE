@@ -21,7 +21,7 @@ public class AccountNicknameService {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-        if (!account.getNickname().equals(nickname) &&
+        if (account.getNickname() != null && !account.getNickname().equals(nickname) &&
                 accountRepository.existsByNickname(nickname)) {
             throw new AccountNicknameAlreadyExistsException(ErrorCode.ACCOUNT_NICKNAME_EXISTS);
         }
