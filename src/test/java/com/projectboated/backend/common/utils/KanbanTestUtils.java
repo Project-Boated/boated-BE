@@ -12,8 +12,7 @@ import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class KanbanTestUtils {
+public abstract class KanbanTestUtils {
 
     public static void createCustomKanbanLane(int port, Cookie captainCookie, long projectId, String kanbanLaneName) {
         given()

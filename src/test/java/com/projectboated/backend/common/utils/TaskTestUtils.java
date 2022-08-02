@@ -12,9 +12,7 @@ import java.time.LocalDateTime;
 
 import static io.restassured.RestAssured.given;
 
-@Service
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class TaskTestUtils {
+public abstract class TaskTestUtils {
 
     public static int createTask(int port, Cookie cookie, int projectId, String name, String description, LocalDateTime deadline) {
         return given()

@@ -12,9 +12,7 @@ import java.time.LocalDateTime;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.notNullValue;
 
-@Service
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ProjectTestUtils {
+public abstract class ProjectTestUtils {
 
     public static int createProject(int port, Cookie cookie, String projectName, String projectDescription, LocalDateTime deadline) {
         return given()
