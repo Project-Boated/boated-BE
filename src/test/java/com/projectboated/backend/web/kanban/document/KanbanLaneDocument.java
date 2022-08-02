@@ -32,7 +32,7 @@ public final class KanbanLaneDocument {
                         parameterWithName("kanbanLaneId").description("업데이트할 lane의 고유번호")
                 ),
                 requestFields(
-                        fieldWithPath("name").type(JsonFieldType.STRING).description("바꾸고 싶은 name")
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("바꾸고 싶은 name").optional()
                 )
         );
     }

@@ -28,7 +28,7 @@ public final class ProjectDocument {
                 requestFields(
                         fieldWithPath("name").type(JsonFieldType.STRING).description("프로젝트 이름"),
                         fieldWithPath("description").type(JsonFieldType.STRING).description("프로젝트 설명"),
-                        fieldWithPath("deadline").type(JsonFieldType.STRING).description("프로젝트 기한 (yyyy-MM-dd HH:mm:ss)")
+                        fieldWithPath("deadline").type(JsonFieldType.STRING).description("프로젝트 기한 (yyyy-MM-dd HH:mm:ss)").optional()
                 ),
                 responseHeaders(
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
@@ -46,9 +46,9 @@ public final class ProjectDocument {
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
                 ),
                 requestFields(
-                        fieldWithPath("name").type(JsonFieldType.STRING).description("업데이트할 프로젝트 이름(생략가능)"),
-                        fieldWithPath("description").type(JsonFieldType.STRING).description("업데이트할 프로젝트 설명(생략가능)"),
-                        fieldWithPath("deadline").type(JsonFieldType.STRING).description("업데이트할 마감기한 (생략가능)(yyyy-MM-dd HH:mm:ss)")
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("업데이트할 프로젝트 이름").optional(),
+                        fieldWithPath("description").type(JsonFieldType.STRING).description("업데이트할 프로젝트 설명").optional(),
+                        fieldWithPath("deadline").type(JsonFieldType.STRING).description("업데이트할 마감기한 (yyyy-MM-dd HH:mm:ss)").optional()
                 ),
                 responseHeaders(
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
