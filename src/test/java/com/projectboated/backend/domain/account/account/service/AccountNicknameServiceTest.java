@@ -107,6 +107,25 @@ class AccountNicknameServiceTest extends ServiceTest {
     }
 
     @Test
+    void updateNickname_account의nickname이null일때_업데이트성공() {
+        // Given
+        Account account = Account.builder()
+                .username(USERNAME)
+                .password(PASSWORD)
+                .build();
+
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+
+        // When
+        nicknameService.updateNickname(account.getId(), NICKNAME);
+
+        // Then
+        assertThat(account.getNickname()).isEqualTo(NICKNAME);
+
+        verify(accountRepository).findById(account.getId());
+    }
+
+    @Test
     void existsByNickname_nickname이null로주어진경우_assert예외발생() {
         // Given
         // When
