@@ -26,7 +26,7 @@ public class AccountDocument {
                         fieldWithPath("username").type(JsonFieldType.STRING).description("유저이름"),
                         fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
                         fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
-                        fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).description("프로필 이미지 URL (생략가능)").optional()
+                        fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).description("프로필 이미지 URL").optional()
                 )
         );
     }
