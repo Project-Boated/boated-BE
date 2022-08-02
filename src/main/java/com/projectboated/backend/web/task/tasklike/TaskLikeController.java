@@ -2,8 +2,8 @@ package com.projectboated.backend.web.task.tasklike;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.task.tasklike.service.TaskLikeService;
-import com.projectboated.backend.web.invitation.dto.response.AcceptInvitationResponse;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +23,15 @@ public class TaskLikeController {
             @PathVariable Long taskId
             ) {
         taskLikeService.likeTask(account.getId(), projectId, taskId);
+    }
+
+    @DeleteMapping("/api/projects/{projectId}/tasks/{taskId}/like")
+    public void cancelTaskLike(
+            @AuthenticationPrincipal Account account,
+            @PathVariable Long projectId,
+            @PathVariable Long taskId
+            ) {
+        taskLikeService.cancelTaskLike(account.getId(), projectId, taskId);
     }
 	
 }
