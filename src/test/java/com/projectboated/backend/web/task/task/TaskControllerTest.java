@@ -4,19 +4,24 @@ import com.projectboated.backend.common.basetest.AcceptanceTest;
 import com.projectboated.backend.common.data.BasicDataAccount;
 import com.projectboated.backend.common.data.BasicDataProject;
 import com.projectboated.backend.common.data.BasicDataTask;
-import com.projectboated.backend.common.utils.AccountTestUtils;
-import com.projectboated.backend.common.utils.KanbanTestUtils;
-import com.projectboated.backend.common.utils.ProjectTestUtils;
-import com.projectboated.backend.common.utils.TaskTestUtils;
+import com.projectboated.backend.common.utils.*;
+import com.projectboated.backend.infra.aws.AwsS3Service;
+import com.projectboated.backend.web.task.task.document.TaskDocument;
 import com.projectboated.backend.web.task.task.dto.request.AssignAccountTaskRequest;
 import com.projectboated.backend.web.task.task.dto.request.CreateTaskRequest;
+import io.restassured.filter.Filter;
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.MimeType;
+import org.springframework.util.ResourceUtils;
+
+import java.io.FileNotFoundException;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME;
@@ -30,6 +35,9 @@ class TaskControllerTest extends AcceptanceTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @MockBean
+    public AwsS3Service awsS3Service;
 
     @Test
     void createTask_task하나생성_정상() {
@@ -94,5 +102,28 @@ class TaskControllerTest extends AcceptanceTest {
         .then()
             .statusCode(HttpStatus.OK.value());
     }
+
+    @Test
+    void getTask_조회정상_조회성공() throws FileNotFoundException {
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+
+        int taskId = TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE);
+        TaskTestUtils.assignTask(port, cookie, projectId, taskId, NICKNAME);
+        TaskFileTestUtils.createTaskFile(port, cookie, projectId, taskId, ResourceUtils.getFile("classpath:profile-image-test.png"), "image/jpg");
+
+        given(this.spec)
+            .filter(documentTaskRetrieve())
+            .cookie(cookie)
+        .when()
+            .port(port)
+            .get("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}", projectId, taskId)
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
+
+
+
 
 }

@@ -42,12 +42,12 @@ public class ProjectController {
 
     @GetMapping("/{projectId}")
     public GetProjectResponse getProject(
-            @AuthenticationPrincipal Account account,
             @PathVariable Long projectId
     ) {
-        Project project = projectService.findById(projectId);
-        long taskSize = taskService.taskSize(project);
-        return new GetProjectResponse(project,taskSize);
+        return GetProjectResponse.builder()
+                .project(projectService.findById(projectId))
+                .taskSize(taskService.taskSize(projectId))
+                .build();
     }
 
     @PatchMapping(value = "/{projectId}", consumes = MediaType.APPLICATION_JSON_VALUE)

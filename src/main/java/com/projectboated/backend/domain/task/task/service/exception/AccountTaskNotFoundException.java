@@ -4,7 +4,7 @@ import com.projectboated.backend.domain.common.exception.BusinessException;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
 
 public class AccountTaskNotFoundException extends BusinessException {
-    public AccountTaskNotFoundException(ErrorCode errorCode) {
-        super(errorCode);
+    public AccountTaskNotFoundException() {
+        super(ErrorCode.ACCOUNT_TASK_NOT_FOUND);
     }
 }

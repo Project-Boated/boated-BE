@@ -4,8 +4,11 @@ import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.domain.task.task.entity.AccountTask;
 import com.projectboated.backend.domain.task.task.entity.Task;
+import com.projectboated.backend.domain.task.taskfile.entity.TaskFile;
 import com.projectboated.backend.domain.task.tasklike.entity.TaskLike;
+import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -17,6 +20,8 @@ import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_L
 import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 import static com.projectboated.backend.common.data.BasicDataTask.*;
 import static com.projectboated.backend.common.data.BasicDataTask.TASK_DEADLINE;
+import static com.projectboated.backend.common.data.BasicDataUploadFile.ORIGINAL_FILE_NAME;
+import static com.projectboated.backend.common.data.BasicDataUploadFile.SAVE_FILE_NAME;
 
 @ExtendWith(MockitoExtension.class)
 public class ServiceTest extends BaseTest {
@@ -33,6 +38,16 @@ public class ServiceTest extends BaseTest {
                 .id(PROJECT_ID)
                 .captain(account)
                 .build();
+    }
+
+    protected Project createProjectAnd4Lanes(Account account) {
+        Project project = Project.builder()
+                .id(PROJECT_ID)
+                .captain(account)
+                .build();
+        Kanban kanban = createKanban(project);
+        addKanbanLane(kanban, 4);
+        return project;
     }
 
     protected Kanban createKanban(Project project) {
@@ -88,6 +103,28 @@ public class ServiceTest extends BaseTest {
         return TaskLike.builder()
                 .account(account)
                 .task(task)
+                .build();
+    }
+
+    protected AccountTask createAccountTask(Account account, Task task) {
+        return AccountTask.builder()
+                .account(account)
+                .task(task)
+                .build();
+    }
+
+    protected UploadFile createUploadFile(Long id) {
+        return UploadFile.builder()
+                .id(id)
+                .saveFileName(SAVE_FILE_NAME)
+                .originalFileName(ORIGINAL_FILE_NAME)
+                .build();
+    }
+
+    protected TaskFile createTaskFile(Task task, UploadFile uploadFile) {
+        return TaskFile.builder()
+                .task(task)
+                .uploadFile(uploadFile)
                 .build();
     }
 }

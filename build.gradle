@@ -113,7 +113,6 @@ jacocoTestReport {
                     // incomplete service logic
                     // TODO: 테스트 필요
                     "com/projectboated/backend/domain/invitation/**/*",
-                    "com/projectboated/backend/domain/task/**/*",
                     "com/projectboated/backend/domain/uploadfile/**/*",
                     // Infra, 자동화 테스트 불가
                     "com/projectboated/backend/infra/**/*",

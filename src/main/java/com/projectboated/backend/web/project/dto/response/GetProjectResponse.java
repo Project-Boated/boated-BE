@@ -3,6 +3,7 @@ package com.projectboated.backend.web.project.dto.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.web.project.dto.common.ProjectCaptainResponse;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -29,6 +30,7 @@ public class GetProjectResponse {
 
     private long taskSize;
 
+    @Builder
     public GetProjectResponse(Project project, long taskSize) {
         this.id = project.getId();
         this.name = project.getName();

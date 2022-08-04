@@ -6,9 +6,11 @@ import com.projectboated.backend.domain.task.task.entity.Task;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface AccountTaskRepository extends JpaRepository<AccountTask, Long> {
     boolean existsByAccountAndTask(Account account, Task task);
     Optional<AccountTask> findByTaskAndAccount(Task task, Account account);
+    List<AccountTask> findByTask(Task task);
 }

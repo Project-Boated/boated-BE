@@ -823,6 +823,28 @@ include::{snippets}/tasks-create/http-response.adoc[]
 ===== response-fields
 include::{snippets}/tasks-create/response-fields.adoc[]
 
+[[resources-tasks-retrieve]]
+=== Task조회
+`GET` 요청을 사용해서 Task를 조회할 수 있습니다.
+
+include::./adoc/noteCaptainOrCrewOnly.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/tasks-retrieve/http-request.adoc[]
+
+===== request-path-parameters
+include::{snippets}/tasks-retrieve/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/tasks-retrieve/http-response.adoc[]
+
+===== response-fields
+include::{snippets}/tasks-retrieve/response-fields.adoc[]
+
 [[resources-tasks-assign]]
 === Task배정
 `POST` 요청을 사용해서 Task를 배정할 수 있습니다

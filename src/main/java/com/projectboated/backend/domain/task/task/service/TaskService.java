@@ -1,5 +1,11 @@
 package com.projectboated.backend.domain.task.task.service;
 
+import com.projectboated.backend.domain.project.service.exception.OnlyCaptainException;
+import com.projectboated.backend.domain.project.service.exception.OnlyCaptainOrCrewException;
+import com.projectboated.backend.domain.task.task.service.exception.*;
+import com.projectboated.backend.domain.task.taskfile.entity.TaskFile;
+import com.projectboated.backend.domain.task.taskfile.repository.TaskFileRepository;
+import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,13 +24,10 @@ import com.projectboated.backend.domain.task.task.entity.AccountTask;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import com.projectboated.backend.domain.task.task.repository.AccountTaskRepository;
 import com.projectboated.backend.domain.task.task.repository.TaskRepository;
-import com.projectboated.backend.domain.task.task.service.exception.AccountTaskNotFoundException;
-import com.projectboated.backend.domain.task.task.service.exception.TaskAlreadyAssignedException;
-import com.projectboated.backend.domain.task.task.service.exception.TaskAssignDeniedException;
-import com.projectboated.backend.domain.task.task.service.exception.TaskNotFoundException;
-import com.projectboated.backend.domain.task.task.service.exception.TaskSaveAccessDeniedException;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,22 +39,23 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final KanbanLaneRepository kanbanLaneRepository;
     private final AccountTaskRepository accountTaskRepository;
+    private final TaskFileRepository taskFileRepository;
     private final ProjectService projectService;
 
     @Transactional
-    public Task save(Account account, Long projectId, Task task) {
-        Account findAccount = accountRepository.findById(account.getId())
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+    public Task save(Long accountId, Long projectId, Task task) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(AccountNotFoundException::new);
 
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+                .orElseThrow(ProjectNotFoundException::new);
 
-        if (!projectService.isCaptainOrCrew(project, findAccount)) {
-            throw new TaskSaveAccessDeniedException(ErrorCode.COMMON_ACCESS_DENIED);
+        if (!projectService.isCaptainOrCrew(project, account)) {
+            throw new TaskSaveAccessDeniedException();
         }
 
         KanbanLane kanbanLane = kanbanLaneRepository.findByKanbanAndName(project.getKanban(), "READY")
-                .orElseThrow(() -> new KanbanLaneNotFoundException(ErrorCode.KANBAN_LANE_NOT_FOUND));
+                .orElseThrow(KanbanLaneNotFoundException::new);
 
         task.changeProject(project);
         kanbanLane.addTask(task);
@@ -60,60 +64,114 @@ public class TaskService {
     }
 
     @Transactional
-    public void assignAccount(Account account, Long projectId, Long taskId, String nickname) {
-        Account requestAccount = accountRepository.findById(account.getId())
-                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+    public void assignAccount(Long accountId, Long projectId, Long taskId, String nickname) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(AccountNotFoundException::new);
 
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+                .orElseThrow(ProjectNotFoundException::new);
 
-        if (!projectService.isCaptainOrCrew(project, requestAccount)) {
-            throw new TaskAssignDeniedException(ErrorCode.PROJECT_ONLY_CAPTAIN_OR_CREW);
+        if (!projectService.isCaptainOrCrew(project, account)) {
+            throw new TaskAssignDeniedException();
         }
 
-        Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException(ErrorCode.TASK_NOT_FOUND));
+        Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
+                .orElseThrow(TaskNotFoundException::new);
 
         Account assignAccount = accountRepository.findByNickname(nickname)
-                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+                .orElseThrow(AccountNotFoundException::new);
 
         if (accountTaskRepository.existsByAccountAndTask(assignAccount, task)) {
-            throw new TaskAlreadyAssignedException(ErrorCode.TASK_ALREADY_ASSIGNED);
+            throw new TaskAlreadyAssignedException();
         }
 
-        AccountTask accountTask = AccountTask.builder()
-											 .account(assignAccount)
-											 .task(task)
-											 .build();
-
-        accountTaskRepository.save(accountTask);
+        accountTaskRepository.save(AccountTask.builder()
+                .account(assignAccount)
+                .task(task)
+                .build());
     }
 
-    public long taskSize(Project project) {
+    public long taskSize(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
+
         return taskRepository.countByProject(project);
     }
 
     @Transactional
-    public void cancelAssignAccount(Account account, Long projectId, Long taskId, String nickname) {
-        Account requestAccount = accountRepository.findById(account.getId())
-                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+    public void cancelAssignAccount(Long accountId, Long projectId, Long taskId, String nickname) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(AccountNotFoundException::new);
 
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+                .orElseThrow(ProjectNotFoundException::new);
 
         if (!projectService.isCaptainOrCrew(project, account)) {
-            throw new TaskAssignDeniedException(ErrorCode.PROJECT_ONLY_CAPTAIN_OR_CREW);
+            throw new CancelTaskAssignDeniedException();
         }
 
-        Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException(ErrorCode.TASK_NOT_FOUND));
+        Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
+                .orElseThrow(TaskNotFoundException::new);
 
         Account assignAccount = accountRepository.findByNickname(nickname)
-                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+                .orElseThrow(AccountNotFoundException::new);
 
         AccountTask accountTask = accountTaskRepository.findByTaskAndAccount(task, assignAccount)
-                .orElseThrow(() -> new AccountTaskNotFoundException(ErrorCode.ACCOUNT_TASK_NOT_FOUND));
+                .orElseThrow(AccountTaskNotFoundException::new);
 
         accountTaskRepository.delete(accountTask);
+    }
+
+    public Task findById(Long accountId, Long projectId, Long taskId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(AccountNotFoundException::new);
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
+
+        if (!projectService.isCaptainOrCrew(project, account)) {
+            throw new TaskAccessDeniedException();
+        }
+
+        return taskRepository.findByProjectIdAndTaskId(projectId, taskId)
+                .orElseThrow(TaskNotFoundException::new);
+    }
+
+    public List<Account> findAssignedAccounts(Long accountId, Long projectId, Long taskId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(AccountNotFoundException::new);
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
+
+        if (!projectService.isCaptainOrCrew(project, account)) {
+            throw new OnlyCaptainOrCrewException();
+        }
+
+        Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
+                .orElseThrow(TaskNotFoundException::new);
+
+        return accountTaskRepository.findByTask(task).stream()
+                .map(AccountTask::getAccount)
+                .toList();
+    }
+
+    public List<UploadFile> findAssignedFiles(Long accountId, Long projectId, Long taskId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(AccountNotFoundException::new);
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
+
+        if (!projectService.isCaptainOrCrew(project, account)) {
+            throw new OnlyCaptainOrCrewException();
+        }
+
+        Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
+                .orElseThrow(TaskNotFoundException::new);
+
+        return taskFileRepository.findByTask(task).stream()
+                .map(TaskFile::getUploadFile)
+                .toList();
     }
 }
