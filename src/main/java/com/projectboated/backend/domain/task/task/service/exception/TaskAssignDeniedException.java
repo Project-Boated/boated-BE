@@ -7,4 +7,8 @@ public class TaskAssignDeniedException extends BusinessException {
     public TaskAssignDeniedException(ErrorCode errorCode) {
         super(errorCode);
     }
+
+    public TaskAssignDeniedException() {
+        super(ErrorCode.PROJECT_ONLY_CAPTAIN_OR_CREW);
+    }
 }

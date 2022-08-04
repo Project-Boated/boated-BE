@@ -1,5 +1,6 @@
 package com.projectboated.backend.domain.uploadfile.entity;
 
+import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.projectboated.backend.domain.uploadfile.entity.exception.UploadFileNotFoundExt;
 import lombok.*;
@@ -8,7 +9,7 @@ import javax.persistence.*;
 
 @Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UploadFile {
+public class UploadFile extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "upload_file_id")
@@ -23,7 +24,8 @@ public class UploadFile {
     private String mediaType;
 
     @Builder
-    public UploadFile(String originalFileName, String saveFileName, String mediaType) {
+    public UploadFile(Long id, String originalFileName, String saveFileName, String mediaType) {
+        this.id = id;
         this.originalFileName = removeExt(originalFileName);
         this.ext = extractExt(originalFileName);
         this.saveFileName = saveFileName;

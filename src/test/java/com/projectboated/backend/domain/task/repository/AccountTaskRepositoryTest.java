@@ -8,6 +8,7 @@ import com.projectboated.backend.domain.task.task.entity.Task;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -91,6 +92,37 @@ class AccountTaskRepositoryTest extends RepositoryTest {
         // Then
         assertThat(result).isEmpty();
         assertThat(result2).isEmpty();
+    }
+
+    @Test
+    void findByTask_task가없는경우_return_empty() {
+        // Given
+        Account account = insertDefaultAccount();
+        Project project = insertDefaultProject(account);
+        Task task = insertDefaultTask(project);
+        insertAccountTask(account, task);
+
+        // When
+        List<AccountTask> result = accountTaskRepository.findByTask(new Task(912463L, "name", "Desc", null));
+
+        // Then
+        assertThat(result).hasSize(0);
+    }
+
+    @Test
+    void findByTask_accountTask가2개존재_return_2개() {
+        // Given
+        Account account = insertDefaultAccount();
+        Project project = insertDefaultProject(account);
+        Task task = insertDefaultTask(project);
+        insertAccountTask(account, task);
+        insertAccountTask(account, task);
+
+        // When
+        List<AccountTask> result = accountTaskRepository.findByTask(task);
+
+        // Then
+        assertThat(result).hasSize(2);
     }
 
 }

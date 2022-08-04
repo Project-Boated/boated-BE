@@ -79,7 +79,11 @@ public class AccountService {
 
         if (updateCond.getProfileImageFile() != null) {
             MultipartFile file = updateCond.getProfileImageFile();
-            UploadFile uploadFile = new UploadFile(file.getOriginalFilename(), UUID.randomUUID().toString(), file.getContentType());
+            UploadFile uploadFile = UploadFile.builder()
+                    .originalFileName(file.getOriginalFilename())
+                    .saveFileName(UUID.randomUUID().toString())
+                    .mediaType(file.getContentType())
+                    .build();
             UploadFileProfileImage uploadFileProfileImage = new UploadFileProfileImage(uploadFile);
 
             awsS3ProfileService.uploadProfileImage(account, uploadFileProfileImage, updateCond.getProfileImageFile());
