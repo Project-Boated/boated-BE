@@ -4,12 +4,16 @@ import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanban.service.KanbanService;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.KanbanLaneService;
+import com.projectboated.backend.domain.task.task.entity.Task;
+import com.projectboated.backend.domain.task.tasklike.service.TaskLikeService;
 import com.projectboated.backend.web.kanban.kanban.dto.response.GetKanbanResponse;
 import com.projectboated.backend.web.kanban.kanbanlane.dto.request.CreateKanbanLaneRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +22,7 @@ public class KanbanController {
 
     private final KanbanService kanbanService;
     private final KanbanLaneService kanbanLaneService;
+    private final TaskLikeService taskLikeService;
 
     @GetMapping
     public GetKanbanResponse getKanban(
@@ -25,7 +30,8 @@ public class KanbanController {
             @PathVariable Long projectId
     ) {
         Kanban kanban = kanbanService.findByProjectId(account.getId(), projectId);
-        return new GetKanbanResponse(kanban.getLanes());
+        Map<Task, Boolean> taskLikeMap = taskLikeService.findByProjectAndAccount(account.getId(), projectId);
+        return new GetKanbanResponse(kanban.getLanes(), taskLikeMap);
     }
 
     @PostMapping(value = "/lanes", consumes = MediaType.APPLICATION_JSON_VALUE)

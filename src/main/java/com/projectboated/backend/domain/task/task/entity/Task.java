@@ -1,6 +1,7 @@
 package com.projectboated.backend.domain.task.task.entity;
 
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
+import com.projectboated.backend.domain.task.tasklike.entity.TaskLike;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,6 +45,21 @@ public class Task extends BaseTimeEntity {
         this.name = name;
         this.description = description;
         this.deadline = deadline;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Task task = (Task) o;
+
+        return id != null ? id.equals(task.id) : task.id == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 
     public void changeKanbanLane(KanbanLane kanbanLane) {

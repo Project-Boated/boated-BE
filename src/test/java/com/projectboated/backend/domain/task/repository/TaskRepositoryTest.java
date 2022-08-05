@@ -6,6 +6,7 @@ import com.projectboated.backend.domain.task.task.entity.Task;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.projectboated.backend.common.data.BasicDataTask.TASK_NAME;
@@ -41,6 +42,20 @@ class TaskRepositoryTest extends RepositoryTest {
         // Then
         assertThat(result).isPresent();
         assertThat(result.get().getName()).isEqualTo(TASK_NAME);
+    }
+
+    @Test
+    void findByProject_task2개존재_2개조회() {
+        // Given
+        Project project = insertDefaultProjectAndDefaultCaptain();
+        Task task = insertDefaultTask(project);
+        Task task2 = insertDefaultTask2(project);
+
+        // When
+        List<Task> result = taskRepository.findByProject(project);
+
+        // Then
+        assertThat(result).containsExactly(task, task2);
     }
 
 }

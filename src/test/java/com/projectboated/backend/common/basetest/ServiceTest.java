@@ -99,6 +99,17 @@ public class ServiceTest extends BaseTest {
         return task;
     }
 
+    protected Task addTask(KanbanLane kanbanLane, Long taskId, String name) {
+        Task task = Task.builder()
+                .id(taskId)
+                .name(name)
+                .description(TASK_DESCRIPTION)
+                .deadline(TASK_DEADLINE)
+                .build();
+        kanbanLane.addTask(task);
+        return task;
+    }
+
     protected TaskLike createTaskLike(Account account, Task task) {
         return TaskLike.builder()
                 .account(account)

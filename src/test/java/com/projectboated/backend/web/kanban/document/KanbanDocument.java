@@ -62,6 +62,7 @@ public final class KanbanDocument {
                         fieldWithPath("lanes[].tasks[].deadline").type(JsonFieldType.STRING).description("task 마감기한"),
                         fieldWithPath("lanes[].tasks[].dday").type(JsonFieldType.NUMBER).description("task DDay"),
                         fieldWithPath("lanes[].tasks[].fileCount").type(JsonFieldType.NUMBER).description("task가 가진 파일 개수"),
+                        fieldWithPath("lanes[].tasks[].like").type(JsonFieldType.BOOLEAN).description("true면 찜한 상태, false면 찜하지 않은 상태"),
                         fieldWithPath("lanes[].tasks[].assignedAccounts").type(JsonFieldType.ARRAY).description("task에 배정된 Account"),
                         fieldWithPath("lanes[].tasks[].assignedAccounts[].id").type(JsonFieldType.NUMBER).description("task에 배정된 Account 고유번호"),
                         fieldWithPath("lanes[].tasks[].assignedAccounts[].nickname").type(JsonFieldType.STRING).description("task에 배정된 Account nickname")
