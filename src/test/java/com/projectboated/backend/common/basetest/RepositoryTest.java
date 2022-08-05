@@ -1,6 +1,6 @@
 package com.projectboated.backend.common.basetest;
 
-import com.projectboated.backend.common.basetest.repository.UploadFileRepositoryTest;
+import com.projectboated.backend.common.basetest.repository.TaskLikeRepositoryTest;
 
-public class RepositoryTest extends UploadFileRepositoryTest {
+public class RepositoryTest extends TaskLikeRepositoryTest {
 }

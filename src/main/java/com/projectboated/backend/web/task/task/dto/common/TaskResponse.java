@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 public class TaskResponse {
@@ -19,10 +20,11 @@ public class TaskResponse {
     private LocalDateTime deadline;
     private Long dday;
     private int fileCount;
+    private boolean isLike;
 
     private List<TaskAssignedAccountResponse> assignedAccounts;
 
-    public TaskResponse(Task task) {
+    public TaskResponse(Task task, Map<Task, Boolean> taskLikeMap) {
         this.id = task.getId();
         this.name = task.getName();
         this.description = task.getDescription();
@@ -32,5 +34,6 @@ public class TaskResponse {
         this.assignedAccounts = task.getAssignedAccounts().stream()
                 .map(at -> new TaskAssignedAccountResponse(at.getAccount()))
                 .toList();
+        this.isLike = taskLikeMap.get(task);
     }
 }

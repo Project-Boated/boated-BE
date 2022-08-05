@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
+import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.Task;
 
 import lombok.AccessLevel;
