@@ -66,6 +66,9 @@ public enum ErrorCode {
     // Upload File
     UPLOAD_FILE_NOT_FOUND_EXT(400, "UF001", "upload file에 ext를 찾을 수 없습니다."),
 
+    // AOP
+    AOP_PROJECT_ID_NOT_FOUND(400, "AO001", "project id를 찾을 수 없습니다. 이 에러는 서버에러입니다. 카톡주세요."),
+
     // For Testing
     FOR_TESTING(507, "T001", "테스트용입니다.");
 
