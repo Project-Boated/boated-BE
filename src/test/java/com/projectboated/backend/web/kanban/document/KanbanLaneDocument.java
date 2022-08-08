@@ -5,8 +5,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.restassured3.RestDocumentationFilter;
 
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
@@ -33,6 +32,19 @@ public final class KanbanLaneDocument {
                 ),
                 requestFields(
                         fieldWithPath("name").type(JsonFieldType.STRING).description("바꾸고 싶은 name").optional()
+                )
+        );
+    }
+
+    public static RestDocumentationFilter documentLanesRetrieve() {
+        return document("kanban-lanes-retrieve",
+                pathParameters(
+                        parameterWithName("projectId").description("프로젝트 고유 번호")
+                ),
+                responseFields(
+                        fieldWithPath("lanes[]").type(JsonFieldType.ARRAY).description("lane 정보"),
+                        fieldWithPath("lanes[].id").type(JsonFieldType.NUMBER).description("lane의 고유번호"),
+                        fieldWithPath("lanes[].name").type(JsonFieldType.STRING).description("lane의 이름")
                 )
         );
     }

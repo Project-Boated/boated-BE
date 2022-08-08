@@ -19,8 +19,7 @@ import java.util.stream.IntStream;
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
 import static com.projectboated.backend.common.data.BasicDataProject.*;
 import static com.projectboated.backend.common.data.BasicDataTask.*;
-import static com.projectboated.backend.web.kanban.document.KanbanLaneDocument.documentTaskOrderChange;
-import static com.projectboated.backend.web.kanban.document.KanbanLaneDocument.documentUpdateKanbanLane;
+import static com.projectboated.backend.web.kanban.document.KanbanLaneDocument.*;
 import static io.restassured.RestAssured.given;
 
 @AutoConfigureMockMvc
@@ -69,5 +68,26 @@ class KanbanLaneControllerTest extends AcceptanceTest {
         .then()
             .statusCode(HttpStatus.OK.value());
     }
+
+    @Test
+    void getLanes_lanes조회_조회정상() {
+        // Given
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+
+        // When
+        // Then
+        given(this.spec)
+            .filter(documentLanesRetrieve())
+            .cookie(cookie)
+        .when()
+            .port(port)
+            .get("/api/projects/{projectId}/kanban/lanes", projectId)
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
+
+
 
 }
