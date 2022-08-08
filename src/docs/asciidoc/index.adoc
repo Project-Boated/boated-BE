@@ -962,3 +962,6 @@ include::{snippets}/tasks-files-create/request-parts.adoc[]
 
 ===== http-response
 include::{snippets}/tasks-files-create/http-response.adoc[]
+
+===== response-fields
+include::{snippets}/tasks-files-create/response-fields.adoc[]

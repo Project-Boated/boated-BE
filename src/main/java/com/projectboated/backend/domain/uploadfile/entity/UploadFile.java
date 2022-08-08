@@ -44,4 +44,10 @@ public class UploadFile extends BaseTimeEntity {
         }
         return originalFileName.substring(0, lastIndexOfDot);
     }
+
+    public String getFullOriginalFileName() {
+        return this.getOriginalFileName() + "." + this.getExt();
+    }
+
+
 }
