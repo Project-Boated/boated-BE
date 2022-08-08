@@ -44,6 +44,9 @@ public enum ErrorCode {
     TASK_LIKE_ALREADY_EXISTS(400, "TL001", "이미 찜한 task입니다."),
     TASK_LIKE_NOT_FOUND(400, "TL002", "찾을 수 없는 찜입니다."),
 
+    // Task File
+    TASK_FILE_NOT_FOUND(400, "TF001", "task file을 찾을 수 없습니다."),
+
     // Kakao
     KAKAO_SERVER_EXCEPTION(400, "K001", "카카오 서버 오류입니다."),
 

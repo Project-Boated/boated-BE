@@ -858,6 +858,8 @@ class TaskServiceTest extends ServiceTest {
         // Then
         assertThatThrownBy(() -> taskService.updateTaskLane(PROJECT_ID, TASK_ID, KANBAN_LANE_ID))
                 .isInstanceOf(TaskNotFoundException.class);
+
+        verify(taskRepository).findByProjectIdAndTaskId(PROJECT_ID, TASK_ID);
     }
 
     @Test
@@ -875,6 +877,9 @@ class TaskServiceTest extends ServiceTest {
         // Then
         assertThatThrownBy(() -> taskService.updateTaskLane(PROJECT_ID, TASK_ID, KANBAN_LANE_ID))
                 .isInstanceOf(KanbanLaneNotFoundException.class);
+
+        verify(taskRepository).findByProjectIdAndTaskId(PROJECT_ID, TASK_ID);
+        verify(kanbanLaneRepository).findById(KANBAN_LANE_ID);
     }
 
     @Test
@@ -893,6 +898,9 @@ class TaskServiceTest extends ServiceTest {
 
         // Then
         assertThat(task.getKanbanLane()).isEqualTo(lanes.get(1));
+
+        verify(taskRepository).findByProjectIdAndTaskId(PROJECT_ID, TASK_ID);
+        verify(kanbanLaneRepository).findById(KANBAN_LANE_ID);
     }
 
 

@@ -37,4 +37,15 @@ public abstract class TaskFileControllerDocument {
         );
     }
 
+    public static Filter documentTaskFileDelete() {
+        return document("tasks-files-delete",
+                preprocessResponse(prettyPrint()),
+                pathParameters(
+                        parameterWithName("projectId").description("프로젝트 고유번호"),
+                        parameterWithName("taskId").description("task 고유번호"),
+                        parameterWithName("taskFileId").description("taskFile 고유번호")
+                )
+        );
+    }
+
 }

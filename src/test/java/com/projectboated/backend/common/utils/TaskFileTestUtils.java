@@ -9,14 +9,15 @@ import static io.restassured.RestAssured.given;
 
 public abstract class TaskFileTestUtils {
 
-    public static void createTaskFile(int port, Cookie cookie, int projectId, int taskId, File file, String mimeType) {
-        given()
+    public static int createTaskFile(int port, Cookie cookie, int projectId, int taskId, File file, String mimeType) {
+        return given()
             .contentType(ContentType.MULTIPART)
             .multiPart("file", file, mimeType)
             .cookie(cookie)
         .when()
             .port(port)
-            .post("/api/projects/{projectId}/tasks/{taskId}/files", projectId, taskId);
+            .post("/api/projects/{projectId}/tasks/{taskId}/files", projectId, taskId)
+        .thenReturn().jsonPath().get("id");
     }
 
 }

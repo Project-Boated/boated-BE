@@ -28,5 +28,14 @@ public class TaskFileController {
         return new UploadTaskFileResponse(taskFile);
     }
 
+    @DeleteMapping("/{taskFileId}")
+    public void deleteTaskFile(
+            @PathVariable Long projectId,
+            @PathVariable Long taskId,
+            @PathVariable Long taskFileId
+    ) {
+        taskFileService.delete(projectId, taskId, taskFileId);
+    }
+
 
 }
