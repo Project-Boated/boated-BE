@@ -34,4 +34,18 @@ class UploadFileTest {
                 .isInstanceOf(UploadFileNotFoundExt.class);
     }
 
+    @Test
+    void getFullOriginalFileName() {
+        // Given
+        UploadFile uploadFile = UploadFile.builder()
+                .originalFileName("file.exe")
+                .build();
+
+        // When
+        String result = uploadFile.getFullOriginalFileName();
+
+        // Then
+        assertThat(result).isEqualTo("file.exe");
+    }
+
 }
