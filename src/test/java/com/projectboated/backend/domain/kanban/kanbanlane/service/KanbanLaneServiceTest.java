@@ -558,6 +558,8 @@ class KanbanLaneServiceTest extends ServiceTest {
         // Then
         assertThatThrownBy(() -> kanbanLaneService.getLanes(PROJECT_ID))
                 .isInstanceOf(ProjectNotFoundException.class);
+
+        verify(projectRepository).findById(PROJECT_ID);
     }
 
     @Test
@@ -576,6 +578,9 @@ class KanbanLaneServiceTest extends ServiceTest {
 
         // Then
         assertThat(result).isEqualTo(kanbanLanes);
+
+        verify(projectRepository).findById(PROJECT_ID);
+        verify(kanbanLaneRepository).findByProject(project);
     }
 
 }
