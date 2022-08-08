@@ -104,9 +104,9 @@ public abstract class TaskDocument {
                         parameterWithName("taskId").description("target task의 id")
                 ),
                 requestFields(
-                        fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
-                        fieldWithPath("description").type(JsonFieldType.STRING).description("설명"),
-                        fieldWithPath("deadline").type(JsonFieldType.STRING).description("deadline")
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("이름").optional(),
+                        fieldWithPath("description").type(JsonFieldType.STRING).description("설명").optional(),
+                        fieldWithPath("deadline").type(JsonFieldType.STRING).description("deadline").optional()
                 )
         );
     }
