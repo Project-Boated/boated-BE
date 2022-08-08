@@ -4,6 +4,7 @@ import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.Task;
 
+import com.projectboated.backend.domain.task.task.service.dto.TaskUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -65,6 +66,117 @@ class TaskTest {
 
         // Then
         assertThat(task.getProject()).isEqualTo(project);
+    }
+
+    @Test
+    void update_모든조건null_업데이트안함() {
+        // Given
+        Task task = Task.builder()
+                .name(TASK_NAME)
+                .description(TASK_DESCRIPTION)
+                .deadline(TASK_DEADLINE)
+                .build();
+
+        TaskUpdateRequest request = TaskUpdateRequest.builder()
+                .build();
+
+        // When
+        task.update(request);
+
+        // Then
+        assertThat(task.getName()).isEqualTo(TASK_NAME);
+        assertThat(task.getDescription()).isEqualTo(TASK_DESCRIPTION);
+        assertThat(task.getDeadline()).isEqualTo(TASK_DEADLINE);
+    }
+
+    @Test
+    void update_이름이주어짐_이름만업데이트() {
+        // Given
+        Task task = Task.builder()
+                .name(TASK_NAME)
+                .description(TASK_DESCRIPTION)
+                .deadline(TASK_DEADLINE)
+                .build();
+
+        TaskUpdateRequest request = TaskUpdateRequest.builder()
+                .name(TASK_NAME2)
+                .build();
+
+        // When
+        task.update(request);
+
+        // Then
+        assertThat(task.getName()).isEqualTo(TASK_NAME2);
+        assertThat(task.getDescription()).isEqualTo(TASK_DESCRIPTION);
+        assertThat(task.getDeadline()).isEqualTo(TASK_DEADLINE);
+    }
+
+    @Test
+    void update_설명이주어짐_설명만업데이트() {
+        // Given
+        Task task = Task.builder()
+                .name(TASK_NAME)
+                .description(TASK_DESCRIPTION)
+                .deadline(TASK_DEADLINE)
+                .build();
+
+        TaskUpdateRequest request = TaskUpdateRequest.builder()
+                .description(TASK_DESCRIPTION2)
+                .build();
+
+        // When
+        task.update(request);
+
+        // Then
+        assertThat(task.getName()).isEqualTo(TASK_NAME);
+        assertThat(task.getDescription()).isEqualTo(TASK_DESCRIPTION2);
+        assertThat(task.getDeadline()).isEqualTo(TASK_DEADLINE);
+    }
+
+    @Test
+    void update_deadline이주어짐_deadline만업데이트() {
+        // Given
+        Task task = Task.builder()
+                .name(TASK_NAME)
+                .description(TASK_DESCRIPTION)
+                .deadline(TASK_DEADLINE)
+                .build();
+
+        TaskUpdateRequest request = TaskUpdateRequest.builder()
+                .deadline(TASK_DEADLINE2)
+                .build();
+
+        // When
+        task.update(request);
+
+        // Then
+        assertThat(task.getName()).isEqualTo(TASK_NAME);
+        assertThat(task.getDescription()).isEqualTo(TASK_DESCRIPTION);
+        assertThat(task.getDeadline()).isEqualTo(TASK_DEADLINE2);
+    }
+
+    @Test
+    void update_전체가주어짐_전체업데이트() {
+        // Given
+        Task task = Task.builder()
+                .name(TASK_NAME)
+                .description(TASK_DESCRIPTION)
+                .deadline(TASK_DEADLINE)
+                .build();
+
+        TaskUpdateRequest request = TaskUpdateRequest.builder()
+                .name(TASK_NAME2)
+                .description(TASK_DESCRIPTION2)
+                .deadline(TASK_DEADLINE2)
+                .build();
+
+        // When
+        task.update(request);
+
+        // Then
+        assertThat(task.getName()).isEqualTo(TASK_NAME2);
+        assertThat(task.getDescription()).isEqualTo(TASK_DESCRIPTION2);
+        assertThat(task.getDeadline()).isEqualTo(TASK_DEADLINE2);
     }
 
 }

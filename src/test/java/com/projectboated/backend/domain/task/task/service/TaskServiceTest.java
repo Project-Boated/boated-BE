@@ -16,6 +16,7 @@ import com.projectboated.backend.domain.task.task.entity.AccountTask;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import com.projectboated.backend.domain.task.task.repository.AccountTaskRepository;
 import com.projectboated.backend.domain.task.task.repository.TaskRepository;
+import com.projectboated.backend.domain.task.task.service.dto.TaskUpdateRequest;
 import com.projectboated.backend.domain.task.task.service.exception.*;
 import com.projectboated.backend.domain.task.taskfile.entity.TaskFile;
 import com.projectboated.backend.domain.task.taskfile.repository.TaskFileRepository;
@@ -30,8 +31,7 @@ import java.util.Optional;
 import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
 import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID2;
 import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
-import static com.projectboated.backend.common.data.BasicDataTask.TASK_ID;
-import static com.projectboated.backend.common.data.BasicDataTask.TASK_NAME;
+import static com.projectboated.backend.common.data.BasicDataTask.*;
 import static com.projectboated.backend.common.data.BasicDataUploadFile.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -807,6 +807,45 @@ class TaskServiceTest extends ServiceTest {
         verify(projectService).isCaptainOrCrew(project, account);
         verify(taskRepository).findByProjectIdAndTaskId(PROJECT_ID, TASK_ID);
         verify(taskFileRepository).findByTask(task);
+    }
+
+    @Test
+    void updateTask_task가없을때_예외발생() {
+        // Given
+        when(taskRepository.findByProjectIdAndTaskId(PROJECT_ID, TASK_ID)).thenReturn(Optional.empty());
+
+        TaskUpdateRequest request = TaskUpdateRequest.builder()
+                .build();
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskService.updateTask(PROJECT_ID, TASK_ID, request))
+                .isInstanceOf(TaskNotFoundException.class);
+    }
+
+    @Test
+    void updateTask_정상request_업데이트정상() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProjectAnd4Lanes(account);
+        List<KanbanLane> lanes = project.getKanban().getLanes();
+        Task task = addTask(lanes.get(0), TASK_NAME);
+
+        when(taskRepository.findByProjectIdAndTaskId(PROJECT_ID, TASK_ID)).thenReturn(Optional.of(task));
+
+        TaskUpdateRequest request = TaskUpdateRequest.builder()
+                .name(TASK_NAME2)
+                .description(TASK_DESCRIPTION2)
+                .deadline(TASK_DEADLINE2)
+                .build();
+
+        // When
+        taskService.updateTask(PROJECT_ID, TASK_ID, request);
+
+        // Then
+        assertThat(task.getName()).isEqualTo(TASK_NAME2);
+        assertThat(task.getDescription()).isEqualTo(TASK_DESCRIPTION2);
+        assertThat(task.getDeadline()).isEqualTo(TASK_DEADLINE2);
     }
 
 

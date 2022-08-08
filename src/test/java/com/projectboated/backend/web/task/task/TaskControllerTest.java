@@ -7,6 +7,7 @@ import com.projectboated.backend.common.data.BasicDataTask;
 import com.projectboated.backend.common.utils.*;
 import com.projectboated.backend.infra.aws.AwsS3Service;
 import com.projectboated.backend.web.task.task.document.TaskDocument;
+import com.projectboated.backend.web.task.task.dto.PatchTaskRequest;
 import com.projectboated.backend.web.task.task.dto.request.AssignAccountTaskRequest;
 import com.projectboated.backend.web.task.task.dto.request.CreateTaskRequest;
 import io.restassured.filter.Filter;
@@ -119,6 +120,30 @@ class TaskControllerTest extends AcceptanceTest {
         .when()
             .port(port)
             .get("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}", projectId, taskId)
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void patchTask_정상request_patch성공() throws FileNotFoundException {
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+
+        int taskId = TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE);
+
+        given(this.spec)
+            .filter(documentTaskUpdate())
+            .contentType(ContentType.JSON)
+                .body(PatchTaskRequest.builder()
+                        .name(TASK_NAME2)
+                        .description(TASK_DESCRIPTION2)
+                        .deadline(TASK_DEADLINE2)
+                        .build())
+            .cookie(cookie)
+        .when()
+            .port(port)
+            .patch("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}", projectId, taskId)
         .then()
             .statusCode(HttpStatus.OK.value());
     }
