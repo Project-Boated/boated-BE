@@ -1,7 +1,8 @@
 package com.projectboated.backend.domain.task.task.service;
 
-import com.projectboated.backend.domain.project.service.exception.OnlyCaptainException;
+import com.projectboated.backend.domain.project.aop.OnlyCaptainOrCrew;
 import com.projectboated.backend.domain.project.service.exception.OnlyCaptainOrCrewException;
+import com.projectboated.backend.domain.task.task.service.dto.TaskUpdateRequest;
 import com.projectboated.backend.domain.task.task.service.exception.*;
 import com.projectboated.backend.domain.task.taskfile.entity.TaskFile;
 import com.projectboated.backend.domain.task.taskfile.repository.TaskFileRepository;
@@ -12,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.kanban.kanbanlane.repository.KanbanLaneRepository;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.exception.KanbanLaneNotFoundException;
@@ -173,5 +173,14 @@ public class TaskService {
         return taskFileRepository.findByTask(task).stream()
                 .map(TaskFile::getUploadFile)
                 .toList();
+    }
+
+    @OnlyCaptainOrCrew
+    @Transactional
+    public void updateTask(Long projectId, Long taskId, TaskUpdateRequest request) {
+        Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
+                .orElseThrow(TaskNotFoundException::new);
+
+        task.update(request);
     }
 }

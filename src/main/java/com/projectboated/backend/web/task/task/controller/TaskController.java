@@ -3,6 +3,7 @@ package com.projectboated.backend.web.task.task.controller;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import com.projectboated.backend.domain.task.task.service.TaskService;
+import com.projectboated.backend.web.task.task.dto.PatchTaskRequest;
 import com.projectboated.backend.web.task.task.dto.response.GetTaskResponse;
 import com.projectboated.backend.web.task.task.dto.request.AssignAccountTaskRequest;
 import com.projectboated.backend.web.task.task.dto.request.CreateTaskRequest;
@@ -47,6 +48,15 @@ public class TaskController {
                 .assignedAccounts(taskService.findAssignedAccounts(account.getId(), projectId, taskId))
                 .assignedUploadFile(taskService.findAssignedFiles(account.getId(), projectId, taskId))
                 .build();
+    }
+
+    @PatchMapping("/{taskId}")
+    public void patchTask(
+            @PathVariable Long projectId,
+            @PathVariable Long taskId,
+            @RequestBody PatchTaskRequest request
+    ) {
+        taskService.updateTask(projectId, taskId, request.toTaskUpdateRequest());
     }
 
     @PostMapping(value = "/{taskId}/assign", consumes = MediaType.APPLICATION_JSON_VALUE)

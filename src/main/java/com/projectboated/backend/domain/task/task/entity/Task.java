@@ -1,6 +1,7 @@
 package com.projectboated.backend.domain.task.task.entity;
 
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
+import com.projectboated.backend.domain.task.task.service.dto.TaskUpdateRequest;
 import com.projectboated.backend.domain.task.tasklike.entity.TaskLike;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -68,5 +69,17 @@ public class Task extends BaseTimeEntity {
 
     public void changeProject(Project project) {
         this.project = project;
+    }
+
+    public void update(TaskUpdateRequest request) {
+        if (request.getName() != null) {
+            this.name = request.getName();
+        }
+        if (request.getDescription() != null) {
+            this.description = request.getDescription();
+        }
+        if (request.getDeadline() != null) {
+            this.deadline = request.getDeadline();
+        }
     }
 }

@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.restassured3.RestDocumentationFilter;
 
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
@@ -38,6 +40,7 @@ public final class KanbanLaneDocument {
 
     public static RestDocumentationFilter documentLanesRetrieve() {
         return document("kanban-lanes-retrieve",
+                preprocessResponse(prettyPrint()),
                 pathParameters(
                         parameterWithName("projectId").description("프로젝트 고유 번호")
                 ),

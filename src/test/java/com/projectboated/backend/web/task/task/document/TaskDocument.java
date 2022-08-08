@@ -95,4 +95,19 @@ public abstract class TaskDocument {
                 )
         );
     }
+
+    public static RestDocumentationFilter documentTaskUpdate() {
+        return document("tasks-update",
+                preprocessResponse(prettyPrint()),
+                pathParameters(
+                        parameterWithName("projectId").description("target 프로젝트의 id"),
+                        parameterWithName("taskId").description("target task의 id")
+                ),
+                requestFields(
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
+                        fieldWithPath("description").type(JsonFieldType.STRING).description("설명"),
+                        fieldWithPath("deadline").type(JsonFieldType.STRING).description("deadline")
+                )
+        );
+    }
 }
