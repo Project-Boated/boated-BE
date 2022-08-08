@@ -9,6 +9,7 @@ import com.projectboated.backend.domain.kanban.kanbanlane.repository.KanbanLaneR
 import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.KanbanLaneUpdateRequest;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.exception.*;
+import com.projectboated.backend.domain.project.aop.OnlyCaptainOrCrew;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.ProjectService;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -128,5 +130,12 @@ public class KanbanLaneService {
             }
         }
         return false;
+    }
+
+    @OnlyCaptainOrCrew
+    public List<KanbanLane> getLanes(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
+        return kanbanLaneRepository.findByProject(project);
     }
 }

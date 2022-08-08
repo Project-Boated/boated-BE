@@ -1,13 +1,17 @@
 package com.projectboated.backend.web.kanban.kanbanlane;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.KanbanLaneService;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.KanbanLaneUpdateRequest;
+import com.projectboated.backend.web.kanban.kanbanlane.dto.GetLanesResponse;
 import com.projectboated.backend.web.kanban.kanbanlane.dto.UpdateKanbanLaneRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,6 +19,14 @@ import org.springframework.web.bind.annotation.*;
 public class KanbanLaneController {
 
     private final KanbanLaneService kanbanLaneService;
+
+    @GetMapping
+    public GetLanesResponse getLanes(
+            @PathVariable Long projectId
+    ) {
+        List<KanbanLane> lanes = kanbanLaneService.getLanes(projectId);
+        return new GetLanesResponse(lanes);
+    }
 
     @PostMapping("/tasks/change/{originalLaneId}/{originalTaskIndex}/{changeLaneId}/{changeTaskIndex}")
     public void changeTaskOrder(

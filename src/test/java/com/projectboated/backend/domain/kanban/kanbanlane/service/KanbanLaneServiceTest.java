@@ -549,4 +549,33 @@ class KanbanLaneServiceTest extends ServiceTest {
         verify(kanbanLaneRepository).findByProjectIdAndKanbanLaneId(request.getProjectId(), request.getKanbanLaneId());
     }
 
+    @Test
+    void getLanes_존재하지않는프로젝트_예외발생() {
+        // Given
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> kanbanLaneService.getLanes(PROJECT_ID))
+                .isInstanceOf(ProjectNotFoundException.class);
+    }
+
+    @Test
+    void getLanes_4개존재_4개조회() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(account);
+        Kanban kanban = createKanban(project);
+        List<KanbanLane> kanbanLanes = addKanbanLane(kanban, 5);
+
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(kanbanLaneRepository.findByProject(project)).thenReturn(kanbanLanes);
+
+        // When
+        List<KanbanLane> result = kanbanLaneService.getLanes(PROJECT_ID);
+
+        // Then
+        assertThat(result).isEqualTo(kanbanLanes);
+    }
+
 }
