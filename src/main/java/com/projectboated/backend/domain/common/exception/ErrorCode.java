@@ -52,6 +52,7 @@ public enum ErrorCode {
 
     // File
     FILE_UPLOAD_INTERRUPT(400, "F001", "파일 업로드 인터럽트 오류"),
+    FILE_DOWNLOAD_INTERRUPT(400, "F002", "파일 다운로드 인터럽트 오류"),
 
     // Invite
     INVITATION_DO_NOT_INVITE_CAPTAIN(400, "IV001", "Captain을 invite할 수 없습니다"),

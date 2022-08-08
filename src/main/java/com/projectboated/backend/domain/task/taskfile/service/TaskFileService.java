@@ -78,4 +78,10 @@ public class TaskFileService {
                 .orElseThrow(TaskFileNotFoundException::new);
         taskFileRepository.delete(taskFile);
     }
+
+    @OnlyCaptainOrCrew
+    public TaskFile findById(Long projectId, Long taskFileId) {
+        return taskFileRepository.findById(taskFileId)
+                .orElseThrow(TaskFileNotFoundException::new);
+    }
 }

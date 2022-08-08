@@ -208,4 +208,30 @@ class TaskUploadFileServiceTest extends ServiceTest {
         verify(taskFileRepository).delete(taskFile);
     }
 
+    @Test
+    void findById_taskfile이존재하지않음_예외발생() {
+        // Given
+        when(taskFileRepository.findById(TASK_FILE_ID)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskFileService.findById(PROJECT_ID, TASK_FILE_ID))
+                .isInstanceOf(TaskFileNotFoundException.class);
+    }
+
+    @Test
+    void findById_정상request_return_TaskFile() {
+        // Given
+        TaskFile taskFile = TaskFile.builder()
+                .build();
+
+        when(taskFileRepository.findById(TASK_FILE_ID)).thenReturn(Optional.of(taskFile));
+
+        // When
+        TaskFile result = taskFileService.findById(PROJECT_ID, TASK_FILE_ID);
+
+        // Then
+        assertThat(result).isEqualTo(taskFile);
+    }
+
 }

@@ -48,4 +48,13 @@ public abstract class TaskFileControllerDocument {
         );
     }
 
+    public static Filter documentTaskFileRetrieve() {
+        return document("tasks-files-retrieve",
+                pathParameters(
+                        parameterWithName("projectId").description("프로젝트 고유번호"),
+                        parameterWithName("taskId").description("task 고유번호"),
+                        parameterWithName("taskFileId").description("taskFile 고유번호")
+                ));
+    }
+
 }

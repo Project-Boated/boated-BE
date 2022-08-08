@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.util.IOUtils;
+import com.projectboated.backend.infra.aws.exception.FileDownloadInterruptException;
 import com.projectboated.backend.infra.aws.exception.FileUploadInterruptException;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
@@ -64,8 +65,12 @@ public class AwsS3Service {
         }
     }
 
-    public byte[] getBytes(String filename) throws IOException {
+    public byte[] getBytes(String filename) {
         S3Object object = amazonS3.getObject(BUCKET_NAME, filename);
-        return IOUtils.toByteArray(object.getObjectContent());
+        try {
+            return IOUtils.toByteArray(object.getObjectContent());
+        } catch (IOException e) {
+            throw new FileDownloadInterruptException(e);
+        }
     }
 }
