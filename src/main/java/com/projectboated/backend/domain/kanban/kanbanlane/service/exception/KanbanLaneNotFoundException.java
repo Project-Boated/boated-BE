@@ -8,8 +8,4 @@ public class KanbanLaneNotFoundException extends BusinessException {
     public KanbanLaneNotFoundException() {
         super(ErrorCode.KANBAN_LANE_NOT_FOUND);
     }
-    
-    public KanbanLaneNotFoundException(ErrorCode errorCode) {
-        super(errorCode);
-    }
 }

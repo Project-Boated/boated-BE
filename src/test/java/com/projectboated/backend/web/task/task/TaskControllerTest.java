@@ -23,8 +23,10 @@ import org.springframework.util.MimeType;
 import org.springframework.util.ResourceUtils;
 
 import java.io.FileNotFoundException;
+import java.util.List;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
+import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID2;
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME;
 import static com.projectboated.backend.common.data.BasicDataProject.*;
 import static com.projectboated.backend.common.data.BasicDataTask.*;
@@ -144,6 +146,24 @@ class TaskControllerTest extends AcceptanceTest {
         .when()
             .port(port)
             .patch("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}", projectId, taskId)
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void patchTaskLane_정상request_patch성공() throws FileNotFoundException {
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+        int taskId = TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE);
+        List<Integer> lanesId = KanbanTestUtils.getFirstKanbanLanesId(port, cookie, projectId);
+
+        given(this.spec)
+            .filter(documentTaskUpdateLane())
+            .cookie(cookie)
+        .when()
+            .port(port)
+            .put("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}/lanes/{laneId}", projectId, taskId, lanesId.get(1))
         .then()
             .statusCode(HttpStatus.OK.value());
     }
