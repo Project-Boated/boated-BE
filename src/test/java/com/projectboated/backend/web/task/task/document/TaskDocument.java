@@ -110,4 +110,15 @@ public abstract class TaskDocument {
                 )
         );
     }
+
+    public static RestDocumentationFilter documentTaskUpdateLane() {
+        return document("tasks-update-lane",
+                preprocessResponse(prettyPrint()),
+                pathParameters(
+                        parameterWithName("projectId").description("target 프로젝트의 id"),
+                        parameterWithName("taskId").description("target task의 id"),
+                        parameterWithName("laneId").description("바꿀 lane의 id")
+                )
+        );
+    }
 }

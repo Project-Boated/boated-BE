@@ -59,6 +59,15 @@ public class TaskController {
         taskService.updateTask(projectId, taskId, request.toTaskUpdateRequest());
     }
 
+    @PutMapping("/{taskId}/lanes/{laneId}")
+    public void patchTaskLane(
+            @PathVariable Long projectId,
+            @PathVariable Long taskId,
+            @PathVariable Long laneId
+    ) {
+        taskService.updateTaskLane(projectId, taskId, laneId);
+    }
+
     @PostMapping(value = "/{taskId}/assign", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void assignAccountTask(
             @AuthenticationPrincipal Account account,

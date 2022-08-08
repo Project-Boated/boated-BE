@@ -30,6 +30,7 @@ import java.util.Optional;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
 import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID2;
+import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID;
 import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 import static com.projectboated.backend.common.data.BasicDataTask.*;
 import static com.projectboated.backend.common.data.BasicDataUploadFile.*;
@@ -846,6 +847,52 @@ class TaskServiceTest extends ServiceTest {
         assertThat(task.getName()).isEqualTo(TASK_NAME2);
         assertThat(task.getDescription()).isEqualTo(TASK_DESCRIPTION2);
         assertThat(task.getDeadline()).isEqualTo(TASK_DEADLINE2);
+    }
+
+    @Test
+    void updateTaskLane_찾을수없는task_예외발생() {
+        // Given
+        when(taskRepository.findByProjectIdAndTaskId(PROJECT_ID, TASK_ID)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskService.updateTaskLane(PROJECT_ID, TASK_ID, KANBAN_LANE_ID))
+                .isInstanceOf(TaskNotFoundException.class);
+    }
+
+    @Test
+    void updateTaskLane_찾을수없는kanbanLane_예외발생() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProjectAnd4Lanes(account);
+        List<KanbanLane> lanes = project.getKanban().getLanes();
+        Task task = addTask(lanes.get(0), TASK_NAME);
+
+        when(taskRepository.findByProjectIdAndTaskId(PROJECT_ID, TASK_ID)).thenReturn(Optional.of(task));
+        when(kanbanLaneRepository.findById(KANBAN_LANE_ID)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskService.updateTaskLane(PROJECT_ID, TASK_ID, KANBAN_LANE_ID))
+                .isInstanceOf(KanbanLaneNotFoundException.class);
+    }
+
+    @Test
+    void updateTaskLane_정상요청_정상_update() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProjectAnd4Lanes(account);
+        List<KanbanLane> lanes = project.getKanban().getLanes();
+        Task task = addTask(lanes.get(0), TASK_NAME);
+
+        when(taskRepository.findByProjectIdAndTaskId(PROJECT_ID, TASK_ID)).thenReturn(Optional.of(task));
+        when(kanbanLaneRepository.findById(KANBAN_LANE_ID)).thenReturn(Optional.of(lanes.get(1)));
+
+        // When
+        taskService.updateTaskLane(PROJECT_ID, TASK_ID, KANBAN_LANE_ID);
+
+        // Then
+        assertThat(task.getKanbanLane()).isEqualTo(lanes.get(1));
     }
 
 

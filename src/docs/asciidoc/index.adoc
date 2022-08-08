@@ -889,6 +889,25 @@ include::{snippets}/tasks-update/request-fields.adoc[]
 ===== http-response
 include::{snippets}/tasks-update/http-response.adoc[]
 
+[[resources-tasks-update-lane]]
+=== Task lane업데이트
+`PUT` 요청을 사용해서 Task의 lane을 update할 수 있습니다.
+
+include::./adoc/noteCaptainOrCrewOnly.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/tasks-update-lane/http-request.adoc[]
+
+===== request-path-parameters
+include::{snippets}/tasks-update-lane/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/tasks-update-lane/http-response.adoc[]
+
 [[resources-tasks-assign]]
 === Task배정
 `POST` 요청을 사용해서 Task를 배정할 수 있습니다

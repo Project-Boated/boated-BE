@@ -183,4 +183,15 @@ public class TaskService {
 
         task.update(request);
     }
+
+    @OnlyCaptainOrCrew
+    @Transactional
+    public void updateTaskLane(Long projectId, Long taskId, Long laneId) {
+        Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
+                .orElseThrow(TaskNotFoundException::new);
+
+        KanbanLane kanbanLane = kanbanLaneRepository.findById(laneId)
+                .orElseThrow(KanbanLaneNotFoundException::new);
+        task.changeKanbanLane(kanbanLane);
+    }
 }
