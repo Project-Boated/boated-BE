@@ -114,7 +114,8 @@ public final class ProjectDocument {
                         fieldWithPath("terminated").type(JsonFieldType.BOOLEAN).description("종료된 프로젝트이면 true, 아니면 false"),
                         fieldWithPath("dday").type(JsonFieldType.NUMBER).description("dday"),
                         fieldWithPath("totalDay").type(JsonFieldType.NUMBER).description("프로젝트 수행시간"),
-                        fieldWithPath("taskSize").type(JsonFieldType.NUMBER).description("총 task 개수")
+                        fieldWithPath("taskSize").type(JsonFieldType.NUMBER).description("총 task 개수"),
+                        fieldWithPath("totalFileSize").type(JsonFieldType.NUMBER).description("현재 프로젝트가 가진 총 파일 Size")
                 )
         );
     }
