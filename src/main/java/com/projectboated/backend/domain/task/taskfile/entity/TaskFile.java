@@ -10,10 +10,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@NoArgsConstructor @Getter
+@NoArgsConstructor
+@Getter
 public class TaskFile extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_file_id")
     private Long id;
 
@@ -21,7 +23,9 @@ public class TaskFile extends BaseTimeEntity {
     @JoinColumn(name = "task_id")
     private Task task;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true)
     @JoinColumn(name = "upload_file_id")
     private UploadFile uploadFile;
 
