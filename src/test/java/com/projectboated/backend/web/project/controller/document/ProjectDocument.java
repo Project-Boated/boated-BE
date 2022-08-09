@@ -115,7 +115,7 @@ public final class ProjectDocument {
                         fieldWithPath("dday").type(JsonFieldType.NUMBER).description("dday"),
                         fieldWithPath("totalDay").type(JsonFieldType.NUMBER).description("프로젝트 수행시간"),
                         fieldWithPath("taskSize").type(JsonFieldType.NUMBER).description("총 task 개수"),
-                        fieldWithPath("totalFileSize").type(JsonFieldType.NUMBER).description("현재 프로젝트가 가진 총 파일 Size")
+                        fieldWithPath("totalFileSize").type(JsonFieldType.NUMBER).description("현재 프로젝트가 가진 총 파일 Size, byte단위(단위는 언제든지 바뀔 수 있음)")
                 )
         );
     }
