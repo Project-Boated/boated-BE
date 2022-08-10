@@ -3,8 +3,8 @@ plugins {
     id 'java'
 
     // Spring
-    id 'org.springframework.boot' version '2.6.7'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '2.7.2'
+    id 'io.spring.dependency-management' version '1.0.12.RELEASE'
 
     // Ascii Doctor
     id "org.asciidoctor.jvm.convert" version "3.3.2"
@@ -15,7 +15,6 @@ plugins {
 
 group = 'com.projectboated'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
 
 ext {
     // For Spring Rest Docs
@@ -56,6 +55,7 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation 'com.h2database:h2'
     implementation 'org.flywaydb:flyway-core'
+    implementation "org.flywaydb:flyway-mysql"
 
     // Thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
