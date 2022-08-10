@@ -16,7 +16,9 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.projectboated.backend.domain.common.exception.ErrorCodeException;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JsonAccessDeniedHandler implements AccessDeniedHandler {
 
     private final ObjectMapper objectMapper = new ObjectMapper();

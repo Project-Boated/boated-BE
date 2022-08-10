@@ -25,8 +25,8 @@ import com.projectboated.backend.security.token.KakaoAuthenticationToken;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
+@Component
 public class KakaoAuthenticationProvider implements AuthenticationProvider {
 
     private final KakaoAccountDetailsService kakaoUserDetailsService;
