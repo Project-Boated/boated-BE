@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.security.exception.NicknameRequiredException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.Authentication;
@@ -18,6 +19,7 @@ import com.projectboated.backend.domain.account.account.service.AccountService;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
 
 @Component
+@RequiredArgsConstructor
 public class AccountNicknameExistVoter implements AccessDecisionVoter {
 
     private final AccountService accountService;
@@ -29,10 +31,6 @@ public class AccountNicknameExistVoter implements AccessDecisionVoter {
         urlWhitelist.put("/api/account/profile/nickname/unique-validation", Set.of("POST"));
         urlWhitelist.put("/api/account/profile", Set.of("GET", "PATCH"));
         urlWhitelist.put("/api/account/profile/profile-image", Set.of("GET", "POST"));
-    }
-
-    public AccountNicknameExistVoter(AccountService accountService) {
-        this.accountService = accountService;
     }
 
     @Override

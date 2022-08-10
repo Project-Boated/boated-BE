@@ -15,8 +15,9 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
-@Slf4j
+@Component
 public class KakaoAuthenticationFailureHandler implements AuthenticationFailureHandler {
     
     private final ObjectMapper objectMapper = new ObjectMapper();

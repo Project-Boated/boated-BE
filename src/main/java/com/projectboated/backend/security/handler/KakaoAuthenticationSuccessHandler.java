@@ -15,7 +15,9 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.projectboated.backend.security.dto.IdDto;
+import org.springframework.stereotype.Component;
 
+@Component
 public class KakaoAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     
     private final ObjectMapper objectMapper = new ObjectMapper();
