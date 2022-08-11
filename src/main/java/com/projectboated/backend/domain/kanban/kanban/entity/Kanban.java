@@ -18,6 +18,7 @@ import com.projectboated.backend.domain.project.entity.Project;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -43,7 +44,7 @@ public class Kanban extends BaseTimeEntity {
     }
 
     public void changeProject(Project project) {
-        if (this.project==null || !this.project.equals(project)) {
+        if (!Objects.equals(this.project, project)) {
             this.project = project;
             project.changeKanban(this);
         }
@@ -75,5 +76,20 @@ public class Kanban extends BaseTimeEntity {
             throw new KanbanLaneChangeIndexOutOfBoundsException(ErrorCode.KANBAN_LANE_CHANGE_INDEX_OUT_OF_BOUNDS);
         }
         this.lanes.get(index).update(request);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Kanban kanban = (Kanban) o;
+
+        return id != null ? id.equals(kanban.id) : kanban.id == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }
