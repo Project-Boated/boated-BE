@@ -8,6 +8,7 @@ import com.projectboated.backend.domain.task.tasklike.entity.TaskLike;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,6 +30,22 @@ class TaskLikeRepositoryTest extends RepositoryTest {
         // Then
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(taskLike);
+    }
+
+    @Test
+    void deleteByTask_2개존재_2개삭제() {
+        // Given
+        Account account = insertDefaultAccount();
+        Project project = insertDefaultProject(account);
+        Task task = insertDefaultTask(project);
+        insertTaskLike(account, task);
+        insertTaskLike(account, task);
+
+        // When
+        taskLikeRepository.deleteByTask(task);
+
+        // Then
+        assertThat(taskLikeRepository.findByAccountAndTask(account, task)).isEmpty();
     }
 
 
