@@ -17,6 +17,7 @@ import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
 import com.projectboated.backend.domain.task.task.entity.Task;
 
+import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,7 @@ public class KanbanLaneService {
     private final AccountRepository accountRepository;
     private final ProjectRepository projectRepository;
     private final KanbanLaneRepository kanbanLaneRepository;
+    private final TaskRepository taskRepository;
     private final ProjectService projectService;
 
     @Transactional
@@ -64,6 +66,10 @@ public class KanbanLaneService {
 
         if (kanbanLaneRepository.findByProject(project).size() <= 1) {
             throw new KanbanLaneExists1Exception();
+        }
+
+        if(taskRepository.countByKanbanLaneId(kanbanLaneId) > 0) {
+            throw new KanbanLaneExistsTaskException();
         }
 
         KanbanLane kanbanLane = kanbanLaneRepository.findByIdAndProject(kanbanLaneId, project)

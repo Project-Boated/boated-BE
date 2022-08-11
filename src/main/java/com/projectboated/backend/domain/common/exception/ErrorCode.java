@@ -71,6 +71,7 @@ public enum ErrorCode {
     KANBAN_LANE_ORIGINAL_INDEX_OUT_OF_BOUNDS(400, "KL004", "original index가 lane index범위를 벗어났습니다."),
     KANBAN_LANE_CHANGE_INDEX_OUT_OF_BOUNDS(400, "KL005", "change index가 lane index범위를 벗어났습니다."),
     KANBAN_LANE_NOT_IN_PROJECT(400, "KL006", "해당 Kanban lane이 project에 존재하지 않습니다"),
+    KANBAN_LANE_EXISTS_TASK(400, "KL007", "kanban lane에 task가 존재합니다"),
 
     // Upload File
     UPLOAD_FILE_NOT_FOUND_EXT(400, "UF001", "upload file에 ext를 찾을 수 없습니다."),

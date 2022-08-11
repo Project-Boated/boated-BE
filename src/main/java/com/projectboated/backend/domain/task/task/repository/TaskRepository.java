@@ -19,4 +19,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     Optional<Task> findByProjectIdAndTaskId(@Param("projectId") Long projectId, @Param("taskId") Long taskId);
 
     List<Task> findByProject(Project project);
+
+    @Query("select count(t) from Task t where t.kanbanLane.id=:kanbanLaneId")
+    long countByKanbanLaneId(@Param("kanbanLaneId") Long kanbanLaneId);
 }

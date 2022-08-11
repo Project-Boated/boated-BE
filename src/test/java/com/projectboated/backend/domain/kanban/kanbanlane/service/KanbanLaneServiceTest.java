@@ -14,6 +14,7 @@ import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
+import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -50,6 +51,8 @@ class KanbanLaneServiceTest extends ServiceTest {
     ProjectRepository projectRepository;
     @Mock
     KanbanLaneRepository kanbanLaneRepository;
+    @Mock
+    TaskRepository taskRepository;
 
     @Test
     void createNewLine_accountId찾을수없음_에외발생() {
@@ -168,6 +171,24 @@ class KanbanLaneServiceTest extends ServiceTest {
     }
 
     @Test
+    void deleteCustomLane_lane에task가있는경우_예외발생() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(account);
+        Kanban kanban = createKanban(project);
+        List<KanbanLane> kanbanLanes = addKanbanLane(kanban, 4);
+
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(kanbanLaneRepository.findByProject(project)).thenReturn(List.of(kanbanLanes.get(0), kanbanLanes.get(1)));
+        when(taskRepository.countByKanbanLaneId(KANBAN_LANE_ID)).thenReturn(1L);
+
+        // When
+        // Then
+        assertThatThrownBy(() -> kanbanLaneService.deleteKanbanLane(PROJECT_ID, KANBAN_LANE_ID))
+                .isInstanceOf(KanbanLaneExistsTaskException.class);
+    }
+
+    @Test
     void deleteCustomLane_KanbanLane을찾을수없음_예외발생() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
@@ -178,6 +199,7 @@ class KanbanLaneServiceTest extends ServiceTest {
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
         when(kanbanLaneRepository.findByProject(project)).thenReturn(List.of(kanbanLanes.get(0), kanbanLanes.get(1)));
         when(kanbanLaneRepository.findByIdAndProject(KANBAN_LANE_ID, project)).thenReturn(Optional.empty());
+        when(taskRepository.countByKanbanLaneId(KANBAN_LANE_ID)).thenReturn(0L);
 
         // When
         // Then
@@ -196,6 +218,7 @@ class KanbanLaneServiceTest extends ServiceTest {
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
         when(kanbanLaneRepository.findByProject(project)).thenReturn(List.of(kanbanLanes.get(0), kanbanLanes.get(1)));
         when(kanbanLaneRepository.findByIdAndProject(KANBAN_LANE_ID, project)).thenReturn(Optional.of(kanbanLanes.get(3)));
+        when(taskRepository.countByKanbanLaneId(KANBAN_LANE_ID)).thenReturn(0L);
 
         // When
         kanbanLaneService.deleteKanbanLane(PROJECT_ID, KANBAN_LANE_ID);
