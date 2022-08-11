@@ -63,4 +63,19 @@ class InvitationRepositoryTest extends RepositoryTest {
         assertThat(result).hasSize(1);
     }
 
+    @Test
+    void findByIdAndAccount_invitation1개존재_return_1개() {
+        // Given
+        Account account = insertDefaultAccount();
+        Project project = insertDefaultProject(account);
+        Invitation invitation = insertInvitation(project, account);
+
+        // When
+        Optional<Invitation> result = invitationRepository.findByIdAndAccount(invitation.getId(), account);
+
+        // Then
+        assertThat(result).isPresent();
+        assertThat(result.get()).isEqualTo(invitation);
+    }
+
 }

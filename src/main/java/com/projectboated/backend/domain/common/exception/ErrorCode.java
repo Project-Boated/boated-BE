@@ -33,6 +33,9 @@ public enum ErrorCode {
     PROJECT_ONLY_CAPTAIN_OR_CREW(400, "P007", "Captain이나 Crew만 가능합니다. 권한부족."),
     PROJECT_ONLY_CAPTAIN(400, "P007", "Captain만 가능합니다. 권한부족."),
 
+    // Crew
+    ACCOUNT_PROJECT_NOT_FOUND(400, "CR001", "crew를 찾을 수 없습니다."),
+
     // Task
     TASK_NOT_FOUND(400, "T001", "task를 찾을 수 없습니다."),
     TASK_ALREADY_ASSIGNED(400, "T003", "이미 해당 task에 배정받은 Account입니다."),
@@ -56,9 +59,10 @@ public enum ErrorCode {
 
     // Invite
     INVITATION_DO_NOT_INVITE_CAPTAIN(400, "IV001", "Captain을 invite할 수 없습니다"),
-    INVITATION_ACCOUNT_EXISTS(400, "IV002", "이미 초대를 보낸 Account입니다."),
+    INVITATION_EXISTS(400, "IV002", "이미 초대를 보낸 Account입니다."),
     INVITATION_ACCOUNT_EXISTS_IN_PROJECT(400, "IV003", "이미 Crew인 Account입니다."),
     INVITATION_NOT_FOUND(400, "IV004", "찾을 수 없는 초대입니다."),
+    INVITATION_DO_NOT_INVITE_CREW(400, "IV005", "이미 crew인 account를 초대할 수 없습니다."),
 
     // Kanban Lane
     KANBAN_LANE_EXISTS_UPPER_5(400, "KL001", "칸반 lane의 개수가 이미 5개입니다"),

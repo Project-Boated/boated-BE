@@ -7,6 +7,8 @@ import com.projectboated.backend.domain.project.entity.Project;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("AccountProject : Persistence 단위 테스트")
@@ -93,6 +95,21 @@ class AccountProjectRepositoryTest extends RepositoryTest {
 
         // Then
         assertThat(result).isEqualTo(0);
+    }
+
+    @Test
+    void findByAccountAndProject_1개존재_1개조회() {
+        // Given
+        Account account = insertDefaultAccount();
+        Project project = insertDefaultProject(account);
+        AccountProject accountProject = insertAccountProject(account, project);
+
+        // When
+        Optional<AccountProject> result = accountProjectRepository.findByAccountAndProject(account, project);
+
+        // Then
+        assertThat(result).isPresent();
+        assertThat(result.get()).isEqualTo(accountProject);
     }
 
 }
