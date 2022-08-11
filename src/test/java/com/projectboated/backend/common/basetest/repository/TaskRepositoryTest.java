@@ -1,6 +1,7 @@
 package com.projectboated.backend.common.basetest.repository;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.AccountTask;
 import com.projectboated.backend.domain.task.task.entity.Task;
@@ -43,6 +44,26 @@ public class TaskRepositoryTest extends InvitationRepositoryTest {
                 .account(account)
                 .task(task)
                 .build());
+    }
+
+    protected Task insertDefaultTask(KanbanLane kl) {
+        Task task = Task.builder()
+                .name(TASK_NAME)
+                .description(TASK_DESCRIPTION)
+                .deadline(TASK_DEADLINE)
+                .build();
+        task.changeKanbanLane(kl);
+        return taskRepository.save(task);
+    }
+
+    protected Task insertDefaultTask2(KanbanLane kl) {
+        Task task = Task.builder()
+                .name(TASK_NAME2)
+                .description(TASK_DESCRIPTION2)
+                .deadline(TASK_DEADLINE2)
+                .build();
+        task.changeKanbanLane(kl);
+        return taskRepository.save(task);
     }
 
 }

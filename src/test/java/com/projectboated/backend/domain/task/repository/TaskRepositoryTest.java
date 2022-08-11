@@ -1,6 +1,8 @@
 package com.projectboated.backend.domain.task.repository;
 
 import com.projectboated.backend.common.basetest.RepositoryTest;
+import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import org.junit.jupiter.api.DisplayName;
@@ -56,6 +58,22 @@ class TaskRepositoryTest extends RepositoryTest {
 
         // Then
         assertThat(result).containsExactly(task, task2);
+    }
+
+    @Test
+    void countByKanbanLaneId_task2개존재_2개조회() {
+        // Given
+        Account account = insertDefaultAccount();
+        Project project = insertDefaultProject(account);
+        KanbanLane kanbanLane = insertKanbanLane(project.getKanban());
+        insertDefaultTask(kanbanLane);
+        insertDefaultTask2(kanbanLane);
+
+        // When
+        Long result = taskRepository.countByKanbanLaneId(kanbanLane.getId());
+
+        // Then
+        assertThat(result).isEqualTo(2);
     }
 
 }
