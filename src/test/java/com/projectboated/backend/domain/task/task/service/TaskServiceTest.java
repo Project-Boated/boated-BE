@@ -20,6 +20,7 @@ import com.projectboated.backend.domain.task.task.service.dto.TaskUpdateRequest;
 import com.projectboated.backend.domain.task.task.service.exception.*;
 import com.projectboated.backend.domain.task.taskfile.entity.TaskFile;
 import com.projectboated.backend.domain.task.taskfile.repository.TaskFileRepository;
+import com.projectboated.backend.domain.task.tasklike.repository.TaskLikeRepository;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -60,6 +61,8 @@ class TaskServiceTest extends ServiceTest {
     AccountTaskRepository accountTaskRepository;
     @Mock
     TaskFileRepository taskFileRepository;
+    @Mock
+    TaskLikeRepository taskLikeRepository;
 
     @Test
     void save_찾을수없는Account_예외발생() {
@@ -901,6 +904,39 @@ class TaskServiceTest extends ServiceTest {
 
         verify(taskRepository).findByProjectIdAndTaskId(PROJECT_ID, TASK_ID);
         verify(kanbanLaneRepository).findById(KANBAN_LANE_ID);
+    }
+
+    @Test
+    void deleteTask_task가없는경우_예외발생() {
+        // Given
+        when(taskRepository.findByProjectIdAndTaskId(PROJECT_ID, TASK_ID)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskService.deleteTask(PROJECT_ID, TASK_ID))
+                .isInstanceOf(TaskNotFoundException.class);
+
+        verify(taskRepository).findByProjectIdAndTaskId(PROJECT_ID, TASK_ID);
+    }
+
+    @Test
+    void deleteTask_정상요청_delete성공() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProjectAnd4Lanes(account);
+        List<KanbanLane> lanes = project.getKanban().getLanes();
+        Task task = addTask(lanes.get(0), TASK_NAME);
+
+        when(taskRepository.findByProjectIdAndTaskId(PROJECT_ID, TASK_ID)).thenReturn(Optional.of(task));
+
+        // When
+        taskService.deleteTask(PROJECT_ID, TASK_ID);
+
+        // Then
+        verify(taskRepository).findByProjectIdAndTaskId(PROJECT_ID, TASK_ID);
+        verify(taskLikeRepository).deleteByTask(task);
+        verify(taskFileRepository).deleteByTask(task);
+        verify(taskRepository).delete(task);
     }
 
 

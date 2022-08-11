@@ -6,6 +6,7 @@ import com.projectboated.backend.domain.task.task.service.dto.TaskUpdateRequest;
 import com.projectboated.backend.domain.task.task.service.exception.*;
 import com.projectboated.backend.domain.task.taskfile.entity.TaskFile;
 import com.projectboated.backend.domain.task.taskfile.repository.TaskFileRepository;
+import com.projectboated.backend.domain.task.tasklike.repository.TaskLikeRepository;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +41,7 @@ public class TaskService {
     private final KanbanLaneRepository kanbanLaneRepository;
     private final AccountTaskRepository accountTaskRepository;
     private final TaskFileRepository taskFileRepository;
+    private final TaskLikeRepository taskLikeRepository;
     private final ProjectService projectService;
 
     @Transactional
@@ -193,5 +195,15 @@ public class TaskService {
         KanbanLane kanbanLane = kanbanLaneRepository.findById(laneId)
                 .orElseThrow(KanbanLaneNotFoundException::new);
         task.changeKanbanLane(kanbanLane);
+    }
+
+    @OnlyCaptainOrCrew
+    @Transactional
+    public void deleteTask(Long projectId, Long taskId) {
+        Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
+                .orElseThrow(TaskNotFoundException::new);
+        taskLikeRepository.deleteByTask(task);
+        taskFileRepository.deleteByTask(task);
+        taskRepository.delete(task);
     }
 }

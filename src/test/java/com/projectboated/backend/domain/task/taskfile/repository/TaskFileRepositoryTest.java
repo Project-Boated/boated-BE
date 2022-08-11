@@ -47,4 +47,21 @@ class TaskFileRepositoryTest extends RepositoryTest {
         assertThat(result).hasSize(2);
     }
 
+    @Test
+    void deleteByTask_2개있는경우_2개없앰() {
+        // Given
+        Account account = insertDefaultAccount();
+        Project project = insertDefaultProject(account);
+        Task task = insertDefaultTask(project);
+        UploadFile uploadFile = insertDefaultUploadFile();
+        TaskFile taskFile = insertTaskFile(task, uploadFile);
+        TaskFile taskFile2 = insertTaskFile(task, uploadFile);
+
+        // When
+        taskFileRepository.deleteByTask(task);
+
+        // Then
+        assertThat(taskFileRepository.findByTask(task)).isEmpty();
+    }
+
 }

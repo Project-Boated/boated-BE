@@ -127,6 +127,23 @@ class TaskControllerTest extends AcceptanceTest {
     }
 
     @Test
+    void deleteTask_정상request_delete성공() throws FileNotFoundException {
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
+        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+        int taskId = TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE);
+
+        given(this.spec)
+            .filter(documentTaskDelete())
+            .cookie(cookie)
+        .when()
+            .port(port)
+            .delete("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}", projectId, taskId)
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
     void patchTask_정상request_patch성공() throws FileNotFoundException {
         AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
@@ -149,6 +166,7 @@ class TaskControllerTest extends AcceptanceTest {
         .then()
             .statusCode(HttpStatus.OK.value());
     }
+
 
     @Test
     void patchTaskLane_정상request_patch성공() throws FileNotFoundException {

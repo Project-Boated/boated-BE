@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface TaskFileRepository extends JpaRepository<TaskFile, Long> {
     List<TaskFile> findByTask(Task task);
+
+    void deleteByTask(Task task);
 }

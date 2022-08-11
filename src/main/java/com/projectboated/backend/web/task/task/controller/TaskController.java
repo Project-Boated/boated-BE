@@ -59,6 +59,14 @@ public class TaskController {
         taskService.updateTask(projectId, taskId, request.toTaskUpdateRequest());
     }
 
+    @DeleteMapping("/{taskId}")
+    public void deleteTask(
+            @PathVariable Long projectId,
+            @PathVariable Long taskId
+    ) {
+        taskService.deleteTask(projectId, taskId);
+    }
+
     @PutMapping("/{taskId}/lanes/{laneId}")
     public void patchTaskLane(
             @PathVariable Long projectId,
