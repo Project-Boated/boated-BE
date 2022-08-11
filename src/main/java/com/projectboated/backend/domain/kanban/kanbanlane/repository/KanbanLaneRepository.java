@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,4 +29,7 @@ public interface KanbanLaneRepository extends JpaRepository<KanbanLane, Long> {
 
     @Query("select kl from KanbanLane kl inner join kl.kanban where kl.kanban.project = :project")
     List<KanbanLane> findByProject(@Param("project") Project project);
+
+    @Query("select kl from KanbanLane kl inner join Kanban k on kl.id=:kanbanLaneId and kl.kanban.id=k.id and k.project=:project")
+    Optional<KanbanLane> findByIdAndProject(@Param("kanbanLaneId") Long kanbanLaneId, @Param("project") Project project);
 }
