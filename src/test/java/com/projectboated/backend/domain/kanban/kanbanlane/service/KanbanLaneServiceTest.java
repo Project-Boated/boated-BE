@@ -101,25 +101,21 @@ class KanbanLaneServiceTest extends ServiceTest {
     }
 
     @Test
-    void createNewLine_kanbanLane이5이상일때_에외발생() {
+    void createNewLine_이미lane이5개존재_예외발생() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
         Project project = createProject(account);
         Kanban kanban = createKanban(project);
-        addKanbanLane(kanban, 5);
+        List<KanbanLane> kanbanLanes = addKanbanLane(kanban, 5);
 
         when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
-        when(kanbanLaneRepository.countByKanban(kanban)).thenReturn(5L);
+        when(kanbanLaneRepository.findByProject(project)).thenReturn(kanbanLanes);
 
         // When
         // Then
         assertThatThrownBy(() -> kanbanLaneService.createNewLine(ACCOUNT_ID, PROJECT_ID, KANBAN_LANE_NAME))
                 .isInstanceOf(KanbanLaneAlreadyExists5.class);
-
-        verify(accountRepository).findById(ACCOUNT_ID);
-        verify(projectRepository).findById(PROJECT_ID);
-        verify(kanbanLaneRepository).countByKanban(kanban);
     }
 
     @Test
@@ -128,10 +124,11 @@ class KanbanLaneServiceTest extends ServiceTest {
         Account account = createAccount(ACCOUNT_ID);
         Project project = createProject(account);
         Kanban kanban = createKanban(project);
-        addKanbanLane(kanban, 4);
+        List<KanbanLane> kanbanLanes = addKanbanLane(kanban, 2);
 
         when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(kanbanLaneRepository.findByProject(project)).thenReturn(kanbanLanes);
 
         // When
         kanbanLaneService.createNewLine(ACCOUNT_ID, PROJECT_ID, KANBAN_LANE_NAME);
@@ -139,97 +136,72 @@ class KanbanLaneServiceTest extends ServiceTest {
         // Then
         verify(accountRepository).findById(ACCOUNT_ID);
         verify(projectRepository).findById(PROJECT_ID);
-        verify(kanbanLaneRepository).countByKanban(kanban);
         verify(kanbanLaneRepository).save(any());
     }
 
     @Test
-    void deleteCustomLane_accountId찾을수없음_예외발생() {
+    void deleteKanbanLane_프로젝트를찾을수없음_예외발생() {
         // Given
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.empty());
-
-        // When
-        // Then
-        assertThatThrownBy(() -> kanbanLaneService.deleteKanbanLane(ACCOUNT_ID, PROJECT_ID, KANBAN_LANE_ID))
-                .isInstanceOf(AccountNotFoundException.class);
-
-        verify(accountRepository).findById(ACCOUNT_ID);
-    }
-
-    @Test
-    void deleteCustomLane_projectId찾을수없음_예외발생() {
-        // Given
-        Account account = createAccount(ACCOUNT_ID);
-
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
 
         // When
         // Then
-        assertThatThrownBy(() -> kanbanLaneService.deleteKanbanLane(ACCOUNT_ID, PROJECT_ID, KANBAN_LANE_ID))
+        assertThatThrownBy(() -> kanbanLaneService.deleteKanbanLane(PROJECT_ID, KANBAN_LANE_ID))
                 .isInstanceOf(ProjectNotFoundException.class);
-
-        verify(accountRepository).findById(ACCOUNT_ID);
-        verify(projectRepository).findById(PROJECT_ID);
     }
 
     @Test
-    void deleteCustomLane_captain이아닐경우_예외발생() {
+    void deleteCustomLane_lane이1개밖에없음_예외발생() {
         // Given
-        Account captain = createAccount(ACCOUNT_ID);
-        Project project = createProject(captain);
-        Account account = createAccount(ACCOUNT_ID2);
-
-        when(accountRepository.findById(ACCOUNT_ID2)).thenReturn(Optional.of(account));
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
-
-        // When
-        // Then
-        assertThatThrownBy(() -> kanbanLaneService.deleteKanbanLane(ACCOUNT_ID2, PROJECT_ID, KANBAN_LANE_ID))
-                .isInstanceOf(KanbanLaneSaveAccessDeniedException.class);
-
-        verify(accountRepository).findById(ACCOUNT_ID2);
-        verify(projectRepository).findById(PROJECT_ID);
-    }
-
-    @Test
-    void deleteCustomLane_kanbanLane이project에없는경우_예외발생() {
-        // Given
-        Account captain = createAccount(ACCOUNT_ID);
-        Project project = createProject(captain);
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(account);
         Kanban kanban = createKanban(project);
-        addKanbanLane(kanban, 3);
+        List<KanbanLane> kanbanLanes = addKanbanLane(kanban, 4);
 
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(captain));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(kanbanLaneRepository.findByProject(project)).thenReturn(List.of(kanbanLanes.get(0)));
 
         // When
         // Then
-        assertThatThrownBy(() -> kanbanLaneService.deleteKanbanLane(ACCOUNT_ID, PROJECT_ID, KANBAN_LANE_ID + 6))
-                .isInstanceOf(KanbanLaneNotInProjectException.class);
+        assertThatThrownBy(() -> kanbanLaneService.deleteKanbanLane(PROJECT_ID, KANBAN_LANE_ID))
+                .isInstanceOf(KanbanLaneExists1Exception.class);
+    }
 
-        verify(accountRepository).findById(ACCOUNT_ID);
-        verify(projectRepository).findById(PROJECT_ID);
+    @Test
+    void deleteCustomLane_KanbanLane을찾을수없음_예외발생() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(account);
+        Kanban kanban = createKanban(project);
+        List<KanbanLane> kanbanLanes = addKanbanLane(kanban, 4);
+
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(kanbanLaneRepository.findByProject(project)).thenReturn(List.of(kanbanLanes.get(0), kanbanLanes.get(1)));
+        when(kanbanLaneRepository.findByIdAndProject(KANBAN_LANE_ID, project)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> kanbanLaneService.deleteKanbanLane(PROJECT_ID, KANBAN_LANE_ID))
+                .isInstanceOf(KanbanLaneNotFoundException.class);
     }
 
     @Test
     void deleteCustomLane_정상입력_정상delete() {
         // Given
-        Account captain = createAccount(ACCOUNT_ID);
-        Project project = createProject(captain);
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(account);
         Kanban kanban = createKanban(project);
-        addKanbanLane(kanban, 3);
+        List<KanbanLane> kanbanLanes = addKanbanLane(kanban, 4);
 
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(captain));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(kanbanLaneRepository.findByProject(project)).thenReturn(List.of(kanbanLanes.get(0), kanbanLanes.get(1)));
+        when(kanbanLaneRepository.findByIdAndProject(KANBAN_LANE_ID, project)).thenReturn(Optional.of(kanbanLanes.get(3)));
 
         // When
-        kanbanLaneService.deleteKanbanLane(ACCOUNT_ID, PROJECT_ID, KANBAN_LANE_ID + 1);
+        kanbanLaneService.deleteKanbanLane(PROJECT_ID, KANBAN_LANE_ID);
 
         // Then
-        verify(accountRepository).findById(ACCOUNT_ID);
-        verify(projectRepository).findById(PROJECT_ID);
-        verify(kanbanLaneRepository).deleteById(KANBAN_LANE_ID + 1);
+        verify(kanbanLaneRepository).delete(kanbanLanes.get(3));
     }
 
     @Test

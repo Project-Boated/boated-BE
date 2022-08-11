@@ -5,6 +5,7 @@ import com.projectboated.backend.domain.kanban.kanban.entity.exception.KanbanLan
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.KanbanLaneUpdateRequest;
+import com.projectboated.backend.domain.kanban.kanbanlane.service.exception.KanbanLaneAlreadyExists5;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import org.junit.jupiter.api.DisplayName;
@@ -96,7 +97,7 @@ class KanbanTest {
                 .deadline(PROJECT_DEADLINE)
                 .build();
         Kanban kanban = new Kanban(project);
-        IntStream.range(0, 10)
+        IntStream.range(0, 3)
                 .forEach(i -> kanban.addKanbanLane(KanbanLane.builder()
                         .name(KANBAN_LANE_NAME + i)
                         .build()));
@@ -117,7 +118,7 @@ class KanbanTest {
                 .deadline(PROJECT_DEADLINE)
                 .build();
         Kanban kanban = new Kanban(project);
-        IntStream.range(0, 10)
+        IntStream.range(0, 3)
                 .forEach(i -> kanban.addKanbanLane(KanbanLane.builder()
                         .name(KANBAN_LANE_NAME + i)
                         .build()));
@@ -137,14 +138,14 @@ class KanbanTest {
                 .deadline(PROJECT_DEADLINE)
                 .build();
         Kanban kanban = new Kanban(project);
-        IntStream.range(0, 10)
+        IntStream.range(0, 3)
                 .forEach(i -> kanban.addKanbanLane(KanbanLane.builder()
                         .name(KANBAN_LANE_NAME + i)
                         .build()));
 
         // When
         // Then
-        assertThatThrownBy(() -> kanban.changeKanbanLaneOrder(4, -1))
+        assertThatThrownBy(() -> kanban.changeKanbanLaneOrder(2, -1))
                 .isInstanceOf(KanbanLaneChangeIndexOutOfBoundsException.class);
     }
 
@@ -158,14 +159,14 @@ class KanbanTest {
                 .deadline(PROJECT_DEADLINE)
                 .build();
         Kanban kanban = new Kanban(project);
-        IntStream.range(0, 10)
+        IntStream.range(0, 3)
                 .forEach(i -> kanban.addKanbanLane(KanbanLane.builder()
                         .name(KANBAN_LANE_NAME + i)
                         .build()));
 
         // When
         // Then
-        assertThatThrownBy(() -> kanban.changeKanbanLaneOrder(8, 10))
+        assertThatThrownBy(() -> kanban.changeKanbanLaneOrder(1, 10))
                 .isInstanceOf(KanbanLaneChangeIndexOutOfBoundsException.class);
     }
 

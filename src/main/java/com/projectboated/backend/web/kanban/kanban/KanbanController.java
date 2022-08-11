@@ -45,11 +45,10 @@ public class KanbanController {
 
     @DeleteMapping("/lanes/{kanbanLaneId}")
     public void deleteKanbanLane(
-            @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
             @PathVariable Long kanbanLaneId
     ) {
-        kanbanLaneService.deleteKanbanLane(account.getId(), projectId, kanbanLaneId);
+        kanbanLaneService.deleteKanbanLane(projectId, kanbanLaneId);
     }
 
     @PostMapping("/lanes/change/{originalIndex}/{changeIndex}")

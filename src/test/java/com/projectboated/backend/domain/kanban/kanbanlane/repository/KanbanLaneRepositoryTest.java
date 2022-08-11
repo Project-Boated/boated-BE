@@ -129,5 +129,22 @@ class KanbanLaneRepositoryTest extends RepositoryTest {
 		assertThat(result).extracting("name")
 				.contains("name1", "name2", "name3", "name4");
 	}
+
+	@Test
+	void findByIdAndProject_project에속한lane5개존재_1개조회() {
+		// Given
+		Project project = insertDefaultProjectAndDefaultCaptain();
+		Kanban kanban = insertKanban(project);
+		List<KanbanLane> kanbanLanes = insertKanbanLanes(kanban);
+		flushAndClear();
+
+		// When
+		KanbanLane target = kanbanLanes.get(2);
+		Optional<KanbanLane> result = kanbanLaneRepository.findByIdAndProject(target.getId(), project);
+
+		// Then
+		assertThat(result).isPresent();
+		assertThat(result.get().getName()).isEqualTo(target.getName());
+	}
 	
 }

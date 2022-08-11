@@ -66,6 +66,7 @@ public enum ErrorCode {
 
     // Kanban Lane
     KANBAN_LANE_EXISTS_UPPER_5(400, "KL001", "칸반 lane의 개수가 이미 5개입니다"),
+    KANBAN_LANE_EXISTS_LOWER_1(400, "KL007", "칸반 lane의 개수가 1개입니다."),
     KANBAN_LANE_NOT_FOUND(400, "KL002", "칸반 lane을 찾을 수 없습니다"),
     KANBAN_LANE_ORIGINAL_INDEX_OUT_OF_BOUNDS(400, "KL004", "original index가 lane index범위를 벗어났습니다."),
     KANBAN_LANE_CHANGE_INDEX_OUT_OF_BOUNDS(400, "KL005", "change index가 lane index범위를 벗어났습니다."),
