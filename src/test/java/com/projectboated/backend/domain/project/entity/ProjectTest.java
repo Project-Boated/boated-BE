@@ -291,22 +291,48 @@ class ProjectTest {
                 .description(PROJECT_DESCRIPTION)
                 .deadline(PROJECT_DEADLINE)
                 .build();
+
+        Kanban newKanban = Kanban.builder()
+                .project(project)
+                .build();
         Kanban kanban = Kanban.builder()
                 .project(project)
                 .build();
 
-        Project newProject = Project.builder()
+        // When
+        project.changeKanban(newKanban);
+        
+        // Then
+        assertThat(project.getKanban()).isEqualTo(newKanban);
+    }
+
+    @Test
+    void changeKanban_동일한kanban_kanban이바뀌지않음() {
+        // Given
+        Account captain = Account.builder()
+                .username(USERNAME)
+                .password(PASSWORD)
+                .nickname(NICKNAME)
+                .profileImageFile(URL_PROFILE_IMAGE)
+                .roles(ROLES)
+                .build();;
+
+        Project project = Project.builder()
                 .captain(captain)
-                .name(PROJECT_NAME2)
-                .description(PROJECT_DESCRIPTION2)
-                .deadline(PROJECT_DEADLINE2)
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+
+        Kanban kanban = Kanban.builder()
+                .project(project)
                 .build();
 
         // When
-        kanban.changeProject(newProject);
-        
+        project.changeKanban(kanban);
+
         // Then
-        assertThat(kanban.getProject()).isEqualTo(newProject);
+        assertThat(project.getKanban()).isEqualTo(kanban);
     }
 
     @Test

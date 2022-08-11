@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -71,7 +72,7 @@ public class Project extends BaseTimeEntity {
     }
 
     public void changeKanban(Kanban kanban) {
-        if (this.kanban == null || !this.kanban.equals(kanban)) {
+        if (!Objects.equals(this.kanban, kanban)) {
             this.kanban = kanban;
             kanban.changeProject(this);
         }
