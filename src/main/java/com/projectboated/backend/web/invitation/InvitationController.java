@@ -24,7 +24,7 @@ public class InvitationController {
             @PathVariable Long projectId,
             @RequestParam String nickname
     ) {
-        Invitation invitation = invitationService.inviteCrew(projectId, nickname, account);
+        Invitation invitation = invitationService.inviteCrew(projectId, nickname);
         return new CreateInvitationResponse(invitation.getId());
     }
 
@@ -36,14 +36,14 @@ public class InvitationController {
     @PostMapping("/account/invitations/{invitationId}/accept")
     public AcceptInvitationResponse acceptInvitation(@AuthenticationPrincipal Account account,
                                                      @PathVariable Long invitationId) {
-        Long projectId = invitationService.accept(account, invitationId);
+        Long projectId = invitationService.accept(account.getId(), invitationId);
         return new AcceptInvitationResponse(projectId);
     }
 
     @PostMapping("/account/invitations/{invitationId}/reject")
     public RejectInvitationResponse rejectInvitation(@AuthenticationPrincipal Account account,
                                                      @PathVariable Long invitationId) {
-        Long projectId = invitationService.reject(account, invitationId);
+        Long projectId = invitationService.reject(account.getId(), invitationId);
         return new RejectInvitationResponse(projectId);
     }
 

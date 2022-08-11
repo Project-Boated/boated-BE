@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface InvitationRepository extends JpaRepository<Invitation, Long> {
     Optional<Invitation> findByAccountAndProject(Account account, Project project);
     List<Invitation> findByAccount(Account account);
+
+    Optional<Invitation> findByIdAndAccount(Long id, Account account);
 }

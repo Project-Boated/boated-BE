@@ -2,13 +2,11 @@ package com.projectboated.backend.domain.invitation.service;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.invitation.repository.InvitationRepository;
+import com.projectboated.backend.domain.invitation.service.exception.*;
+import com.projectboated.backend.domain.project.aop.OnlyCaptain;
 import com.projectboated.backend.domain.project.entity.AccountProject;
 import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
 import com.projectboated.backend.domain.invitation.entity.Invitation;
-import com.projectboated.backend.domain.invitation.service.exception.InvitationExistsAccount;
-import com.projectboated.backend.domain.invitation.service.exception.InvitationExistsAccountInProject;
-import com.projectboated.backend.domain.invitation.service.exception.InvitationNotFoundException;
-import com.projectboated.backend.domain.invitation.service.exception.InviteCrewAccessDenied;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
@@ -32,29 +30,27 @@ public class InvitationService {
     private final AccountProjectRepository accountProjectRepository;
 
     @Transactional
-    public Invitation inviteCrew(Long projectId, String nickname, Account captain) {
+    @OnlyCaptain
+    public Invitation inviteCrew(Long projectId, String nickname) {
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
-
-        if (project.getCaptain().getId() != captain.getId()) {
-            throw new InviteCrewAccessDenied(ErrorCode.COMMON_ACCESS_DENIED);
-        }
+                .orElseThrow(ProjectNotFoundException::new);
 
         Account crew = accountRepository.findByNickname(nickname)
-                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+                .orElseThrow(AccountNotFoundException::new);
 
-        if (captain.getId() == crew.getId()) {
-            throw new InviteCrewAccessDenied(ErrorCode.INVITATION_DO_NOT_INVITE_CAPTAIN);
+        if (project.getCaptain().equals(crew)) {
+            throw new InviteCanNotInviteCaptain();
         }
+
+        accountProjectRepository.findByAccountAndProject(crew, project)
+                .ifPresent(ap -> {
+                    throw new InviteCanNotInviteCrew();
+                });
 
         invitationRepository.findByAccountAndProject(crew, project)
                 .ifPresent(invitation -> {
-                    throw new InvitationExistsAccount(ErrorCode.INVITATION_ACCOUNT_EXISTS);
+                    throw new InvitationExistsAccount();
                 });
-
-        if (accountProjectRepository.countByProjectAndAccount(project, crew)!=0) {
-            throw new InvitationExistsAccountInProject(ErrorCode.INVITATION_ACCOUNT_EXISTS_IN_PROJECT);
-        }
 
         return invitationRepository.save(new Invitation(crew, project));
     }
@@ -64,16 +60,15 @@ public class InvitationService {
     }
 
     @Transactional
-    public Long accept(Account account, Long invitationId) {
-        Account crew = accountRepository.findById(account.getId())
-                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+    public Long accept(Long accountId, Long invitationId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(AccountNotFoundException::new);
 
-        Invitation invitation = invitationRepository.findById(invitationId)
-                .orElseThrow(() -> new InvitationNotFoundException(ErrorCode.INVITATION_NOT_FOUND));
+        Invitation invitation = invitationRepository.findByIdAndAccount(invitationId, account)
+                .orElseThrow(InvitationNotFoundException::new);
 
         Project project = invitation.getProject();
-
-        accountProjectRepository.save(new AccountProject(crew, project));
+        accountProjectRepository.save(new AccountProject(account, project));
 
         invitationRepository.delete(invitation);
 
@@ -81,17 +76,15 @@ public class InvitationService {
     }
 
     @Transactional
-    public Long reject(Account account, Long invitationId) {
-        Account crew = accountRepository.findById(account.getId())
-                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+    public Long reject(Long accountId, Long invitationId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(AccountNotFoundException::new);
 
-        Invitation invitation = invitationRepository.findById(invitationId)
-                .orElseThrow(() -> new InvitationNotFoundException(ErrorCode.INVITATION_NOT_FOUND));
-
-        Long projectId = invitation.getProject().getId();
+        Invitation invitation = invitationRepository.findByIdAndAccount(invitationId, account)
+                .orElseThrow(InvitationNotFoundException::new);
 
         invitationRepository.delete(invitation);
 
-        return projectId;
+        return invitation.getProject().getId();
     }
 }

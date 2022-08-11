@@ -107,25 +107,16 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
-                    // Domain common
-                    // TODO: 테스트 필요
+                    // Domain common : 테스트 필요
                     "com/projectboated/backend/domain/common/**/*",
-                    // incomplete service logic
-                    // TODO: 테스트 필요
-                    "com/projectboated/backend/domain/invitation/**/*",
-                    "com/projectboated/backend/domain/uploadfile/**/*",
                     // Infra, 자동화 테스트 불가
                     "com/projectboated/backend/infra/**/*",
-                    // Spring Security
-                    // TODO: 테스트 작성해야함 (현재 단위 테스트를 어떻게 해야하나 고민중)
+                    // Spring Security : 테스트 작성해야함 (현재 단위 테스트를 어떻게 해야하나 고민중)
                     "com/projectboated/backend/security/**/*",
-                    // Web
-                    // TODO: 인수 테스트 작성 요망
+                    // Web : 인수 테스트 작성 요망
                     "com/projectboated/backend/web/**/*",
                     // QFile, 테스트 불필요.
                     "com/projectboated/backend/domain/**/Q*.*",
-                    // Test file, 테스트 불필요
-                    "com/projectboated/backend/TestController.class"
             ])
         }))
     }

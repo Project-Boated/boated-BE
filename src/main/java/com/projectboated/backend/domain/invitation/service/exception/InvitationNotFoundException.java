@@ -7,4 +7,9 @@ public class InvitationNotFoundException extends BusinessException {
     public InvitationNotFoundException(ErrorCode errorCode) {
         super(errorCode);
     }
+
+    public InvitationNotFoundException() {
+        super(ErrorCode.INVITATION_NOT_FOUND);
+    }
+
 }

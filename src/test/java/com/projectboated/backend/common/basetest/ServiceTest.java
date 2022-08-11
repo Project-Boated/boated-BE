@@ -1,8 +1,10 @@
 package com.projectboated.backend.common.basetest;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.invitation.entity.Invitation;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
+import com.projectboated.backend.domain.project.entity.AccountProject;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.AccountTask;
 import com.projectboated.backend.domain.task.task.entity.Task;
@@ -136,6 +138,20 @@ public class ServiceTest extends BaseTest {
         return TaskFile.builder()
                 .task(task)
                 .uploadFile(uploadFile)
+                .build();
+    }
+
+    protected AccountProject createAccountProject(Account account, Project project) {
+        return AccountProject.builder()
+                .account(account)
+                .project(project)
+                .build();
+    }
+
+    protected Invitation createInvitation(Project project, Account account) {
+        return Invitation.builder()
+                .account(account)
+                .project(project)
                 .build();
     }
 }
