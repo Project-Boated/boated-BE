@@ -4,6 +4,7 @@ import com.projectboated.backend.common.basetest.ControllerTest;
 import com.projectboated.backend.web.account.account.dto.request.PutNicknameRequest;
 import com.projectboated.backend.web.account.account.dto.request.ValidationNicknameUniqueRequest;
 import com.projectboated.backend.web.config.WithMockAccount;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
@@ -15,6 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@DisplayName("AccountNickname : Controller 단위테스트")
 class AccountNicknameControllerTest extends ControllerTest {
 
     @Test

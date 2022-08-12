@@ -46,9 +46,6 @@ public class ControllerTest extends BaseTest {
     protected MockMvc mockMvc;
     protected ObjectMapper objectMapper = new ObjectMapper();
 
-    @MockBean
-    protected JsonAuthenticationProvider jsonAuthenticationProvider;
-
     // Account
     @MockBean
     protected AccountNicknameService accountNicknameService;
