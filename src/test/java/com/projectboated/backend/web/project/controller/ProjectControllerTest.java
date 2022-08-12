@@ -36,7 +36,7 @@ class ProjectControllerTest extends AcceptanceTest {
     @Test
     void createProject_프로젝트생성_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
 
         // When
@@ -59,7 +59,7 @@ class ProjectControllerTest extends AcceptanceTest {
     @Test
     void patchProject_모든필드업데이트_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
 
@@ -83,7 +83,7 @@ class ProjectControllerTest extends AcceptanceTest {
 
     @Test
     void deleteProject_프로젝트삭제_정상() {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
 
@@ -101,7 +101,7 @@ class ProjectControllerTest extends AcceptanceTest {
     @Test
     void terminateProject_프로젝트를종료시킴_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie captainCookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
 
         int projectId = ProjectTestUtils.createProject(port, captainCookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
@@ -123,7 +123,7 @@ class ProjectControllerTest extends AcceptanceTest {
     @Test
     void cancelTerminateProject_종료된프로젝트를시작_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie captainCookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
 
         int projectId = ProjectTestUtils.createProject(port, captainCookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
@@ -146,7 +146,7 @@ class ProjectControllerTest extends AcceptanceTest {
     @Test
     void getProject_프로젝트프로필조회_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
 

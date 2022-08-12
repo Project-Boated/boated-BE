@@ -6,11 +6,9 @@ import com.projectboated.backend.common.data.BasicDataProject;
 import com.projectboated.backend.common.data.BasicDataTask;
 import com.projectboated.backend.common.utils.*;
 import com.projectboated.backend.infra.aws.AwsS3Service;
-import com.projectboated.backend.web.task.task.document.TaskDocument;
 import com.projectboated.backend.web.task.task.dto.PatchTaskRequest;
 import com.projectboated.backend.web.task.task.dto.request.AssignAccountTaskRequest;
 import com.projectboated.backend.web.task.task.dto.request.CreateTaskRequest;
-import io.restassured.filter.Filter;
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
 import org.junit.jupiter.api.Test;
@@ -19,14 +17,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.util.MimeType;
 import org.springframework.util.ResourceUtils;
 
 import java.io.FileNotFoundException;
 import java.util.List;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
-import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID2;
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME;
 import static com.projectboated.backend.common.data.BasicDataProject.*;
 import static com.projectboated.backend.common.data.BasicDataTask.*;
@@ -44,7 +40,7 @@ class TaskControllerTest extends AcceptanceTest {
 
     @Test
     void createTask_task하나생성_정상() {
-        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
 
@@ -63,7 +59,7 @@ class TaskControllerTest extends AcceptanceTest {
 
     @Test
     void assignAccountTask_account하나assign_정상() {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
 
@@ -85,7 +81,7 @@ class TaskControllerTest extends AcceptanceTest {
 
     @Test
     void cancelAssignAccountTask_assign취소_정상() {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
 
@@ -108,7 +104,7 @@ class TaskControllerTest extends AcceptanceTest {
 
     @Test
     void getTask_조회정상_조회성공() throws FileNotFoundException {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
 
@@ -128,7 +124,7 @@ class TaskControllerTest extends AcceptanceTest {
 
     @Test
     void deleteTask_정상request_delete성공() throws FileNotFoundException {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
         int taskId = TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE);
@@ -145,7 +141,7 @@ class TaskControllerTest extends AcceptanceTest {
 
     @Test
     void patchTask_정상request_patch성공() throws FileNotFoundException {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
 
@@ -170,7 +166,7 @@ class TaskControllerTest extends AcceptanceTest {
 
     @Test
     void patchTaskLane_정상request_patch성공() throws FileNotFoundException {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
         int taskId = TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE);

@@ -11,9 +11,7 @@ import io.restassured.http.Cookie;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
-import java.util.List;
 import java.util.stream.IntStream;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
@@ -28,7 +26,7 @@ class KanbanLaneControllerTest extends AcceptanceTest {
     @Test
     void changeTaskOrder_task옮기기_정상() {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
         IntStream.range(0, 5)
@@ -50,7 +48,7 @@ class KanbanLaneControllerTest extends AcceptanceTest {
     @Test
     void updateKanbanLane_kanbanLane업데이트_정상() {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
         int kanbanLaneId = KanbanTestUtils.getFirstKanbanLaneId(port, cookie, projectId);
@@ -72,7 +70,7 @@ class KanbanLaneControllerTest extends AcceptanceTest {
     @Test
     void getLanes_lanes조회_조회정상() {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
 

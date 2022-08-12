@@ -2,14 +2,9 @@ package com.projectboated.backend.domain.kanban.kanban.service;
 
 import com.projectboated.backend.common.basetest.ServiceTest;
 import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.account.account.repository.AccountRepository;
-import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
-import com.projectboated.backend.domain.kanban.kanban.service.exception.KanbanAccessDeniedException;
-import com.projectboated.backend.domain.kanban.kanbanlane.service.exception.KanbanLaneChangeIndexDeniedException;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
-import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,7 +13,6 @@ import org.mockito.Mock;
 import java.util.Optional;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
-import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID2;
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME;
 import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 import static org.assertj.core.api.Assertions.assertThat;

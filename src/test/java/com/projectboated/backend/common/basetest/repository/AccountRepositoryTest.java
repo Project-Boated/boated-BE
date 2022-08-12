@@ -13,21 +13,11 @@ public class AccountRepositoryTest extends BaseRepositoryTest{
     protected AccountRepository accountRepository;
 
     protected Account insertDefaultAccount() {
-        return accountRepository.save(Account.builder()
-                .username(USERNAME)
-                .password(PASSWORD)
-                .nickname(NICKNAME)
-                .roles(ROLES)
-                .build());
+        return accountRepository.save(createDefaultAccount());
     }
 
     protected Account insertDefaultAccount2() {
-        return accountRepository.save(Account.builder()
-                .username(USERNAME2)
-                .password(PASSWORD2)
-                .nickname(NICKNAME2)
-                .roles(ROLES)
-                .build());
+        return accountRepository.save(createDefaultAccount2());
     }
 
 }

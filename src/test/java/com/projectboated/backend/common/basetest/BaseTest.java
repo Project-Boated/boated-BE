@@ -1,12 +1,6 @@
 package com.projectboated.backend.common.basetest;
 
-import org.springframework.test.context.ActiveProfiles;
+import com.projectboated.backend.common.basetest.base.BaseTaskLikeTest;
 
-@ActiveProfiles("test")
-public class BaseTest {
-
-    static {
-        System.setProperty("com.amazonaws.sdk.disableEc2Metadata", "true");
-    }
-
+public class BaseTest extends BaseTaskLikeTest {
 }

@@ -6,7 +6,6 @@ import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import com.projectboated.backend.domain.task.taskfile.entity.TaskFile;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

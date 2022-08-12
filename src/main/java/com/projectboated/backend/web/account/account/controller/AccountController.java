@@ -34,22 +34,7 @@ public class AccountController {
 
     @PostMapping(value = "/sign-up", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void signUp(@RequestBody @Validated SignUpRequest request) {
-        String username = request.getUsername();
-        String password = request.getPassword();
-        String nickname = request.getNickname();
-        String profileImageUrl = request.getProfileImageUrl();
-
-        ProfileImage profileImage = profileImageService.save(new UrlProfileImage(profileImageUrl));
-
-        Account newAccount = Account.builder()
-                .username(username)
-                .password(password)
-                .nickname(nickname)
-                .profileImageFile(profileImage)
-                .roles(Set.of(Role.USER))
-                .build();
-
-        accountService.save(newAccount);
+        accountService.save(request.toAccount());
     }
 
     @GetMapping("/profile")

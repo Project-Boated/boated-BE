@@ -24,8 +24,8 @@ class ProjectMyControllerTest extends AcceptanceTest {
         String crewUsername = "crewUsername";
         String crewNickname = "crewNickname";
 
-        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
-        AccountTestUtils.createAccount(port, crewUsername, BasicDataAccount.PASSWORD, crewNickname, BasicDataAccount.PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME);
+        AccountTestUtils.createAccount(port, crewUsername, BasicDataAccount.PASSWORD, crewNickname);
         Cookie crewCookie = AccountTestUtils.login(port, crewUsername, BasicDataAccount.PASSWORD);
         Cookie captainCookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
 
