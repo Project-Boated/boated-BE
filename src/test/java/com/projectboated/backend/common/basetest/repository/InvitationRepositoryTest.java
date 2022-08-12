@@ -12,10 +12,7 @@ public class InvitationRepositoryTest extends KanbanLaneRepositoryTest {
     protected InvitationRepository invitationRepository;
 
     protected Invitation insertInvitation(Project project, Account account) {
-        return invitationRepository.save(Invitation.builder()
-                .project(project)
-                .account(account)
-                .build());
+        return invitationRepository.save(createInvitation(project, account));
     }
 
 }

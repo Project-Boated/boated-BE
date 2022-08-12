@@ -198,6 +198,7 @@ include::{snippets}/account-profile-update/request-headers.adoc[]
 
 ===== request-parts
 include::{snippets}/account-profile-update/request-parts.adoc[]
+include::{snippets}/account-profile-update/request-parameters.adoc[]
 
 ==== Response
 

@@ -9,7 +9,6 @@ import com.projectboated.backend.infra.aws.AwsS3Service;
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.ResourceUtils;
@@ -32,7 +31,7 @@ class TaskFileControllerTest extends AcceptanceTest {
 
     @Test
     void uploadTaskFile_파일업로드_정상() throws FileNotFoundException {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
         int[] taskIds = IntStream.range(0, 5)
@@ -54,7 +53,7 @@ class TaskFileControllerTest extends AcceptanceTest {
     @Test
     void deleteTaskFile_정상요청_delete성공() throws FileNotFoundException {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
         int[] taskIds = IntStream.range(0, 5)
@@ -79,7 +78,7 @@ class TaskFileControllerTest extends AcceptanceTest {
         // Given
         when(awsS3Service.getBytes(any())).thenReturn("good".getBytes());
 
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
         int[] taskIds = IntStream.range(0, 5)

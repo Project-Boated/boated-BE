@@ -1,7 +1,5 @@
 package com.projectboated.backend.web.invitation;
 
-import com.projectboated.backend.common.data.BasicDataAccount;
-import com.projectboated.backend.common.data.BasicDataProject;
 import com.projectboated.backend.common.utils.InvitationTestUtils;
 import com.projectboated.backend.common.utils.ProjectTestUtils;
 import com.projectboated.backend.web.invitation.document.InvitationDocument;
@@ -25,8 +23,8 @@ class InvitationControllerTest extends AcceptanceTest {
     @Test
     void inviteCrew_account초대하기_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
-        AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
+        AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname);
 
         Cookie captainCookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, captainCookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
@@ -48,8 +46,8 @@ class InvitationControllerTest extends AcceptanceTest {
     @Test
     void getMyInvitation_내Invitation확인_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
-        AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
+        AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname);
 
         Cookie captainCookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, captainCookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
@@ -75,8 +73,8 @@ class InvitationControllerTest extends AcceptanceTest {
     @Test
     void acceptInvitation_프로젝트초대accept_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
-        AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
+        AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname);
 
         Cookie captainCookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, captainCookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
@@ -103,8 +101,8 @@ class InvitationControllerTest extends AcceptanceTest {
     @Test
     void rejectInvitation_프로젝트초대reject_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
-        AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
+        AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname);
 
         Cookie captainCookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, captainCookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);

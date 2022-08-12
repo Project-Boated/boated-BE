@@ -1,15 +1,15 @@
 package com.projectboated.backend.infra.aws;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.common.exception.business.CommonIOException;
-import lombok.RequiredArgsConstructor;
-import com.projectboated.backend.infra.aws.exception.AccountProfileImageNotUploadFile;
-import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
+import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.account.profileimage.entity.ProfileImage;
 import com.projectboated.backend.domain.account.profileimage.entity.UploadFileProfileImage;
+import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
+import com.projectboated.backend.infra.aws.exception.AccountProfileImageNotUploadFile;
+import com.projectboated.backend.infra.aws.exception.FileUploadInterruptException;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,7 +61,7 @@ public class AwsS3ProfileImageService {
 
             return new AwsS3File(fileName, uploadFile.getMediaType(), bytes);
         } catch (IOException e) {
-            throw new CommonIOException(ErrorCode.COMMON_IO_EXCEPTION, e);
+            throw new FileUploadInterruptException(ErrorCode.COMMON_IO_EXCEPTION, e);
         }
     }
 }

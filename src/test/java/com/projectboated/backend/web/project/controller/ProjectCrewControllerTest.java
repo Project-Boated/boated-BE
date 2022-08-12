@@ -30,8 +30,8 @@ class ProjectCrewControllerTest extends AcceptanceTest {
     @Test
     void getCrews_project에속한모든crew조회_성공() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
-        AccountTestUtils.createAccount(port, CREW_USERNAME, BasicDataAccount.PASSWORD, CREW_NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME);
+        AccountTestUtils.createAccount(port, CREW_USERNAME, BasicDataAccount.PASSWORD, CREW_NICKNAME);
 
         Cookie captainCookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
         Cookie crewCookie = AccountTestUtils.login(port, CREW_USERNAME, BasicDataAccount.PASSWORD);
@@ -59,8 +59,8 @@ class ProjectCrewControllerTest extends AcceptanceTest {
     @Test
     void deleteCrew_project에속한모든crew추방_성공() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
-        AccountTestUtils.createAccount(port, CREW_USERNAME, BasicDataAccount.PASSWORD, CREW_NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME);
+        AccountTestUtils.createAccount(port, CREW_USERNAME, BasicDataAccount.PASSWORD, CREW_NICKNAME);
 
         Cookie captainCookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
         Cookie crewCookie = AccountTestUtils.login(port, CREW_USERNAME, BasicDataAccount.PASSWORD);

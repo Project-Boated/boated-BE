@@ -22,7 +22,7 @@ class TaskLikeControllerTest extends AcceptanceTest {
 
     @Test
     void likeTask_하나찜하기_정상() {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
         int[] taskIds = IntStream.range(0, 5)
@@ -41,7 +41,7 @@ class TaskLikeControllerTest extends AcceptanceTest {
 
     @Test
     void cancelTaskLike_찜취소_정상() {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME, PROFILE_IMAGE_URL);
+        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
         Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
         int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
         int[] taskIds = IntStream.range(0, 5)

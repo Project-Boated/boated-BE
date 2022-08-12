@@ -36,7 +36,7 @@ public final class ProjectCrewDocument {
                         fieldWithPath("crews[].id").type(JsonFieldType.NUMBER).description("crew 고유번호"),
                         fieldWithPath("crews[].username").type(JsonFieldType.STRING).description("crew 아이디"),
                         fieldWithPath("crews[].nickname").type(JsonFieldType.STRING).description("crew 닉네임"),
-                        fieldWithPath("crews[].profileImageUrl").type(JsonFieldType.STRING).description("crew 프로필 이미지 URL")
+                        fieldWithPath("crews[].profileImageUrl").description("crew 프로필 이미지 URL")
                 )
         );
     }
