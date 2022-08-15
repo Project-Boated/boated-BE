@@ -1,101 +1,102 @@
 package com.projectboated.backend.web.task.taskfile;
 
-import com.projectboated.backend.common.basetest.AcceptanceTest;
-import com.projectboated.backend.common.utils.AccountTestUtils;
-import com.projectboated.backend.common.utils.ProjectTestUtils;
-import com.projectboated.backend.common.utils.TaskFileTestUtils;
-import com.projectboated.backend.common.utils.TaskTestUtils;
-import com.projectboated.backend.infra.aws.AwsS3Service;
-import io.restassured.http.ContentType;
-import io.restassured.http.Cookie;
+import com.projectboated.backend.common.basetest.ControllerTest;
+import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
+import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.domain.task.task.entity.Task;
+import com.projectboated.backend.domain.task.taskfile.entity.TaskFile;
+import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
+import com.projectboated.backend.web.config.WithMockAccount;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.util.ResourceUtils;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
-import java.io.FileNotFoundException;
-import java.util.stream.IntStream;
-
-import static com.projectboated.backend.common.data.BasicDataAccount.*;
-import static com.projectboated.backend.common.data.BasicDataProject.*;
-import static com.projectboated.backend.common.data.BasicDataTask.*;
+import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
+import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
+import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID;
+import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
+import static com.projectboated.backend.common.data.BasicDataTask.TASK_ID;
+import static com.projectboated.backend.common.data.BasicDataTaskFile.TASK_FILE_ID;
+import static com.projectboated.backend.common.data.BasicDataUploadFile.UPLOAD_FILE_ID;
 import static com.projectboated.backend.web.task.taskfile.document.TaskFileControllerDocument.*;
-import static io.restassured.RestAssured.given;
 import static org.mockito.Mockito.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-class TaskFileControllerTest extends AcceptanceTest {
-
-    @MockBean
-    AwsS3Service awsS3Service;
+@DisplayName("TaskFile : Controller 단위테스트")
+class TaskFileControllerTest extends ControllerTest {
 
     @Test
-    void uploadTaskFile_파일업로드_정상() throws FileNotFoundException {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
-        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
-        int[] taskIds = IntStream.range(0, 5)
-                .map((i) -> TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME + i, TASK_DESCRIPTION, TASK_DEADLINE))
-                .toArray();
-
-        given(this.spec)
-            .filter(documentUploadTaskFile())
-            .contentType(ContentType.MULTIPART)
-            .multiPart("file", ResourceUtils.getFile("classpath:profile-image-test.png"), "image/jpg")
-            .cookie(cookie)
-        .when()
-            .port(port)
-            .post("/api/projects/{projectId}/tasks/{taskId}/files", projectId, taskIds[0])
-        .then()
-            .statusCode(HttpStatus.OK.value());
-    }
-    
-    @Test
-    void deleteTaskFile_정상요청_delete성공() throws FileNotFoundException {
+    @WithMockAccount
+    void uploadTaskFile_파일업로드_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
-        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
-        int[] taskIds = IntStream.range(0, 5)
-                .map((i) -> TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME + i, TASK_DESCRIPTION, TASK_DEADLINE))
-                .toArray();
-        int taskFileId = TaskFileTestUtils.createTaskFile(port, cookie, projectId, taskIds[0], ResourceUtils.getFile("classpath:profile-image-test.png"), "image/jpg");
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        UploadFile uploadFile = createUploadFile(UPLOAD_FILE_ID);
+        TaskFile taskFile = createTaskFile(TASK_FILE_ID, task, uploadFile);
+
+        when(taskFileService.uploadFile(any(), any(), any())).thenReturn(taskFile);
 
         // When
         // Then
-        given(this.spec)
-            .filter(documentTaskFileDelete())
-            .cookie(cookie)
-        .when()
-            .port(port)
-            .delete("/api/projects/{projectId}/tasks/{taskId}/files/{taskFileId}", projectId, taskIds[0], taskFileId)
-        .then()
-            .statusCode(HttpStatus.OK.value());
+        mockMvc.perform(multipart("/api/projects/{projectId}/tasks/{taskId}/files", project.getId(), task.getId())
+                        .file(new MockMultipartFile("file", "file.txt", MediaType.TEXT_PLAIN_VALUE, "content".getBytes())))
+                .andExpect(status().isOk())
+                .andDo(documentUploadTaskFile());
+
+        verify(taskFileService).uploadFile(any(), any(), any());
     }
 
     @Test
-    void getTaskFile_정상요청_정상return() throws FileNotFoundException {
+    @WithMockAccount
+    void getTaskFile_정상요청_정상return() throws Exception {
         // Given
-        when(awsS3Service.getBytes(any())).thenReturn("good".getBytes());
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        UploadFile uploadFile = createUploadFile(UPLOAD_FILE_ID);
+        TaskFile taskFile = createTaskFile(TASK_FILE_ID, task, uploadFile);
 
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
-        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
-        int[] taskIds = IntStream.range(0, 5)
-                .map((i) -> TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME + i, TASK_DESCRIPTION, TASK_DEADLINE))
-                .toArray();
-        int taskFileId = TaskFileTestUtils.createTaskFile(port, cookie, projectId, taskIds[0], ResourceUtils.getFile("classpath:profile-image-test.png"), "image/jpg");
+        when(taskFileService.findById(project.getId(), taskFile.getId())).thenReturn(taskFile);
+        when(awsS3Service.getBytes(taskFile.getKey())).thenReturn("File".getBytes());
 
         // When
         // Then
-        given(this.spec)
-            .filter(documentTaskFileRetrieve())
-            .cookie(cookie)
-        .when()
-            .port(port)
-            .get("/api/projects/{projectId}/tasks/{taskId}/files/{taskFileId}", projectId, taskIds[0], taskFileId)
-        .then()
-            .statusCode(HttpStatus.OK.value());
+        mockMvc.perform(get("/api/projects/{projectId}/tasks/{taskId}/files/{taskFileId}", project.getId(), task.getId(), taskFile.getId()))
+                .andExpect(status().isOk())
+                .andDo(documentTaskFileRetrieve());
+    }
+
+    @Test
+    @WithMockAccount
+    void deleteTaskFile_정상요청_delete성공() throws Exception {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        UploadFile uploadFile = createUploadFile(UPLOAD_FILE_ID);
+        TaskFile taskFile = createTaskFile(TASK_FILE_ID, task, uploadFile);
+
+        // When
+        // Then
+        mockMvc.perform(delete("/api/projects/{projectId}/tasks/{taskId}/files/{taskFileId}", project.getId(), task.getId(), taskFile.getId()))
+                .andExpect(status().isOk())
+                .andDo(documentTaskFileDelete());
+
+        verify(taskFileService).delete(project.getId(), task.getId(), taskFile.getId());
     }
 
 }

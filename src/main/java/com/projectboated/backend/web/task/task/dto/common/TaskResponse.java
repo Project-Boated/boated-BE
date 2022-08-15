@@ -24,16 +24,14 @@ public class TaskResponse {
 
     private List<TaskAssignedAccountResponse> assignedAccounts;
 
-    public TaskResponse(Task task, Map<Task, Boolean> taskLikeMap) {
+    public TaskResponse(Task task, Map<Task, Boolean> taskLikeMap, List<TaskAssignedAccountResponse> assignedAccounts) {
         this.id = task.getId();
         this.name = task.getName();
         this.description = task.getDescription();
         this.deadline = task.getDeadline();
         this.dday = deadline!=null ? ChronoUnit.DAYS.between(deadline.toLocalDate(), LocalDate.now()) : null;
         this.fileCount = 0;
-        this.assignedAccounts = task.getAssignedAccounts().stream()
-                .map(at -> new TaskAssignedAccountResponse(at.getAccount()))
-                .toList();
-        this.isLike = taskLikeMap.get(task);
+        this.isLike = taskLikeMap.get(task) != null && taskLikeMap.get(task);
+        this.assignedAccounts = assignedAccounts;
     }
 }

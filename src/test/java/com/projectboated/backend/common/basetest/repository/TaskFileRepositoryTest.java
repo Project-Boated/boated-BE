@@ -19,10 +19,7 @@ public class TaskFileRepositoryTest extends TaskRepositoryTest {
     protected TaskFileRepository taskFileRepository;
 
     protected TaskFile insertTaskFile(Task task, UploadFile uploadFile) {
-        return taskFileRepository.save(TaskFile.builder()
-                .task(task)
-                .uploadFile(uploadFile)
-                .build());
+        return taskFileRepository.save(createTaskFile(task, uploadFile));
     }
 
 }

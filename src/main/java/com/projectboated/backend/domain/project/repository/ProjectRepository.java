@@ -8,6 +8,4 @@ public interface ProjectRepository extends JpaRepository<Project, Long>, Project
 
     boolean existsByNameAndCaptain(String name, Account captain);
 
-    boolean existsByName(String name);
-
 }

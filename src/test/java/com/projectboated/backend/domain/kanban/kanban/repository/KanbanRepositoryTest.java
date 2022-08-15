@@ -6,6 +6,9 @@ import com.projectboated.backend.domain.project.entity.Project;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
+import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
+import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Kanban : Persistence 단위 테스트")
@@ -14,10 +17,8 @@ class KanbanRepositoryTest extends RepositoryTest {
     @Test
     void deleteByProject_프로젝트에칸반있음_delete() {
         // Given
-        Project project = insertDefaultProjectAndDefaultCaptain();
-
-        Kanban kanban = new Kanban(project);
-        kanbanRepository.save(kanban);
+        Project project = insertProjectAndCaptain();
+        Kanban kanban = insertKanban(project);
 
         // When
         kanbanRepository.deleteByProject(project);

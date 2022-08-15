@@ -2,6 +2,7 @@ package com.projectboated.backend.web.project.controller;
 
 import com.projectboated.backend.domain.project.service.condition.ProjectUpdateCond;
 import com.projectboated.backend.domain.task.task.service.TaskService;
+import com.projectboated.backend.web.project.dto.common.ProjectCaptainResponse;
 import com.projectboated.backend.web.project.dto.request.CreateProjectRequest;
 import com.projectboated.backend.web.project.dto.request.PatchProjectRequest;
 import lombok.RequiredArgsConstructor;
@@ -24,38 +25,33 @@ public class ProjectController {
     private final ProjectService projectService;
     private final TaskService taskService;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public CreateProjectResponse createProject(
-            @AuthenticationPrincipal Account account,
-            @RequestBody @Validated CreateProjectRequest request
-    ) {
-        Project project = projectService.save(
-                Project.builder()
-                        .name(request.getName())
-                        .description(request.getDescription())
-                        .captain(account)
-                        .deadline(request.getDeadline())
-                        .build()
-        );
-        return new CreateProjectResponse(project);
-    }
-
     @GetMapping("/{projectId}")
-    public GetProjectResponse getProject(
-            @PathVariable Long projectId
-    ) {
+    public GetProjectResponse getProject(@PathVariable Long projectId) {
+        Project project = projectService.findById(projectId);
+
         return GetProjectResponse.builder()
-                .project(projectService.findById(projectId))
+                .project(project)
                 .taskSize(taskService.taskSize(projectId))
+                .projectCaptainResponse(new ProjectCaptainResponse(project.getCaptain()))
                 .build();
     }
 
-    @PatchMapping(value = "/{projectId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public PatchProjectResponse patchProject(
-            @AuthenticationPrincipal Account account,
-            @RequestBody @Validated PatchProjectRequest request,
-            @PathVariable Long projectId
-    ) {
+    @PostMapping
+    public CreateProjectResponse createProject(@AuthenticationPrincipal Account account,
+                                               @RequestBody @Validated CreateProjectRequest request) {
+        Project project = projectService.save(Project.builder()
+                .name(request.getName())
+                .description(request.getDescription())
+                .captain(account)
+                .deadline(request.getDeadline())
+                .build());
+        return new CreateProjectResponse(project);
+    }
+
+    @PatchMapping("/{projectId}")
+    public PatchProjectResponse patchProject(@AuthenticationPrincipal Account account,
+                                             @RequestBody @Validated PatchProjectRequest request,
+                                             @PathVariable Long projectId) {
         ProjectUpdateCond projectUpdateCond = ProjectUpdateCond.builder()
                 .name(request.getName())
                 .description(request.getDescription())
@@ -68,10 +64,7 @@ public class ProjectController {
     }
 
     @DeleteMapping("/{projectId}")
-    public void deleteProject(
-            @AuthenticationPrincipal Account account,
-            @PathVariable Long projectId
-    ) {
-        projectService.delete(account.getId(), projectId);
+    public void deleteProject(@PathVariable Long projectId) {
+        projectService.delete(projectId);
     }
 }

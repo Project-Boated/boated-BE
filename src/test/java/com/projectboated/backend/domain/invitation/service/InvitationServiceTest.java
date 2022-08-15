@@ -25,8 +25,10 @@ import java.util.Optional;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
 import static com.projectboated.backend.common.data.BasicDataInvitation.INVITATION_ID;
+import static com.projectboated.backend.common.data.BasicDataProject.ACCOUNT_PROJECT_ID;
 import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Invitation : Service 단위 테스트")
@@ -59,7 +61,7 @@ class InvitationServiceTest extends ServiceTest {
     void inviteCrew_찾을수없는Account_예외발생() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
-        Project project = createProject(account);
+        Project project = createProject(PROJECT_ID, account);
 
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
         when(accountRepository.findByNickname(NICKNAME)).thenReturn(Optional.empty());
@@ -74,7 +76,7 @@ class InvitationServiceTest extends ServiceTest {
     void inviteCrew_Captain을Invite_예외발생() {
         // Given
         Account captain = createAccount(ACCOUNT_ID);
-        Project project = createProject(captain);
+        Project project = createProject(PROJECT_ID, captain);
 
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
         when(accountRepository.findByNickname(NICKNAME)).thenReturn(Optional.of(captain));
@@ -89,9 +91,9 @@ class InvitationServiceTest extends ServiceTest {
     void inviteCrew_Crew을Invite_예외발생() {
         // Given
         Account captain = createAccount(ACCOUNT_ID);
-        Project project = createProject(captain);
+        Project project = createProject(PROJECT_ID, captain);
         Account crew = createAccount(ACCOUNT_ID2);
-        AccountProject accountProject = createAccountProject(crew, project);
+        AccountProject accountProject = createAccountProject(ACCOUNT_PROJECT_ID, crew, project);
 
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
         when(accountRepository.findByNickname(NICKNAME)).thenReturn(Optional.of(crew));
@@ -107,9 +109,9 @@ class InvitationServiceTest extends ServiceTest {
     void inviteCrew_이미초대된경우_예외발생() {
         // Given
         Account captain = createAccount(ACCOUNT_ID);
-        Project project = createProject(captain);
+        Project project = createProject(PROJECT_ID, captain);
         Account crew = createAccount(ACCOUNT_ID2);
-        Invitation invitation = createInvitation(project, crew);
+        Invitation invitation = createInvitation(INVITATION_ID, project, crew);
 
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
         when(accountRepository.findByNickname(NICKNAME)).thenReturn(Optional.of(crew));
@@ -126,7 +128,7 @@ class InvitationServiceTest extends ServiceTest {
     void inviteCrew_정상요청_invite성공() {
         // Given
         Account captain = createAccount(ACCOUNT_ID);
-        Project project = createProject(captain);
+        Project project = createProject(PROJECT_ID, captain);
         Account crew = createAccount(ACCOUNT_ID2);
 
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
@@ -145,8 +147,8 @@ class InvitationServiceTest extends ServiceTest {
     void findByAccount_정상요청_return_Invitation_list() {
         // Given
         Account captain = createAccount(ACCOUNT_ID);
-        Project project = createProject(captain);
-        Invitation invitation = createInvitation(project, captain);
+        Project project = createProject(PROJECT_ID, captain);
+        Invitation invitation = createInvitation(INVITATION_ID, project, captain);
 
         when(invitationRepository.findByAccount(captain)).thenReturn(List.of(invitation));
 
@@ -186,8 +188,8 @@ class InvitationServiceTest extends ServiceTest {
     void accept_정상요청_accept성공() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
-        Project project = createProject(account);
-        Invitation invitation = createInvitation(project, account);
+        Project project = createProject(PROJECT_ID, account);
+        Invitation invitation = createInvitation(INVITATION_ID, project, account);
 
         when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
         when(invitationRepository.findByIdAndAccount(INVITATION_ID, account)).thenReturn(Optional.of(invitation));
@@ -231,8 +233,8 @@ class InvitationServiceTest extends ServiceTest {
     void reject_정상요청_reject성공() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
-        Project project = createProject(account);
-        Invitation invitation = createInvitation(project, account);
+        Project project = createProject(PROJECT_ID, account);
+        Invitation invitation = createInvitation(INVITATION_ID, project, account);
 
         when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
         when(invitationRepository.findByIdAndAccount(INVITATION_ID, account)).thenReturn(Optional.of(invitation));

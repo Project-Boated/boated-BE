@@ -273,67 +273,6 @@ class ProjectTest {
         // Then
         assertThat(project.isTerminated()).isFalse();
     }
-    
-    @Test
-    void changeKanban_새로운kanban_kanban바뀜() {
-        // Given
-        Account captain = Account.builder()
-                .username(USERNAME)
-                .password(PASSWORD)
-                .nickname(NICKNAME)
-                .profileImageFile(URL_PROFILE_IMAGE)
-                .roles(ROLES)
-                .build();;
-
-        Project project = Project.builder()
-                .captain(captain)
-                .name(PROJECT_NAME)
-                .description(PROJECT_DESCRIPTION)
-                .deadline(PROJECT_DEADLINE)
-                .build();
-
-        Kanban newKanban = Kanban.builder()
-                .project(project)
-                .build();
-        Kanban kanban = Kanban.builder()
-                .project(project)
-                .build();
-
-        // When
-        project.changeKanban(newKanban);
-        
-        // Then
-        assertThat(project.getKanban()).isEqualTo(newKanban);
-    }
-
-    @Test
-    void changeKanban_동일한kanban_kanban이바뀌지않음() {
-        // Given
-        Account captain = Account.builder()
-                .username(USERNAME)
-                .password(PASSWORD)
-                .nickname(NICKNAME)
-                .profileImageFile(URL_PROFILE_IMAGE)
-                .roles(ROLES)
-                .build();;
-
-        Project project = Project.builder()
-                .captain(captain)
-                .name(PROJECT_NAME)
-                .description(PROJECT_DESCRIPTION)
-                .deadline(PROJECT_DEADLINE)
-                .build();
-
-        Kanban kanban = Kanban.builder()
-                .project(project)
-                .build();
-
-        // When
-        project.changeKanban(kanban);
-
-        // Then
-        assertThat(project.getKanban()).isEqualTo(kanban);
-    }
 
     @Test
     void isCaptain_captain인경우_return_true() {

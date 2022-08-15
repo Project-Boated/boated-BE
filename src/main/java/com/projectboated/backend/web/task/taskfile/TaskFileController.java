@@ -1,6 +1,5 @@
 package com.projectboated.backend.web.task.taskfile;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.task.taskfile.entity.TaskFile;
 import com.projectboated.backend.domain.task.taskfile.service.TaskFileService;
 import com.projectboated.backend.infra.aws.AwsS3Service;
@@ -9,7 +8,6 @@ import com.projectboated.backend.web.task.taskfile.dto.UploadTaskFileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +20,11 @@ public class TaskFileController {
     private final AwsS3Service awsS3Service;
 
     @PostMapping
-    public UploadTaskFileResponse uploadTaskFile(
-            @AuthenticationPrincipal Account account,
-            @PathVariable Long projectId,
-            @PathVariable Long taskId,
-            @ModelAttribute @Validated UploadTaskFileRequest request
-            ) {
-        TaskFile taskFile = taskFileService.uploadFile(account.getId(), projectId, taskId, request.getFile());
+    public UploadTaskFileResponse uploadTaskFile(@PathVariable Long projectId,
+                                                 @PathVariable Long taskId,
+                                                 @ModelAttribute @Validated UploadTaskFileRequest request
+    ) {
+        TaskFile taskFile = taskFileService.uploadFile(projectId, taskId, request.getFile());
         return new UploadTaskFileResponse(taskFile);
     }
 

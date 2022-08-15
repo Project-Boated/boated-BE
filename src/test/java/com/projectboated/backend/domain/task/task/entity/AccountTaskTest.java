@@ -1,4 +1,4 @@
-package com.projectboated.backend.domain.task.entity;
+package com.projectboated.backend.domain.task.task.entity;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.task.task.entity.AccountTask;
@@ -7,6 +7,7 @@ import com.projectboated.backend.domain.task.task.entity.Task;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.projectboated.backend.common.data.BasicDataAccountTask.ACCOUNT_TASK_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("AccountTask : Entity 단위 테스트")
@@ -21,7 +22,7 @@ class AccountTaskTest {
 						.build();
 
         // When
-        AccountTask accountTask = new AccountTask(account, task);
+        AccountTask accountTask = new AccountTask(ACCOUNT_TASK_ID, account, task);
 
         // Then
         assertThat(accountTask.getAccount()).isEqualTo(account);

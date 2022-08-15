@@ -29,6 +29,9 @@ public class Task extends BaseTimeEntity {
 
     private LocalDateTime deadline;
 
+    @Column(name = "task_index")
+    private Integer order;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kanban_lane_id")
     private KanbanLane kanbanLane;
@@ -37,30 +40,13 @@ public class Task extends BaseTimeEntity {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "task")
-    private List<AccountTask> assignedAccounts = new ArrayList<>();
-
     @Builder
-    public Task(Long id, String name, String description, LocalDateTime deadline) {
+    public Task(Long id, String name, String description, LocalDateTime deadline, Integer order) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.deadline = deadline;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Task task = (Task) o;
-
-        return id != null ? id.equals(task.id) : task.id == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        this.order = order;
     }
 
     public void changeKanbanLane(KanbanLane kanbanLane) {
@@ -81,5 +67,24 @@ public class Task extends BaseTimeEntity {
         if (request.getDeadline() != null) {
             this.deadline = request.getDeadline();
         }
+    }
+
+    public void changeOrder(int order) {
+        this.order = order;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Task task = (Task) o;
+
+        return id != null ? id.equals(task.id) : task.id == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

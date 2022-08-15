@@ -7,4 +7,8 @@ public class ProjectNameSameInAccountException extends BusinessException {
     public ProjectNameSameInAccountException(ErrorCode errorCode) {
         super(errorCode);
     }
+
+    public ProjectNameSameInAccountException() {
+        super(ErrorCode.PROJECT_NAME_EXISTS_IN_ACCOUNT);
+    }
 }

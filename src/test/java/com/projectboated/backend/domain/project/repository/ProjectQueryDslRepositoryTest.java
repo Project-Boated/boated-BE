@@ -67,11 +67,8 @@ class ProjectQueryDslRepositoryTest extends RepositoryTest {
         project4.terminate();
         projectRepository.save(project4);
 
-
-        AccountProject accountProject1 = new AccountProject(account2, project1);
-        accountProjectRepository.save(accountProject1);
-        AccountProject accountProject2 = new AccountProject(account2, project2);
-        accountProjectRepository.save(accountProject2);
+        insertAccountProject(account2, project1);
+        insertAccountProject(account2, project2);
 
         GetMyProjectsCond cond = GetMyProjectsCond.builder()
                 .crewTerm(true)
@@ -137,10 +134,8 @@ class ProjectQueryDslRepositoryTest extends RepositoryTest {
         projectRepository.save(project4);
 
 
-        AccountProject accountProject1 = new AccountProject(account2, project1);
-        accountProjectRepository.save(accountProject1);
-        AccountProject accountProject2 = new AccountProject(account2, project2);
-        accountProjectRepository.save(accountProject2);
+        insertAccountProject(account2, project1);
+        insertAccountProject(account2, project2);
 
         GetMyProjectsCond cond = GetMyProjectsCond.builder()
                 .crewTerm(false)
@@ -205,10 +200,8 @@ class ProjectQueryDslRepositoryTest extends RepositoryTest {
         project4.terminate();
         projectRepository.save(project4);
 
-        AccountProject accountProject1 = new AccountProject(account2, project1);
-        accountProjectRepository.save(accountProject1);
-        AccountProject accountProject2 = new AccountProject(account2, project2);
-        accountProjectRepository.save(accountProject2);
+        insertAccountProject(account2, project1);
+        insertAccountProject(account2, project2);
 
         GetMyProjectsCond cond = GetMyProjectsCond.builder()
                 .crewTerm(true)
@@ -273,11 +266,8 @@ class ProjectQueryDslRepositoryTest extends RepositoryTest {
         project4.terminate();
         projectRepository.save(project4);
 
-
-        AccountProject accountProject1 = new AccountProject(account2, project1);
-        accountProjectRepository.save(accountProject1);
-        AccountProject accountProject2 = new AccountProject(account2, project2);
-        accountProjectRepository.save(accountProject2);
+        insertAccountProject(account2, project1);
+        insertAccountProject(account2, project2);
 
         GetMyProjectsCond cond = GetMyProjectsCond.builder()
                 .crewTerm(false)
@@ -342,10 +332,8 @@ class ProjectQueryDslRepositoryTest extends RepositoryTest {
         project4.terminate();
         projectRepository.save(project4);
 
-        AccountProject accountProject1 = new AccountProject(account2, project1);
-        accountProjectRepository.save(accountProject1);
-        AccountProject accountProject2 = new AccountProject(account2, project2);
-        accountProjectRepository.save(accountProject2);
+        insertAccountProject(account2, project1);
+        insertAccountProject(account2, project2);
 
         GetMyProjectsCond cond = GetMyProjectsCond.builder()
                 .crewTerm(false)
@@ -454,8 +442,7 @@ class ProjectQueryDslRepositoryTest extends RepositoryTest {
                 .build();
         projectRepository.save(project);
 
-        AccountProject accountProject = new AccountProject(crew, project);
-        accountProjectRepository.save(accountProject);
+        insertAccountProject(crew, project);
 
         GetMyProjectsCond cond = GetMyProjectsCond.builder()
                 .crewTerm(false)
@@ -497,8 +484,7 @@ class ProjectQueryDslRepositoryTest extends RepositoryTest {
         project.terminate();
         projectRepository.save(project);
 
-        AccountProject accountProject = new AccountProject(crew, project);
-        accountProjectRepository.save(accountProject);
+        insertAccountProject(crew, project);
 
         GetMyProjectsCond cond = GetMyProjectsCond.builder()
                 .crewTerm(true)

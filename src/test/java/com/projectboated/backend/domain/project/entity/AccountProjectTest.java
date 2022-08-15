@@ -18,7 +18,7 @@ class AccountProjectTest {
         Account crew = createCrew();
 
         // When
-        AccountProject accountProject = new AccountProject(crew, project);
+        AccountProject accountProject = new AccountProject(ACCOUNT_PROJECT_ID, crew, project);
 
         // Then
         assertThat(accountProject.getAccount()).isEqualTo(crew);

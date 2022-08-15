@@ -9,8 +9,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.NICKNAME2;
-import static com.projectboated.backend.common.data.BasicDataAccount.USERNAME2;
+import static com.projectboated.backend.common.data.BasicDataAccount.*;
+import static com.projectboated.backend.common.data.BasicDataProject.ACCOUNT_PROJECT_ID;
+import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("AccountProjectQueryDsl : Persistence 단위 테스트")
@@ -19,8 +20,8 @@ class AccountProjectQueryDslRepositoryTest extends RepositoryTest {
     @Test
     void findCrewByProject_crew1명존재_return_해당account() {
         // Given
-        Project project = insertDefaultProjectAndDefaultCaptain();
-        Account account2 = insertDefaultAccount2();
+        Project project = insertProjectAndCaptain(USERNAME, NICKNAME);
+        Account account2 = insertAccount(USERNAME2, NICKNAME2);
         insertAccountProject(account2, project);
 
         // When
@@ -34,7 +35,7 @@ class AccountProjectQueryDslRepositoryTest extends RepositoryTest {
     @Test
     void findCrewByProject_crew0명존재_return_empty() {
         // Given
-        Project project = insertDefaultProjectAndDefaultCaptain();
+        Project project = insertProjectAndCaptain();
 
         // When
         List<Account> result = accountProjectRepository.findCrewByProject(project);

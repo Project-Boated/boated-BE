@@ -1,58 +1,55 @@
 package com.projectboated.backend.web.project.controller;
 
-import com.projectboated.backend.common.data.BasicDataAccount;
-import com.projectboated.backend.common.data.BasicDataProject;
-import com.projectboated.backend.common.utils.InvitationTestUtils;
-import com.projectboated.backend.common.utils.ProjectTestUtils;
-import io.restassured.http.ContentType;
-import io.restassured.http.Cookie;
+import com.projectboated.backend.common.basetest.ControllerTest;
+import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.domain.project.service.dto.MyProjectsDto;
+import com.projectboated.backend.web.config.WithMockAccount;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import com.projectboated.backend.common.basetest.AcceptanceTest;
-import com.projectboated.backend.common.utils.AccountTestUtils;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.http.HttpStatus;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
-import static io.restassured.RestAssured.given;
+import java.util.List;
+
+import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
+import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID2;
+import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 import static com.projectboated.backend.web.project.controller.document.ProjectMyDocument.documentProjectMyRetrieve;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureMockMvc
-class ProjectMyControllerTest extends AcceptanceTest {
+@DisplayName("Project My : Controller 단위테스트")
+class ProjectMyControllerTest extends ControllerTest {
 
     @Test
-    void getMyProjects_내가가진프로젝트조회_정상() throws Exception {
+    @WithMockAccount
+    void terminateProject_프로젝트를종료시킴_정상() throws Exception {
         // Given
-        String crewUsername = "crewUsername";
-        String crewNickname = "crewNickname";
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Account crew = createAccount(ACCOUNT_ID2);
 
-        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME);
-        AccountTestUtils.createAccount(port, crewUsername, BasicDataAccount.PASSWORD, crewNickname);
-        Cookie crewCookie = AccountTestUtils.login(port, crewUsername, BasicDataAccount.PASSWORD);
-        Cookie captainCookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("captain", "term,not-term");
+        map.add("crew", "term,not-term");
+        map.add("page", "0");
+        map.add("size", "1");
+        map.add("sort", "name,desc");
+        map.add("sort", "deadline,asc");
+        map.add("sort", "createdDate,asc");
 
-        int projectId = ProjectTestUtils.createProject(port, captainCookie, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
-        int invitationId = InvitationTestUtils.createInvitation(port, captainCookie, (long) projectId, crewNickname);
-        InvitationTestUtils.acceptInvitation(port, crewCookie, (long)invitationId);
-
-        ProjectTestUtils.createProject(port, crewCookie, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
+        when(projectService.getMyProjects(any(), any())).thenReturn(new MyProjectsDto(0, 1, true, List.of(project)));
+        when(projectCrewService.findAllCrews(anyLong())).thenReturn(List.of(crew));
 
         // When
         // Then
-        given(this.spec)
-            .param("captain", "term,not-term")
-            .param("crew", "te  rm,not-term")
-            .param("page", "0")
-            .param("size", "1")
-            .param("sort", "name,desc")
-            .param("sort", "deadline,asc")
-            .param("sort", "createdDate,asc")
-            .filter(documentProjectMyRetrieve())
-            .accept(ContentType.JSON)
-            .cookie(crewCookie)
-        .when()
-            .port(port)
-        .get("/api/projects/my")
-            .then()
-            .statusCode(HttpStatus.OK.value());
+        mockMvc.perform(get("/api/projects/my").params(map))
+                .andExpect(status().isOk())
+                .andDo(documentProjectMyRetrieve());
     }
 
 }

@@ -1,5 +1,8 @@
 package com.projectboated.backend.domain.task.task.service;
 
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.exception.TaskChangeIndexOutOfBoundsException;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.exception.TaskOriginalIndexOutOfBoundsException;
+import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
 import com.projectboated.backend.domain.project.aop.OnlyCaptainOrCrew;
 import com.projectboated.backend.domain.project.service.exception.OnlyCaptainOrCrewException;
 import com.projectboated.backend.domain.task.task.service.dto.TaskUpdateRequest;
@@ -28,7 +31,9 @@ import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -42,57 +47,19 @@ public class TaskService {
     private final AccountTaskRepository accountTaskRepository;
     private final TaskFileRepository taskFileRepository;
     private final TaskLikeRepository taskLikeRepository;
-    private final ProjectService projectService;
 
-    @Transactional
-    public Task save(Long accountId, Long projectId, Task task) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(AccountNotFoundException::new);
-
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(ProjectNotFoundException::new);
-
-        if (!projectService.isCaptainOrCrew(project, account)) {
-            throw new TaskSaveAccessDeniedException();
-        }
-
-        KanbanLane kanbanLane = kanbanLaneRepository.findByKanbanAndName(project.getKanban(), "READY")
-                .orElseThrow(KanbanLaneNotFoundException::new);
-
-        task.changeProject(project);
-        kanbanLane.addTask(task);
-
-        return task;
-    }
-
-    @Transactional
-    public void assignAccount(Long accountId, Long projectId, Long taskId, String nickname) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(AccountNotFoundException::new);
-
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(ProjectNotFoundException::new);
-
-        if (!projectService.isCaptainOrCrew(project, account)) {
-            throw new TaskAssignDeniedException();
-        }
-
-        Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
+    @OnlyCaptainOrCrew
+    public Task findById(Long projectId, Long taskId) {
+        return taskRepository.findByProjectIdAndTaskId(projectId, taskId)
                 .orElseThrow(TaskNotFoundException::new);
-
-        Account assignAccount = accountRepository.findByNickname(nickname)
-                .orElseThrow(AccountNotFoundException::new);
-
-        if (accountTaskRepository.existsByAccountAndTask(assignAccount, task)) {
-            throw new TaskAlreadyAssignedException();
-        }
-
-        accountTaskRepository.save(AccountTask.builder()
-                .account(assignAccount)
-                .task(task)
-                .build());
     }
 
+    @OnlyCaptainOrCrew
+    public List<Task> findByProjectIdAndKanbanLaneId(Long projectId, Long kanbanLaneId) {
+        return taskRepository.findByProjectIdAndKanbanLaneId(projectId, kanbanLaneId);
+    }
+
+    @OnlyCaptainOrCrew
     public long taskSize(Long projectId) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(ProjectNotFoundException::new);
@@ -101,80 +68,19 @@ public class TaskService {
     }
 
     @Transactional
-    public void cancelAssignAccount(Long accountId, Long projectId, Long taskId, String nickname) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(AccountNotFoundException::new);
-
+    @OnlyCaptainOrCrew
+    public Task save(Long projectId, Task task) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(ProjectNotFoundException::new);
 
-        if (!projectService.isCaptainOrCrew(project, account)) {
-            throw new CancelTaskAssignDeniedException();
-        }
+        KanbanLane kanbanLane = kanbanLaneRepository.findByProjectAndFirstOrder(project)
+                .orElseThrow(KanbanLaneNotFoundException::new);
 
-        Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
-                .orElseThrow(TaskNotFoundException::new);
+        task.changeProject(project);
+        task.changeKanbanLane(kanbanLane);
+        task.changeOrder(taskRepository.findMaxOrder(kanbanLane)+1);
 
-        Account assignAccount = accountRepository.findByNickname(nickname)
-                .orElseThrow(AccountNotFoundException::new);
-
-        AccountTask accountTask = accountTaskRepository.findByTaskAndAccount(task, assignAccount)
-                .orElseThrow(AccountTaskNotFoundException::new);
-
-        accountTaskRepository.delete(accountTask);
-    }
-
-    public Task findById(Long accountId, Long projectId, Long taskId) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(AccountNotFoundException::new);
-
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(ProjectNotFoundException::new);
-
-        if (!projectService.isCaptainOrCrew(project, account)) {
-            throw new TaskAccessDeniedException();
-        }
-
-        return taskRepository.findByProjectIdAndTaskId(projectId, taskId)
-                .orElseThrow(TaskNotFoundException::new);
-    }
-
-    public List<Account> findAssignedAccounts(Long accountId, Long projectId, Long taskId) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(AccountNotFoundException::new);
-
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(ProjectNotFoundException::new);
-
-        if (!projectService.isCaptainOrCrew(project, account)) {
-            throw new OnlyCaptainOrCrewException();
-        }
-
-        Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
-                .orElseThrow(TaskNotFoundException::new);
-
-        return accountTaskRepository.findByTask(task).stream()
-                .map(AccountTask::getAccount)
-                .toList();
-    }
-
-    public List<UploadFile> findAssignedFiles(Long accountId, Long projectId, Long taskId) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(AccountNotFoundException::new);
-
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(ProjectNotFoundException::new);
-
-        if (!projectService.isCaptainOrCrew(project, account)) {
-            throw new OnlyCaptainOrCrewException();
-        }
-
-        Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
-                .orElseThrow(TaskNotFoundException::new);
-
-        return taskFileRepository.findByTask(task).stream()
-                .map(TaskFile::getUploadFile)
-                .toList();
+        return taskRepository.save(task);
     }
 
     @OnlyCaptainOrCrew
@@ -183,18 +89,45 @@ public class TaskService {
         Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
                 .orElseThrow(TaskNotFoundException::new);
 
+        if (request.getLaneId() != null) {
+            KanbanLane kanbanLane = kanbanLaneRepository.findById(request.getLaneId())
+                    .orElseThrow(KanbanLaneNotFoundException::new);
+            task.changeKanbanLane(kanbanLane);
+        }
+
         task.update(request);
     }
 
-    @OnlyCaptainOrCrew
     @Transactional
-    public void updateTaskLane(Long projectId, Long taskId, Long laneId) {
-        Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
-                .orElseThrow(TaskNotFoundException::new);
+    @OnlyCaptainOrCrew
+    public void changeTaskOrder(Long projectId, ChangeTaskOrderRequest request) {
+        List<Task> originalTasks = taskRepository.findByProjectIdAndKanbanLaneId(projectId, request.originalLaneId());
 
-        KanbanLane kanbanLane = kanbanLaneRepository.findById(laneId)
-                .orElseThrow(KanbanLaneNotFoundException::new);
-        task.changeKanbanLane(kanbanLane);
+        if (request.originalTaskIndex() < 0 || request.originalTaskIndex() >= originalTasks.size()) {
+            throw new TaskOriginalIndexOutOfBoundsException();
+        }
+        Task target = originalTasks.remove(request.originalTaskIndex());
+
+        List<Task> changeTasks = null;
+        if (Objects.equals(request.originalLaneId(), request.changeLaneId())) {
+            changeTasks = originalTasks;
+        } else {
+            changeTasks = taskRepository.findByProjectIdAndKanbanLaneId(projectId, request.changeLaneId());
+        }
+        if (request.changeTaskIndex() < 0 || request.changeTaskIndex() > changeTasks.size()) {
+            throw new TaskChangeIndexOutOfBoundsException();
+        }
+
+        changeTasks.add(request.changeTaskIndex(), target);
+        reorderTasks(originalTasks);
+        reorderTasks(changeTasks);
+    }
+
+    private void reorderTasks(List<Task> tasks) {
+        for (int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+            task.changeOrder(i);
+        }
     }
 
     @OnlyCaptainOrCrew
@@ -205,5 +138,57 @@ public class TaskService {
         taskLikeRepository.deleteByTask(task);
         taskFileRepository.deleteByTask(task);
         taskRepository.delete(task);
+    }
+
+    @Transactional
+    @OnlyCaptainOrCrew
+    public void assignAccount(Long projectId, Long taskId, String nickname) {
+        Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
+                .orElseThrow(TaskNotFoundException::new);
+
+        Account account = accountRepository.findByNickname(nickname)
+                .orElseThrow(AccountNotFoundException::new);
+
+        if (accountTaskRepository.existsByAccountAndTask(account, task)) {
+            throw new TaskAlreadyAssignedException();
+        }
+
+        accountTaskRepository.save(AccountTask.builder()
+                .account(account)
+                .task(task)
+                .build());
+    }
+
+    @Transactional
+    @OnlyCaptainOrCrew
+    public void cancelAssignAccount(Long projectId, Long taskId, String nickname) {
+        Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
+                .orElseThrow(TaskNotFoundException::new);
+        Account account = accountRepository.findByNickname(nickname)
+                .orElseThrow(AccountNotFoundException::new);
+
+        AccountTask accountTask = accountTaskRepository.findByTaskAndAccount(task, account)
+                .orElseThrow(AccountTaskNotFoundException::new);
+        accountTaskRepository.delete(accountTask);
+    }
+
+    @OnlyCaptainOrCrew
+    public List<Account> findAssignedAccounts(Long projectId, Long taskId) {
+        Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
+                .orElseThrow(TaskNotFoundException::new);
+
+        return accountTaskRepository.findByTask(task).stream()
+                .map(AccountTask::getAccount)
+                .toList();
+    }
+
+    @OnlyCaptainOrCrew
+    public List<UploadFile> findAssignedFiles(Long projectId, Long taskId) {
+        Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
+                .orElseThrow(TaskNotFoundException::new);
+
+        return taskFileRepository.findByTask(task).stream()
+                .map(TaskFile::getUploadFile)
+                .toList();
     }
 }

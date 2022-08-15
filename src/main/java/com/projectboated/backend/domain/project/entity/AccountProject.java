@@ -26,7 +26,8 @@ public class AccountProject extends BaseTimeEntity {
     private Project project;
 
     @Builder
-    public AccountProject(Account account, Project project) {
+    public AccountProject(Long id, Account account, Project project) {
+        this.id = id;
         this.account = account;
         this.project = project;
     }

@@ -1,62 +1,74 @@
 package com.projectboated.backend.web.task.tasklike;
 
-import com.projectboated.backend.common.basetest.AcceptanceTest;
-import com.projectboated.backend.common.utils.AccountTestUtils;
-import com.projectboated.backend.common.utils.ProjectTestUtils;
-import com.projectboated.backend.common.utils.TaskLikeTestUtils;
-import com.projectboated.backend.common.utils.TaskTestUtils;
-import io.restassured.http.Cookie;
+import com.projectboated.backend.common.basetest.ControllerTest;
+import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
+import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.domain.task.task.entity.Task;
+import com.projectboated.backend.domain.task.taskfile.entity.TaskFile;
+import com.projectboated.backend.domain.task.tasklike.entity.TaskLike;
+import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
+import com.projectboated.backend.web.config.WithMockAccount;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-
-import java.util.stream.IntStream;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
+import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
+import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID;
 import static com.projectboated.backend.common.data.BasicDataProject.*;
 import static com.projectboated.backend.common.data.BasicDataTask.*;
-import static com.projectboated.backend.web.task.tasklike.document.TaskLikeController.documentCancelTaskLike;
-import static com.projectboated.backend.web.task.tasklike.document.TaskLikeController.documentTaskLike;
+import static com.projectboated.backend.common.data.BasicDataTaskFile.TASK_FILE_ID;
+import static com.projectboated.backend.common.data.BasicDataUploadFile.UPLOAD_FILE_ID;
+import static com.projectboated.backend.web.task.taskfile.document.TaskFileControllerDocument.documentTaskFileDelete;
+import static com.projectboated.backend.web.task.tasklike.document.TaskLikeControllerDocument.documentCancelTaskLike;
+import static com.projectboated.backend.web.task.tasklike.document.TaskLikeControllerDocument.documentTaskLike;
 import static io.restassured.RestAssured.given;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class TaskLikeControllerTest extends AcceptanceTest {
+@DisplayName("TaskLike : Controller 단위테스트")
+class TaskLikeControllerTest extends ControllerTest {
 
     @Test
-    void likeTask_하나찜하기_정상() {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
-        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
-        int[] taskIds = IntStream.range(0, 5)
-                .map((i) -> TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME + i, TASK_DESCRIPTION, TASK_DEADLINE))
-                .toArray();
+    @WithMockAccount
+    void likeTask_하나찜하기_정상() throws Exception {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
 
-        given(this.spec)
-            .filter(documentTaskLike())
-            .cookie(cookie)
-        .when()
-            .port(port)
-            .post("/api/projects/{projectId}/tasks/{taskId}/like", projectId, taskIds[0])
-        .then()
-            .statusCode(HttpStatus.OK.value());
+        // When
+        // Then
+        mockMvc.perform(post("/api/projects/{projectId}/tasks/{taskId}/like", project.getId(), task.getId()))
+                .andExpect(status().isOk())
+                .andDo(documentTaskLike());
+
+        verify(taskLikeService).likeTask(any(), any(), any());
     }
 
     @Test
-    void cancelTaskLike_찜취소_정상() {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
-        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
-        int[] taskIds = IntStream.range(0, 5)
-                .map((i) -> TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME + i, TASK_DESCRIPTION, TASK_DEADLINE))
-                .toArray();
-        TaskLikeTestUtils.createTaskLike(port, cookie, projectId, taskIds[0]);
+    @WithMockAccount
+    void cancelTaskLike_찜취소_정상() throws Exception {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
 
-        given(this.spec)
-            .filter(documentCancelTaskLike())
-            .cookie(cookie)
-        .when()
-            .port(port)
-            .delete("/api/projects/{projectId}/tasks/{taskId}/like", projectId, taskIds[0])
-        .then()
-            .statusCode(HttpStatus.OK.value());
+        // When
+        // Then
+        mockMvc.perform(delete("/api/projects/{projectId}/tasks/{taskId}/like", project.getId(), task.getId()))
+                .andExpect(status().isOk())
+                .andDo(documentCancelTaskLike());
+
+        verify(taskLikeService).cancelTaskLike(any(), any(), any());
     }
 
 }

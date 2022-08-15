@@ -30,27 +30,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TaskFileService {
 
-    private final ProjectService projectService;
     private final AwsS3Service s3Service;
-
-    private final AccountRepository accountRepository;
-    private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
     private final TaskFileRepository taskFileRepository;
     private final UploadFileRepository uploadFileRepository;
 
     @Transactional
-    public TaskFile uploadFile(Long accountId, Long projectId, Long taskId, MultipartFile file) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(AccountNotFoundException::new);
-
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(ProjectNotFoundException::new);
-
-        if (!projectService.isCaptainOrCrew(project, account)) {
-            throw new UploadTaskFileAccessDeniedException();
-        }
-
+    @OnlyCaptainOrCrew
+    public TaskFile uploadFile(Long projectId, Long taskId, MultipartFile file) {
         Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
                 .orElseThrow(TaskNotFoundException::new);
 

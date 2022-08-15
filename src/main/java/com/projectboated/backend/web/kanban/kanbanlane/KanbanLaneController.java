@@ -1,14 +1,11 @@
 package com.projectboated.backend.web.kanban.kanbanlane;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.KanbanLaneService;
-import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.KanbanLaneUpdateRequest;
 import com.projectboated.backend.web.kanban.kanbanlane.dto.GetLanesResponse;
 import com.projectboated.backend.web.kanban.kanbanlane.dto.UpdateKanbanLaneRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,43 +21,30 @@ public class KanbanLaneController {
     public GetLanesResponse getLanes(
             @PathVariable Long projectId
     ) {
-        List<KanbanLane> lanes = kanbanLaneService.getLanes(projectId);
+        List<KanbanLane> lanes = kanbanLaneService.findByProjectId(projectId);
         return new GetLanesResponse(lanes);
-    }
-
-    @PostMapping("/tasks/change/{originalLaneId}/{originalTaskIndex}/{changeLaneId}/{changeTaskIndex}")
-    public void changeTaskOrder(
-            @AuthenticationPrincipal Account account,
-            @PathVariable Long projectId,
-            @PathVariable Long originalLaneId,
-            @PathVariable int originalTaskIndex,
-            @PathVariable Long changeLaneId,
-            @PathVariable int changeTaskIndex
-    ) {
-        ChangeTaskOrderRequest request = ChangeTaskOrderRequest.builder()
-                .projectId(projectId)
-                .originalLaneId(originalLaneId)
-                .originalTaskIndex(originalTaskIndex)
-                .changeLaneId(changeLaneId)
-                .changeTaskIndex(changeTaskIndex)
-                .build();
-        kanbanLaneService.changeTaskOrder(account.getId(), request);
     }
 
     @PutMapping("/{kanbanLaneId}")
     public void updateKanbanLane(
-            @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
             @PathVariable Long kanbanLaneId,
             @RequestBody UpdateKanbanLaneRequest request
     ) {
         KanbanLaneUpdateRequest kluRequest = KanbanLaneUpdateRequest.builder()
-                .projectId(projectId)
-                .kanbanLaneId(kanbanLaneId)
                 .name(request.getName())
                 .build();
 
-        kanbanLaneService.updateKanbanLane(account.getId(), kluRequest);
+        kanbanLaneService.updateKanbanLane(projectId, kanbanLaneId, kluRequest);
+    }
+
+    @PostMapping("/lanes/change/{originalIndex}/{changeIndex}")
+    public void changeKanbanLaneOrder(
+            @PathVariable Long projectId,
+            @PathVariable int originalIndex,
+            @PathVariable int changeIndex
+    ) {
+        kanbanLaneService.changeKanbanLaneOrder(projectId, originalIndex, changeIndex);
     }
 
 }

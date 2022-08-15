@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
+import static com.projectboated.backend.common.data.BasicDataAccount.*;
+import static com.projectboated.backend.common.data.BasicDataProject.ACCOUNT_PROJECT_ID;
+import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("AccountProject : Persistence 단위 테스트")
@@ -17,11 +20,9 @@ class AccountProjectRepositoryTest extends RepositoryTest {
     @Test
     void deleteByProjectAndAccount_존재하는Project와Account_delete정상() {
         // Given
-        Account account = insertDefaultAccount();
-        Project project = insertDefaultProject(account);
-
-        AccountProject accountProject = new AccountProject(account, project);
-        accountProjectRepository.save(accountProject);
+        Account account = insertAccount();
+        Project project = insertProject(account);
+        AccountProject accountProject = insertAccountProject(account, project);
 
         // When
         accountProjectRepository.deleteByProjectAndAccount(project, account);
@@ -30,48 +31,14 @@ class AccountProjectRepositoryTest extends RepositoryTest {
         // Then
         assertThat(accountProjectRepository.findById(accountProject.getId())).isEmpty();
     }
-    
-    @Test
-    void countByProjectAndAccount_1개존재하는Project와Account_return_1() {
-        // Given
-        Account account = insertDefaultAccount();
-        Project project = insertDefaultProject(account);
-
-        Account account2 = insertDefaultAccount2();
-        accountProjectRepository.save(AccountProject.builder()
-                .project(project)
-                .account(account2)
-                .build());
-
-        // When
-        long result = accountProjectRepository.countByProjectAndAccount(project, account2);
-
-        // Then
-        assertThat(result).isEqualTo(1);
-    }
-
-    @Test
-    void countByProjectAndAccount_0개존재하는Project와Account_return_0() {
-        // Given
-        Account account = insertDefaultAccount();
-        Project project = insertDefaultProject(account);
-
-        Account account2 = insertDefaultAccount2();
-
-        // When
-        long result = accountProjectRepository.countByProjectAndAccount(project, account2);
-
-        // Then
-        assertThat(result).isEqualTo(0);
-    }
 
     @Test
     void countByCrewInProject_crew1명존재_return_1() {
         // Given
-        Account account = insertDefaultAccount();
-        Project project = insertDefaultProject(account);
+        Account account = insertAccount(USERNAME, NICKNAME);
+        Project project = insertProject(account);
 
-        Account account2 = insertDefaultAccount2();
+        Account account2 = insertAccount(USERNAME2, NICKNAME2);
         accountProjectRepository.save(AccountProject.builder()
                 .project(project)
                 .account(account2)
@@ -87,8 +54,8 @@ class AccountProjectRepositoryTest extends RepositoryTest {
     @Test
     void countByCrewInProject_crew0명존재_return_0() {
         // Given
-        Account account = insertDefaultAccount();
-        Project project = insertDefaultProject(account);
+        Account account = insertAccount();
+        Project project = insertProject(account);
 
         // When
         Long result = accountProjectRepository.countByCrewInProject(account, project);
@@ -100,8 +67,8 @@ class AccountProjectRepositoryTest extends RepositoryTest {
     @Test
     void findByAccountAndProject_1개존재_1개조회() {
         // Given
-        Account account = insertDefaultAccount();
-        Project project = insertDefaultProject(account);
+        Account account = insertAccount();
+        Project project = insertProject(account);
         AccountProject accountProject = insertAccountProject(account, project);
 
         // When

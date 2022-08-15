@@ -19,6 +19,8 @@ public abstract class BasicDataProject {
             .description(PROJECT_DESCRIPTION)
             .deadline(PROJECT_DEADLINE)
             .build();
+
+    public final static Long PROJECT_ID2 = 120L;
     public final static String PROJECT_NAME2 = "name2";
     public final static String PROJECT_DESCRIPTION2 = "description2";
     public final static LocalDateTime PROJECT_DEADLINE2 = LocalDateTime.now();
@@ -28,4 +30,6 @@ public abstract class BasicDataProject {
             .description(PROJECT_DESCRIPTION2)
             .deadline(PROJECT_DEADLINE2)
             .build();
+
+    public final static Long ACCOUNT_PROJECT_ID = 12924L;
 }

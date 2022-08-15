@@ -1,14 +1,14 @@
 package com.projectboated.backend.web.task.tasklike.document;
 
-import org.springframework.restdocs.restassured3.RestDocumentationFilter;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
-public abstract class TaskLikeController {
+public abstract class TaskLikeControllerDocument {
 
-    public static RestDocumentationFilter documentTaskLike() {
+    public static RestDocumentationResultHandler documentTaskLike() {
         return document("tasks-like",
                 pathParameters(
                         parameterWithName("projectId").description("찜할 프로젝트의 id"),
@@ -17,7 +17,7 @@ public abstract class TaskLikeController {
         );
     }
 
-    public static RestDocumentationFilter documentCancelTaskLike() {
+    public static RestDocumentationResultHandler documentCancelTaskLike() {
         return document("tasks-like-cancel",
                 pathParameters(
                         parameterWithName("projectId").description("찜을 취소할 프로젝트의 id"),

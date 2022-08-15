@@ -3,6 +3,7 @@ package com.projectboated.backend.domain.task.tasklike.service;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
+import com.projectboated.backend.domain.project.aop.OnlyCaptainOrCrew;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.ProjectService;
@@ -38,16 +39,10 @@ public class TaskLikeService {
     private final TaskRepository taskRepository;
 
     @Transactional
+    @OnlyCaptainOrCrew
     public void likeTask(Long accountId, Long projectId, Long taskId) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(AccountNotFoundException::new);
-
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(ProjectNotFoundException::new);
-
-        if (!projectService.isCaptainOrCrew(project, account)) {
-            throw new TaskLikeAccessDeniedException();
-        }
 
         Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
                 .orElseThrow(TaskNotFoundException::new);
@@ -60,21 +55,14 @@ public class TaskLikeService {
                 .account(account)
                 .task(task)
                 .build();
-
         taskLikeRepository.save(taskLike);
     }
 
     @Transactional
+    @OnlyCaptainOrCrew
     public void cancelTaskLike(Long accountId, Long projectId, Long taskId) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(AccountNotFoundException::new);
-
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(ProjectNotFoundException::new);
-
-        if (!projectService.isCaptainOrCrew(project, account)) {
-            throw new CancelTaskLikeAccessDeniedException();
-        }
 
         Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
                 .orElseThrow(TaskNotFoundException::new);
@@ -84,6 +72,7 @@ public class TaskLikeService {
         taskLikeRepository.delete(taskLike);
     }
 
+    @OnlyCaptainOrCrew
     public Map<Task, Boolean> findByProjectAndAccount(Long accountId, Long projectId) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(AccountNotFoundException::new);
@@ -91,17 +80,11 @@ public class TaskLikeService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(ProjectNotFoundException::new);
 
-        if (!projectService.isCaptainOrCrew(project, account)) {
-            throw new OnlyCaptainOrCrewException();
-        }
-
         Map<Task, Boolean> likes = new HashMap<>();
-
         for (Task task : taskRepository.findByProject(project)) {
             taskLikeRepository.findByAccountAndTask(account, task)
                     .ifPresentOrElse((tl) -> likes.put(task, true), () -> likes.put(task, false));
         }
-
         return likes;
     }
 }

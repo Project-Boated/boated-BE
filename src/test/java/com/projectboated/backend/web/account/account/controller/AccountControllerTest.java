@@ -44,7 +44,7 @@ class AccountControllerTest extends ControllerTest {
     @WithMockAccount
     void getAccountProfile_자신의profile가져오기_성공() throws Exception {
         // Given
-        when(accountService.findById(anyLong())).thenReturn(createDefaultAccount());
+        when(accountService.findById(anyLong())).thenReturn(createAccount());
         when(profileImageService.getProfileUrl(any(), any(), anyBoolean())).thenReturn("url");
 
         // When
@@ -61,7 +61,7 @@ class AccountControllerTest extends ControllerTest {
     @WithMockAccount
     void patchAccountProfile_프로필update_성공() throws Exception {
         // Given
-        when(accountService.findById(anyLong())).thenReturn(createDefaultAccount());
+        when(accountService.findById(anyLong())).thenReturn(createAccount());
         when(profileImageService.getProfileUrl(any(), any(), anyBoolean())).thenReturn("url");
 
         // When
@@ -90,74 +90,4 @@ class AccountControllerTest extends ControllerTest {
 
         verify(accountService).delete(any());
     }
-
-
-
-    /*
-    @Test
-    void postAccountProfileImage_프로필이미지수정_성공() throws IOException {
-        Mockito.when(awsS3ProfileService.uploadProfileImage(Mockito.any(), Mockito.any(), Mockito.any()))
-                .thenReturn("http://test.com");
-
-        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
-        Cookie cookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
-
-        given(this.spec)
-            .filter(documentAccountProfileImageUpdate())
-            .accept(ContentType.JSON)
-            .contentType(ContentType.MULTIPART)
-            .cookie(cookie)
-        .when()
-            .port(port)
-            .multiPart("file", ResourceUtils.getFile("classpath:profile-image-test.png"), "image/jpg")
-            .post("/api/account/profile/profile-image")
-        .then()
-            .statusCode(HttpStatus.OK.value());
-    }
-
-    @Test
-    void getAccountProfileImage_이미지Get_성공() throws IOException {
-        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
-        Cookie cookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
-
-        Mockito.when(awsS3ProfileService.getProfileImageBytes(Mockito.any()))
-                .thenReturn(new AwsS3File("filename", "image/png", "asdf".getBytes()));
-
-        given(this.spec)
-            .accept(ContentType.JSON)
-            .contentType(ContentType.MULTIPART)
-            .cookie(cookie)
-        .when()
-            .port(port)
-            .multiPart("file", ResourceUtils.getFile("classpath:profile-image-test.png"), "image/jpg")
-            .post("/api/account/profile/profile-image");
-
-
-        given(this.spec)
-            .filter(documentAccountProfileImageRetrieve())
-            .cookie(cookie)
-        .when()
-            .port(port)
-            .get("/api/account/profile/profile-image")
-        .then()
-            .statusCode(HttpStatus.OK.value());
-    }
-
-    @Test
-    void deleteAccountProfileImage_이미지삭제_성공() throws IOException {
-        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME, BasicDataAccount.PROFILE_IMAGE_URL);
-        Cookie cookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
-
-        given(this.spec)
-            .filter(documentAccountProfileImageDelete())
-            .accept(ContentType.JSON)
-            .cookie(cookie)
-        .when()
-            .port(port)
-            .delete("/api/account/profile/profile-image")
-        .then()
-            .statusCode(HttpStatus.OK.value());
-    }*/
-
-
 }

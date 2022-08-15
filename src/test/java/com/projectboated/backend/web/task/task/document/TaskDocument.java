@@ -1,31 +1,30 @@
 package com.projectboated.backend.web.task.task.document;
 
 
-import io.restassured.filter.Filter;
 import org.springframework.http.HttpHeaders;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.restassured3.RestDocumentationFilter;
 
-import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 
 public abstract class TaskDocument {
 
-    public static RestDocumentationFilter documentTaskCreate() {
+    public static RestDocumentationResultHandler documentTaskCreate() {
         return document("tasks-create",
                 preprocessResponse(prettyPrint()),
                 requestHeaders(
-                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType"),
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
                 ),
                 pathParameters(
-                        parameterWithName("projectId").description("target 프로젝트의 id")
+                        parameterWithName("projectId").description("target 프로젝트의 id"),
+                        parameterWithName("laneId").description("target lane의 id(아무 숫자를 넣으시면됩니다, 어차피 첫번째 lane에 들어감)")
                 ),
                 requestFields(
                         fieldWithPath("name").type(JsonFieldType.STRING).description("Task 이름"),
@@ -38,16 +37,16 @@ public abstract class TaskDocument {
         );
     }
 
-    public static RestDocumentationFilter documentTaskAssign() {
+    public static RestDocumentationResultHandler documentTaskAssign() {
         return document("tasks-assign",
                 preprocessResponse(prettyPrint()),
                 requestHeaders(
-                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType"),
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
                 ),
                 pathParameters(
-                        parameterWithName("projectId").description("target 프로젝트의 id"),
-                        parameterWithName("taskId").description("target task의 id")
+                        parameterWithName("projectId").description("target 프로젝트의 고유번호"),
+                        parameterWithName("laneId").description("target lane의 고유번호"),
+                        parameterWithName("taskId").description("target task의 고유번호")
                 ),
                 requestFields(
                         fieldWithPath("nickname").type(JsonFieldType.STRING).description("assign할 account의 nickname")
@@ -55,15 +54,15 @@ public abstract class TaskDocument {
         );
     }
 
-    public static RestDocumentationFilter documentTaskCancelAssign() {
+    public static RestDocumentationResultHandler documentTaskCancelAssign() {
         return document("tasks-assign-cancel",
                 preprocessResponse(prettyPrint()),
                 requestHeaders(
-                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType"),
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
                 ),
                 pathParameters(
                         parameterWithName("projectId").description("target 프로젝트의 id"),
+                        parameterWithName("laneId").description("target lane의 id"),
                         parameterWithName("taskId").description("target task의 id")
                 ),
                 requestFields(
@@ -72,11 +71,12 @@ public abstract class TaskDocument {
         );
     }
 
-    public static RestDocumentationFilter documentTaskRetrieve() {
+    public static RestDocumentationResultHandler documentTaskRetrieve() {
         return document("tasks-retrieve",
                 preprocessResponse(prettyPrint()),
                 pathParameters(
                         parameterWithName("projectId").description("target 프로젝트의 id"),
+                        parameterWithName("laneId").description("target lane의 id"),
                         parameterWithName("taskId").description("target task의 id")
                 ),
                 responseFields(
@@ -96,38 +96,42 @@ public abstract class TaskDocument {
         );
     }
 
-    public static RestDocumentationFilter documentTaskUpdate() {
+    public static RestDocumentationResultHandler documentTaskUpdate() {
         return document("tasks-update",
                 preprocessResponse(prettyPrint()),
                 pathParameters(
                         parameterWithName("projectId").description("target 프로젝트의 id"),
+                        parameterWithName("laneId").description("target lane의 id"),
                         parameterWithName("taskId").description("target task의 id")
                 ),
                 requestFields(
                         fieldWithPath("name").type(JsonFieldType.STRING).description("이름").optional(),
                         fieldWithPath("description").type(JsonFieldType.STRING).description("설명").optional(),
-                        fieldWithPath("deadline").type(JsonFieldType.STRING).description("deadline").optional()
+                        fieldWithPath("deadline").type(JsonFieldType.STRING).description("deadline").optional(),
+                        fieldWithPath("laneId").type(JsonFieldType.NUMBER).description("다른 lane").optional()
                 )
         );
     }
 
-    public static RestDocumentationFilter documentTaskDelete() {
+    public static RestDocumentationResultHandler documentTaskDelete() {
         return document("tasks-delete",
                 preprocessResponse(prettyPrint()),
                 pathParameters(
-                        parameterWithName("projectId").description("target 프로젝트의 id"),
-                        parameterWithName("taskId").description("target task의 id")
+                        parameterWithName("projectId").description("target 프로젝트의 고유번호"),
+                        parameterWithName("laneId").description("target lane 고유번호"),
+                        parameterWithName("taskId").description("target task의 고유번호")
                 )
         );
     }
 
-    public static RestDocumentationFilter documentTaskUpdateLane() {
-        return document("tasks-update-lane",
-                preprocessResponse(prettyPrint()),
+    public static RestDocumentationResultHandler documentTaskOrderChange() {
+        return document("kanban-lanes-tasks-order-change",
                 pathParameters(
-                        parameterWithName("projectId").description("target 프로젝트의 id"),
-                        parameterWithName("taskId").description("target task의 id"),
-                        parameterWithName("laneId").description("바꿀 lane의 id")
+                        parameterWithName("projectId").description("프로젝트 고유 번호"),
+                        parameterWithName("originalLaneId").description("바꾸고 싶은 lane의 고유번호"),
+                        parameterWithName("originalTaskIndex").description("바꾸고 싶은 task의 index(index번호입니다. id아닙니다)"),
+                        parameterWithName("changeLaneId").description("바꿔지게 될 lane의 고유번호"),
+                        parameterWithName("changeTaskIndex").description("바꿔지게 될 task의 index(index번호입니다. id아닙니다)")
                 )
         );
     }

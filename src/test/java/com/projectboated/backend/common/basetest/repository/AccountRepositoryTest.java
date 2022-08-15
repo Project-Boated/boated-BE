@@ -4,20 +4,17 @@ import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.*;
-import static com.projectboated.backend.common.data.BasicDataAccount.ROLES;
-
 public class AccountRepositoryTest extends BaseRepositoryTest{
 
     @Autowired
     protected AccountRepository accountRepository;
 
-    protected Account insertDefaultAccount() {
-        return accountRepository.save(createDefaultAccount());
+    protected Account insertAccount(String username, String nickname) {
+        return accountRepository.save(createAccount(username, nickname));
     }
 
-    protected Account insertDefaultAccount2() {
-        return accountRepository.save(createDefaultAccount2());
+    protected Account insertAccount() {
+        return accountRepository.save(createAccount());
     }
 
 }

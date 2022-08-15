@@ -17,40 +17,21 @@ public class ProjectRepositoryTest extends ProfileImageRepositoryTest{
     @Autowired
     protected AccountProjectRepository accountProjectRepository;
 
-
-    protected Project insertDefaultProjectAndDefaultCaptain() {
-        return projectRepository.save(Project.builder()
-                .captain(insertDefaultAccount())
-                .name(PROJECT_NAME)
-                .description(PROJECT_DESCRIPTION)
-                .deadline(PROJECT_DEADLINE)
-                .build());
+    protected Project insertProject(Account captain) {
+        return projectRepository.save(createProject(captain));
     }
 
-    protected Project insertDefaultProject(Account captain) {
-        return projectRepository.save(Project.builder()
-                .captain(captain)
-                .name(PROJECT_NAME)
-                .description(PROJECT_DESCRIPTION)
-                .deadline(PROJECT_DEADLINE)
-                .build());
+    protected Project insertProjectAndCaptain(String username, String nickname) {
+        Account account = accountRepository.save(createAccount(username, nickname));
+        return projectRepository.save(createProject(account));
     }
 
-    protected Project insertDefaultProject2(Account captain) {
-        return projectRepository.save(Project.builder()
-                .captain(captain)
-                .name(PROJECT_NAME2)
-                .description(PROJECT_DESCRIPTION2)
-                .deadline(PROJECT_DEADLINE2)
-                .build());
+    protected Project insertProjectAndCaptain() {
+        Account account = accountRepository.save(createAccount());
+        return projectRepository.save(createProject(account));
     }
-
-
 
     protected AccountProject insertAccountProject(Account account, Project project) {
-        return accountProjectRepository.save(AccountProject.builder()
-                .project(project)
-                .account(account)
-                .build());
+        return accountProjectRepository.save(createAccountProject(account, project));
     }
 }

@@ -4,7 +4,7 @@ import com.projectboated.backend.domain.common.exception.BusinessException;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
 
 public class TaskChangeIndexOutOfBoundsException extends BusinessException {
-    public TaskChangeIndexOutOfBoundsException(ErrorCode errorCode) {
-        super(errorCode);
+    public TaskChangeIndexOutOfBoundsException() {
+        super(ErrorCode.TASK_CHANGE_INDEX_OUT_OF_BOUNDS);
     }
 }

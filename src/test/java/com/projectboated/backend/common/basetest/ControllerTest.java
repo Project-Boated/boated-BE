@@ -2,6 +2,7 @@ package com.projectboated.backend.common.basetest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.projectboated.backend.domain.account.account.service.AccountNicknameService;
 import com.projectboated.backend.domain.account.account.service.AccountService;
 import com.projectboated.backend.domain.account.profileimage.service.ProfileImageService;
@@ -12,6 +13,7 @@ import com.projectboated.backend.domain.project.service.ProjectCaptainService;
 import com.projectboated.backend.domain.project.service.ProjectCrewService;
 import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.ProjectTerminateService;
+import com.projectboated.backend.domain.task.task.service.AccountTaskService;
 import com.projectboated.backend.domain.task.task.service.TaskService;
 import com.projectboated.backend.domain.task.taskfile.service.TaskFileService;
 import com.projectboated.backend.domain.task.tasklike.service.TaskLikeService;
@@ -37,7 +39,7 @@ import static org.assertj.core.api.Assertions.fail;
 @WebMvcTest
 @Import(ControllerTest.SecurityConfig.class)
 @AutoConfigureMockMvc
-@MockBean(JpaMetamodelMappingContext.class) // Mocking Jpa Auditing
+@MockBean(JpaMetamodelMappingContext.class)
 @ExtendWith(RestDocumentationExtension.class)
 @AutoConfigureRestDocs(uriHost = "project-boated.com")
 public class ControllerTest extends BaseTest {
@@ -45,6 +47,9 @@ public class ControllerTest extends BaseTest {
     @Autowired
     protected MockMvc mockMvc;
     protected ObjectMapper objectMapper = new ObjectMapper();
+    {
+        objectMapper.registerModule(new JavaTimeModule());
+    }
 
     // Account
     @MockBean
@@ -78,6 +83,8 @@ public class ControllerTest extends BaseTest {
     @MockBean
     protected TaskService taskService;
     @MockBean
+    protected AccountTaskService accountTaskService;
+    @MockBean
     protected TaskLikeService taskLikeService;
     @MockBean
     protected TaskFileService taskFileService;
@@ -93,7 +100,7 @@ public class ControllerTest extends BaseTest {
         try {
             return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            fail("json parsing 실패");
+            fail("json parsing 실패", e);
         }
         return null;
     }

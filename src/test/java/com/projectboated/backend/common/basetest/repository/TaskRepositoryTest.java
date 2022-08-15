@@ -19,51 +19,16 @@ public class TaskRepositoryTest extends InvitationRepositoryTest {
     @Autowired
     protected AccountTaskRepository accountTaskRepository;
 
-    protected Task insertDefaultTask(Project project) {
-        Task task = Task.builder()
-                .name(TASK_NAME)
-                .description(TASK_DESCRIPTION)
-                .deadline(TASK_DEADLINE)
-                .build();
-        task.changeProject(project);
-        return taskRepository.save(task);
+    protected Task insertTask(Project project, KanbanLane kanbanLane) {
+        return taskRepository.save(createTask(project, kanbanLane));
     }
 
-    protected Task insertDefaultTask2(Project project) {
-        Task task = Task.builder()
-                .name(TASK_NAME2)
-                .description(TASK_DESCRIPTION2)
-                .deadline(TASK_DEADLINE2)
-                .build();
-        task.changeProject(project);
-        return taskRepository.save(task);
+    protected Task insertTask(String name, Project project, KanbanLane kanbanLane) {
+        return taskRepository.save(createTask(name, project, kanbanLane));
     }
 
     protected AccountTask insertAccountTask(Account account, Task task) {
-        return accountTaskRepository.save(AccountTask.builder()
-                .account(account)
-                .task(task)
-                .build());
-    }
-
-    protected Task insertDefaultTask(KanbanLane kl) {
-        Task task = Task.builder()
-                .name(TASK_NAME)
-                .description(TASK_DESCRIPTION)
-                .deadline(TASK_DEADLINE)
-                .build();
-        task.changeKanbanLane(kl);
-        return taskRepository.save(task);
-    }
-
-    protected Task insertDefaultTask2(KanbanLane kl) {
-        Task task = Task.builder()
-                .name(TASK_NAME2)
-                .description(TASK_DESCRIPTION2)
-                .deadline(TASK_DEADLINE2)
-                .build();
-        task.changeKanbanLane(kl);
-        return taskRepository.save(task);
+        return accountTaskRepository.save(createAccountTask(account, task));
     }
 
 }

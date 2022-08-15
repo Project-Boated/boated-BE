@@ -1,28 +1,23 @@
 package com.projectboated.backend.web.project.controller.document;
 
-import io.restassured.filter.Filter;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.restassured3.RestDocumentationFilter;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class ProjectDocument {
+public abstract class ProjectDocument {
 
-    public static RestDocumentationFilter documentProjectCreate() {
+    public static RestDocumentationResultHandler documentProjectCreate() {
         return document("project-create",
                 preprocessResponse(prettyPrint()),
                 requestHeaders(
-                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType"),
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
                 ),
                 requestFields(
@@ -39,7 +34,7 @@ public final class ProjectDocument {
         );
     }
 
-    public static RestDocumentationFilter documentProjectUpdate() {
+    public static RestDocumentationResultHandler documentProjectUpdate() {
         return document("project-update",
                 preprocessResponse(prettyPrint()),
                 requestHeaders(
@@ -59,7 +54,7 @@ public final class ProjectDocument {
         );
     }
 
-    public static RestDocumentationFilter documentProjectDelete() {
+    public static RestDocumentationResultHandler documentProjectDelete() {
         return document("project-delete",
                 pathParameters(
                         parameterWithName("projectId").description("프로젝트 고유번호")
@@ -67,36 +62,9 @@ public final class ProjectDocument {
         );
     }
 
-    public static RestDocumentationFilter documentProjectTerminate() {
-        return document("project-terminate",
-                preprocessResponse(prettyPrint()),
-                pathParameters(
-                        parameterWithName("projectId").description("프로젝트 id")
-                ),
-                responseFields(
-                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("프로젝트 고유 id")
-                )
-        );
-    }
-
-    public static RestDocumentationFilter documentProjectCancelTerminate() {
-        return document("project-cancel-terminate",
-                preprocessResponse(prettyPrint()),
-                pathParameters(
-                        parameterWithName("projectId").description("프로젝트 id")
-                ),
-                responseFields(
-                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("프로젝트 고유 id")
-                )
-        );
-    }
-
-    public static RestDocumentationFilter documentProjectRetrieve() {
+    public static RestDocumentationResultHandler documentProjectRetrieve() {
         return document("project-retrieve",
                 preprocessResponse(prettyPrint()),
-                requestHeaders(
-                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
-                ),
                 pathParameters(
                         parameterWithName("projectId").description("프로젝트의 id")
                 ),

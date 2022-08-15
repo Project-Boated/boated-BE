@@ -15,7 +15,7 @@ public class ProjectCaptainController {
 
     private final ProjectCaptainService projectCaptainService;
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping
     public void updateProjectCaptain(
             @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,

@@ -52,7 +52,7 @@ public class InvitationService {
                     throw new InvitationExistsAccount();
                 });
 
-        return invitationRepository.save(new Invitation(crew, project));
+        return invitationRepository.save(new Invitation(123L, crew, project));
     }
 
     public List<Invitation> findByAccount(Account account) {
@@ -68,7 +68,10 @@ public class InvitationService {
                 .orElseThrow(InvitationNotFoundException::new);
 
         Project project = invitation.getProject();
-        accountProjectRepository.save(new AccountProject(account, project));
+        accountProjectRepository.save(AccountProject.builder()
+                .account(account)
+                .project(project)
+                .build());
 
         invitationRepository.delete(invitation);
 
