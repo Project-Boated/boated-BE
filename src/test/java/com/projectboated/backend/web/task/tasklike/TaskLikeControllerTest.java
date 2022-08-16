@@ -26,6 +26,7 @@ import static com.projectboated.backend.web.task.taskfile.document.TaskFileContr
 import static com.projectboated.backend.web.task.tasklike.document.TaskLikeControllerDocument.*;
 import static io.restassured.RestAssured.given;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -49,12 +50,24 @@ class TaskLikeControllerTest extends ControllerTest {
         when(taskLikeService.findByAccount(any())).thenReturn(List.of(taskLike));
         when(taskService.findAssignedAccounts(any(), any())).thenReturn(List.of(account));
 
-
         // When
         // Then
         mockMvc.perform(get("/api/my/likes"))
                 .andExpect(status().isOk())
                 .andDo(documentMyTaskLikeRetrieve());
+    }
+
+    @Test
+    @WithMockAccount
+    void changeMyTaskLikeOrder_task바꾸기_정상() throws Exception {
+        // Given
+        // When
+        // Then
+        mockMvc.perform(post("/api/my/likes/change/{originalIndex}/{changeIndex}", 0, 0))
+                .andExpect(status().isOk())
+                .andDo(documentTaskLikeOrderChange());
+
+        verify(taskLikeService).changeOrder(any(), anyInt(), anyInt());
     }
 
     @Test

@@ -45,6 +45,15 @@ public class TaskLikeController {
         return new GetMyTaskLikeResponse(taskLikeResponses);
     }
 
+    @PostMapping("/api/my/likes/change/{originalIndex}/{changeIndex}")
+    public void changeMyTaskLikeOrder(
+            @AuthenticationPrincipal Account account,
+            @PathVariable int originalIndex,
+            @PathVariable int changeIndex
+    ) {
+        taskLikeService.changeOrder(account.getId(), originalIndex, changeIndex);
+    }
+
     @PostMapping("/api/projects/{projectId}/tasks/{taskId}/like")
     public void likeTask(
             @AuthenticationPrincipal Account account,
@@ -62,5 +71,5 @@ public class TaskLikeController {
             ) {
         taskLikeService.cancelTaskLike(account.getId(), projectId, taskId);
     }
-	
+
 }

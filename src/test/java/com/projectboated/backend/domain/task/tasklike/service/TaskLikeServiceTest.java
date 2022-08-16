@@ -17,10 +17,7 @@ import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import com.projectboated.backend.domain.task.task.service.exception.TaskNotFoundException;
 import com.projectboated.backend.domain.task.tasklike.entity.TaskLike;
 import com.projectboated.backend.domain.task.tasklike.repository.TaskLikeRepository;
-import com.projectboated.backend.domain.task.tasklike.service.exception.CancelTaskLikeAccessDeniedException;
-import com.projectboated.backend.domain.task.tasklike.service.exception.TaskLikeAccessDeniedException;
-import com.projectboated.backend.domain.task.tasklike.service.exception.TaskLikeAlreadyExistsException;
-import com.projectboated.backend.domain.task.tasklike.service.exception.TaskLikeNotFoundException;
+import com.projectboated.backend.domain.task.tasklike.service.exception.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -265,6 +262,128 @@ class TaskLikeServiceTest extends ServiceTest {
                 .containsExactly(0);
 
         verify(taskLikeRepository).delete(taskLike);
+    }
+    
+    @Test
+    void changeOrder_찾을수없는account_예외발생() {
+        // Given
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.empty());
+        
+        // When
+        // Then
+        assertThatThrownBy(() -> taskLikeService.changeOrder(ACCOUNT_ID, 0, 0))
+                .isInstanceOf(AccountNotFoundException.class);
+    }
+
+    @Test
+    void changeOrder_originalIndex가마이너스_예외발생() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        Task task2 = createTask(TASK_ID2, project, kanbanLane);
+        TaskLike taskLike = createTaskLike(TASK_LIKE_ID, account, task, 0);
+        TaskLike taskLike2 = createTaskLike(TASK_LIKE_ID2, account, task2, 1);
+        List<TaskLike> taskLikes = new ArrayList<>(List.of(taskLike, taskLike2));
+
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(taskLikeRepository.findByAccountOrderByOrder(account)).thenReturn(taskLikes);
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskLikeService.changeOrder(account.getId(), -1, 0))
+                .isInstanceOf(TaskLikeOriginalIndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void changeOrder_originalIndex가범위를벗어남_예외발생() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        Task task2 = createTask(TASK_ID2, project, kanbanLane);
+        TaskLike taskLike = createTaskLike(TASK_LIKE_ID, account, task, 0);
+        TaskLike taskLike2 = createTaskLike(TASK_LIKE_ID2, account, task2, 1);
+        List<TaskLike> taskLikes = new ArrayList<>(List.of(taskLike, taskLike2));
+
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(taskLikeRepository.findByAccountOrderByOrder(account)).thenReturn(taskLikes);
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskLikeService.changeOrder(account.getId(), 2, 0))
+                .isInstanceOf(TaskLikeOriginalIndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void changeOrder_changeIndex가마이너스_예외발생() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        Task task2 = createTask(TASK_ID2, project, kanbanLane);
+        TaskLike taskLike = createTaskLike(TASK_LIKE_ID, account, task, 0);
+        TaskLike taskLike2 = createTaskLike(TASK_LIKE_ID2, account, task2, 1);
+        List<TaskLike> taskLikes = new ArrayList<>(List.of(taskLike, taskLike2));
+
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(taskLikeRepository.findByAccountOrderByOrder(account)).thenReturn(taskLikes);
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskLikeService.changeOrder(account.getId(), 1, -1))
+                .isInstanceOf(TaskLikeChangeIndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void changeOrder_changeIndex가범위를벗어남_예외발생() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        Task task2 = createTask(TASK_ID2, project, kanbanLane);
+        TaskLike taskLike = createTaskLike(TASK_LIKE_ID, account, task, 0);
+        TaskLike taskLike2 = createTaskLike(TASK_LIKE_ID2, account, task2, 1);
+        List<TaskLike> taskLikes = new ArrayList<>(List.of(taskLike, taskLike2));
+
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(taskLikeRepository.findByAccountOrderByOrder(account)).thenReturn(taskLikes);
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskLikeService.changeOrder(account.getId(), 1, 2))
+                .isInstanceOf(TaskLikeChangeIndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void changeOrder_정상요청_change정상() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        Task task2 = createTask(TASK_ID2, project, kanbanLane);
+        TaskLike taskLike = createTaskLike(TASK_LIKE_ID, account, task, 0);
+        TaskLike taskLike2 = createTaskLike(TASK_LIKE_ID2, account, task2, 1);
+        List<TaskLike> taskLikes = new ArrayList<>(List.of(taskLike, taskLike2));
+
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(taskLikeRepository.findByAccountOrderByOrder(account)).thenReturn(taskLikes);
+
+        // When
+        taskLikeService.changeOrder(account.getId(), 1, 0);
+
+        // Then
+        assertThat(taskLikes).containsExactly(taskLike2, taskLike);
     }
 
     @Test

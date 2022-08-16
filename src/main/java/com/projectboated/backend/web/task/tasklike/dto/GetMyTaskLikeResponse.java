@@ -8,9 +8,9 @@ import java.util.List;
 @Getter
 public class GetMyTaskLikeResponse {
 
-    private List<TaskLikeResponse> content;
+    private List<TaskLikeResponse> taskLikes;
 
-    public GetMyTaskLikeResponse(List<TaskLikeResponse> content) {
-        this.content = content;
+    public GetMyTaskLikeResponse(List<TaskLikeResponse> taskLikes) {
+        this.taskLikes = taskLikes;
     }
 }

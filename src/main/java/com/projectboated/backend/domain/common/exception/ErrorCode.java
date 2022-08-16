@@ -46,6 +46,8 @@ public enum ErrorCode {
     // Task Like
     TASK_LIKE_ALREADY_EXISTS(400, "TL001", "이미 찜한 task입니다."),
     TASK_LIKE_NOT_FOUND(400, "TL002", "찾을 수 없는 찜입니다."),
+    TASK_LIKE_ORIGINAL_INDEX_OUT_OF_BOUNDS(400, "TL003", "original index가 tasklike index범위를 벗어났습니다."),
+    TASK_LIKE_CHNAGE_INDEX_OUT_OF_BOUNDS(400, "TL004", "change index가 tasklike index범위를 벗어났습니다."),
 
     // Task File
     TASK_FILE_NOT_FOUND(400, "TF001", "task file을 찾을 수 없습니다."),

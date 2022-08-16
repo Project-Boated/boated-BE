@@ -13,7 +13,9 @@ import com.projectboated.backend.domain.task.task.service.exception.TaskNotFound
 import com.projectboated.backend.domain.task.tasklike.entity.TaskLike;
 import com.projectboated.backend.domain.task.tasklike.repository.TaskLikeRepository;
 import com.projectboated.backend.domain.task.tasklike.service.exception.TaskLikeAlreadyExistsException;
+import com.projectboated.backend.domain.task.tasklike.service.exception.TaskLikeChangeIndexOutOfBoundsException;
 import com.projectboated.backend.domain.task.tasklike.service.exception.TaskLikeNotFoundException;
+import com.projectboated.backend.domain.task.tasklike.service.exception.TaskLikeOriginalIndexOutOfBoundsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,6 +90,25 @@ public class TaskLikeService {
         taskLikes.remove(target);
         taskLikeRepository.delete(target);
 
+        reorderTaskLike(taskLikes);
+    }
+
+    @Transactional
+    public void changeOrder(Long accountId, int originalIndex, int changeIndex) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(AccountNotFoundException::new);
+
+        List<TaskLike> taskLikes = taskLikeRepository.findByAccountOrderByOrder(account);
+
+        if (originalIndex < 0 || originalIndex >= taskLikes.size()) {
+            throw new TaskLikeOriginalIndexOutOfBoundsException();
+        }
+        if (changeIndex < 0 || changeIndex >= taskLikes.size()) {
+            throw new TaskLikeChangeIndexOutOfBoundsException();
+        }
+
+        TaskLike target = taskLikes.remove(originalIndex);
+        taskLikes.add(changeIndex, target);
         reorderTaskLike(taskLikes);
     }
 
