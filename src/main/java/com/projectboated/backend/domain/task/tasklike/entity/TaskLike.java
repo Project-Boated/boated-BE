@@ -14,6 +14,7 @@ import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.Task;
 
+import com.querydsl.core.types.Order;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,20 +26,28 @@ public class TaskLike extends BaseTimeEntity {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "task_like_id")
-	Long id;
+	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "account_id")
-	Account account;
+	private Account account;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "task_id")
-	Task task;
+	private Task task;
+
+	@Column(name = "order_index")
+	private Integer order;
 	
 	@Builder
-	public TaskLike(Long id, Account account, Task task) {
+	public TaskLike(Long id, Account account, Task task, Integer order) {
 		this.id = id;
 		this.account = account;
 		this.task = task;
+		this.order = order;
+	}
+
+	public void changeOrder(Integer order) {
+		this.order = order;
 	}
 }

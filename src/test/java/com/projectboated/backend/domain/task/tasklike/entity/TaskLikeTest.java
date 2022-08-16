@@ -20,12 +20,13 @@ class TaskLikeTest {
                 .build();
 
         // When
-        TaskLike taskLike = new TaskLike(TASK_ID, account, task);
+        TaskLike taskLike = new TaskLike(TASK_ID, account, task, 0);
 
         // Then
         assertThat(taskLike.getId()).isEqualTo(TASK_ID);
         assertThat(taskLike.getAccount()).isEqualTo(account);
         assertThat(taskLike.getTask()).isEqualTo(task);
+        assertThat(taskLike.getOrder()).isEqualTo(0);
     }
 
 }

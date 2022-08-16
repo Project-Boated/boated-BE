@@ -914,6 +914,9 @@ include::{snippets}/tasks-assign-cancel/request-fields.adoc[]
 include::{snippets}/tasks-assign-cancel/http-response.adoc[]
 
 [[resources-tasks-like]]
+== 프로젝트 Task 찜
+
+[[resources-tasks-like-crate]]
 === Task찜하기
 `POST` 요청을 사용해서 Task를 찜할 수 있습니다.
 
@@ -950,6 +953,23 @@ include::{snippets}/tasks-like-cancel/path-parameters.adoc[]
 
 ===== http-response
 include::{snippets}/tasks-like-cancel/http-response.adoc[]
+
+[[resources-tasks-like-My]]
+=== 내가 찜한 Task
+`GET` 요청을 사용해서 내가 찜한 TASK를 조회할 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/tasks-like-my-retrieve/http-request.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/tasks-like-my-retrieve/http-response.adoc[]
+
+===== response-fields
+include::{snippets}/tasks-like-my-retrieve/response-fields.adoc[]
 
 [[resources-tasks-files]]
 == 프로젝트 Task File

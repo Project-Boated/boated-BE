@@ -13,6 +13,8 @@ import com.projectboated.backend.web.config.WithMockAccount;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
 import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID;
@@ -21,17 +23,39 @@ import static com.projectboated.backend.common.data.BasicDataTask.*;
 import static com.projectboated.backend.common.data.BasicDataTaskFile.TASK_FILE_ID;
 import static com.projectboated.backend.common.data.BasicDataUploadFile.UPLOAD_FILE_ID;
 import static com.projectboated.backend.web.task.taskfile.document.TaskFileControllerDocument.documentTaskFileDelete;
-import static com.projectboated.backend.web.task.tasklike.document.TaskLikeControllerDocument.documentCancelTaskLike;
-import static com.projectboated.backend.web.task.tasklike.document.TaskLikeControllerDocument.documentTaskLike;
+import static com.projectboated.backend.web.task.tasklike.document.TaskLikeControllerDocument.*;
 import static io.restassured.RestAssured.given;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("TaskLike : Controller 단위테스트")
 class TaskLikeControllerTest extends ControllerTest {
+
+    @Test
+    @WithMockAccount
+    void getMyTaskLike_task찾기_정상() throws Exception {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        TaskLike taskLike = createTaskLike(account, task);
+
+        when(taskLikeService.findByAccount(any())).thenReturn(List.of(taskLike));
+        when(taskService.findAssignedAccounts(any(), any())).thenReturn(List.of(account));
+
+
+        // When
+        // Then
+        mockMvc.perform(get("/api/my/likes"))
+                .andExpect(status().isOk())
+                .andDo(documentMyTaskLikeRetrieve());
+    }
 
     @Test
     @WithMockAccount

@@ -15,4 +15,8 @@ public class TaskLikeRepositoryTest extends UploadFileRepositoryTest {
         return taskLikeRepository.save(createTaskLike(account, task));
     }
 
+    protected TaskLike insertTaskLike(Account account, Task task, Integer order) {
+        return taskLikeRepository.save(createTaskLike(account, task, order));
+    }
+
 }

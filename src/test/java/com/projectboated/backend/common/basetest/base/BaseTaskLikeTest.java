@@ -23,4 +23,21 @@ public class BaseTaskLikeTest extends BaseTaskFileTest {
                 .build();
     }
 
+    protected TaskLike createTaskLike(Long id, Account account, Task task, Integer order) {
+        return TaskLike.builder()
+                .id(id)
+                .account(account)
+                .task(task)
+                .order(order)
+                .build();
+    }
+
+    protected TaskLike createTaskLike(Account account, Task task, Integer order) {
+        return TaskLike.builder()
+                .account(account)
+                .task(task)
+                .order(order)
+                .build();
+    }
+
 }
