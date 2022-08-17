@@ -38,7 +38,7 @@ public class KanbanLaneController {
         kanbanLaneService.updateKanbanLane(projectId, kanbanLaneId, kluRequest);
     }
 
-    @PostMapping("/lanes/change/{originalIndex}/{changeIndex}")
+    @PostMapping("/change/{originalIndex}/{changeIndex}")
     public void changeKanbanLaneOrder(
             @PathVariable Long projectId,
             @PathVariable int originalIndex,

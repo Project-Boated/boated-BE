@@ -43,7 +43,9 @@ class GanttChartControllerTest extends ControllerTest {
 
         // When
         // Then
-        mockMvc.perform(get( "/api/my/gantt-chart"))
+        mockMvc.perform(get( "/api/my/gantt-chart")
+                        .param("year", "2022")
+                        .param("month", "08"))
                 .andExpect(status().isOk())
                 .andDo(documentMyGanttChartRetrieve());
     }

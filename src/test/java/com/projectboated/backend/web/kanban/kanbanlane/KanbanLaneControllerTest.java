@@ -18,11 +18,11 @@ import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID;
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME2;
 import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
-import static com.projectboated.backend.web.kanban.kanbanlane.document.KanbanLaneDocument.documentLanesRetrieve;
-import static com.projectboated.backend.web.kanban.kanbanlane.document.KanbanLaneDocument.documentUpdateKanbanLane;
-import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static com.projectboated.backend.web.kanban.kanbanlane.document.KanbanLaneDocument.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("KanbanLane : Controller 단위테스트")
@@ -74,16 +74,13 @@ class KanbanLaneControllerTest extends ControllerTest {
         Project project = createProject(PROJECT_ID, account);
         Kanban kanban = createKanban(KANBAN_ID, project);
         List<KanbanLane> kanbanLanes = createKanbanLanes(KANBAN_LANE_ID, project, kanban, 4);
-
-        when(kanbanLaneService.findByProjectId(project.getId())).thenReturn(kanbanLanes);
-
         // When
         // Then
-        mockMvc.perform(put("/api/projects/{projectId}/kanban/lanes/{kanbanLaneId}", project.getId(), kanbanLanes.get(0).getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(toJsonString(new UpdateKanbanLaneRequest(KANBAN_LANE_NAME2))))
+        mockMvc.perform(post("/api/projects/{projectId}/kanban/lanes/change/{originalIndex}/{changeIndex}", project.getId(), 0, 0))
                 .andExpect(status().isOk())
-                .andDo(documentUpdateKanbanLane());
+                .andDo(documentKanbanLaneOrderChange());
+
+        verify(kanbanLaneService).changeKanbanLaneOrder(any(), anyInt(), anyInt());
     }
 
 }

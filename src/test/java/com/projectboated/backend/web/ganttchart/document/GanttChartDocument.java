@@ -11,12 +11,18 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 
 public abstract class GanttChartDocument {
 
     public static RestDocumentationResultHandler documentMyGanttChartRetrieve() {
         return document("gantt-chart-my-retrieve",
                 preprocessResponse(prettyPrint()),
+                requestParameters(
+                        parameterWithName("year").description("조회할 연도"),
+                        parameterWithName("month").description("조회할 월")
+                ),
                 responseHeaders(
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
                 ),
