@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface AccountProjectRepository extends JpaRepository<AccountProject, Long>, AccountProjectQueryDslRepository {
@@ -20,4 +21,6 @@ public interface AccountProjectRepository extends JpaRepository<AccountProject, 
     Long countByCrewInProject(@Param("crew") Account crew, @Param("project") Project project);
 
     Optional<AccountProject> findByAccountAndProject(Account account, Project project);
+
+    List<AccountProject> findByAccount(Account account);
 }

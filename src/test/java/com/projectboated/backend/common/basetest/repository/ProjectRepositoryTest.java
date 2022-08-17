@@ -7,6 +7,9 @@ import com.projectboated.backend.domain.project.repository.AccountProjectReposit
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import static com.projectboated.backend.common.data.BasicDataProject.*;
 
 public class ProjectRepositoryTest extends ProfileImageRepositoryTest{
@@ -19,6 +22,10 @@ public class ProjectRepositoryTest extends ProfileImageRepositoryTest{
 
     protected Project insertProject(Account captain) {
         return projectRepository.save(createProject(captain));
+    }
+
+    protected Project insertProject(Account captain, LocalDateTime createdDate, LocalDateTime deadline) {
+        return projectRepository.save(createProject(captain, createdDate, deadline));
     }
 
     protected Project insertProjectAndCaptain(String username, String nickname) {

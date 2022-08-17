@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/projects/{projectId}/kanban/lanes/{laneId}/tasks")
+@RequestMapping("/api/projects/{projectId}/kanban/lanes/tasks")
 public class TaskController {
 
     private final TaskService taskService;
@@ -24,7 +24,6 @@ public class TaskController {
     @PostMapping
     public CreateTaskResponse createTask(
             @PathVariable Long projectId,
-            @PathVariable Long laneId,
             @RequestBody CreateTaskRequest request
     ) {
         Task task = Task.builder()
@@ -41,7 +40,6 @@ public class TaskController {
     @GetMapping("/{taskId}")
     public GetTaskResponse getTask(
             @PathVariable Long projectId,
-            @PathVariable Long laneId,
             @PathVariable Long taskId
     ) {
         return GetTaskResponse.builder()
@@ -54,7 +52,6 @@ public class TaskController {
     @PatchMapping("/{taskId}")
     public void patchTask(
             @PathVariable Long projectId,
-            @PathVariable Long laneId,
             @PathVariable Long taskId,
             @RequestBody PatchTaskRequest request
     ) {
@@ -64,7 +61,6 @@ public class TaskController {
     @DeleteMapping("/{taskId}")
     public void deleteTask(
             @PathVariable Long projectId,
-            @PathVariable Long laneId,
             @PathVariable Long taskId
     ) {
         taskService.deleteTask(projectId, taskId);
@@ -73,7 +69,6 @@ public class TaskController {
     @PostMapping(value = "/{taskId}/assign", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void assignAccountTask(
             @PathVariable Long projectId,
-            @PathVariable Long laneId,
             @PathVariable Long taskId,
             @RequestBody AssignAccountTaskRequest request
     ) {
@@ -84,7 +79,6 @@ public class TaskController {
     @PostMapping(value = "/{taskId}/cancel-assign", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void cancelAssignAccountTask(
             @PathVariable Long projectId,
-            @PathVariable Long laneId,
             @PathVariable Long taskId,
             @RequestBody AssignAccountTaskRequest request
     ) {
@@ -92,16 +86,16 @@ public class TaskController {
         taskService.cancelAssignAccount(projectId, taskId, nickname);
     }
 
-    @PostMapping("/{originalTaskIndex}/change/{changeLaneId}/{changeTaskIndex}")
+    @PostMapping("/change/{originalLaneId}/{originalTaskIndex}/{changeLaneId}/{changeTaskIndex}")
     public void changeTaskOrder(
             @PathVariable Long projectId,
-            @PathVariable Long laneId,
+            @PathVariable Long originalLaneId,
             @PathVariable int originalTaskIndex,
             @PathVariable Long changeLaneId,
             @PathVariable int changeTaskIndex
     ) {
         ChangeTaskOrderRequest request = ChangeTaskOrderRequest.builder()
-                .originalLaneId(laneId)
+                .originalLaneId(originalLaneId)
                 .originalTaskIndex(originalTaskIndex)
                 .changeLaneId(changeLaneId)
                 .changeTaskIndex(changeTaskIndex)

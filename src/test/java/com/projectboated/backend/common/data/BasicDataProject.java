@@ -31,5 +31,8 @@ public abstract class BasicDataProject {
             .deadline(PROJECT_DEADLINE2)
             .build();
 
+    public final static Long PROJECT_ID3 = 120L;
+
     public final static Long ACCOUNT_PROJECT_ID = 12924L;
+
 }

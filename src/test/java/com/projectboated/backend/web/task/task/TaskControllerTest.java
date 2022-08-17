@@ -48,7 +48,7 @@ class TaskControllerTest extends ControllerTest {
 
         // When
         // Then
-        mockMvc.perform(post("/api/projects/{projectId}/kanban/lanes/{laneId}/tasks", project.getId(), kanbanLane.getId())
+        mockMvc.perform(post("/api/projects/{projectId}/kanban/lanes/tasks", project.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toJsonString(new CreateTaskRequest(TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE))))
                 .andExpect(status().isOk())
@@ -72,7 +72,7 @@ class TaskControllerTest extends ControllerTest {
 
         // When
         // Then
-        mockMvc.perform(get("/api/projects/{projectId}/kanban/lanes/{laneId}/tasks/{taskId}", project.getId(), kanbanLane.getId(), task.getId()))
+        mockMvc.perform(get("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}", project.getId(), task.getId()))
                 .andExpect(status().isOk())
                 .andDo(documentTaskRetrieve());
     }
@@ -90,7 +90,7 @@ class TaskControllerTest extends ControllerTest {
 
         // When
         // Then
-        mockMvc.perform(patch("/api/projects/{projectId}/kanban/lanes/{laneId}/tasks/{taskId}", project.getId(), kanbanLane.getId(), task.getId())
+        mockMvc.perform(patch("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}", project.getId(), task.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toJsonString(new PatchTaskRequest(TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE, 129L)))
                 )
@@ -111,7 +111,7 @@ class TaskControllerTest extends ControllerTest {
 
         // When
         // Then
-        mockMvc.perform(delete("/api/projects/{projectId}/kanban/lanes/{laneId}/tasks/{taskId}", project.getId(), kanbanLane.getId(), task.getId()))
+        mockMvc.perform(delete("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}", project.getId(), task.getId()))
                 .andExpect(status().isOk())
                 .andDo(documentTaskDelete());
     }
@@ -129,7 +129,7 @@ class TaskControllerTest extends ControllerTest {
 
         // When
         // Then
-        mockMvc.perform(post("/api/projects/{projectId}/kanban/lanes/{laneId}/tasks/{taskId}/assign", project.getId(), kanbanLane.getId(), task.getId())
+        mockMvc.perform(post("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}/assign", project.getId(), task.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toJsonString(new AssignAccountTaskRequest(NICKNAME2))))
                 .andExpect(status().isOk())
@@ -149,7 +149,7 @@ class TaskControllerTest extends ControllerTest {
 
         // When
         // Then
-        mockMvc.perform(post("/api/projects/{projectId}/kanban/lanes/{laneId}/tasks/{taskId}/cancel-assign", project.getId(), kanbanLane.getId(), task.getId())
+        mockMvc.perform(post("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}/cancel-assign", project.getId(), task.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toJsonString(new AssignAccountTaskRequest(NICKNAME2))))
                 .andExpect(status().isOk())
@@ -171,7 +171,7 @@ class TaskControllerTest extends ControllerTest {
 
         // When
         // Then
-        mockMvc.perform(post("/api/projects/{projectId}/kanban/lanes/{originalLaneId}/tasks/{originalTaskIndex}/change/{changeLaneId}/{changeTaskIndex}", 0, 0, 0, 0, 0))
+        mockMvc.perform(post("/api/projects/{projectId}/kanban/lanes/tasks/change/{originalLaneId}/{originalTaskIndex}/{changeLaneId}/{changeTaskIndex}", 0, 0, 0, 0, 0))
                 .andExpect(status().isOk())
                 .andDo(documentTaskOrderChange());
 

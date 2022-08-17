@@ -7,6 +7,7 @@ import com.projectboated.backend.domain.project.entity.Project;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
@@ -77,6 +78,22 @@ class AccountProjectRepositoryTest extends RepositoryTest {
         // Then
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(accountProject);
+    }
+
+    @Test
+    void findByAccount_2개존재_2개조회() {
+        // Given
+        Account account = insertAccount();
+        Project project = insertProject(account);
+        Project project2 = insertProject(account);
+        AccountProject accountProject = insertAccountProject(account, project);
+        AccountProject accountProject2 = insertAccountProject(account, project2);
+
+        // When
+        List<AccountProject> result = accountProjectRepository.findByAccount(account);
+
+        // Then
+        assertThat(result).containsExactly(accountProject, accountProject2);
     }
 
 }

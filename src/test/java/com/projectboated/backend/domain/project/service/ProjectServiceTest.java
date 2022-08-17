@@ -8,16 +8,15 @@ import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanban.repository.KanbanRepository;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLaneType;
 import com.projectboated.backend.domain.kanban.kanbanlane.repository.KanbanLaneRepository;
+import com.projectboated.backend.domain.project.entity.AccountProject;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.condition.GetMyProjectsCond;
 import com.projectboated.backend.domain.project.service.condition.ProjectUpdateCond;
 import com.projectboated.backend.domain.project.service.dto.MyProjectsDto;
-import com.projectboated.backend.domain.project.service.exception.ProjectDeleteAccessDeniedException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNameSameInAccountException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
-import com.projectboated.backend.domain.project.service.exception.ProjectUpdateAccessDeniedException;
 import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +25,7 @@ import org.mockito.Mock;
 import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -372,6 +371,152 @@ class ProjectServiceTest extends ServiceTest {
 
         // Then
         assertThat(result).isFalse();
+    }
+
+    @Test
+    void findByAccountId_찾을수없는Account_예외발생() {
+        // Given
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, captain);
+        Project project2 = createProject(PROJECT_ID2, captain);
+        Project project3 = createProject(PROJECT_ID3, captain);
+
+        LocalDateTime targetDate = LocalDateTime.of(2022, 8, 1, 0, 0);
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> {
+            projectService.findByAccountIdAndDate(captain.getId(), targetDate);
+        })
+                .isInstanceOf(AccountNotFoundException.class);
+    }
+
+    @Test
+    void findByAccountId_전달시작전달끝_1개만조회됨() {
+        // Given
+        LocalDateTime targetDate = LocalDateTime.of(2022, 8, 1, 0, 0);
+
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, captain);
+        Project project2 = createProject(PROJECT_ID2, captain, targetDate.minusMonths(1), targetDate.minusMonths(1));
+        AccountProject accountProject = createAccountProject(captain, project2);
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
+        when(projectRepository.findByCaptainAndDate(any(), any(), any())).thenReturn(new ArrayList<>(List.of(project)));
+        when(accountProjectRepository.findByAccount(captain)).thenReturn(new ArrayList<>(List.of(accountProject)));
+
+        // When
+        List<Project> result = projectService.findByAccountIdAndDate(captain.getId(), targetDate);
+
+        // Then
+        assertThat(result).containsExactly(project);
+    }
+
+    @Test
+    void findByAccountId_전달시작이번달끝_2개조회됨() {
+        // Given
+        LocalDateTime targetDate = LocalDateTime.of(2022, 8, 1, 0, 0);
+
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, captain);
+        Project project2 = createProject(PROJECT_ID2, captain, targetDate.minusMonths(1), targetDate);
+        AccountProject accountProject = createAccountProject(captain, project2);
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
+        when(projectRepository.findByCaptainAndDate(any(), any(), any())).thenReturn(new ArrayList<>(List.of(project)));
+        when(accountProjectRepository.findByAccount(captain)).thenReturn(new ArrayList<>(List.of(accountProject)));
+
+        // When
+        List<Project> result = projectService.findByAccountIdAndDate(captain.getId(), targetDate);
+
+        // Then
+        assertThat(result).contains(project, project2);
+    }
+
+    @Test
+    void findByAccountId_전달시작다음달끝_2개조회됨() {
+        // Given
+        LocalDateTime targetDate = LocalDateTime.of(2022, 8, 1, 0, 0);
+
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, captain);
+        Project project2 = createProject(PROJECT_ID2, captain, targetDate.minusMonths(1), targetDate.plusMonths(1));
+        AccountProject accountProject = createAccountProject(captain, project2);
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
+        when(projectRepository.findByCaptainAndDate(any(), any(), any())).thenReturn(new ArrayList<>(List.of(project)));
+        when(accountProjectRepository.findByAccount(captain)).thenReturn(new ArrayList<>(List.of(accountProject)));
+
+        // When
+        List<Project> result = projectService.findByAccountIdAndDate(captain.getId(), targetDate);
+
+        // Then
+        assertThat(result).contains(project, project2);
+    }
+
+    @Test
+    void findByAccountId_이번달시작이번달끝_2개조회됨() {
+        // Given
+        LocalDateTime targetDate = LocalDateTime.of(2022, 8, 1, 0, 0);
+
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, captain);
+        Project project2 = createProject(PROJECT_ID2, captain, targetDate, targetDate);
+        AccountProject accountProject = createAccountProject(captain, project2);
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
+        when(projectRepository.findByCaptainAndDate(any(), any(), any())).thenReturn(new ArrayList<>(List.of(project)));
+        when(accountProjectRepository.findByAccount(captain)).thenReturn(new ArrayList<>(List.of(accountProject)));
+
+        // When
+        List<Project> result = projectService.findByAccountIdAndDate(captain.getId(), targetDate);
+
+        // Then
+        assertThat(result).contains(project, project2);
+    }
+
+    @Test
+    void findByAccountId_이번달시작다음달끝_2개조회됨() {
+        // Given
+        LocalDateTime targetDate = LocalDateTime.of(2022, 8, 1, 0, 0);
+
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, captain);
+        Project project2 = createProject(PROJECT_ID2, captain, targetDate, targetDate.plusMonths(1));
+        AccountProject accountProject = createAccountProject(captain, project2);
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
+        when(projectRepository.findByCaptainAndDate(any(), any(), any())).thenReturn(new ArrayList<>(List.of(project)));
+        when(accountProjectRepository.findByAccount(captain)).thenReturn(new ArrayList<>(List.of(accountProject)));
+
+        // When
+        List<Project> result = projectService.findByAccountIdAndDate(captain.getId(), targetDate);
+
+        // Then
+        assertThat(result).contains(project, project2);
+    }
+
+    @Test
+    void findByAccountId_다음달시작다음달끝_1개조회됨() {
+        // Given
+        LocalDateTime targetDate = LocalDateTime.of(2022, 8, 1, 0, 0);
+
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, captain);
+        Project project2 = createProject(PROJECT_ID2, captain, targetDate.plusMonths(1), targetDate.plusMonths(1));
+        AccountProject accountProject = createAccountProject(captain, project2);
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
+        when(projectRepository.findByCaptainAndDate(any(), any(), any())).thenReturn(new ArrayList<>(List.of(project)));
+        when(accountProjectRepository.findByAccount(captain)).thenReturn(new ArrayList<>(List.of(accountProject)));
+
+        // When
+        List<Project> result = projectService.findByAccountIdAndDate(captain.getId(), targetDate);
+
+        // Then
+        assertThat(result).contains(project);
     }
 
 }

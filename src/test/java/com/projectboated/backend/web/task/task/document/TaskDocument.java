@@ -23,8 +23,7 @@ public abstract class TaskDocument {
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
                 ),
                 pathParameters(
-                        parameterWithName("projectId").description("target 프로젝트의 id"),
-                        parameterWithName("laneId").description("target lane의 id(아무 숫자를 넣으시면됩니다, 어차피 첫번째 lane에 들어감)")
+                        parameterWithName("projectId").description("target 프로젝트의 id")
                 ),
                 requestFields(
                         fieldWithPath("name").type(JsonFieldType.STRING).description("Task 이름"),
@@ -45,7 +44,6 @@ public abstract class TaskDocument {
                 ),
                 pathParameters(
                         parameterWithName("projectId").description("target 프로젝트의 고유번호"),
-                        parameterWithName("laneId").description("target lane의 고유번호"),
                         parameterWithName("taskId").description("target task의 고유번호")
                 ),
                 requestFields(
@@ -62,7 +60,6 @@ public abstract class TaskDocument {
                 ),
                 pathParameters(
                         parameterWithName("projectId").description("target 프로젝트의 id"),
-                        parameterWithName("laneId").description("target lane의 id"),
                         parameterWithName("taskId").description("target task의 id")
                 ),
                 requestFields(
@@ -76,7 +73,6 @@ public abstract class TaskDocument {
                 preprocessResponse(prettyPrint()),
                 pathParameters(
                         parameterWithName("projectId").description("target 프로젝트의 id"),
-                        parameterWithName("laneId").description("target lane의 id"),
                         parameterWithName("taskId").description("target task의 id")
                 ),
                 responseFields(
@@ -101,7 +97,6 @@ public abstract class TaskDocument {
                 preprocessResponse(prettyPrint()),
                 pathParameters(
                         parameterWithName("projectId").description("target 프로젝트의 id"),
-                        parameterWithName("laneId").description("target lane의 id"),
                         parameterWithName("taskId").description("target task의 id")
                 ),
                 requestFields(
@@ -118,7 +113,6 @@ public abstract class TaskDocument {
                 preprocessResponse(prettyPrint()),
                 pathParameters(
                         parameterWithName("projectId").description("target 프로젝트의 고유번호"),
-                        parameterWithName("laneId").description("target lane 고유번호"),
                         parameterWithName("taskId").description("target task의 고유번호")
                 )
         );

@@ -3,28 +3,30 @@ package com.projectboated.backend.domain.project.service;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanban.repository.KanbanRepository;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLaneType;
 import com.projectboated.backend.domain.kanban.kanbanlane.repository.KanbanLaneRepository;
 import com.projectboated.backend.domain.project.aop.OnlyCaptain;
+import com.projectboated.backend.domain.project.entity.AccountProject;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.condition.GetMyProjectsCond;
 import com.projectboated.backend.domain.project.service.condition.ProjectUpdateCond;
 import com.projectboated.backend.domain.project.service.dto.MyProjectsDto;
-import com.projectboated.backend.domain.project.service.exception.ProjectDeleteAccessDeniedException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNameSameInAccountException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
-import com.projectboated.backend.domain.project.service.exception.ProjectUpdateAccessDeniedException;
 import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -114,5 +116,25 @@ public class ProjectService {
 
     public boolean isCaptainOrCrew(Project project, Account account) {
         return project.isCaptain(account) || isCrew(project, account);
+    }
+
+    public List<Project> findByAccountIdAndDate(Long accountId, LocalDateTime targetDate) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(AccountNotFoundException::new);
+
+        LocalDateTime nextDate = targetDate.plusMonths(1);
+
+        List<Project> projects = projectRepository.findByCaptainAndDate(account, targetDate, nextDate);
+
+        for (AccountProject accountProject : accountProjectRepository.findByAccount(account)) {
+            Project project = accountProject.getProject();
+            if (project.getCreatedDate().isBefore(nextDate) &&
+                    (project.getDeadline().isEqual(targetDate)||project.getDeadline().isAfter(targetDate))
+            ) {
+                projects.add(accountProject.getProject());
+            }
+        }
+
+        return projects;
     }
 }

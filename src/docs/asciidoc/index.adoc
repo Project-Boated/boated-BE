@@ -1059,3 +1059,23 @@ include::{snippets}/tasks-files-delete/path-parameters.adoc[]
 
 ===== http-response
 include::{snippets}/tasks-files-delete/http-response.adoc[]
+
+[[resources-gantt-chart]]
+== 간트차트
+
+[[resources-gantt-chart-my]]
+=== 내 간트차트
+`GET` 요청을 사용해서 내 간트차트를 조회할 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/gantt-chart-my-retrieve/http-request.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/gantt-chart-my-retrieve/http-response.adoc[]
+
+===== response-fields
+include::{snippets}/gantt-chart-my-retrieve/response-fields.adoc[]
