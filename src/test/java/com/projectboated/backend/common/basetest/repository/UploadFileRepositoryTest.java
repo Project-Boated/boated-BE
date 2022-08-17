@@ -11,12 +11,8 @@ public class UploadFileRepositoryTest extends TaskFileRepositoryTest {
     @Autowired
     protected UploadFileRepository uploadFileRepository;
 
-    public UploadFile insertDefaultUploadFile() {
-        return uploadFileRepository.save(UploadFile.builder()
-                .saveFileName(SAVE_FILE_NAME)
-                .originalFileName(ORIGINAL_FILE_NAME)
-                .mediaType(MEDIATYPE)
-                .build());
+    public UploadFile insertUploadFile() {
+        return uploadFileRepository.save(createUploadFile());
     }
 
 }

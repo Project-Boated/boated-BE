@@ -6,6 +6,7 @@ import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.exception.TaskChangeIndexOutOfBoundsException;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.exception.TaskOriginalIndexOutOfBoundsException;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.KanbanLaneUpdateRequest;
+import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -32,52 +34,31 @@ public class KanbanLane extends BaseTimeEntity {
     @JoinColumn(name = "kanban_id")
     private Kanban kanban;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "kanbanLane",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            orphanRemoval = true)
-    @OrderColumn(name = "task_index")
-    private List<Task> tasks = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private Project project;
+
+    @Column(name = "kanban_lane_index")
+    private Integer order;
 
     @Builder
-    public KanbanLane(Long id, String name, Kanban kanban) {
+    public KanbanLane(Long id, String name, Integer order, Project project, Kanban kanban) {
         this.id = id;
         this.name = name;
+        this.order = order;
         this.kanban = kanban;
-    }
-
-    public void changeKanban(Kanban kanban) {
-        this.kanban = kanban;
-    }
-
-    public void addTask(Task task) {
-        this.tasks.add(task);
-        task.changeKanbanLane(this);
-    }
-
-    public void addTask(int index, Task task) {
-        if (index < 0 || index > tasks.size()) {
-            throw new TaskChangeIndexOutOfBoundsException(ErrorCode.TASK_CHANGE_INDEX_OUT_OF_BOUNDS);
-        }
-        this.tasks.add(index, task);
-        task.changeKanbanLane(this);
-    }
-
-    public Task removeTask(int index) {
-        if (index < 0 || index >= tasks.size()) {
-            throw new TaskOriginalIndexOutOfBoundsException(ErrorCode.TASK_ORIGINAL_INDEX_OUT_OF_BOUNDS);
-        }
-        return tasks.remove(index);
-    }
-
-    public void changeTaskOrder(int originalIndex, int changeIndex) {
-        Task task = this.removeTask(originalIndex);
-        this.addTask(changeIndex, task);
+        this.project = project;
     }
 
     public void update(KanbanLaneUpdateRequest request) {
         if (request.getName() != null) {
             this.name = request.getName();
         }
+        if (request.getOrder() != null) {
+            this.order = request.getOrder();
+        }
+        this.project = request.getProject();
+        this.kanban = request.getKanban();
     }
 
     @Override

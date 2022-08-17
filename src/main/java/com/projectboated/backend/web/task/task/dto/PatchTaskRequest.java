@@ -16,12 +16,14 @@ public class PatchTaskRequest {
     private String description;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deadline;
+    private Long laneId;
 
     @Builder
-    public PatchTaskRequest(String name, String description, LocalDateTime deadline) {
+    public PatchTaskRequest(String name, String description, LocalDateTime deadline, Long landId) {
         this.name = name;
         this.description = description;
         this.deadline = deadline;
+        this.laneId = landId;
     }
 
     public TaskUpdateRequest toTaskUpdateRequest() {

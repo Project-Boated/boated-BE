@@ -26,7 +26,8 @@ public class AccountTask extends BaseTimeEntity {
     private Task task;
 
     @Builder
-    public AccountTask(Account account, Task task) {
+    public AccountTask(Long id, Account account, Task task) {
+        this.id = id;
         this.account = account;
         this.task = task;
     }

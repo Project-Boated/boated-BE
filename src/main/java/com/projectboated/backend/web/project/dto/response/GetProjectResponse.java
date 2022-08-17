@@ -33,15 +33,16 @@ public class GetProjectResponse {
     private Long totalFileSize;
 
     @Builder
-    public GetProjectResponse(Project project, long taskSize) {
+    public GetProjectResponse(Project project, long taskSize, ProjectCaptainResponse projectCaptainResponse) {
         this.id = project.getId();
         this.name = project.getName();
         this.description = project.getDescription();
         this.deadline = project.getDeadline();
-        this.captain = new ProjectCaptainResponse(project.getCaptain());
         this.isTerminated = project.isTerminated();
         this.dday = project.getDeadline()!=null ? ChronoUnit.DAYS.between(deadline.toLocalDate(), LocalDate.now()) : null;
         this.totalDay = project.getDeadline()!=null ? ChronoUnit.DAYS.between(project.getCreatedDate().toLocalDate(), deadline.toLocalDate()) : null;
+
+        this.captain = projectCaptainResponse;
         this.taskSize = taskSize;
         this.totalFileSize = 0L;
     }

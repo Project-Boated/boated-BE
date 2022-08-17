@@ -1,22 +1,21 @@
 package com.projectboated.backend.web.task.taskfile.document;
 
-import io.restassured.filter.Filter;
 import org.springframework.http.HttpHeaders;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
-import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
 public abstract class TaskFileControllerDocument {
 
-    public static Filter documentUploadTaskFile() {
+    public static RestDocumentationResultHandler documentUploadTaskFile() {
         return document("tasks-files-create",
                 preprocessResponse(prettyPrint()),
                 requestHeaders(
@@ -37,7 +36,7 @@ public abstract class TaskFileControllerDocument {
         );
     }
 
-    public static Filter documentTaskFileDelete() {
+    public static RestDocumentationResultHandler documentTaskFileDelete() {
         return document("tasks-files-delete",
                 preprocessResponse(prettyPrint()),
                 pathParameters(
@@ -48,7 +47,7 @@ public abstract class TaskFileControllerDocument {
         );
     }
 
-    public static Filter documentTaskFileRetrieve() {
+    public static RestDocumentationResultHandler documentTaskFileRetrieve() {
         return document("tasks-files-retrieve",
                 pathParameters(
                         parameterWithName("projectId").description("프로젝트 고유번호"),

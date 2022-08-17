@@ -33,20 +33,22 @@ public class Project extends BaseTimeEntity {
     @JoinColumn(name = "account_id_captain")
     private Account captain;
 
-    @OneToOne(mappedBy = "project",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            orphanRemoval = true)
-    private Kanban kanban;
-
     private boolean isTerminated;
 
     @Builder
     public Project(Long id, Account captain, String name, String description, LocalDateTime deadline) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.deadline = deadline;
         this.captain = captain;
         this.isTerminated = false;
+    }
+
+    public void update(ProjectUpdateCond cond) {
+        this.changeName(cond.getName());
+        this.changeDescription(cond.getDescription());
+        this.changeDeadline(cond.getDeadline());
     }
 
     public void changeName(String name) {
@@ -67,15 +69,12 @@ public class Project extends BaseTimeEntity {
         }
     }
 
-    public void changeCaptain(Account account) {
-        this.captain = account;
+    public boolean isCaptain(Account captain) {
+        return this.captain.getId() == captain.getId();
     }
 
-    public void changeKanban(Kanban kanban) {
-        if (!Objects.equals(this.kanban, kanban)) {
-            this.kanban = kanban;
-            kanban.changeProject(this);
-        }
+    public void changeCaptain(Account account) {
+        this.captain = account;
     }
 
     public void terminate() {
@@ -84,15 +83,5 @@ public class Project extends BaseTimeEntity {
 
     public void cancelTerminate() {
         isTerminated = false;
-    }
-
-    public boolean isCaptain(Account captain) {
-        return this.captain.getId() == captain.getId();
-    }
-
-    public void update(ProjectUpdateCond cond) {
-        this.changeName(cond.getName());
-        this.changeDescription(cond.getDescription());
-        this.changeDeadline(cond.getDeadline());
     }
 }

@@ -16,19 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/projects/{projectId}")
 public class ProjectTerminateController {
 
-    private final ProjectTerminateService terminateProject;
+    private final ProjectTerminateService terminateProjectService
+            ;
 
     @PostMapping("/terminate")
-    public TerminateProjectResponse terminateProject(@AuthenticationPrincipal Account account,
-                                                     @PathVariable Long projectId) {
-        terminateProject.terminateProject(account.getId(), projectId);
+    public TerminateProjectResponse terminateProject(@PathVariable Long projectId) {
+        terminateProjectService.terminateProject(projectId);
         return new TerminateProjectResponse(projectId);
     }
 
     @PostMapping("/cancel-terminate")
     public CancelTerminateProjectResponse cancelTerminateProject(@AuthenticationPrincipal Account account,
                                                                  @PathVariable Long projectId) {
-        terminateProject.cancelTerminateProject(account.getId(), projectId);
+        terminateProjectService.cancelTerminateProject(projectId);
         return new CancelTerminateProjectResponse(projectId);
     }
 

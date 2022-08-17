@@ -22,7 +22,6 @@ class AccountNicknameControllerTest extends ControllerTest {
     @Test
     @WithMockAccount
     void putNickname_닉네임변경_성공() throws Exception {
-
         // Given
         // When
         // Then

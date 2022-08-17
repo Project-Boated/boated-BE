@@ -1,21 +1,19 @@
 package com.projectboated.backend.domain.kanban.kanbanlane.service;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.account.account.repository.AccountRepository;
-import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
+import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
+import com.projectboated.backend.domain.kanban.kanban.entity.exception.KanbanLaneChangeIndexOutOfBoundsException;
+import com.projectboated.backend.domain.kanban.kanban.entity.exception.KanbanLaneOriginalIndexOutOfBoundsException;
+import com.projectboated.backend.domain.kanban.kanban.repository.KanbanRepository;
+import com.projectboated.backend.domain.kanban.kanban.service.exception.KanbanNotFoundException;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.kanban.kanbanlane.repository.KanbanLaneRepository;
-import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.KanbanLaneUpdateRequest;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.exception.*;
 import com.projectboated.backend.domain.project.aop.OnlyCaptain;
 import com.projectboated.backend.domain.project.aop.OnlyCaptainOrCrew;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
-import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
-import com.projectboated.backend.domain.task.task.entity.Task;
 
 import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,28 +21,33 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class KanbanLaneService {
-    private final AccountRepository accountRepository;
+
     private final ProjectRepository projectRepository;
     private final KanbanLaneRepository kanbanLaneRepository;
     private final TaskRepository taskRepository;
-    private final ProjectService projectService;
+    private final KanbanRepository kanbanRepository;
+
+    @OnlyCaptainOrCrew
+    public List<KanbanLane> findByProjectId(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
+        return kanbanLaneRepository.findByProject(project);
+    }
 
     @Transactional
-    public void createNewLine(Long accountId, Long projectId, String name) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
-
+    @OnlyCaptain
+    public void createNewLine(Long projectId, String name) {
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
+                .orElseThrow(ProjectNotFoundException::new);
 
-        if (!project.isCaptain(account)) {
-            throw new KanbanLaneSaveAccessDeniedException(ErrorCode.PROJECT_ONLY_CAPTAIN);
-        }
+        Kanban kanban = kanbanRepository.findByProject(project)
+                .orElseThrow(KanbanNotFoundException::new);
 
         if (kanbanLaneRepository.findByProject(project).size() >= 5) {
             throw new KanbanLaneAlreadyExists5();
@@ -52,10 +55,19 @@ public class KanbanLaneService {
 
         KanbanLane kanbanLane = KanbanLane.builder()
                 .name(name)
+                .kanban(kanban)
+                .project(project)
+                .order(kanbanLaneRepository.findHighestOrder(project) + 1)
                 .build();
         kanbanLaneRepository.save(kanbanLane);
+    }
 
-        project.getKanban().addKanbanLane(kanbanLane);
+    @Transactional
+    @OnlyCaptain
+    public void updateKanbanLane(Long projectId, Long laneId, KanbanLaneUpdateRequest request) {
+        KanbanLane kanbanLane = kanbanLaneRepository.findByProjectIdAndKanbanLaneId(projectId, laneId)
+                .orElseThrow(KanbanLaneNotFoundException::new);
+        kanbanLane.update(request);
     }
 
     @Transactional
@@ -64,62 +76,60 @@ public class KanbanLaneService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(ProjectNotFoundException::new);
 
-        if (kanbanLaneRepository.findByProject(project).size() <= 1) {
+        List<KanbanLane> kanbanLanes = kanbanLaneRepository.findByProject(project);
+        if (kanbanLanes.size() <= 1) {
             throw new KanbanLaneExists1Exception();
         }
 
-        if(taskRepository.countByKanbanLaneId(kanbanLaneId) > 0) {
+        if (taskRepository.countByKanbanLaneId(kanbanLaneId) > 0) {
             throw new KanbanLaneExistsTaskException();
         }
 
-        KanbanLane kanbanLane = kanbanLaneRepository.findByIdAndProject(kanbanLaneId, project)
-                .orElseThrow(KanbanLaneNotFoundException::new);
-        kanbanLaneRepository.delete(kanbanLane);
+        removeKanbanLane(kanbanLaneId, kanbanLanes);
+        reorderKanbanLanes(kanbanLanes);
+    }
+
+    private void removeKanbanLane(Long kanbanLaneId, List<KanbanLane> kanbanLanes) {
+        KanbanLane targetLane = null;
+        for (KanbanLane kanbanLane : kanbanLanes) {
+            if (Objects.equals(kanbanLane.getId(), kanbanLaneId)) {
+                targetLane = kanbanLane;
+                break;
+            }
+        }
+        if (targetLane == null) {
+            throw new KanbanLaneNotFoundException();
+        }
+        kanbanLanes.remove(targetLane);
+        kanbanLaneRepository.delete(targetLane);
+    }
+
+    private void reorderKanbanLanes(List<KanbanLane> kanbanLanes) {
+        for (int i = 0; i < kanbanLanes.size(); i++) {
+            KanbanLane kanbanLane = kanbanLanes.get(i);
+            kanbanLane.update(KanbanLaneUpdateRequest.builder()
+                    .order(i)
+                    .build());
+        }
     }
 
     @Transactional
-    public void changeTaskOrder(Long accountId, ChangeTaskOrderRequest request) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
-
-        Project project = projectRepository.findById(request.projectId())
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
-
-        if (!projectService.isCaptainOrCrew(project, account)) {
-            throw new TaskChangeOrderAccessDeniedException(ErrorCode.PROJECT_ONLY_CAPTAIN_OR_CREW);
-        }
-
-        KanbanLane originalKanbanLane = kanbanLaneRepository.findByProjectIdAndKanbanLaneId(project.getId(), request.originalLaneId())
-                .orElseThrow(KanbanLaneNotFoundException::new);
-        KanbanLane changeKanbanLane = kanbanLaneRepository.findByProjectIdAndKanbanLaneId(project.getId(), request.changeLaneId())
-                .orElseThrow(KanbanLaneNotFoundException::new);
-
-        Task task = originalKanbanLane.removeTask(request.originalTaskIndex());
-        changeKanbanLane.addTask(request.changeTaskIndex(), task);
-    }
-
-    @Transactional
-    public void updateKanbanLane(Long accountId, KanbanLaneUpdateRequest request) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
-
-        Project project = projectRepository.findById(request.getProjectId())
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
-
-        if (!project.isCaptain(account)) {
-            throw new KanbanLaneUpdateAccessDeniedException(ErrorCode.PROJECT_ONLY_CAPTAIN);
-        }
-
-        KanbanLane kanbanLane = kanbanLaneRepository.findByProjectIdAndKanbanLaneId(request.getProjectId(), request.getKanbanLaneId())
-                .orElseThrow(KanbanLaneNotFoundException::new);
-
-        kanbanLane.update(request);
-    }
-
     @OnlyCaptainOrCrew
-    public List<KanbanLane> getLanes(Long projectId) {
+    public void changeKanbanLaneOrder(Long projectId, int originalIndex, int changeIndex) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(ProjectNotFoundException::new);
-        return kanbanLaneRepository.findByProject(project);
+
+        List<KanbanLane> kanbanLanes = kanbanLaneRepository.findByProject(project);
+        if (originalIndex < 0 || originalIndex >= kanbanLanes.size()) {
+            throw new KanbanLaneOriginalIndexOutOfBoundsException();
+        }
+        if (changeIndex < 0 || changeIndex >= kanbanLanes.size()) {
+            throw new KanbanLaneChangeIndexOutOfBoundsException();
+        }
+
+        KanbanLane kanbanLane = kanbanLanes.remove(originalIndex);
+        kanbanLanes.add(changeIndex, kanbanLane);
+
+        reorderKanbanLanes(kanbanLanes);
     }
 }

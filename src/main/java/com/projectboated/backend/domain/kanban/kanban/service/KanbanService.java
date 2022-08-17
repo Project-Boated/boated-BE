@@ -4,7 +4,9 @@ import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
+import com.projectboated.backend.domain.kanban.kanban.repository.KanbanRepository;
 import com.projectboated.backend.domain.kanban.kanban.service.exception.KanbanAccessDeniedException;
+import com.projectboated.backend.domain.kanban.kanban.service.exception.KanbanNotFoundException;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.exception.KanbanLaneChangeIndexDeniedException;
 import com.projectboated.backend.domain.project.aop.OnlyCaptain;
 import com.projectboated.backend.domain.project.aop.OnlyCaptainOrCrew;
@@ -22,22 +24,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class KanbanService {
 
-    private final ProjectService projectService;
-    private final AccountRepository accountRepository;
     private final ProjectRepository projectRepository;
+    private final KanbanRepository kanbanRepository;
 
     @OnlyCaptainOrCrew
     public Kanban findByProjectId(Long projectId) {
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
-        return project.getKanban();
-    }
-
-    @Transactional
-    @OnlyCaptainOrCrew
-    public void changeKanbanLaneOrder(Long projectId, int originalIndex, int changeIndex) {
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
-        project.getKanban().changeKanbanLaneOrder(originalIndex, changeIndex);
+                .orElseThrow(ProjectNotFoundException::new);
+        return kanbanRepository.findByProject(project)
+                .orElseThrow(KanbanNotFoundException::new);
     }
 }

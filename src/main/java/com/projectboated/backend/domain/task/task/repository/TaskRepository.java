@@ -1,11 +1,11 @@
 package com.projectboated.backend.domain.task.task.repository;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.Task;
 
-import com.projectboated.backend.domain.task.tasklike.entity.TaskLike;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -22,4 +22,14 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Query("select count(t) from Task t where t.kanbanLane.id=:kanbanLaneId")
     long countByKanbanLaneId(@Param("kanbanLaneId") Long kanbanLaneId);
+
+    @Modifying
+    @Query("delete from Task t where t.project=:project")
+    void deleteByProject(@Param("project") Project project);
+
+    @Query("select t from Task t where t.project.id=:projectId and t.kanbanLane.id=:laneId order by t.order")
+    List<Task> findByProjectIdAndKanbanLaneId(@Param("projectId") Long projectId, @Param("laneId") Long laneId);
+
+    @Query("select max(t.order) from Task t where t.kanbanLane=:kanbanLane")
+    int findMaxOrder(@Param("kanbanLane") KanbanLane kanbanLane);
 }

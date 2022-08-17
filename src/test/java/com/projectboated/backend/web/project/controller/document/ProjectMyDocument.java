@@ -1,30 +1,24 @@
 package com.projectboated.backend.web.project.controller.document;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.restassured3.RestDocumentationFilter;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
-import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class ProjectMyDocument {
+public abstract class ProjectMyDocument {
 
-    public static RestDocumentationFilter documentProjectMyRetrieve() {
+    public static RestDocumentationResultHandler documentProjectMyRetrieve() {
         return document("project-my-retrieve",
                 preprocessResponse(prettyPrint()),
-                requestHeaders(
-                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
-                ),
                 requestParameters(
                         parameterWithName("captain").description("captain인 경우 조회(term: 종료된 프로젝트, not-term: 종료되지 않은 프로젝트)"),
                         parameterWithName("crew").description("crew인 경우 조회(term: 종료된 프로젝트, not-term: 종료되지 않은 프로젝트)"),

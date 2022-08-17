@@ -31,7 +31,6 @@ public class AccountNicknameService {
 
     public boolean existsByNickname(String nickname) {
         assert nickname!=null;
-        
         return accountRepository.existsByNickname(nickname);
     }
 

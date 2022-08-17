@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Optional;
 
+import static com.projectboated.backend.common.data.BasicDataAccount.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Invitation : Persistence 단위 테스트")
@@ -18,8 +19,8 @@ class InvitationRepositoryTest extends RepositoryTest {
     @Test
     void findByAccountAndProject_account에project존재_return_AccountProject() {
         // Given
-        Project project = insertDefaultProjectAndDefaultCaptain();
-        Account account2 = insertDefaultAccount2();
+        Project project = insertProjectAndCaptain(USERNAME, NICKNAME);
+        Account account2 = insertAccount(USERNAME2, NICKNAME2);
         insertInvitation(project, account2);
 
         // When
@@ -34,12 +35,12 @@ class InvitationRepositoryTest extends RepositoryTest {
     @Test
     void findByAccountAndProject_account에다른project존재_return_empty() {
         // Given
-        Account account = insertDefaultAccount();
-        Project project = insertDefaultProject(account);
+        Account account = insertAccount(USERNAME, NICKNAME);
+        Project project = insertProject(account);
         insertInvitation(project, account);
 
-        Account account2 = insertDefaultAccount2();
-        Project project2 = insertDefaultProject2(account2);
+        Account account2 = insertAccount(USERNAME2, NICKNAME2);
+        Project project2 = insertProject(account);
         insertInvitation(project2, account2);
 
         // When
@@ -52,8 +53,8 @@ class InvitationRepositoryTest extends RepositoryTest {
     @Test
     void findByAccount_invitation1개존재_return_1개() {
         // Given
-        Account account = insertDefaultAccount();
-        Project project = insertDefaultProject(account);
+        Account account = insertAccount(USERNAME, NICKNAME);
+        Project project = insertProject(account);
         insertInvitation(project, account);
 
         // When
@@ -66,8 +67,8 @@ class InvitationRepositoryTest extends RepositoryTest {
     @Test
     void findByIdAndAccount_invitation1개존재_return_1개() {
         // Given
-        Account account = insertDefaultAccount();
-        Project project = insertDefaultProject(account);
+        Account account = insertAccount(USERNAME, NICKNAME);
+        Project project = insertProject(account);
         Invitation invitation = insertInvitation(project, account);
 
         // When

@@ -20,7 +20,7 @@ class InvitationTest extends RepositoryTest {
                 .build();
 
         // When
-        Invitation invitation = new Invitation(account, project);
+        Invitation invitation = new Invitation(123L, account, project);
 
         // Then
         assertThat(invitation.getAccount()).isEqualTo(account);

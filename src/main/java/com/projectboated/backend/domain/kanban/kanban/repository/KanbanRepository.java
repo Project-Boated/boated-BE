@@ -14,4 +14,6 @@ public interface KanbanRepository extends JpaRepository<Kanban, Long> {
     @Modifying
     @Query("delete from Kanban k where k.project=:project")
     void deleteByProject(@Param("project") Project project);
+
+    Optional<Kanban> findByProject(Project project);
 }

@@ -46,6 +46,8 @@ public enum ErrorCode {
     // Task Like
     TASK_LIKE_ALREADY_EXISTS(400, "TL001", "이미 찜한 task입니다."),
     TASK_LIKE_NOT_FOUND(400, "TL002", "찾을 수 없는 찜입니다."),
+    TASK_LIKE_ORIGINAL_INDEX_OUT_OF_BOUNDS(400, "TL003", "original index가 tasklike index범위를 벗어났습니다."),
+    TASK_LIKE_CHNAGE_INDEX_OUT_OF_BOUNDS(400, "TL004", "change index가 tasklike index범위를 벗어났습니다."),
 
     // Task File
     TASK_FILE_NOT_FOUND(400, "TF001", "task file을 찾을 수 없습니다."),
@@ -63,6 +65,9 @@ public enum ErrorCode {
     INVITATION_ACCOUNT_EXISTS_IN_PROJECT(400, "IV003", "이미 Crew인 Account입니다."),
     INVITATION_NOT_FOUND(400, "IV004", "찾을 수 없는 초대입니다."),
     INVITATION_DO_NOT_INVITE_CREW(400, "IV005", "이미 crew인 account를 초대할 수 없습니다."),
+
+    // Kanban
+    KANBAN_NOT_FOUND(400, "KN001", "kanban을 찾을 수 없습니다."),
 
     // Kanban Lane
     KANBAN_LANE_EXISTS_UPPER_5(400, "KL001", "칸반 lane의 개수가 이미 5개입니다"),

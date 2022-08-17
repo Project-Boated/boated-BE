@@ -3,6 +3,7 @@ package com.projectboated.backend.web.project.dto.common;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.project.entity.Project;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -30,15 +31,18 @@ public class ProjectResponse {
 
     private Long totalDay;
 
-    public ProjectResponse(Project project, List<Account> crews) {
+    @Builder
+    public ProjectResponse(Project project, ProjectCaptainResponse projectCaptainResponse, List<Account> crews) {
         this.id = project.getId();
         this.name = project.getName();
         this.description = project.getDescription();
         this.deadline = project.getDeadline();
         this.captain = new ProjectCaptainResponse(project.getCaptain());
-        this.crews = crews.stream().map(ProjectCrewResponse::new).toList();
         this.isTerminated = project.isTerminated();
         this.dday = project.getDeadline() != null ? ChronoUnit.DAYS.between(deadline.toLocalDate(), LocalDate.now()) : null;
         this.totalDay = project.getDeadline() != null ? ChronoUnit.DAYS.between(project.getCreatedDate().toLocalDate(), deadline.toLocalDate()) : null;
+
+        this.captain = projectCaptainResponse;
+        this.crews = crews.stream().map(ProjectCrewResponse::new).toList();
     }
 }

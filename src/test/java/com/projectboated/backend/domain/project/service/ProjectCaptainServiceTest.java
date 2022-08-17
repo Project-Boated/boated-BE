@@ -126,38 +126,6 @@ class ProjectCaptainServiceTest extends ServiceTest {
                 .isInstanceOf(ProjectNotFoundException.class);
     }
 
-
-    @Test
-    void updateCaptain_captain이아닌account가update_오류발생() {
-        // Given
-        Account captain = Account.builder()
-                .id(ACCOUNT_ID)
-                .username(USERNAME)
-                .nickname(NICKNAME)
-                .password(PASSWORD)
-                .build();
-        Project project = Project.builder()
-                .captain(captain)
-                .name(PROJECT_NAME)
-                .description(PROJECT_DESCRIPTION)
-                .deadline(PROJECT_DEADLINE)
-                .build();
-        Account crew = Account.builder()
-                .id(ACCOUNT_ID2)
-                .username(USERNAME2)
-                .nickname(NICKNAME2)
-                .password(PASSWORD2)
-                .build();
-
-        when(accountRepository.findById(crew.getId())).thenReturn(Optional.of(crew));
-        when(projectRepository.findById(any())).thenReturn(Optional.of(project));
-
-        // When
-        // Then
-        assertThatThrownBy(() -> projectCaptainService.updateCaptain(crew.getId(), project.getId(), crew.getUsername()))
-                .isInstanceOf(ProjectCaptainUpdateAccessDeniedException.class);
-    }
-
     @Test
     void updateCaptain_새로운Captain의username을찾을수없음_오류발생() {
         // Given

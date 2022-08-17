@@ -4,6 +4,8 @@ import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
+import com.projectboated.backend.domain.project.aop.OnlyCaptain;
+import com.projectboated.backend.domain.project.aop.OnlyCaptainOrCrew;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
@@ -22,36 +24,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectCrewService {
 
-    private final ProjectService projectService;
     private final ProjectRepository projectRepository;
     private final AccountProjectRepository accountProjectRepository;
     private final AccountRepository accountRepository;
 
-    public List<Account> findAllCrews(Long accountId, Long projectId) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
-
+    @OnlyCaptainOrCrew
+    public List<Account> findAllCrews(Long projectId) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
-
-        if (!projectService.isCaptainOrCrew(project, account)) {
-            throw new ProjectFindAllCrewsAccessDeniedException(ErrorCode.PROJECT_ONLY_CAPTAIN_OR_CREW);
-        }
 
         return accountProjectRepository.findCrewByProject(project);
     }
 
     @Transactional
-    public void deleteCrew(Long accountId, Long projectId, String crewNickname) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
-
+    @OnlyCaptain
+    public void deleteCrew(Long projectId, String crewNickname) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
-
-        if (!project.isCaptain(account)) {
-            throw new ProjectDeleteCrewAccessDeniedException(ErrorCode.PROJECT_ONLY_CAPTAIN);
-        }
 
         Account crew = accountRepository.findByNickname(crewNickname)
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND_BY_USERNAME));

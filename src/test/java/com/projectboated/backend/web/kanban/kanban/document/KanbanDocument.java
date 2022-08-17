@@ -1,23 +1,20 @@
-package com.projectboated.backend.web.kanban.document;
+package com.projectboated.backend.web.kanban.kanban.document;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.restassured3.RestDocumentationFilter;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class KanbanDocument {
+public abstract class KanbanDocument {
 
-    public static RestDocumentationFilter documentKanbanLaneCreate() {
+    public static RestDocumentationResultHandler documentKanbanLaneCreate() {
         return document("kanban-lane-create",
                 preprocessResponse(prettyPrint()),
                 requestHeaders(
@@ -32,17 +29,16 @@ public final class KanbanDocument {
         );
     }
 
-    public static RestDocumentationFilter documentKanbanLaneDelete() {
+    public static RestDocumentationResultHandler documentKanbanLaneDelete() {
         return document("kanban-lane-delete",
                 pathParameters(
                         parameterWithName("projectId").description("프로젝트 고유 번호"),
                         parameterWithName("kanbanLaneId").description("kanban lane 고유번호")
-
                 )
         );
     }
 
-    public static RestDocumentationFilter documentKanbanRetrieve() {
+    public static RestDocumentationResultHandler documentKanbanRetrieve() {
         return document("kanban-retrieve",
                 preprocessResponse(prettyPrint()),
                 pathParameters(
@@ -66,16 +62,6 @@ public final class KanbanDocument {
                         fieldWithPath("lanes[].tasks[].assignedAccounts").type(JsonFieldType.ARRAY).description("task에 배정된 Account"),
                         fieldWithPath("lanes[].tasks[].assignedAccounts[].id").type(JsonFieldType.NUMBER).description("task에 배정된 Account 고유번호"),
                         fieldWithPath("lanes[].tasks[].assignedAccounts[].nickname").type(JsonFieldType.STRING).description("task에 배정된 Account nickname")
-                )
-        );
-    }
-
-    public static RestDocumentationFilter documentKanbanLaneOrderChange() {
-        return document("kanban-lanes-order-change",
-                pathParameters(
-                        parameterWithName("projectId").description("프로젝트 고유 번호"),
-                        parameterWithName("originalIndex").description("바꾸고 싶은 index(index번호입니다. id아닙니다)"),
-                        parameterWithName("changeIndex").description("바꿔지게 될 index(index번호입니다. id아닙니다)")
                 )
         );
     }

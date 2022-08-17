@@ -1,6 +1,7 @@
 package com.projectboated.backend.web.task.task.controller;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import com.projectboated.backend.domain.task.task.service.TaskService;
 import com.projectboated.backend.web.task.task.dto.PatchTaskRequest;
@@ -20,9 +21,8 @@ public class TaskController {
 
     private final TaskService taskService;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     public CreateTaskResponse createTask(
-            @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
             @RequestBody CreateTaskRequest request
     ) {
@@ -32,21 +32,20 @@ public class TaskController {
                 .deadline(request.getDeadline())
                 .build();
 
-        Task newTask = taskService.save(account.getId(), projectId, task);
+        Task newTask = taskService.save(projectId, task);
 
         return new CreateTaskResponse(newTask);
     }
 
     @GetMapping("/{taskId}")
     public GetTaskResponse getTask(
-            @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
             @PathVariable Long taskId
     ) {
         return GetTaskResponse.builder()
-                .task(taskService.findById(account.getId(), projectId, taskId))
-                .assignedAccounts(taskService.findAssignedAccounts(account.getId(), projectId, taskId))
-                .assignedUploadFile(taskService.findAssignedFiles(account.getId(), projectId, taskId))
+                .task(taskService.findById(projectId, taskId))
+                .assignedAccounts(taskService.findAssignedAccounts(projectId, taskId))
+                .assignedUploadFile(taskService.findAssignedFiles(projectId, taskId))
                 .build();
     }
 
@@ -67,34 +66,40 @@ public class TaskController {
         taskService.deleteTask(projectId, taskId);
     }
 
-    @PutMapping("/{taskId}/lanes/{laneId}")
-    public void patchTaskLane(
-            @PathVariable Long projectId,
-            @PathVariable Long taskId,
-            @PathVariable Long laneId
-    ) {
-        taskService.updateTaskLane(projectId, taskId, laneId);
-    }
-
     @PostMapping(value = "/{taskId}/assign", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void assignAccountTask(
-            @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
             @PathVariable Long taskId,
             @RequestBody AssignAccountTaskRequest request
     ) {
         String nickname = request.getNickname();
-        taskService.assignAccount(account.getId(), projectId, taskId, nickname);
+        taskService.assignAccount(projectId, taskId, nickname);
     }
 
     @PostMapping(value = "/{taskId}/cancel-assign", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void cancelAssignAccountTask(
-            @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
             @PathVariable Long taskId,
             @RequestBody AssignAccountTaskRequest request
     ) {
         String nickname = request.getNickname();
-        taskService.cancelAssignAccount(account.getId(), projectId, taskId, nickname);
+        taskService.cancelAssignAccount(projectId, taskId, nickname);
+    }
+
+    @PostMapping("/change/{originalLaneId}/{originalTaskIndex}/{changeLaneId}/{changeTaskIndex}")
+    public void changeTaskOrder(
+            @PathVariable Long projectId,
+            @PathVariable Long originalLaneId,
+            @PathVariable int originalTaskIndex,
+            @PathVariable Long changeLaneId,
+            @PathVariable int changeTaskIndex
+    ) {
+        ChangeTaskOrderRequest request = ChangeTaskOrderRequest.builder()
+                .originalLaneId(originalLaneId)
+                .originalTaskIndex(originalTaskIndex)
+                .changeLaneId(changeLaneId)
+                .changeTaskIndex(changeTaskIndex)
+                .build();
+        taskService.changeTaskOrder(projectId, request);
     }
 }

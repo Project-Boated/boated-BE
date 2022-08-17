@@ -5,7 +5,7 @@ import com.projectboated.backend.domain.common.exception.ErrorCode;
 
 public class KanbanNotFoundException extends BusinessException {
 
-    public KanbanNotFoundException(ErrorCode errorCode) {
-        super(errorCode);
+    public KanbanNotFoundException() {
+        super(ErrorCode.KANBAN_NOT_FOUND);
     }
 }

@@ -168,16 +168,10 @@ include::{snippets}/sign-up/http-response.adoc[]
 ===== http-request
 include::{snippets}/account-profile-retrieve/http-request.adoc[]
 
-===== request-headers
-include::{snippets}/account-profile-retrieve/request-headers.adoc[]
-
 ==== Response
 
 ===== http-response
 include::{snippets}/account-profile-retrieve/http-response.adoc[]
-
-===== response-headers
-include::{snippets}/account-profile-retrieve/response-headers.adoc[]
 
 ===== response-fields
 NOTE: profileImageUrl은 3가지 타입이 있습니다.
@@ -351,9 +345,6 @@ include::{snippets}/project-create/response-fields.adoc[]
 ===== http-request
 include::{snippets}/project-retrieve/http-request.adoc[]
 
-===== request-headers
-include::{snippets}/project-retrieve/request-headers.adoc[]
-
 ==== path-parameters
 include::{snippets}/project-retrieve/path-parameters.adoc[]
 
@@ -378,9 +369,6 @@ include::./adoc/noteCaptainOrCrewOnly.adoc[]
 
 ===== http-request
 include::{snippets}/project-crews-retrieve/http-request.adoc[]
-
-===== request-headers
-include::{snippets}/project-crews-retrieve/request-headers.adoc[]
 
 ===== request-path-parameters
 include::{snippets}/project-crews-retrieve/path-parameters.adoc[]
@@ -537,9 +525,6 @@ include::{snippets}/project-delete/http-response.adoc[]
 ===== http-request
 include::{snippets}/project-my-retrieve/http-request.adoc[]
 
-===== request-headers
-include::{snippets}/project-my-retrieve/request-headers.adoc[]
-
 ===== request-parameters
 include::{snippets}/project-my-retrieve/request-parameters.adoc[]
 
@@ -667,25 +652,6 @@ include::{snippets}/kanban-lane-delete/path-parameters.adoc[]
 ===== http-response
 include::{snippets}/kanban-lane-delete/http-response.adoc[]
 
-[[resources-kanban-lanes-index-change]]
-=== 칸반 lane 순서 바꾸기
-`POST` 요청을 사용해서 칸반 lane의 순서를 바꿀 수 있습니다.
-
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
-
-==== Request
-
-===== http-request
-include::{snippets}/kanban-lanes-order-change/http-request.adoc[]
-
-===== request-path-parameters
-include::{snippets}/kanban-lanes-order-change/path-parameters.adoc[]
-
-==== Response
-
-===== http-response
-include::{snippets}/kanban-lanes-order-change/http-response.adoc[]
-
 [[resources-kanban-lanes-tasks-order-change]]
 === 칸반 task 순서 바꾸기
 `POST` 요청을 사용해서 칸반 task의 순서를 바꿀 수 있습니다.
@@ -720,9 +686,6 @@ include::./adoc/noteCaptainOnly.adoc[]
 ===== http-request
 include::{snippets}/invitation-create/http-request.adoc[]
 
-===== request-headers
-include::{snippets}/invitation-create/request-headers.adoc[]
-
 ===== request-path-parameters
 include::{snippets}/invitation-create/path-parameters.adoc[]
 
@@ -749,9 +712,6 @@ include::{snippets}/invitation-create/response-fields.adoc[]
 ===== http-request
 include::{snippets}/invitation-my-retrieve/http-request.adoc[]
 
-===== request-headers
-include::{snippets}/invitation-my-retrieve/request-headers.adoc[]
-
 ==== Response
 
 ===== http-response
@@ -771,9 +731,6 @@ include::{snippets}/invitation-my-retrieve/response-fields.adoc[]
 
 ===== http-request
 include::{snippets}/invitation-accept/http-request.adoc[]
-
-===== request-headers
-include::{snippets}/invitation-accept/request-headers.adoc[]
 
 ==== path-parameters
 include::{snippets}/invitation-accept/path-parameters.adoc[]
@@ -797,9 +754,6 @@ include::{snippets}/invitation-accept/response-fields.adoc[]
 
 ===== http-request
 include::{snippets}/invitation-reject/http-request.adoc[]
-
-===== request-headers
-include::{snippets}/invitation-reject/request-headers.adoc[]
 
 ==== path-parameters
 include::{snippets}/invitation-reject/path-parameters.adoc[]
@@ -909,25 +863,6 @@ include::{snippets}/tasks-delete/path-parameters.adoc[]
 ===== http-response
 include::{snippets}/tasks-delete/http-response.adoc[]
 
-[[resources-tasks-update-lane]]
-=== Task lane업데이트
-`PUT` 요청을 사용해서 Task의 lane을 update할 수 있습니다.
-
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
-
-==== Request
-
-===== http-request
-include::{snippets}/tasks-update-lane/http-request.adoc[]
-
-===== request-path-parameters
-include::{snippets}/tasks-update-lane/path-parameters.adoc[]
-
-==== Response
-
-===== http-response
-include::{snippets}/tasks-update-lane/http-response.adoc[]
-
 [[resources-tasks-assign]]
 === Task배정
 `POST` 요청을 사용해서 Task를 배정할 수 있습니다
@@ -979,6 +914,9 @@ include::{snippets}/tasks-assign-cancel/request-fields.adoc[]
 include::{snippets}/tasks-assign-cancel/http-response.adoc[]
 
 [[resources-tasks-like]]
+== 프로젝트 Task 찜
+
+[[resources-tasks-like-crate]]
 === Task찜하기
 `POST` 요청을 사용해서 Task를 찜할 수 있습니다.
 
@@ -1015,6 +953,40 @@ include::{snippets}/tasks-like-cancel/path-parameters.adoc[]
 
 ===== http-response
 include::{snippets}/tasks-like-cancel/http-response.adoc[]
+
+[[resources-tasks-like-My]]
+=== 내가 찜한 Task
+`GET` 요청을 사용해서 내가 찜한 TASK를 조회할 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/tasks-like-my-retrieve/http-request.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/tasks-like-my-retrieve/http-response.adoc[]
+
+===== response-fields
+include::{snippets}/tasks-like-my-retrieve/response-fields.adoc[]
+
+[[resources-tasks-like-My-order-change]]
+=== 내가 찜한 Task 순서 바꾸기
+`POST` 요청을 사용해서 내가 찜한 TASK의 순서를 바꿀 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/tasks-like-my-order-change/http-request.adoc[]
+
+===== request-path-parameters
+include::{snippets}/tasks-like-my-order-change/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/tasks-like-my-order-change/http-response.adoc[]
 
 [[resources-tasks-files]]
 == 프로젝트 Task File
@@ -1087,3 +1059,23 @@ include::{snippets}/tasks-files-delete/path-parameters.adoc[]
 
 ===== http-response
 include::{snippets}/tasks-files-delete/http-response.adoc[]
+
+[[resources-gantt-chart]]
+== 간트차트
+
+[[resources-gantt-chart-my]]
+=== 내 간트차트
+`GET` 요청을 사용해서 내 간트차트를 조회할 수 있습니다.
+
+==== Request
+
+===== http-request
+include::{snippets}/gantt-chart-my-retrieve/http-request.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/gantt-chart-my-retrieve/http-response.adoc[]
+
+===== response-fields
+include::{snippets}/gantt-chart-my-retrieve/response-fields.adoc[]

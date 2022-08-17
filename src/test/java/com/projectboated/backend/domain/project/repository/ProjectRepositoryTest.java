@@ -2,42 +2,28 @@ package com.projectboated.backend.domain.project.repository;
 
 import com.projectboated.backend.common.basetest.RepositoryTest;
 import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.project.entity.Project;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import static com.projectboated.backend.common.data.BasicDataAccount.*;
+import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Project : Persistence 단위 테스트")
 class ProjectRepositoryTest extends RepositoryTest {
-    
-    @Test
-    void existsByName_존재하는name일경우_return_true() {
-        // Given
-        insertDefaultProjectAndDefaultCaptain();
-        
-        // When
-        boolean result = projectRepository.existsByName(PROJECT_NAME);
-
-        // Then
-        assertThat(result).isTrue();
-    }
-
-    @Test
-    void existsByName_존재하지않는name일경우_return_false() {
-        // Given
-        // When
-        boolean result = projectRepository.existsByName(PROJECT_NAME);
-
-        // Then
-        assertThat(result).isFalse();
-    }
 
     @Test
     void existsByNameAndCaptain_존재하는name과captain일경우_return_true() {
         // Given
-        Account captain = insertDefaultAccount();
-        insertDefaultProject(captain);
+        Account captain = insertAccount();
+        insertProject(captain);
 
         // When
         boolean result = projectRepository.existsByNameAndCaptain(PROJECT_NAME, captain);
@@ -49,10 +35,10 @@ class ProjectRepositoryTest extends RepositoryTest {
     @Test
     void existsByNameAndCaptain_존재하는name과존재하지않는captain일경우_return_false() {
         // Given
-        Account captain = insertDefaultAccount();
-        insertDefaultProject(captain);
+        Account captain = insertAccount(USERNAME, NICKNAME);
+        insertProject( captain);
 
-        Account unknown = insertDefaultAccount2();
+        Account unknown = insertAccount(USERNAME2, NICKNAME2);
 
         // When
         boolean result = projectRepository.existsByNameAndCaptain(PROJECT_NAME, unknown);
@@ -64,8 +50,8 @@ class ProjectRepositoryTest extends RepositoryTest {
     @Test
     void existsByNameAndCaptain_존재하지않는name과존재하는captain일경우_return_false() {
         // Given
-        Account captain = insertDefaultAccount();
-        insertDefaultProject(captain);
+        Account captain = insertAccount();
+        insertProject(captain);
 
         // When
         boolean result = projectRepository.existsByNameAndCaptain("fail", captain);
@@ -77,10 +63,10 @@ class ProjectRepositoryTest extends RepositoryTest {
     @Test
     void existsByNameAndCaptain_존재하지않는name과존재하지않는captain일경우_return_false() {
         // Given
-        Account captain = insertDefaultAccount();
-        insertDefaultProject(captain);
+        Account captain = insertAccount(USERNAME, NICKNAME);
+        insertProject(captain);
 
-        Account unknown = insertDefaultAccount2();
+        Account unknown = insertAccount(USERNAME2, NICKNAME2);
 
         // When
         boolean result = projectRepository.existsByNameAndCaptain("fail", unknown);
@@ -88,6 +74,119 @@ class ProjectRepositoryTest extends RepositoryTest {
         // Then
         assertThat(result).isFalse();
     }
+
+
+    @Test
+    void findByCaptainAndDate_deadline이null일경우_return_empty() {
+        // Given
+        Account captain = insertAccount();
+        Project project = insertProject(captain, LocalDateTime.now(), null);
+
+        // When
+        LocalDateTime targetDate = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime nextDate = targetDate.plusMonths(1);
+
+        List<Project> result = projectRepository.findByCaptainAndDate(captain, targetDate, nextDate);
+
+        // Then
+        assertThat(result).isEmpty();
+    }
+
+/*    @Test
+    void findByCaptainAndDate_시작은전달끝은이번달_return_1개() {
+        // Given
+        Account captain = insertAccount();
+        Project project = insertProject(captain, LocalDateTime.now().minusMonths(1), LocalDateTime.now());
+
+        // When
+        LocalDateTime targetDate = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime nextDate = targetDate.plusMonths(1);
+
+        List<Project> result = projectRepository.findByCaptainAndDate(captain, targetDate, nextDate);
+
+        // Then
+        assertThat(result).containsExactly(project);
+    }*/
+
+    @Test
+    void findByCaptainAndDate_시작은이번달끝은이번달_return_1개() {
+        // Given
+        Account captain = insertAccount();
+        Project project = insertProject(captain, LocalDateTime.now(), LocalDateTime.now());
+
+        // When
+        LocalDateTime targetDate = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime nextDate = targetDate.plusMonths(1);
+
+        List<Project> result = projectRepository.findByCaptainAndDate(captain, targetDate, nextDate);
+
+        // Then
+        assertThat(result).containsExactly(project);
+    }
+
+    @Test
+    void findByCaptainAndDate_시작은이번달끝은다음달_return_1개() {
+        // Given
+        Account captain = insertAccount();
+        Project project = insertProject(captain, LocalDateTime.now(), LocalDateTime.now().plusMonths(1));
+
+        // When
+        LocalDateTime targetDate = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime nextDate = targetDate.plusMonths(1);
+
+        List<Project> result = projectRepository.findByCaptainAndDate(captain, targetDate, nextDate);
+
+        // Then
+        assertThat(result).containsExactly(project);
+    }
+
+/*    @Test
+    void findByCaptainAndDate_시작은저번달끝은다음달_return_1개() {
+        // Given
+        Account captain = insertAccount();
+        Project project = insertProject(captain, LocalDateTime.now().minusMonths(1), LocalDateTime.now().plusMonths(1));
+
+        // When
+        LocalDateTime targetDate = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime nextDate = targetDate.plusMonths(1);
+
+        List<Project> result = projectRepository.findByCaptainAndDate(captain, targetDate, nextDate);
+
+        // Then
+        assertThat(result).containsExactly(project);
+    }
+
+    @Test
+    void findByCaptainAndDate_시작은저번달끝은저번달_return_null() {
+        // Given
+        Account captain = insertAccount();
+        Project project = insertProject(captain, LocalDateTime.now().minusMonths(1), LocalDateTime.now().minusMonths(1));
+
+        // When
+        LocalDateTime targetDate = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime nextDate = targetDate.plusMonths(1);
+
+        List<Project> result = projectRepository.findByCaptainAndDate(captain, targetDate, nextDate);
+
+        // Then
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void findByCaptainAndDate_시작은다음달끝은다음달_return_null() {
+        // Given
+        Account captain = insertAccount();
+        Project project = insertProject(captain, LocalDateTime.now().plusMonths(1), LocalDateTime.now().plusMonths(1));
+
+        // When
+        LocalDateTime targetDate = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime nextDate = targetDate.plusMonths(1);
+
+        List<Project> result = projectRepository.findByCaptainAndDate(captain, targetDate, nextDate);
+
+        // Then
+        assertThat(result).isEmpty();
+    }*/
 
 
 

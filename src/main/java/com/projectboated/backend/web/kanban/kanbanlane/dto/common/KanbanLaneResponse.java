@@ -15,9 +15,9 @@ public class KanbanLaneResponse {
     private String name;
     private List<TaskResponse> tasks;
 
-    public KanbanLaneResponse(KanbanLane kl, Map<Task, Boolean> taskLikeMap) {
-        this.id = kl.getId();
-        this.name = kl.getName();
-        this.tasks = kl.getTasks().stream().map(t -> new TaskResponse(t, taskLikeMap)).toList();
+    public KanbanLaneResponse(KanbanLane kanbanLane, List<TaskResponse> tasks) {
+        this.id = kanbanLane.getId();
+        this.name = kanbanLane.getName();
+        this.tasks = tasks;
     }
 }

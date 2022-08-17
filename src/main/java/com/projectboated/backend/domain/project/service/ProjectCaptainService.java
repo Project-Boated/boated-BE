@@ -1,6 +1,7 @@
 package com.projectboated.backend.domain.project.service;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.project.aop.OnlyCaptain;
 import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class ProjectCaptainService {
     private final AccountProjectRepository accountProjectRepository;
 
     @Transactional
+    @OnlyCaptain
     public void updateCaptain(Long accountId, Long projectId, String newCaptainNickname) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -31,18 +33,17 @@ public class ProjectCaptainService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND));
 
-        if (!project.isCaptain(account)) {
-            throw new ProjectCaptainUpdateAccessDeniedException(ErrorCode.PROJECT_ONLY_CAPTAIN);
-        }
-
         Account newCaptain = accountRepository.findByNickname(newCaptainNickname)
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND_BY_USERNAME));
 
-        if(!projectService.isCrew(project, newCaptain)) {
+        if (!projectService.isCrew(project, newCaptain)) {
             throw new ProjectCaptainUpdateAccessDeniedException(ErrorCode.PROJECT_CAPTAIN_UPDATE_DENIED_NOT_CREW);
         }
 
-        accountProjectRepository.save(new AccountProject(account, project));
+        accountProjectRepository.save(AccountProject.builder()
+                .account(account)
+                .project(project)
+                .build());
         accountProjectRepository.deleteByProjectAndAccount(project, newCaptain);
         project.changeCaptain(newCaptain);
     }

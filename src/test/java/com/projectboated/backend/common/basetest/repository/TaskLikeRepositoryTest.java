@@ -12,10 +12,11 @@ public class TaskLikeRepositoryTest extends UploadFileRepositoryTest {
     protected TaskLikeRepository taskLikeRepository;
 
     protected TaskLike insertTaskLike(Account account, Task task) {
-        return taskLikeRepository.save(TaskLike.builder()
-                .account(account)
-                .task(task)
-                .build());
+        return taskLikeRepository.save(createTaskLike(account, task));
+    }
+
+    protected TaskLike insertTaskLike(Account account, Task task, Integer order) {
+        return taskLikeRepository.save(createTaskLike(account, task, order));
     }
 
 }

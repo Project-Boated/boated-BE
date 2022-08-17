@@ -1,4 +1,4 @@
-package com.projectboated.backend.domain.task.entity;
+package com.projectboated.backend.domain.task.task.entity;
 
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;

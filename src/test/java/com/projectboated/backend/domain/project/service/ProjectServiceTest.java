@@ -4,16 +4,20 @@ import com.projectboated.backend.common.basetest.ServiceTest;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
+import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
+import com.projectboated.backend.domain.kanban.kanban.repository.KanbanRepository;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLaneType;
+import com.projectboated.backend.domain.kanban.kanbanlane.repository.KanbanLaneRepository;
+import com.projectboated.backend.domain.project.entity.AccountProject;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.condition.GetMyProjectsCond;
 import com.projectboated.backend.domain.project.service.condition.ProjectUpdateCond;
 import com.projectboated.backend.domain.project.service.dto.MyProjectsDto;
-import com.projectboated.backend.domain.project.service.exception.ProjectDeleteAccessDeniedException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNameSameInAccountException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
-import com.projectboated.backend.domain.project.service.exception.ProjectUpdateAccessDeniedException;
+import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,7 +25,7 @@ import org.mockito.Mock;
 import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,61 +42,54 @@ class ProjectServiceTest extends ServiceTest {
     ProjectService projectService;
 
     @Mock
-    ProjectRepository projectRepository;
-    @Mock
     AccountRepository accountRepository;
     @Mock
+    ProjectRepository projectRepository;
+    @Mock
     AccountProjectRepository accountProjectRepository;
+    @Mock
+    KanbanRepository kanbanRepository;
+    @Mock
+    KanbanLaneRepository kanbanLaneRepository;
+    @Mock
+    TaskRepository taskRepository;
 
     @Test
-    void save_project저장_성공() {
+    void findById_존재하지않는ProjectId_예외발생() {
         // Given
-        Account account = Account.builder()
-                .id(ACCOUNT_ID)
-                .username(USERNAME)
-                .nickname(NICKNAME)
-                .password(PASSWORD)
-                .build();
-
-        Project project = Project.builder()
-                .captain(account)
-                .name(PROJECT_NAME)
-                .description(PROJECT_DESCRIPTION)
-                .deadline(PROJECT_DEADLINE)
-                .build();
-
-        when(projectRepository.existsByNameAndCaptain(PROJECT_NAME, account)).thenReturn(false);
-        when(projectRepository.save(project)).thenReturn(project);
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
 
         // When
-        Project saveProject = projectService.save(project);
+        // Then
+        assertThatThrownBy(() -> projectService.findById(PROJECT_ID))
+                .isInstanceOf(ProjectNotFoundException.class);
+    }
+
+    @Test
+    void findById_존재하는Id_return_project() {
+        // Given
+        Account account = createAccount();
+        Project project = createProject(account);
+
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+
+        // When
+        Project byId = projectService.findById(PROJECT_ID);
 
         // Then
-        assertThat(saveProject.getName()).isEqualTo(project.getName());
-        assertThat(saveProject.getDescription()).isEqualTo(project.getDescription());
-        assertThat(saveProject.getCaptain().getId()).isEqualTo(project.getCaptain().getId());
-        assertThat(saveProject.getKanban()).isNotNull();
-        assertThat(saveProject.getKanban().getLanes()).hasSize(4);
+        assertThat(byId.getName()).isEqualTo(project.getName());
+        assertThat(byId.getDescription()).isEqualTo(project.getDescription());
+        assertThat(byId.getDeadline()).isEqualTo(project.getDeadline());
     }
+
 
     @Test
     void save_captain이가진Name으로생성_오류발생() {
         // Given
-        Account account = Account.builder()
-                .id(ACCOUNT_ID)
-                .username(USERNAME)
-                .nickname(NICKNAME)
-                .password(PASSWORD)
-                .build();
+        Account captain = createAccount();
+        Project project = createProject(captain);
 
-        Project project = Project.builder()
-                .captain(account)
-                .name(PROJECT_NAME)
-                .description(PROJECT_DESCRIPTION)
-                .deadline(PROJECT_DEADLINE)
-                .build();
-
-        when(projectRepository.existsByNameAndCaptain(PROJECT_NAME, account)).thenReturn(true);
+        when(projectRepository.existsByNameAndCaptain(project.getName(), captain)).thenReturn(true);
 
         // When
         // Then
@@ -101,54 +98,96 @@ class ProjectServiceTest extends ServiceTest {
     }
 
     @Test
-    void update_모든정보Update_업데이트성공() {
+    void save_project저장_성공() {
         // Given
-        Account captain = Account.builder()
-                .id(ACCOUNT_ID)
-                .username(USERNAME)
-                .nickname(NICKNAME)
-                .password(PASSWORD)
-                .build();
+        Account captain = createAccount();
+        Project project = createProject(captain);
+        Kanban kanban = createKanban(project);
 
-        Project project = Project.builder()
-                .captain(captain)
-                .name(PROJECT_NAME)
-                .description(PROJECT_DESCRIPTION)
-                .deadline(PROJECT_DEADLINE)
-                .build();
+        when(projectRepository.existsByNameAndCaptain(project.getName(), captain)).thenReturn(false);
+        when(projectRepository.save(project)).thenReturn(project);
+        when(kanbanRepository.save(any())).thenReturn(kanban);
+
+        // When
+        Project saveProject = projectService.save(project);
+
+        // Then
+        assertThat(saveProject.getName()).isEqualTo(project.getName());
+        assertThat(saveProject.getDescription()).isEqualTo(project.getDescription());
+        assertThat(saveProject.getCaptain().getId()).isEqualTo(project.getCaptain().getId());
+
+        verify(projectRepository).save(project);
+        verify(kanbanRepository).save(any());
+        verify(kanbanLaneRepository, times(KanbanLaneType.values().length)).save(any());
+    }
+
+    @Test
+    void update_찾을수없는account_예외발생() {
+        // Given
+        Account captain = createAccount();
+        Project project = createProject(captain);
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> projectService.update(captain.getId(), project.getId(), new ProjectUpdateCond("newProjectName", "newProjectDescription", null)))
+                .isInstanceOf(AccountNotFoundException.class);
+    }
+
+    @Test
+    void update_존재하지않는projectId_오류발생() {
+        // Given
+        Account captain = createAccount();
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> projectService.update(captain.getId(), PROJECT_ID, new ProjectUpdateCond(PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE)))
+                .isInstanceOf(ProjectNotFoundException.class);
+    }
+
+    @Test
+    void update_같은Account에같은Name존재_오류발생() {
+        // Given
+        Account captain = createAccount();
+        Project project = createProject(captain);
 
         when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
-        when(projectRepository.existsByNameAndCaptain(any(), any())).thenReturn(false);
+        when(projectRepository.existsByNameAndCaptain(any(), any())).thenReturn(true);
 
         // When
-        String newProjectName = "newProjectName";
-        String newProjectDescription = "newProjectDescription";
-        LocalDateTime newDeadline = PROJECT_DEADLINE.plus(1, ChronoUnit.DAYS);
-        projectService.update(captain.getId(), PROJECT_ID, new ProjectUpdateCond(newProjectName, newProjectDescription, newDeadline));
+        // Then
+        assertThatThrownBy(() -> projectService.update(captain.getId(), PROJECT_ID, new ProjectUpdateCond(PROJECT_NAME2, PROJECT_DESCRIPTION2, PROJECT_DEADLINE2)))
+                .isInstanceOf(ProjectNameSameInAccountException.class);
+    }
+
+    @Test
+    void update_이름이같은걸로update_업데이트안됨() {
+        // Given
+        Account captain = createAccount();
+        Project project = createProject(captain);
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+
+        // When
+        projectService.update(captain.getId(), PROJECT_ID, new ProjectUpdateCond(null, PROJECT_DESCRIPTION2, PROJECT_DEADLINE2));
 
         // Then
-        assertThat(project.getName()).isEqualTo(newProjectName);
-        assertThat(project.getDescription()).isEqualTo(newProjectDescription);
-        assertThat(project.getDeadline()).isEqualTo(newDeadline);
+        assertThat(project.getName()).isEqualTo(PROJECT_NAME);
+        assertThat(project.getDescription()).isEqualTo(PROJECT_DESCRIPTION2);
+        assertThat(project.getDeadline()).isEqualTo(PROJECT_DEADLINE2);
     }
 
     @Test
     void update_모든정보NULL_업데이트안됨() {
         // Given
-        Account captain = Account.builder()
-                .id(ACCOUNT_ID)
-                .username(USERNAME)
-                .nickname(NICKNAME)
-                .password(PASSWORD)
-                .build();
-
-        Project project = Project.builder()
-                .captain(captain)
-                .name(PROJECT_NAME)
-                .description(PROJECT_DESCRIPTION)
-                .deadline(PROJECT_DEADLINE)
-                .build();
+        Account captain = createAccount();
+        Project project = createProject(captain);
 
         when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
@@ -163,245 +202,59 @@ class ProjectServiceTest extends ServiceTest {
     }
 
     @Test
-    void update_존재하지않는projectId_오류발생() {
+    void update_모든정보Update_업데이트성공() {
         // Given
-        Account captain = Account.builder()
-                .id(ACCOUNT_ID)
-                .username(USERNAME)
-                .nickname(NICKNAME)
-                .password(PASSWORD)
-                .build();
-
-        Project project = Project.builder()
-                .captain(captain)
-                .name(PROJECT_NAME)
-                .description(PROJECT_DESCRIPTION)
-                .deadline(PROJECT_DEADLINE)
-                .build();
-
-        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
-
-        // When
-        // Then
-        assertThatThrownBy(() -> projectService.update(captain.getId(), PROJECT_ID, new ProjectUpdateCond(PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE)))
-                .isInstanceOf(ProjectNotFoundException.class);
-    }
-
-    @Test
-    void update_찾을수없는account_예외발생() {
-        // Given
-        Account captain = Account.builder()
-                .id(ACCOUNT_ID)
-                .username(USERNAME)
-                .nickname(NICKNAME)
-                .password(PASSWORD)
-                .build();
-
-        Project project = Project.builder()
-                .captain(captain)
-                .name(PROJECT_NAME)
-                .description(PROJECT_DESCRIPTION)
-                .deadline(PROJECT_DEADLINE)
-                .build();
-
-        when(accountRepository.findById(captain.getId())).thenReturn(Optional.empty());
-
-        // When
-        // Then
-        assertThatThrownBy(() -> projectService.update(captain.getId(), project.getId(), new ProjectUpdateCond("newProjectName", "newProjectDescription", null)))
-                .isInstanceOf(AccountNotFoundException.class);
-    }
-
-    @Test
-    void update_captain이아닌Account가요청_오류발생() {
-        // Given
-        Account captain = Account.builder()
-                .id(ACCOUNT_ID)
-                .username(USERNAME)
-                .nickname(NICKNAME)
-                .password(PASSWORD)
-                .build();
-
-        Project project = Project.builder()
-                .captain(captain)
-                .name(PROJECT_NAME)
-                .description(PROJECT_DESCRIPTION)
-                .deadline(PROJECT_DEADLINE)
-                .build();
-
-        Account crew = Account.builder()
-                .id(ACCOUNT_ID2)
-                .username(USERNAME2)
-                .nickname(NICKNAME2)
-                .password(PASSWORD2)
-                .build();
-
-        when(accountRepository.findById(crew.getId())).thenReturn(Optional.of(crew));
-        when(projectRepository.findById(any())).thenReturn(Optional.of(project));
-
-        // When
-        // Then
-        assertThatThrownBy(() -> projectService.update(crew.getId(), project.getId(), new ProjectUpdateCond("newProjectName", "newProjectDescription", null)))
-                .isInstanceOf(ProjectUpdateAccessDeniedException.class);
-    }
-
-    @Test
-    void update_같은Account에같은Name존재_오류발생() {
-        // Given
-        Account captain = Account.builder()
-                .id(ACCOUNT_ID)
-                .username(USERNAME)
-                .nickname(NICKNAME)
-                .password(PASSWORD)
-                .build();
-
-        Project project = Project.builder()
-                .captain(captain)
-                .name(PROJECT_NAME)
-                .description(PROJECT_DESCRIPTION)
-                .deadline(PROJECT_DEADLINE)
-                .build();
+        Account captain = createAccount();
+        Project project = createProject(captain);
 
         when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
-        when(projectRepository.existsByNameAndCaptain(any(), any())).thenReturn(true);
+        when(projectRepository.existsByNameAndCaptain(any(), any())).thenReturn(false);
 
         // When
-        // Then
-        assertThatThrownBy(() -> projectService.update(captain.getId(), PROJECT_ID, new ProjectUpdateCond(PROJECT_NAME2, PROJECT_DESCRIPTION2, PROJECT_DEADLINE2)))
-                .isInstanceOf(ProjectNameSameInAccountException.class);
-    }
-
-    @Test
-    void findById_존재하는Id_return_project() {
-        // Given
-        Project project = Project.builder()
-                .name(PROJECT_NAME)
-                .description(PROJECT_DESCRIPTION)
-                .deadline(PROJECT_DEADLINE)
-                .build();
-
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
-
-        // When
-        Project byId = projectService.findById(PROJECT_ID);
+        projectService.update(captain.getId(), PROJECT_ID, new ProjectUpdateCond(PROJECT_NAME2, PROJECT_DESCRIPTION2, PROJECT_DEADLINE2));
 
         // Then
-        assertThat(byId.getName()).isEqualTo(project.getName());
-        assertThat(byId.getDescription()).isEqualTo(project.getDescription());
-        assertThat(byId.getDeadline()).isEqualTo(project.getDeadline());
+        assertThat(project.getName()).isEqualTo(PROJECT_NAME2);
+        assertThat(project.getDescription()).isEqualTo(PROJECT_DESCRIPTION2);
+        assertThat(project.getDeadline()).isEqualTo(PROJECT_DEADLINE2);
     }
-
-    @Test
-    void findById_존재하지않는ProjectId_예외발생() {
-        // Given
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
-
-        // When
-        // Then
-        assertThatThrownBy(() -> projectService.findById(PROJECT_ID))
-                .isInstanceOf(ProjectNotFoundException.class);
-    }
-
-    @Test
-    void delete_존재하지않는AccountId_예외발생() {
-        // Given
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.empty());
-
-        // When
-        // Then
-        assertThatThrownBy(() -> projectService.delete(ACCOUNT_ID, 123L))
-                .isInstanceOf(AccountNotFoundException.class);
-    }
-
 
     @Test
     void delete_ProjectId로찾을수없음_예외발생() {
         // Given
-        Account captain = Account.builder()
-                .id(ACCOUNT_ID)
-                .username(USERNAME)
-                .nickname(NICKNAME)
-                .password(PASSWORD)
-                .build();
+        Account captain = createAccount();
 
-        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
 
         // When
         // Then
-        assertThatThrownBy(() -> projectService.delete(captain.getId(), PROJECT_ID))
+        assertThatThrownBy(() -> projectService.delete(PROJECT_ID))
                 .isInstanceOf(ProjectNotFoundException.class);
-    }
-
-    @Test
-    void delete_captain이아님_예외발생() {
-        // Given
-        Account captain = Account.builder()
-                .id(ACCOUNT_ID)
-                .username(USERNAME)
-                .nickname(NICKNAME)
-                .password(PASSWORD)
-                .build();
-        Project project = Project.builder()
-                .captain(captain)
-                .name(PROJECT_NAME)
-                .description(PROJECT_DESCRIPTION)
-                .deadline(PROJECT_DEADLINE)
-                .build();
-
-        Account crew = Account.builder()
-                .id(ACCOUNT_ID2)
-                .username(USERNAME2)
-                .nickname(NICKNAME2)
-                .password(PASSWORD2)
-                .build();
-
-        when(accountRepository.findById(crew.getId())).thenReturn(Optional.of(crew));
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
-
-        // When
-        // Then
-        assertThatThrownBy(() -> projectService.delete(crew.getId(), PROJECT_ID))
-                .isInstanceOf(ProjectDeleteAccessDeniedException.class);
     }
 
     @Test
     void delete_존재하는projectId와captain이요청_삭제() {
         // Given
-        Account captain = Account.builder()
-                .id(ACCOUNT_ID)
-                .username(USERNAME)
-                .nickname(NICKNAME)
-                .password(PASSWORD)
-                .build();
-        Project project = Project.builder()
-                .captain(captain)
-                .name(PROJECT_NAME)
-                .description(PROJECT_DESCRIPTION)
-                .deadline(PROJECT_DEADLINE)
-                .build();
+        Account captain = createAccount();
+        Project project = createProject(captain);
 
-        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
 
         // When
-        projectService.delete(captain.getId(), PROJECT_ID);
+        projectService.delete(PROJECT_ID);
 
         // Then
-        verify(projectRepository).delete(any());
+        verify(taskRepository).deleteByProject(project);
+        verify(kanbanLaneRepository).deleteByProject(project);
+        verify(kanbanRepository).deleteByProject(project);
+        verify(projectRepository).delete(project);
     }
 
     @Test
     void getMyProjects_찾을수없는accountId_예외발생() {
         // Given
-        Account captain = Account.builder()
-                .id(ACCOUNT_ID)
-                .username(USERNAME)
-                .nickname(NICKNAME)
-                .password(PASSWORD)
-                .build();
+        Account captain = createAccount();
 
         GetMyProjectsCond cond = GetMyProjectsCond.builder()
                 .captainTerm(true)
@@ -419,12 +272,7 @@ class ProjectServiceTest extends ServiceTest {
     @Test
     void getMyProjects_내project조회_정상() {
         // Given
-        Account captain = Account.builder()
-                .id(ACCOUNT_ID)
-                .username(USERNAME)
-                .nickname(NICKNAME)
-                .password(PASSWORD)
-                .build();
+        Account captain = createAccount();
 
         GetMyProjectsCond cond = GetMyProjectsCond.builder()
                 .captainTerm(true)
@@ -454,7 +302,7 @@ class ProjectServiceTest extends ServiceTest {
     void isCrew_crew가존재할때_return_true() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
-        Project project = createProject(account);
+        Project project = createProject(PROJECT_ID, account);
 
         when(accountProjectRepository.countByCrewInProject(account, project)).thenReturn(1L);
 
@@ -469,7 +317,7 @@ class ProjectServiceTest extends ServiceTest {
     void isCrew_crew가존재하지않을때_return_false() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
-        Project project = createProject(account);
+        Project project = createProject(PROJECT_ID, account);
 
         when(accountProjectRepository.countByCrewInProject(account, project)).thenReturn(0L);
 
@@ -484,7 +332,7 @@ class ProjectServiceTest extends ServiceTest {
     void isCaptainOrCrew_captain인경우_return_true() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
-        Project project = createProject(account);
+        Project project = createProject(PROJECT_ID, account);
 
         // When
         boolean result = projectService.isCaptainOrCrew(project, account);
@@ -497,7 +345,7 @@ class ProjectServiceTest extends ServiceTest {
     void isCaptainOrCrew_crew인경우_return_true() {
         // Given
         Account captain = createAccount(ACCOUNT_ID);
-        Project project = createProject(captain);
+        Project project = createProject(PROJECT_ID, captain);
         Account crew = createAccount(ACCOUNT_ID2);
 
         when(accountProjectRepository.countByCrewInProject(crew, project)).thenReturn(1L);
@@ -513,7 +361,7 @@ class ProjectServiceTest extends ServiceTest {
     void isCaptainOrCrew_captain과crew가아닌경우_return_false() {
         // Given
         Account captain = createAccount(ACCOUNT_ID);
-        Project project = createProject(captain);
+        Project project = createProject(PROJECT_ID, captain);
         Account crew = createAccount(ACCOUNT_ID2);
 
         when(accountProjectRepository.countByCrewInProject(crew, project)).thenReturn(0L);
@@ -526,20 +374,149 @@ class ProjectServiceTest extends ServiceTest {
     }
 
     @Test
-    void getCrews_crew1개_return_1개() {
+    void findByAccountId_찾을수없는Account_예외발생() {
         // Given
         Account captain = createAccount(ACCOUNT_ID);
-        Project project = createProject(captain);
-        Account crew = createAccount(ACCOUNT_ID2);
+        Project project = createProject(PROJECT_ID, captain);
+        Project project2 = createProject(PROJECT_ID2, captain);
+        Project project3 = createProject(PROJECT_ID3, captain);
 
-        when(accountProjectRepository.findCrewByProject(project)).thenReturn(List.of(crew));
+        LocalDateTime targetDate = LocalDateTime.of(2022, 8, 1, 0, 0);
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.empty());
 
         // When
-        List<Account> result = projectService.getCrews(project);
+        // Then
+        assertThatThrownBy(() -> {
+            projectService.findByAccountIdAndDate(captain.getId(), targetDate);
+        })
+                .isInstanceOf(AccountNotFoundException.class);
+    }
+
+    @Test
+    void findByAccountId_전달시작전달끝_1개만조회됨() {
+        // Given
+        LocalDateTime targetDate = LocalDateTime.of(2022, 8, 1, 0, 0);
+
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, captain);
+        Project project2 = createProject(PROJECT_ID2, captain, targetDate.minusMonths(1), targetDate.minusMonths(1));
+        AccountProject accountProject = createAccountProject(captain, project2);
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
+        when(projectRepository.findByCaptainAndDate(any(), any(), any())).thenReturn(new ArrayList<>(List.of(project)));
+        when(accountProjectRepository.findByAccount(captain)).thenReturn(new ArrayList<>(List.of(accountProject)));
+
+        // When
+        List<Project> result = projectService.findByAccountIdAndDate(captain.getId(), targetDate);
 
         // Then
-        assertThat(result).extracting("id")
-                .containsExactly(ACCOUNT_ID2);
+        assertThat(result).containsExactly(project);
+    }
+
+    @Test
+    void findByAccountId_전달시작이번달끝_2개조회됨() {
+        // Given
+        LocalDateTime targetDate = LocalDateTime.of(2022, 8, 1, 0, 0);
+
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, captain);
+        Project project2 = createProject(PROJECT_ID2, captain, targetDate.minusMonths(1), targetDate);
+        AccountProject accountProject = createAccountProject(captain, project2);
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
+        when(projectRepository.findByCaptainAndDate(any(), any(), any())).thenReturn(new ArrayList<>(List.of(project)));
+        when(accountProjectRepository.findByAccount(captain)).thenReturn(new ArrayList<>(List.of(accountProject)));
+
+        // When
+        List<Project> result = projectService.findByAccountIdAndDate(captain.getId(), targetDate);
+
+        // Then
+        assertThat(result).contains(project, project2);
+    }
+
+    @Test
+    void findByAccountId_전달시작다음달끝_2개조회됨() {
+        // Given
+        LocalDateTime targetDate = LocalDateTime.of(2022, 8, 1, 0, 0);
+
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, captain);
+        Project project2 = createProject(PROJECT_ID2, captain, targetDate.minusMonths(1), targetDate.plusMonths(1));
+        AccountProject accountProject = createAccountProject(captain, project2);
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
+        when(projectRepository.findByCaptainAndDate(any(), any(), any())).thenReturn(new ArrayList<>(List.of(project)));
+        when(accountProjectRepository.findByAccount(captain)).thenReturn(new ArrayList<>(List.of(accountProject)));
+
+        // When
+        List<Project> result = projectService.findByAccountIdAndDate(captain.getId(), targetDate);
+
+        // Then
+        assertThat(result).contains(project, project2);
+    }
+
+    @Test
+    void findByAccountId_이번달시작이번달끝_2개조회됨() {
+        // Given
+        LocalDateTime targetDate = LocalDateTime.of(2022, 8, 1, 0, 0);
+
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, captain);
+        Project project2 = createProject(PROJECT_ID2, captain, targetDate, targetDate);
+        AccountProject accountProject = createAccountProject(captain, project2);
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
+        when(projectRepository.findByCaptainAndDate(any(), any(), any())).thenReturn(new ArrayList<>(List.of(project)));
+        when(accountProjectRepository.findByAccount(captain)).thenReturn(new ArrayList<>(List.of(accountProject)));
+
+        // When
+        List<Project> result = projectService.findByAccountIdAndDate(captain.getId(), targetDate);
+
+        // Then
+        assertThat(result).contains(project, project2);
+    }
+
+    @Test
+    void findByAccountId_이번달시작다음달끝_2개조회됨() {
+        // Given
+        LocalDateTime targetDate = LocalDateTime.of(2022, 8, 1, 0, 0);
+
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, captain);
+        Project project2 = createProject(PROJECT_ID2, captain, targetDate, targetDate.plusMonths(1));
+        AccountProject accountProject = createAccountProject(captain, project2);
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
+        when(projectRepository.findByCaptainAndDate(any(), any(), any())).thenReturn(new ArrayList<>(List.of(project)));
+        when(accountProjectRepository.findByAccount(captain)).thenReturn(new ArrayList<>(List.of(accountProject)));
+
+        // When
+        List<Project> result = projectService.findByAccountIdAndDate(captain.getId(), targetDate);
+
+        // Then
+        assertThat(result).contains(project, project2);
+    }
+
+    @Test
+    void findByAccountId_다음달시작다음달끝_1개조회됨() {
+        // Given
+        LocalDateTime targetDate = LocalDateTime.of(2022, 8, 1, 0, 0);
+
+        Account captain = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, captain);
+        Project project2 = createProject(PROJECT_ID2, captain, targetDate.plusMonths(1), targetDate.plusMonths(1));
+        AccountProject accountProject = createAccountProject(captain, project2);
+
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
+        when(projectRepository.findByCaptainAndDate(any(), any(), any())).thenReturn(new ArrayList<>(List.of(project)));
+        when(accountProjectRepository.findByAccount(captain)).thenReturn(new ArrayList<>(List.of(accountProject)));
+
+        // When
+        List<Project> result = projectService.findByAccountIdAndDate(captain.getId(), targetDate);
+
+        // Then
+        assertThat(result).contains(project);
     }
 
 }

@@ -3,9 +3,12 @@ package com.projectboated.backend.domain.kanban.kanban.service;
 import com.projectboated.backend.common.basetest.ServiceTest;
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
+import com.projectboated.backend.domain.kanban.kanban.repository.KanbanRepository;
+import com.projectboated.backend.domain.kanban.kanban.service.exception.KanbanNotFoundException;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -13,6 +16,7 @@ import org.mockito.Mock;
 import java.util.Optional;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
+import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME;
 import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@DisplayName("Kanban : Service 단위 테스트")
 class KanbanServiceTest extends ServiceTest {
 
     @InjectMocks
@@ -27,12 +32,12 @@ class KanbanServiceTest extends ServiceTest {
 
     @Mock
     ProjectRepository projectRepository;
+    @Mock
+    KanbanRepository kanbanRepository;
 
     @Test
     void findByProjectId_projectId로찾을수없음_예외발생() {
         // Given
-        Account account = createAccount(ACCOUNT_ID);
-
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
 
         // When
@@ -44,56 +49,34 @@ class KanbanServiceTest extends ServiceTest {
     }
 
     @Test
+    void findByProjectId_kanban을찾을수없음_예외발생() {
+        // Given
+        Project project = createProjectAndCaptain(PROJECT_ID, ACCOUNT_ID);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+
+        when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
+        when(kanbanRepository.findByProject(project)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> kanbanService.findByProjectId(PROJECT_ID))
+                .isInstanceOf(KanbanNotFoundException.class);
+    }
+
+    @Test
     void findByProjectId_정상request_return_kanban() {
         // Given
-        Account captain = createAccount(ACCOUNT_ID);
-        Project project = createProject(captain);
-        Kanban kanban = createKanban(project);
+        Project project = createProjectAndCaptain(PROJECT_ID, ACCOUNT_ID);
+        Kanban kanban = createKanban(KANBAN_ID, project);
 
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
+        when(kanbanRepository.findByProject(project)).thenReturn(Optional.of(kanban));
 
         // When
         Kanban result = kanbanService.findByProjectId(PROJECT_ID);
 
         // Then
         assertThat(result).isEqualTo(kanban);
-
-        verify(projectRepository).findById(PROJECT_ID);
-    }
-
-    @Test
-    void changeKanbanLaneOrder_projectId로찾을수없음_예외발생() {
-        // Given
-        Account account = createAccount(ACCOUNT_ID);
-
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
-
-        // When
-        // Then
-        assertThatThrownBy(() -> kanbanService.changeKanbanLaneOrder(PROJECT_ID, 0, 0))
-                .isInstanceOf(ProjectNotFoundException.class);
-
-        verify(projectRepository).findById(PROJECT_ID);
-    }
-
-    @Test
-    void changeKanbanLaneOrder_정상request_changeKanbanLaneOrder() {
-        // Given
-        Account captain = createAccount(ACCOUNT_ID);
-        Project project = createProject(captain);
-        Kanban kanban = createKanban(project);
-        addKanbanLane(kanban, 3);
-
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
-
-        // When
-        kanbanService.changeKanbanLaneOrder(PROJECT_ID, 0, 1);
-
-        // Then
-        assertThat(kanban.getLanes()).extracting("name")
-                .containsExactly(KANBAN_LANE_NAME+1, KANBAN_LANE_NAME+0, KANBAN_LANE_NAME+2);
-
-        verify(projectRepository).findById(PROJECT_ID);
     }
 
 }

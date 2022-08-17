@@ -11,28 +11,31 @@ import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.exception.OnlyCaptainOrCrewException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
+import com.projectboated.backend.domain.task.task.entity.AccountTask;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import com.projectboated.backend.domain.task.task.service.exception.TaskNotFoundException;
 import com.projectboated.backend.domain.task.tasklike.entity.TaskLike;
 import com.projectboated.backend.domain.task.tasklike.repository.TaskLikeRepository;
-import com.projectboated.backend.domain.task.tasklike.service.exception.CancelTaskLikeAccessDeniedException;
-import com.projectboated.backend.domain.task.tasklike.service.exception.TaskLikeAccessDeniedException;
-import com.projectboated.backend.domain.task.tasklike.service.exception.TaskLikeAlreadyExistsException;
-import com.projectboated.backend.domain.task.tasklike.service.exception.TaskLikeNotFoundException;
+import com.projectboated.backend.domain.task.tasklike.service.exception.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
 import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID2;
+import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
+import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID;
 import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 import static com.projectboated.backend.common.data.BasicDataTask.*;
+import static com.projectboated.backend.common.data.BasicDataTaskLike.TASK_LIKE_ID;
+import static com.projectboated.backend.common.data.BasicDataTaskLike.TASK_LIKE_ID2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -58,6 +61,37 @@ class TaskLikeServiceTest extends ServiceTest {
     TaskRepository taskRepository;
 
     @Test
+    void findByAccount_찾을수없는Account_예외발생() {
+        // Given
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskLikeService.findByAccount(ACCOUNT_ID))
+                .isInstanceOf(AccountNotFoundException.class);
+    }
+
+    @Test
+    void findByAccount_정상요청_정상조회() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        TaskLike taskLike = createTaskLike(account, task);
+
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(taskLikeRepository.findByAccountOrderByOrder(account)).thenReturn(List.of(taskLike));
+
+        // When
+        List<TaskLike> result = taskLikeService.findByAccount(account.getId());
+
+        // Then
+        assertThat(result).contains(taskLike);
+    }
+
+    @Test
     void likeTask_없는Account_예외발생() {
         // Given
         when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.empty());
@@ -66,122 +100,91 @@ class TaskLikeServiceTest extends ServiceTest {
         // Then
         assertThatThrownBy(() -> taskLikeService.likeTask(ACCOUNT_ID, PROJECT_ID, TASK_ID))
                 .isInstanceOf(AccountNotFoundException.class);
-
-        verify(accountRepository).findById(ACCOUNT_ID);
-    }
-
-    @Test
-    void likeTask_없는프로젝트_예외발생() {
-        // Given
-        Account account = createAccount(ACCOUNT_ID);
-
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
-
-        // When
-        // Then
-        assertThatThrownBy(() -> taskLikeService.likeTask(ACCOUNT_ID, PROJECT_ID, TASK_ID))
-                .isInstanceOf(ProjectNotFoundException.class);
-
-        verify(accountRepository).findById(ACCOUNT_ID);
-        verify(projectRepository).findById(PROJECT_ID);
-    }
-
-    @Test
-    void likeTask_captain이나crew가아닌경우_예외발생() {
-        // Given
-        Account captain = createAccount(ACCOUNT_ID);
-        Project project = createProject(captain);
-        Account account = createAccount(ACCOUNT_ID2);
-
-        when(accountRepository.findById(ACCOUNT_ID2)).thenReturn(Optional.of(account));
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
-        when(projectService.isCaptainOrCrew(project, account)).thenReturn(false);
-
-        // When
-        // Then
-        assertThatThrownBy(() -> taskLikeService.likeTask(ACCOUNT_ID2, PROJECT_ID, TASK_ID))
-                .isInstanceOf(TaskLikeAccessDeniedException.class);
-
-        verify(accountRepository).findById(ACCOUNT_ID2);
-        verify(projectRepository).findById(PROJECT_ID);
-        verify(projectService).isCaptainOrCrew(project, account);
     }
 
     @Test
     void likeTask_없는task조회_예외발생() {
         // Given
         Account captain = createAccount(ACCOUNT_ID);
-        Project project = createProject(captain);
+        Project project = createProject(PROJECT_ID, captain);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
 
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(captain));
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
-        when(projectService.isCaptainOrCrew(project, captain)).thenReturn(true);
-        when(taskRepository.findByProjectIdAndTaskId(PROJECT_ID, TASK_ID)).thenReturn(Optional.empty());
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
+        when(taskRepository.findByProjectIdAndTaskId(project.getId(), task.getId())).thenReturn(Optional.empty());
 
         // When
         // Then
-        assertThatThrownBy(() -> taskLikeService.likeTask(ACCOUNT_ID, PROJECT_ID, TASK_ID))
+        assertThatThrownBy(() -> taskLikeService.likeTask(captain.getId(), project.getId(), task.getId()))
                 .isInstanceOf(TaskNotFoundException.class);
-
-        verify(accountRepository).findById(ACCOUNT_ID);
-        verify(projectRepository).findById(PROJECT_ID);
-        verify(projectService).isCaptainOrCrew(project, captain);
-        verify(taskRepository).findByProjectIdAndTaskId(PROJECT_ID, TASK_ID);
     }
 
     @Test
     void likeTask_이미찜한task_예외발생() {
         // Given
         Account captain = createAccount(ACCOUNT_ID);
-        Project project = createProject(captain);
-        Kanban kanban = createKanban(project);
-        List<KanbanLane> kanbanLanes = addKanbanLane(kanban, 1);
-        Task task = addTask(kanbanLanes.get(0), "task");
+        Project project = createProject(PROJECT_ID, captain);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        TaskLike taskLike = createTaskLike(captain, task);
 
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(captain));
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
-        when(projectService.isCaptainOrCrew(project, captain)).thenReturn(true);
-        when(taskRepository.findByProjectIdAndTaskId(PROJECT_ID, TASK_ID)).thenReturn(Optional.of(task));
-        when(taskLikeRepository.findByAccountAndTask(captain, task)).thenReturn(Optional.of(new TaskLike(123L, captain, task)));
+        when(accountRepository.findById(captain.getId())).thenReturn(Optional.of(captain));
+        when(taskRepository.findByProjectIdAndTaskId(project.getId(), task.getId())).thenReturn(Optional.of(task));
+        when(taskLikeRepository.findByAccountAndTask(captain, task)).thenReturn(Optional.of(taskLike));
 
         // When
         // Then
-        assertThatThrownBy(() -> taskLikeService.likeTask(ACCOUNT_ID, PROJECT_ID, TASK_ID))
+        assertThatThrownBy(() -> taskLikeService.likeTask(captain.getId(), project.getId(), task.getId()))
                 .isInstanceOf(TaskLikeAlreadyExistsException.class);
-
-        verify(accountRepository).findById(ACCOUNT_ID);
-        verify(projectRepository).findById(PROJECT_ID);
-        verify(projectService).isCaptainOrCrew(project, captain);
-        verify(taskRepository).findByProjectIdAndTaskId(PROJECT_ID, TASK_ID);
-        verify(taskLikeRepository).findByAccountAndTask(captain, task);
     }
 
     @Test
-    void likeTask_정상Request_저장성공() {
+    void likeTask_currentMaxOrder가null일경우_order가0() {
         // Given
-        Account captain = createAccount(ACCOUNT_ID);
-        Project project = createProject(captain);
-        Kanban kanban = createKanban(project);
-        List<KanbanLane> kanbanLanes = addKanbanLane(kanban, 1);
-        Task task = addTask(kanbanLanes.get(0), "task");
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
 
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(captain));
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
-        when(projectService.isCaptainOrCrew(project, captain)).thenReturn(true);
-        when(taskRepository.findByProjectIdAndTaskId(PROJECT_ID, TASK_ID)).thenReturn(Optional.of(task));
-        when(taskLikeRepository.findByAccountAndTask(captain, task)).thenReturn(Optional.empty());
-        when(taskLikeRepository.save(any())).thenReturn(null);
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(taskRepository.findByProjectIdAndTaskId(project.getId(), task.getId())).thenReturn(Optional.of(task));
+        when(taskLikeRepository.findByAccountAndTask(account, task)).thenReturn(Optional.empty());
+        when(taskLikeRepository.findByAccountMaxOrder(account)).thenReturn(null);
+        when(taskLikeRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         // When
-        taskLikeService.likeTask(ACCOUNT_ID, PROJECT_ID, TASK_ID);
+        TaskLike taskLike = taskLikeService.likeTask(account.getId(), project.getId(), task.getId());
 
         // Then
-        verify(accountRepository).findById(ACCOUNT_ID);
-        verify(projectRepository).findById(PROJECT_ID);
-        verify(projectService).isCaptainOrCrew(project, captain);
-        verify(taskRepository).findByProjectIdAndTaskId(PROJECT_ID, TASK_ID);
-        verify(taskLikeRepository).findByAccountAndTask(captain, task);
+        assertThat(taskLike.getOrder()).isEqualTo(0);
+
+        verify(taskLikeRepository).save(any());
+    }
+
+    @Test
+    void likeTask_currentMaxOrder가4일경우_order가5() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(taskRepository.findByProjectIdAndTaskId(project.getId(), task.getId())).thenReturn(Optional.of(task));
+        when(taskLikeRepository.findByAccountAndTask(account, task)).thenReturn(Optional.empty());
+        when(taskLikeRepository.findByAccountMaxOrder(account)).thenReturn(4);
+        when(taskLikeRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // When
+        TaskLike taskLike = taskLikeService.likeTask(account.getId(), project.getId(), task.getId());
+
+        // Then
+        assertThat(taskLike.getOrder()).isEqualTo(5);
+
         verify(taskLikeRepository).save(any());
     }
 
@@ -194,118 +197,193 @@ class TaskLikeServiceTest extends ServiceTest {
         // Then
         assertThatThrownBy(() -> taskLikeService.cancelTaskLike(ACCOUNT_ID, PROJECT_ID, TASK_ID))
                 .isInstanceOf(AccountNotFoundException.class);
-
-        verify(accountRepository).findById(ACCOUNT_ID);
-    }
-
-    @Test
-    void cancelTaskLike_찾을수없는Project_예외발생() {
-        // Given
-        Account account = createAccount(ACCOUNT_ID);
-
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
-
-        // When
-        // Then
-        assertThatThrownBy(() -> taskLikeService.cancelTaskLike(ACCOUNT_ID, PROJECT_ID, TASK_ID))
-                .isInstanceOf(ProjectNotFoundException.class);
-
-        verify(accountRepository).findById(ACCOUNT_ID);
-        verify(projectRepository).findById(PROJECT_ID);
-    }
-
-    @Test
-    void cancelTaskLike_captain이나Crew가아닌경우_예외발생() {
-        // Given
-        Account account = createAccount(ACCOUNT_ID);
-        Project project = createProject(account);
-
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
-        when(projectService.isCaptainOrCrew(project, account)).thenReturn(false);
-
-        // When
-        // Then
-        assertThatThrownBy(() -> taskLikeService.cancelTaskLike(ACCOUNT_ID, PROJECT_ID, TASK_ID))
-                .isInstanceOf(CancelTaskLikeAccessDeniedException.class);
-
-        verify(accountRepository).findById(ACCOUNT_ID);
-        verify(projectRepository).findById(PROJECT_ID);
-        verify(projectService).isCaptainOrCrew(project, account);
     }
 
     @Test
     void cancelTaskLike_task를찾을수없는경우_예외발생() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
-        Project project = createProject(account);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
 
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
-        when(projectService.isCaptainOrCrew(project, account)).thenReturn(true);
-        when(taskRepository.findByProjectIdAndTaskId(PROJECT_ID, TASK_ID)).thenReturn(Optional.empty());
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(taskRepository.findByProjectIdAndTaskId(project.getId(), task.getId())).thenReturn(Optional.empty());
 
         // When
         // Then
-        assertThatThrownBy(() -> taskLikeService.cancelTaskLike(ACCOUNT_ID, PROJECT_ID, TASK_ID))
+        assertThatThrownBy(() -> taskLikeService.cancelTaskLike(account.getId(), project.getId(), task.getId()))
                 .isInstanceOf(TaskNotFoundException.class);
-
-        verify(accountRepository).findById(ACCOUNT_ID);
-        verify(projectRepository).findById(PROJECT_ID);
-        verify(projectService).isCaptainOrCrew(project, account);
-        verify(taskRepository).findByProjectIdAndTaskId(PROJECT_ID, TASK_ID);
     }
 
     @Test
     void cancelTaskLike_taskLike를찾을수없는경우_예외발생() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
-        Project project = createProject(account);
-        Task task = createTask("task");
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
 
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
-        when(projectService.isCaptainOrCrew(project, account)).thenReturn(true);
-        when(taskRepository.findByProjectIdAndTaskId(PROJECT_ID, TASK_ID)).thenReturn(Optional.of(task));
-        when(taskLikeRepository.findByAccountAndTask(account, task)).thenReturn(Optional.empty());
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(taskRepository.findByProjectIdAndTaskId(project.getId(), task.getId())).thenReturn(Optional.of(task));
+        when(taskLikeRepository.findByAccountOrderByOrder(account)).thenReturn(List.of());
 
         // When
         // Then
-        assertThatThrownBy(() -> taskLikeService.cancelTaskLike(ACCOUNT_ID, PROJECT_ID, TASK_ID))
+        assertThatThrownBy(() -> taskLikeService.cancelTaskLike(account.getId(), project.getId(), task.getId()))
                 .isInstanceOf(TaskLikeNotFoundException.class);
-
-        verify(accountRepository).findById(ACCOUNT_ID);
-        verify(projectRepository).findById(PROJECT_ID);
-        verify(projectService).isCaptainOrCrew(project, account);
-        verify(taskRepository).findByProjectIdAndTaskId(PROJECT_ID, TASK_ID);
-        verify(taskLikeRepository).findByAccountAndTask(account, task);
     }
 
     @Test
     void cancelTaskLike_정상적인request_cancel성공() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
-        Project project = createProject(account);
-        Task task = createTask("task");
-        TaskLike taskLike = createTaskLike(account, task);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        Task task2 = createTask(TASK_ID2, project, kanbanLane);
+        TaskLike taskLike = createTaskLike(TASK_LIKE_ID, account, task, 0);
+        TaskLike taskLike2 = createTaskLike(TASK_LIKE_ID2, account, task2, 1);
+        List<TaskLike> taskLikes = new ArrayList<>(List.of(taskLike, taskLike2));
 
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
-        when(projectService.isCaptainOrCrew(project, account)).thenReturn(true);
-        when(taskRepository.findByProjectIdAndTaskId(PROJECT_ID, TASK_ID)).thenReturn(Optional.of(task));
-        when(taskLikeRepository.findByAccountAndTask(account, task)).thenReturn(Optional.of(taskLike));
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(taskRepository.findByProjectIdAndTaskId(project.getId(), task.getId())).thenReturn(Optional.of(task));
+        when(taskLikeRepository.findByAccountOrderByOrder(account)).thenReturn(taskLikes);
 
         // When
-        taskLikeService.cancelTaskLike(ACCOUNT_ID, PROJECT_ID, TASK_ID);
+        taskLikeService.cancelTaskLike(account.getId(), project.getId(), task.getId());
 
         // Then
-        verify(accountRepository).findById(ACCOUNT_ID);
-        verify(projectRepository).findById(PROJECT_ID);
-        verify(projectService).isCaptainOrCrew(project, account);
-        verify(taskRepository).findByProjectIdAndTaskId(PROJECT_ID, TASK_ID);
-        verify(taskLikeRepository).findByAccountAndTask(account, task);
+        assertThat(taskLikes).containsExactly(taskLike2);
+        assertThat(taskLikes).extracting("order")
+                .containsExactly(0);
+
         verify(taskLikeRepository).delete(taskLike);
+    }
+    
+    @Test
+    void changeOrder_찾을수없는account_예외발생() {
+        // Given
+        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.empty());
+        
+        // When
+        // Then
+        assertThatThrownBy(() -> taskLikeService.changeOrder(ACCOUNT_ID, 0, 0))
+                .isInstanceOf(AccountNotFoundException.class);
+    }
+
+    @Test
+    void changeOrder_originalIndex가마이너스_예외발생() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        Task task2 = createTask(TASK_ID2, project, kanbanLane);
+        TaskLike taskLike = createTaskLike(TASK_LIKE_ID, account, task, 0);
+        TaskLike taskLike2 = createTaskLike(TASK_LIKE_ID2, account, task2, 1);
+        List<TaskLike> taskLikes = new ArrayList<>(List.of(taskLike, taskLike2));
+
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(taskLikeRepository.findByAccountOrderByOrder(account)).thenReturn(taskLikes);
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskLikeService.changeOrder(account.getId(), -1, 0))
+                .isInstanceOf(TaskLikeOriginalIndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void changeOrder_originalIndex가범위를벗어남_예외발생() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        Task task2 = createTask(TASK_ID2, project, kanbanLane);
+        TaskLike taskLike = createTaskLike(TASK_LIKE_ID, account, task, 0);
+        TaskLike taskLike2 = createTaskLike(TASK_LIKE_ID2, account, task2, 1);
+        List<TaskLike> taskLikes = new ArrayList<>(List.of(taskLike, taskLike2));
+
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(taskLikeRepository.findByAccountOrderByOrder(account)).thenReturn(taskLikes);
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskLikeService.changeOrder(account.getId(), 2, 0))
+                .isInstanceOf(TaskLikeOriginalIndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void changeOrder_changeIndex가마이너스_예외발생() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        Task task2 = createTask(TASK_ID2, project, kanbanLane);
+        TaskLike taskLike = createTaskLike(TASK_LIKE_ID, account, task, 0);
+        TaskLike taskLike2 = createTaskLike(TASK_LIKE_ID2, account, task2, 1);
+        List<TaskLike> taskLikes = new ArrayList<>(List.of(taskLike, taskLike2));
+
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(taskLikeRepository.findByAccountOrderByOrder(account)).thenReturn(taskLikes);
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskLikeService.changeOrder(account.getId(), 1, -1))
+                .isInstanceOf(TaskLikeChangeIndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void changeOrder_changeIndex가범위를벗어남_예외발생() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        Task task2 = createTask(TASK_ID2, project, kanbanLane);
+        TaskLike taskLike = createTaskLike(TASK_LIKE_ID, account, task, 0);
+        TaskLike taskLike2 = createTaskLike(TASK_LIKE_ID2, account, task2, 1);
+        List<TaskLike> taskLikes = new ArrayList<>(List.of(taskLike, taskLike2));
+
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(taskLikeRepository.findByAccountOrderByOrder(account)).thenReturn(taskLikes);
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskLikeService.changeOrder(account.getId(), 1, 2))
+                .isInstanceOf(TaskLikeChangeIndexOutOfBoundsException.class);
+    }
+
+    @Test
+    void changeOrder_정상요청_change정상() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        Task task2 = createTask(TASK_ID2, project, kanbanLane);
+        TaskLike taskLike = createTaskLike(TASK_LIKE_ID, account, task, 0);
+        TaskLike taskLike2 = createTaskLike(TASK_LIKE_ID2, account, task2, 1);
+        List<TaskLike> taskLikes = new ArrayList<>(List.of(taskLike, taskLike2));
+
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(taskLikeRepository.findByAccountOrderByOrder(account)).thenReturn(taskLikes);
+
+        // When
+        taskLikeService.changeOrder(account.getId(), 1, 0);
+
+        // Then
+        assertThat(taskLikes).containsExactly(taskLike2, taskLike);
     }
 
     @Test
@@ -317,75 +395,47 @@ class TaskLikeServiceTest extends ServiceTest {
         // Then
         assertThatThrownBy(() -> taskLikeService.findByProjectAndAccount(ACCOUNT_ID, PROJECT_ID))
                 .isInstanceOf(AccountNotFoundException.class);
-
-        verify(accountRepository).findById(ACCOUNT_ID);
     }
 
     @Test
     void findByProjectAndAccount_찾을수없는Project_예외발생() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        TaskLike taskLike = createTaskLike(account, task);
 
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(projectRepository.findById(project.getId())).thenReturn(Optional.empty());
 
         // When
         // Then
         assertThatThrownBy(() -> taskLikeService.findByProjectAndAccount(ACCOUNT_ID, PROJECT_ID))
                 .isInstanceOf(ProjectNotFoundException.class);
-
-        verify(accountRepository).findById(ACCOUNT_ID);
-        verify(projectRepository).findById(PROJECT_ID);
-    }
-
-    @Test
-    void findByProjectAndAccount_captain이나Crew가아닌경우_예외발생() {
-        // Given
-        Account account = createAccount(ACCOUNT_ID);
-        Project project = createProject(account);
-
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
-        when(projectService.isCaptainOrCrew(project, account)).thenReturn(false);
-
-        // When
-        // Then
-        assertThatThrownBy(() -> taskLikeService.findByProjectAndAccount(ACCOUNT_ID, PROJECT_ID))
-                .isInstanceOf(OnlyCaptainOrCrewException.class);
-
-        verify(accountRepository).findById(ACCOUNT_ID);
-        verify(projectRepository).findById(PROJECT_ID);
-        verify(projectService).isCaptainOrCrew(project, account);
     }
 
     @Test
     void findByProjectAndAccount_정상요청_return_map() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
-        Project project = createProjectAnd4Lanes(account);
-        KanbanLane kanbanLane = project.getKanban().getLanes().get(0);
-        Task task = addTask(kanbanLane, TASK_ID, TASK_NAME);
-        Task task2 = addTask(kanbanLane, TASK_ID2, TASK_NAME2);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
         TaskLike taskLike = createTaskLike(account, task);
 
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
-        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
-        when(projectService.isCaptainOrCrew(project, account)).thenReturn(true);
-        when(taskRepository.findByProject(project)).thenReturn(List.of(task, task2));
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
+        when(taskRepository.findByProject(project)).thenReturn(List.of(task));
         when(taskLikeRepository.findByAccountAndTask(account, task)).thenReturn(Optional.of(taskLike));
-        when(taskLikeRepository.findByAccountAndTask(account, task2)).thenReturn(Optional.empty());
 
         // When
         Map<Task, Boolean> result = taskLikeService.findByProjectAndAccount(ACCOUNT_ID, PROJECT_ID);
 
         // Then
-        assertThat(result).hasSize(2);
-        assertThat(result.get(task)).isTrue();
-        assertThat(result.get(task2)).isFalse();
-
-        verify(accountRepository).findById(ACCOUNT_ID);
-        verify(projectRepository).findById(PROJECT_ID);
-        verify(projectService).isCaptainOrCrew(project, account);
+        assertThat(result).containsEntry(task, true);
     }
 
 }

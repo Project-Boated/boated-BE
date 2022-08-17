@@ -20,7 +20,6 @@ public class InvitationController {
 
     @PostMapping("/projects/{projectId}/crews")
     public CreateInvitationResponse createInvitation(
-            @AuthenticationPrincipal Account account,
             @PathVariable Long projectId,
             @RequestParam String nickname
     ) {

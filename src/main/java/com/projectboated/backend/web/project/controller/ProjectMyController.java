@@ -2,9 +2,11 @@ package com.projectboated.backend.web.project.controller;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.domain.project.service.ProjectCrewService;
 import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.condition.GetMyProjectsCond;
 import com.projectboated.backend.domain.project.service.dto.MyProjectsDto;
+import com.projectboated.backend.web.project.dto.common.ProjectCaptainResponse;
 import com.projectboated.backend.web.project.dto.common.ProjectResponse;
 import com.projectboated.backend.web.project.dto.response.GetMyProjectsResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import java.util.List;
 public class ProjectMyController {
 
     private final ProjectService projectService;
+    private final ProjectCrewService projectCrewService;
 
     @GetMapping
     public GetMyProjectsResponse getMyProjects(
@@ -46,7 +49,7 @@ public class ProjectMyController {
         List<Project> projects = myProjects.getProjects();
 
         List<ProjectResponse> projectResponses = projects.stream()
-                .map(p -> new ProjectResponse(p, projectService.getCrews(p)))
+                .map(p -> new ProjectResponse(p, new ProjectCaptainResponse(p.getCaptain()), projectCrewService.findAllCrews(p.getId())))
                 .toList();
 
         return new GetMyProjectsResponse(page, size, hasNext, projectResponses);

@@ -11,9 +11,7 @@ public class KanbanRepositoryTest extends ProjectRepositoryTest{
     protected KanbanRepository kanbanRepository;
 
     protected Kanban insertKanban(Project project) {
-        return kanbanRepository.save(Kanban.builder()
-                .project(project)
-                .build());
+        return kanbanRepository.save(createKanban(project));
     }
 
 }

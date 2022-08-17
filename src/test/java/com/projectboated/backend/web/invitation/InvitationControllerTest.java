@@ -1,129 +1,90 @@
 package com.projectboated.backend.web.invitation;
 
-import com.projectboated.backend.common.utils.InvitationTestUtils;
-import com.projectboated.backend.common.utils.ProjectTestUtils;
+import com.projectboated.backend.common.basetest.ControllerTest;
+import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.invitation.entity.Invitation;
+import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.web.config.WithMockAccount;
 import com.projectboated.backend.web.invitation.document.InvitationDocument;
-import io.restassured.http.ContentType;
-import io.restassured.http.Cookie;
-import com.projectboated.backend.common.basetest.AcceptanceTest;
-import com.projectboated.backend.common.utils.AccountTestUtils;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.*;
-import static com.projectboated.backend.common.data.BasicDataProject.*;
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
+import java.util.List;
 
-class InvitationControllerTest extends AcceptanceTest {
+import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
+import static com.projectboated.backend.common.data.BasicDataInvitation.INVITATION_ID;
+import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
+import static com.projectboated.backend.web.invitation.document.InvitationDocument.*;
+import static com.projectboated.backend.web.invitation.document.InvitationDocument.documentInvitationCreate;
+import static org.mockito.Mockito.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-    private static String crewUsername = "crewNickname";
-    private static String crewNickname = "crewUsername";
+@DisplayName("Invitation : Controller 단위테스트")
+class InvitationControllerTest extends ControllerTest {
 
     @Test
+    @WithMockAccount
     void inviteCrew_account초대하기_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
-        AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname);
-
-        Cookie captainCookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, captainCookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+        when(invitationService.inviteCrew(PROJECT_ID, "crewNickname")).thenReturn(Invitation.builder().id(123L).build());
 
         // When
         // Then
-        given(this.spec)
-            .filter(InvitationDocument.documentInvitationCreate())
-            .accept(ContentType.JSON)
-            .cookie(captainCookie)
-        .when()
-            .port(port)
-            .post("/api/projects/{projectId}/crews?nickname={nickname}", projectId, crewNickname)
-        .then()
-            .statusCode(HttpStatus.OK.value())
-            .assertThat().body("id", notNullValue());
+        mockMvc.perform(post( "/api/projects/{projectId}/crews?nickname={nickname}", PROJECT_ID, "crewNickname"))
+                .andExpect(status().isOk())
+                .andDo(documentInvitationCreate());
+
+        verify(invitationService).inviteCrew(any(), any());
     }
 
     @Test
+    @WithMockAccount
     void getMyInvitation_내Invitation확인_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
-        AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname);
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(account);
 
-        Cookie captainCookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, captainCookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
-
-        InvitationTestUtils.createInvitation(port, captainCookie, (long)projectId, crewNickname);
-
-        Cookie crewCookie = AccountTestUtils.login(port, crewUsername, PASSWORD);
+        when(invitationService.findByAccount(any())).thenReturn(List.of(createInvitation(INVITATION_ID, project, account)));
 
         // When
         // Then
-        given(this.spec)
-            .filter(InvitationDocument.documentMyInvitationRetrieve())
-            .accept(ContentType.JSON)
-            .cookie(crewCookie)
-        .when()
-            .port(port)
-            .get("/api/account/invitations")
-        .then()
-            .statusCode(HttpStatus.OK.value())
-            .assertThat().body("invitations.size()", is(1));
+        mockMvc.perform(get( "/api/account/invitations"))
+                .andExpect(status().isOk())
+                .andDo(documentMyInvitationRetrieve());
+
+        verify(invitationService).findByAccount(any());
     }
 
     @Test
+    @WithMockAccount
     void acceptInvitation_프로젝트초대accept_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
-        AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname);
-
-        Cookie captainCookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, captainCookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
-
-        InvitationTestUtils.createInvitation(port, captainCookie, (long) projectId, crewNickname);
-
-        Cookie crewCookie = AccountTestUtils.login(port, crewUsername, PASSWORD);
-        long invitationId = InvitationTestUtils.getMyInvitations(port, crewCookie).getBody().jsonPath().getLong("invitations[0].id");
+        when(invitationService.accept(any(), any())).thenReturn(PROJECT_ID);
 
         // When
         // Then
-        given(this.spec)
-            .filter(InvitationDocument.documentInvitationAccept())
-            .accept(ContentType.JSON)
-            .cookie(crewCookie)
-        .when()
-            .port(port)
-            .post("/api/account/invitations/{invitationId}/accept", invitationId)
-        .then()
-            .statusCode(HttpStatus.OK.value())
-            .assertThat().body("id", notNullValue());
+        mockMvc.perform(post( "/api/account/invitations/{invitationId}/accept", INVITATION_ID))
+                .andExpect(status().isOk())
+                .andDo(documentInvitationAccept());
+
+        verify(invitationService).accept(any(), any());
     }
 
     @Test
+    @WithMockAccount
     void rejectInvitation_프로젝트초대reject_정상() throws Exception {
         // Given
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
-        AccountTestUtils.createAccount(port, crewUsername, PASSWORD, crewNickname);
-
-        Cookie captainCookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, captainCookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
-
-        InvitationTestUtils.createInvitation(port, captainCookie, (long) projectId, crewNickname);
-
-        Cookie crewCookie = AccountTestUtils.login(port, crewUsername, PASSWORD);
-        long invitationId = InvitationTestUtils.getMyInvitations(port, crewCookie).getBody().jsonPath().getLong("invitations[0].id");
+        when(invitationService.reject(any(), any())).thenReturn(PROJECT_ID);
 
         // When
         // Then
-        given(this.spec)
-            .filter(InvitationDocument.documentInvitationReject())
-            .accept(ContentType.JSON)
-            .cookie(crewCookie)
-        .when()
-            .port(port)
-            .post("/api/account/invitations/{invitationId}/reject", invitationId)
-        .then()
-            .statusCode(HttpStatus.OK.value())
-            .assertThat().body("id", notNullValue());
+        mockMvc.perform(post( "/api/account/invitations/{invitationId}/reject", INVITATION_ID))
+                .andExpect(status().isOk())
+                .andDo(documentInvitationReject());
+
+        verify(invitationService).reject(any(), any());
     }
 
 }

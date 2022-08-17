@@ -1,188 +1,181 @@
 package com.projectboated.backend.web.task.task;
 
-import com.projectboated.backend.common.basetest.AcceptanceTest;
-import com.projectboated.backend.common.data.BasicDataAccount;
-import com.projectboated.backend.common.data.BasicDataProject;
-import com.projectboated.backend.common.data.BasicDataTask;
-import com.projectboated.backend.common.utils.*;
-import com.projectboated.backend.infra.aws.AwsS3Service;
+import com.projectboated.backend.common.basetest.ControllerTest;
+import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
+import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
+import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.domain.task.task.entity.Task;
+import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
+import com.projectboated.backend.web.config.WithMockAccount;
 import com.projectboated.backend.web.task.task.dto.PatchTaskRequest;
 import com.projectboated.backend.web.task.task.dto.request.AssignAccountTaskRequest;
 import com.projectboated.backend.web.task.task.dto.request.CreateTaskRequest;
-import io.restassured.http.ContentType;
-import io.restassured.http.Cookie;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.util.ResourceUtils;
+import org.springframework.http.MediaType;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.*;
-import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME;
-import static com.projectboated.backend.common.data.BasicDataProject.*;
+import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
+import static com.projectboated.backend.common.data.BasicDataAccount.NICKNAME2;
+import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
+import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID;
+import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 import static com.projectboated.backend.common.data.BasicDataTask.*;
+import static com.projectboated.backend.common.data.BasicDataUploadFile.UPLOAD_FILE_ID;
 import static com.projectboated.backend.web.task.task.document.TaskDocument.*;
-import static io.restassured.RestAssured.given;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureMockMvc
-class TaskControllerTest extends AcceptanceTest {
-
-    @Autowired
-    MockMvc mockMvc;
-
-    @MockBean
-    public AwsS3Service awsS3Service;
+@DisplayName("Task : Controller 단위테스트")
+class TaskControllerTest extends ControllerTest {
 
     @Test
-    void createTask_task하나생성_정상() {
-        AccountTestUtils.createAccount(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD, BasicDataAccount.NICKNAME);
-        Cookie cookie = AccountTestUtils.login(port, BasicDataAccount.USERNAME, BasicDataAccount.PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, cookie, BasicDataProject.PROJECT_NAME, BasicDataProject.PROJECT_DESCRIPTION, BasicDataProject.PROJECT_DEADLINE);
+    @WithMockAccount
+    void createTask_task하나생성_정상() throws Exception {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
 
-        given(this.spec)
-            .filter(documentTaskCreate())
-            .accept(ContentType.JSON)
-            .contentType(ContentType.JSON)
-            .cookie(cookie)
-            .body(new CreateTaskRequest(BasicDataTask.TASK_NAME, BasicDataTask.TASK_DESCRIPTION, BasicDataTask.TASK_DEADLINE))
-        .when()
-            .port(port)
-            .post("/api/projects/{projectId}/kanban/lanes/tasks", projectId)
-        .then()
-            .statusCode(HttpStatus.OK.value());
+        when(taskService.save(any(), any())).thenReturn(task);
+
+        // When
+        // Then
+        mockMvc.perform(post("/api/projects/{projectId}/kanban/lanes/tasks", project.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJsonString(new CreateTaskRequest(TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE))))
+                .andExpect(status().isOk())
+                .andDo(documentTaskCreate());
     }
 
     @Test
-    void assignAccountTask_account하나assign_정상() {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
-        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+    @WithMockAccount
+    void getTask_조회정상_조회성공() throws Exception {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        UploadFile uploadFile = createUploadFile(UPLOAD_FILE_ID);
 
-        KanbanTestUtils.createCustomKanbanLane(port, cookie, projectId, KANBAN_LANE_NAME);
-        int taskId = TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE);
+        when(taskService.findById(project.getId(), task.getId())).thenReturn(task);
+        when(taskService.findAssignedAccounts(project.getId(), task.getId())).thenReturn(List.of(account));
+        when(taskService.findAssignedFiles(project.getId(), task.getId())).thenReturn(List.of(uploadFile));
 
-        given(this.spec)
-            .filter(documentTaskAssign())
-            .accept(ContentType.JSON)
-            .contentType(ContentType.JSON)
-            .cookie(cookie)
-            .body(new AssignAccountTaskRequest(NICKNAME))
-        .when()
-            .port(port)
-            .post("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}/assign", projectId, taskId)
-        .then()
-            .statusCode(HttpStatus.OK.value());
+        // When
+        // Then
+        mockMvc.perform(get("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}", project.getId(), task.getId()))
+                .andExpect(status().isOk())
+                .andDo(documentTaskRetrieve());
     }
 
     @Test
-    void cancelAssignAccountTask_assign취소_정상() {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
-        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+    @WithMockAccount
+    void patchTask_정상request_patch성공() throws Exception {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        UploadFile uploadFile = createUploadFile(UPLOAD_FILE_ID);
 
-        KanbanTestUtils.createCustomKanbanLane(port, cookie, projectId, KANBAN_LANE_NAME);
-        int taskId = TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE);
-        TaskTestUtils.assignTask(port, cookie, projectId, taskId, NICKNAME);
-
-        given(this.spec)
-            .filter(documentTaskCancelAssign())
-            .accept(ContentType.JSON)
-            .contentType(ContentType.JSON)
-            .cookie(cookie)
-            .body(new AssignAccountTaskRequest(NICKNAME))
-        .when()
-            .port(port)
-            .post("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}/cancel-assign", projectId, taskId)
-        .then()
-            .statusCode(HttpStatus.OK.value());
+        // When
+        // Then
+        mockMvc.perform(patch("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}", project.getId(), task.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJsonString(new PatchTaskRequest(TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE, 129L)))
+                )
+                .andExpect(status().isOk())
+                .andDo(documentTaskUpdate());
     }
 
     @Test
-    void getTask_조회정상_조회성공() throws FileNotFoundException {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
-        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+    @WithMockAccount
+    void deleteTask_정상request_delete성공() throws Exception {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        UploadFile uploadFile = createUploadFile(UPLOAD_FILE_ID);
 
-        int taskId = TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE);
-        TaskTestUtils.assignTask(port, cookie, projectId, taskId, NICKNAME);
-        TaskFileTestUtils.createTaskFile(port, cookie, projectId, taskId, ResourceUtils.getFile("classpath:profile-image-test.png"), "image/jpg");
-
-        given(this.spec)
-            .filter(documentTaskRetrieve())
-            .cookie(cookie)
-        .when()
-            .port(port)
-            .get("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}", projectId, taskId)
-        .then()
-            .statusCode(HttpStatus.OK.value());
+        // When
+        // Then
+        mockMvc.perform(delete("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}", project.getId(), task.getId()))
+                .andExpect(status().isOk())
+                .andDo(documentTaskDelete());
     }
 
     @Test
-    void deleteTask_정상request_delete성공() throws FileNotFoundException {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
-        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
-        int taskId = TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE);
+    @WithMockAccount
+    void assignAccountTask_account하나assign_정상() throws Exception {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        UploadFile uploadFile = createUploadFile(UPLOAD_FILE_ID);
 
-        given(this.spec)
-            .filter(documentTaskDelete())
-            .cookie(cookie)
-        .when()
-            .port(port)
-            .delete("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}", projectId, taskId)
-        .then()
-            .statusCode(HttpStatus.OK.value());
+        // When
+        // Then
+        mockMvc.perform(post("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}/assign", project.getId(), task.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJsonString(new AssignAccountTaskRequest(NICKNAME2))))
+                .andExpect(status().isOk())
+                .andDo(documentTaskAssign());
     }
 
     @Test
-    void patchTask_정상request_patch성공() throws FileNotFoundException {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
-        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
+    @WithMockAccount
+    void cancelAssignAccountTask_assign취소_정상() throws Exception {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        UploadFile uploadFile = createUploadFile(UPLOAD_FILE_ID);
 
-        int taskId = TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE);
+        // When
+        // Then
+        mockMvc.perform(post("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}/cancel-assign", project.getId(), task.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJsonString(new AssignAccountTaskRequest(NICKNAME2))))
+                .andExpect(status().isOk())
+                .andDo(documentTaskCancelAssign());
 
-        given(this.spec)
-            .filter(documentTaskUpdate())
-            .contentType(ContentType.JSON)
-                .body(PatchTaskRequest.builder()
-                        .name(TASK_NAME2)
-                        .description(TASK_DESCRIPTION2)
-                        .deadline(TASK_DEADLINE2)
-                        .build())
-            .cookie(cookie)
-        .when()
-            .port(port)
-            .patch("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}", projectId, taskId)
-        .then()
-            .statusCode(HttpStatus.OK.value());
+        verify(taskService).cancelAssignAccount(project.getId(), task.getId(), NICKNAME2);
     }
-
 
     @Test
-    void patchTaskLane_정상request_patch성공() throws FileNotFoundException {
-        AccountTestUtils.createAccount(port, USERNAME, PASSWORD, NICKNAME);
-        Cookie cookie = AccountTestUtils.login(port, USERNAME, PASSWORD);
-        int projectId = ProjectTestUtils.createProject(port, cookie, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_DEADLINE);
-        int taskId = TaskTestUtils.createTask(port, cookie, projectId, TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE);
-        List<Integer> lanesId = KanbanTestUtils.getFirstKanbanLanesId(port, cookie, projectId);
+    @WithMockAccount
+    void changeTaskOrder_task옮기기_정상() throws Exception {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        UploadFile uploadFile = createUploadFile(UPLOAD_FILE_ID);
 
-        given(this.spec)
-            .filter(documentTaskUpdateLane())
-            .cookie(cookie)
-        .when()
-            .port(port)
-            .put("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}/lanes/{laneId}", projectId, taskId, lanesId.get(1))
-        .then()
-            .statusCode(HttpStatus.OK.value());
+        // When
+        // Then
+        mockMvc.perform(post("/api/projects/{projectId}/kanban/lanes/tasks/change/{originalLaneId}/{originalTaskIndex}/{changeLaneId}/{changeTaskIndex}", 0, 0, 0, 0, 0))
+                .andExpect(status().isOk())
+                .andDo(documentTaskOrderChange());
+
+        verify(taskService).changeTaskOrder(any(), any());
     }
-
-
-
 
 }

@@ -16,7 +16,7 @@ class AccountRepositoryTest extends RepositoryTest {
     @Test
     void findByUsername_username이같은account존재_return_account() {
         // Given
-        insertDefaultAccount();
+        insertAccount();
 
         // When
         Optional<Account> byUsername = accountRepository.findByUsername(USERNAME);
@@ -31,7 +31,7 @@ class AccountRepositoryTest extends RepositoryTest {
     @Test
     void findByUsername_username이같은account없음_return_empty() {
         // Given
-        insertDefaultAccount();
+        insertAccount();
 
         // When
         Optional<Account> byUsername = accountRepository.findByUsername("fail");
@@ -43,7 +43,7 @@ class AccountRepositoryTest extends RepositoryTest {
     @Test
     void findByNickname_nickname이같은account존재_return_account() {
         // Given
-        insertDefaultAccount();
+        insertAccount();
 
         // When
         Optional<Account> byNickname = accountRepository.findByNickname(NICKNAME);
@@ -58,7 +58,7 @@ class AccountRepositoryTest extends RepositoryTest {
     @Test
     void findByNickname_nickname이같은account없음_return_empty() {
         // Given
-        insertDefaultAccount();
+        insertAccount();
 
         // When
         Optional<Account> byNickname = accountRepository.findByNickname("fail");
@@ -70,7 +70,7 @@ class AccountRepositoryTest extends RepositoryTest {
     @Test
     void existsByUsername_username인account존재_return_true() {
         // Given
-        insertDefaultAccount();
+        insertAccount();
 
         // When
         boolean result = accountRepository.existsByUsername(USERNAME);
@@ -82,7 +82,7 @@ class AccountRepositoryTest extends RepositoryTest {
     @Test
     void existsByUsername_username인account없음_return_false() {
         // Given
-        insertDefaultAccount();
+        insertAccount();
 
         // When
         boolean result = accountRepository.existsByUsername("fail");
@@ -93,7 +93,7 @@ class AccountRepositoryTest extends RepositoryTest {
     @Test
     void existsByNickname_nickname인account존재_return_true() {
         // Given
-        insertDefaultAccount();
+        insertAccount();
 
         // When
         boolean result = accountRepository.existsByNickname(NICKNAME);
@@ -105,7 +105,7 @@ class AccountRepositoryTest extends RepositoryTest {
     @Test
     void existsByNickname_nickname인account없음_return_false() {
         // Given
-        insertDefaultAccount();
+        insertAccount();
 
         // When
         boolean result = accountRepository.existsByNickname("fail");

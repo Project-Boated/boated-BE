@@ -26,7 +26,7 @@ public class ProjectCrewController {
                                      @RequestParam(required = false) boolean isProxy,
                                      @AuthenticationPrincipal Account account,
                                      @PathVariable Long projectId) {
-        List<CrewResponse> crewResponses = projectCrewService.findAllCrews(account.getId(), projectId).stream()
+        List<CrewResponse> crewResponses = projectCrewService.findAllCrews(projectId).stream()
                 .map(c -> new CrewResponse(c, profileImageService.getProfileUrl(c.getId(), httpRequest.getHeader("HOST"), isProxy)))
                 .toList();
 
@@ -34,9 +34,8 @@ public class ProjectCrewController {
     }
 
     @DeleteMapping("/{crewNickname}")
-    public void deleteCrew(@AuthenticationPrincipal Account account,
-                           @PathVariable Long projectId,
+    public void deleteCrew(@PathVariable Long projectId,
                            @PathVariable String crewNickname) {
-        projectCrewService.deleteCrew(account.getId(), projectId, crewNickname);
+        projectCrewService.deleteCrew(projectId, crewNickname);
     }
 }

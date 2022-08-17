@@ -1,22 +1,21 @@
 package com.projectboated.backend.web.invitation.document;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.restassured3.RestDocumentationFilter;
 
-import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
 public class InvitationDocument {
 
-    public static RestDocumentationFilter documentInvitationCreate() {
+    public static RestDocumentationResultHandler documentInvitationCreate() {
         return document("invitation-create",
                 preprocessResponse(prettyPrint()),
                 pathParameters(
@@ -24,9 +23,6 @@ public class InvitationDocument {
                 ),
                 requestParameters(
                         parameterWithName("nickname").description("초대할 Account의 닉네임")
-                ),
-                requestHeaders(
-                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
                 ),
                 responseHeaders(
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
@@ -37,12 +33,9 @@ public class InvitationDocument {
         );
     }
 
-    public static RestDocumentationFilter documentMyInvitationRetrieve() {
+    public static RestDocumentationResultHandler documentMyInvitationRetrieve() {
         return document("invitation-my-retrieve",
                 preprocessResponse(prettyPrint()),
-                requestHeaders(
-                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
-                ),
                 responseHeaders(
                         headerWithName(HttpHeaders.CONTENT_TYPE).description("보낸 Content Type")
                 ),
@@ -57,12 +50,9 @@ public class InvitationDocument {
         );
     }
 
-    public static RestDocumentationFilter documentInvitationAccept() {
+    public static RestDocumentationResultHandler documentInvitationAccept() {
         return document("invitation-accept",
                 preprocessResponse(prettyPrint()),
-                requestHeaders(
-                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
-                ),
                 pathParameters(
                         parameterWithName("invitationId").description("초대장 id")
                 ),
@@ -75,12 +65,9 @@ public class InvitationDocument {
         );
     }
 
-    public static RestDocumentationFilter documentInvitationReject() {
+    public static RestDocumentationResultHandler documentInvitationReject() {
         return document("invitation-reject",
                 preprocessResponse(prettyPrint()),
-                requestHeaders(
-                        headerWithName(HttpHeaders.ACCEPT).description("받을 MediaType")
-                ),
                 pathParameters(
                         parameterWithName("invitationId").description("초대장 id")
                 ),

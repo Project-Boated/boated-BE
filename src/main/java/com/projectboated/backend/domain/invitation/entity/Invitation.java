@@ -27,7 +27,8 @@ public class Invitation extends BaseTimeEntity {
     private Project project;
 
     @Builder
-    public Invitation(Account account, Project project) {
+    public Invitation(Long id, Account account, Project project) {
+        this.id = id;
         this.account = account;
         this.project = project;
     }

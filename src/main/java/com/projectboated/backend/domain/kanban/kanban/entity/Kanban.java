@@ -32,50 +32,18 @@ public class Kanban extends BaseTimeEntity {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "kanban",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            orphanRemoval = true)
-    @OrderColumn(name = "kanban_lane_index")
-    private List<KanbanLane> lanes = new ArrayList<>();
-
-    @Builder
     public Kanban(Project project) {
         changeProject(project);
     }
 
+    @Builder
+    public Kanban(Long id, Project project) {
+        this.id = id;
+        changeProject(project);
+    }
+
     public void changeProject(Project project) {
-        if (!Objects.equals(this.project, project)) {
-            this.project = project;
-            project.changeKanban(this);
-        }
-    }
-
-    public void addKanbanLane(KanbanLane kanbanLane) {
-        this.lanes.add(kanbanLane);
-        kanbanLane.changeKanban(this);
-    }
-
-    public void changeKanbanLaneOrder(int originalIndex, int changeIndex) {
-        if (originalIndex < 0 || originalIndex >= lanes.size()) {
-            throw new KanbanLaneOriginalIndexOutOfBoundsException(ErrorCode.KANBAN_LANE_ORIGINAL_INDEX_OUT_OF_BOUNDS);
-        }
-        if (changeIndex < 0 || changeIndex >= lanes.size()) {
-            throw new KanbanLaneChangeIndexOutOfBoundsException(ErrorCode.KANBAN_LANE_CHANGE_INDEX_OUT_OF_BOUNDS);
-        }
-
-        KanbanLane targetKanbanLane = lanes.remove(originalIndex);
-        if (changeIndex == lanes.size()) {
-            lanes.add(targetKanbanLane);
-        } else {
-            lanes.add(changeIndex, targetKanbanLane);
-        }
-    }
-
-    public void updateLane(int index, KanbanLaneUpdateRequest request) {
-        if (index < 0 || index >= lanes.size()) {
-            throw new KanbanLaneChangeIndexOutOfBoundsException(ErrorCode.KANBAN_LANE_CHANGE_INDEX_OUT_OF_BOUNDS);
-        }
-        this.lanes.get(index).update(request);
+        this.project = project;
     }
 
     @Override
