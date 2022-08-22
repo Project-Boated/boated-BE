@@ -1,5 +1,6 @@
 package com.projectboated.backend.web.common.exception.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.BindingResult;
@@ -16,6 +17,7 @@ public class BasicFieldError {
     private String value;
     private String reason;
 
+    @Builder
     public BasicFieldError(String field, String value, String reason) {
         this.field = field;
         this.value = value;

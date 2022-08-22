@@ -78,7 +78,7 @@ public class TaskService {
 
         task.changeProject(project);
         task.changeKanbanLane(kanbanLane);
-        task.changeOrder(taskRepository.findMaxOrder(kanbanLane)+1);
+        task.changeOrder(taskRepository.findMaxOrder(kanbanLane)==null ? 0 : taskRepository.findMaxOrder(kanbanLane)+1);
 
         return taskRepository.save(task);
     }

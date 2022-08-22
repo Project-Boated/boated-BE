@@ -31,5 +31,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByProjectIdAndKanbanLaneId(@Param("projectId") Long projectId, @Param("laneId") Long laneId);
 
     @Query("select max(t.order) from Task t where t.kanbanLane=:kanbanLane")
-    int findMaxOrder(@Param("kanbanLane") KanbanLane kanbanLane);
+    Integer findMaxOrder(@Param("kanbanLane") KanbanLane kanbanLane);
 }

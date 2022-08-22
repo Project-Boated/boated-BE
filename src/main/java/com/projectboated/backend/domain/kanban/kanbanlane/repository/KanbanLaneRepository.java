@@ -32,6 +32,6 @@ public interface KanbanLaneRepository extends JpaRepository<KanbanLane, Long> {
     @Query("select max(kl.order) from KanbanLane kl where kl.project=:project")
     Integer findHighestOrder(@Param("project") Project project);
 
-    @Query("select kl from KanbanLane kl where kl.project=:project and kl.order=0")
+    @Query("select kl from KanbanLane kl where kl.project=:project and kl.order=(select min(kl2.order) from KanbanLane kl2 where kl2.project=:project)")
     Optional<KanbanLane> findByProjectAndFirstOrder(@Param("project") Project project);
 }
