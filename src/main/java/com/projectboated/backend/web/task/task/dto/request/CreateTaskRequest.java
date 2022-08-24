@@ -3,6 +3,7 @@ package com.projectboated.backend.web.task.task.dto.request;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
@@ -10,10 +11,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CreateTaskRequest {
 
-    @NotEmpty
+    @NotBlank
     private String name;
 
-    @NotEmpty
+    @NotBlank
     private String description;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
