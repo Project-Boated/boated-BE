@@ -13,6 +13,7 @@ import com.projectboated.backend.domain.project.service.ProjectCaptainService;
 import com.projectboated.backend.domain.project.service.ProjectCrewService;
 import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.ProjectTerminateService;
+import com.projectboated.backend.domain.projectvideo.service.ProjectVideoService;
 import com.projectboated.backend.domain.task.task.service.AccountTaskService;
 import com.projectboated.backend.domain.task.task.service.TaskService;
 import com.projectboated.backend.domain.task.taskfile.service.TaskFileService;
@@ -88,6 +89,10 @@ public class ControllerTest extends BaseTest {
     protected TaskLikeService taskLikeService;
     @MockBean
     protected TaskFileService taskFileService;
+
+    // Project Video
+    @MockBean
+    protected ProjectVideoService projectVideoService;
 
     // infra/aws
     @MockBean
