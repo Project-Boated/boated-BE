@@ -69,6 +69,17 @@ public class BaseProjectTest extends BaseUploadFileTest {
         return project;
     }
 
+    protected Project createProjectAndCaptain() {
+        Project project = Project.builder()
+                .captain(createAccount())
+                .name(PROJECT_NAME)
+                .description(PROJECT_DESCRIPTION)
+                .deadline(PROJECT_DEADLINE)
+                .build();
+        project.changeCreatedDate(LocalDateTime.now());
+        return project;
+    }
+
     protected AccountProject createAccountProject(Long id, Account account, Project project) {
         return AccountProject.builder()
                 .id(id)
