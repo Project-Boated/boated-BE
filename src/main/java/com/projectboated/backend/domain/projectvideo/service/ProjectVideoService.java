@@ -7,6 +7,7 @@ import com.projectboated.backend.domain.project.service.exception.ProjectNotFoun
 import com.projectboated.backend.domain.projectvideo.entity.ProjectVideo;
 import com.projectboated.backend.domain.projectvideo.repository.ProjectVideoRepository;
 import com.projectboated.backend.domain.projectvideo.service.exception.ProjectVideoIsPresentException;
+import com.projectboated.backend.domain.projectvideo.service.exception.ProjectVideoNotFoundException;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import com.projectboated.backend.domain.uploadfile.repository.UploadFileRepository;
 import com.projectboated.backend.infra.aws.AwsS3Service;
@@ -35,7 +36,8 @@ public class ProjectVideoService {
 
         projectVideoRepository.findByProject(project)
                 .ifPresent((pv) -> {
-                    throw new ProjectVideoIsPresentException();
+                    uploadFileRepository.delete(pv.getUploadFile());
+                    projectVideoRepository.delete(pv);
                 });
 
         UploadFile uploadFile = UploadFile.builder()
@@ -56,4 +58,25 @@ public class ProjectVideoService {
         return projectVideo;
     }
 
+    @OnlyCaptainOrCrew
+    public ProjectVideo findByProjectId(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
+
+        return projectVideoRepository.findByProject(project)
+                .orElseThrow(ProjectVideoNotFoundException::new);
+    }
+
+    @OnlyCaptainOrCrew
+    @Transactional
+    public void deleteByProjectId(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
+
+        ProjectVideo projectVideo = projectVideoRepository.findByProject(project)
+                .orElseThrow(ProjectVideoNotFoundException::new);
+
+        uploadFileRepository.delete(projectVideo.getUploadFile());
+        projectVideoRepository.delete(projectVideo);
+    }
 }
