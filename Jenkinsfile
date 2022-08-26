@@ -50,7 +50,7 @@ pipeline {
         }
         stage('Develop Server work') {
             steps {
-                sh 'ssh ubuntu@129.154.199.99 "cd boated ; sh boated-be.sh"'
+                sh 'ssh ubuntu@129.154.200.226 "cd boated ; sh boated-be.sh"'
             }
         }
         stage('Delete Dangling Image') {
