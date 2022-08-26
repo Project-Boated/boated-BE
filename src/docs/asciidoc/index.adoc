@@ -1077,9 +1077,9 @@ include::{snippets}/tasks-files-delete/http-response.adoc[]
 [[resources-project-video]]
 == 프로젝트 Video
 
-[[resources-project-video-create]]
-=== Project Video 업로드
-`POST` 요청을 사용해서 Project에 Video을 업로드할 수 있습니다.
+[[resources-project-video-put]]
+=== Project Video 업로드(수정)
+`PUT` 요청을 사용해서 Project에 Video을 업로드(수정)할 수 있습니다.
 
 include::./adoc/noteCaptainOrCrewOnly.adoc[]
 
@@ -1088,18 +1088,56 @@ include::./adoc/noteFileSize.adoc[]
 ==== Request
 
 ===== http-request
-include::{snippets}/project-video-create/http-request.adoc[]
+include::{snippets}/project-video-put/http-request.adoc[]
 
 ===== request-path-parameters
-include::{snippets}/project-video-create/path-parameters.adoc[]
+include::{snippets}/project-video-put/path-parameters.adoc[]
 
 ===== request-parts
-include::{snippets}/project-video-create/request-parts.adoc[]
+include::{snippets}/project-video-put/request-parts.adoc[]
 
 ==== Response
 
 ===== http-response
-include::{snippets}/project-video-create/http-response.adoc[]
+include::{snippets}/project-video-put/http-response.adoc[]
+
+[[resources-project-video-retrieve]]
+=== Project Video 조회
+`GET` 요청을 사용해서 Project에 Video을 조회할 수 있습니다.
+
+include::./adoc/noteCaptainOrCrewOnly.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/project-video-retrieve/http-request.adoc[]
+
+===== request-path-parameters
+include::{snippets}/project-video-retrieve/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/project-video-retrieve/http-response.adoc[]
+
+[[resources-project-video-delete]]
+=== Project Video 삭제
+`DELETE` 요청을 사용해서 Project에 Video을 삭제할 수 있습니다.
+
+include::./adoc/noteCaptainOrCrewOnly.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/project-video-delete/http-request.adoc[]
+
+===== request-path-parameters
+include::{snippets}/project-video-delete/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/project-video-delete/http-response.adoc[]
 
 [[resources-gantt-chart]]
 == 간트차트

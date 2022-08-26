@@ -82,7 +82,8 @@ public enum ErrorCode {
     UPLOAD_FILE_NOT_FOUND_EXT(400, "UF001", "upload file에 ext를 찾을 수 없습니다."),
 
     // Project Video
-    PROJECT_VIDEO_IS_PRESENT(400, "PV001", "project already has video"),
+    PROJECT_VIDEO_IS_PRESENT(400, "PV001", "project video가 이미 존재합니다."),
+    PROJECT_VIDEO_NOT_FOUND(400, "PV002", "project video를 찾을 수 없습니다."),
 
     // AOP
     AOP_PROJECT_ID_NOT_FOUND(400, "AO001", "project id를 찾을 수 없습니다. 이 에러는 서버에러입니다. 카톡주세요."),
