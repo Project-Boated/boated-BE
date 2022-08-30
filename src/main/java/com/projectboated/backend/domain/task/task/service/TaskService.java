@@ -78,7 +78,7 @@ public class TaskService {
 
         task.changeProject(project);
         task.changeKanbanLane(kanbanLane);
-        task.changeOrder(taskRepository.findMaxOrder(kanbanLane)==null ? 0 : taskRepository.findMaxOrder(kanbanLane)+1);
+        task.changeOrder(taskRepository.findMaxOrder(kanbanLane) == null ? 0 : taskRepository.findMaxOrder(kanbanLane) + 1);
 
         return taskRepository.save(task);
     }
@@ -113,6 +113,8 @@ public class TaskService {
             changeTasks = originalTasks;
         } else {
             changeTasks = taskRepository.findByProjectIdAndKanbanLaneId(projectId, request.changeLaneId());
+            target.changeKanbanLane(kanbanLaneRepository.findById(request.changeLaneId())
+                    .orElseThrow(KanbanLaneNotFoundException::new));
         }
         if (request.changeTaskIndex() < 0 || request.changeTaskIndex() > changeTasks.size()) {
             throw new TaskChangeIndexOutOfBoundsException();

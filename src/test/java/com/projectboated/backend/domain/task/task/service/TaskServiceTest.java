@@ -345,6 +345,34 @@ class TaskServiceTest extends ServiceTest {
     }
 
     @Test
+    void changeTaskOrder_kanbanlane을찾을수없는경우_예외발생() {
+        // Given
+        Account account = createAccount();
+        Project project = createProject(account);
+        Kanban kanban = createKanban(project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
+        KanbanLane kanbanLane2 = createKanbanLane(KANBAN_LANE_ID2, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        Task task2 = createTask(TASK_ID2, project, kanbanLane);
+
+        ChangeTaskOrderRequest request = ChangeTaskOrderRequest.builder()
+                .originalTaskIndex(0)
+                .originalLaneId(kanbanLane.getId())
+                .changeTaskIndex(0)
+                .changeLaneId(kanbanLane2.getId())
+                .build();
+
+        when(taskRepository.findByProjectIdAndKanbanLaneId(project.getId(), request.originalLaneId()))
+                .thenReturn(new ArrayList<>(List.of(task, task2)));
+        when(kanbanLaneRepository.findById(request.changeLaneId())).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskService.changeTaskOrder(project.getId(), request))
+                .isInstanceOf(KanbanLaneNotFoundException.class);
+    }
+
+    @Test
     void changeTaskOrder_originallane과changelane이같을때_changeTaskOrder가마이너스_예외발생() {
         // Given
         Account account = createAccount();
@@ -446,6 +474,7 @@ class TaskServiceTest extends ServiceTest {
                 .build();
 
         when(taskRepository.findByProjectIdAndKanbanLaneId(project.getId(), request.originalLaneId())).thenReturn(tasks1);
+        when(kanbanLaneRepository.findById(request.changeLaneId())).thenReturn(Optional.of(kanbanLane2));
 
         // When
         // Then
@@ -473,6 +502,7 @@ class TaskServiceTest extends ServiceTest {
 
         when(taskRepository.findByProjectIdAndKanbanLaneId(project.getId(), request.originalLaneId())).thenReturn(new ArrayList<>(List.of(task)));
         when(taskRepository.findByProjectIdAndKanbanLaneId(project.getId(), request.changeLaneId())).thenReturn(new ArrayList<>(List.of(task2)));
+        when(kanbanLaneRepository.findById(request.changeLaneId())).thenReturn(Optional.of(kanbanLane2));
 
         // When
         // Then
@@ -500,6 +530,7 @@ class TaskServiceTest extends ServiceTest {
 
         when(taskRepository.findByProjectIdAndKanbanLaneId(project.getId(), request.originalLaneId())).thenReturn(new ArrayList<>(List.of(task)));
         when(taskRepository.findByProjectIdAndKanbanLaneId(project.getId(), request.changeLaneId())).thenReturn(new ArrayList<>(List.of(task2)));
+        when(kanbanLaneRepository.findById(request.changeLaneId())).thenReturn(Optional.of(kanbanLane2));
 
         // When
         taskService.changeTaskOrder(project.getId(), request);
