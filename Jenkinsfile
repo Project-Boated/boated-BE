@@ -53,6 +53,11 @@ pipeline {
                 sh 'ssh ubuntu@129.154.200.226 "cd boated ; sh boated-be.sh"'
             }
         }
+        stage('Deploy Server work') {
+            steps {
+                sh 'ssh ubuntu@15.164.89.188 "cd boated ; sh boated-be.sh"'
+            }
+        }
         stage('Delete Dangling Image') {
             steps {
                 sh 'docker image prune -f'
