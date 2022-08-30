@@ -75,4 +75,8 @@ public class KanbanLane extends BaseTimeEntity {
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
+
+    public void changeOrder(int order) {
+        this.order = order;
+    }
 }

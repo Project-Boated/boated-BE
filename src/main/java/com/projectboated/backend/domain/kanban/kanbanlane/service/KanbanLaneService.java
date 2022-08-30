@@ -106,10 +106,7 @@ public class KanbanLaneService {
 
     private void reorderKanbanLanes(List<KanbanLane> kanbanLanes) {
         for (int i = 0; i < kanbanLanes.size(); i++) {
-            KanbanLane kanbanLane = kanbanLanes.get(i);
-            kanbanLane.update(KanbanLaneUpdateRequest.builder()
-                    .order(i)
-                    .build());
+            kanbanLanes.get(i).changeOrder(i);
         }
     }
 

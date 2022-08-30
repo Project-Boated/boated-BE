@@ -69,4 +69,18 @@ class KanbanLaneTest {
         assertThat(dkl.getName()).isEqualTo(KANBAN_LANE_NAME2);
     }
 
+    @Test
+    void changeOrder_order주어짐_change성공(){
+        // Given
+        KanbanLane dkl = KanbanLane.builder()
+                .name(KANBAN_LANE_NAME)
+                .build();
+
+        // When
+        dkl.changeOrder(KANBAN_LANE_ORDER2);
+
+        // Then
+        assertThat(dkl.getOrder()).isEqualTo(KANBAN_LANE_ORDER2);
+    }
+
 }
