@@ -8,7 +8,10 @@ FROM openjdk:17.0.1-jdk-slim
 WORKDIR application
 ARG JAVA_OPTION=""
 COPY --from=builder application/dependencies/ ./
+RUN true
 COPY --from=builder application/spring-boot-loader/ ./
+RUN true
 COPY --from=builder application/snapshot-dependencies/ ./
+RUN true
 COPY --from=builder application/application/ ./
 ENTRYPOINT ["java", "-Dspring.profiles.active=deploy", "org.springframework.boot.loader.JarLauncher", "${JAVA_OPTION}"]
