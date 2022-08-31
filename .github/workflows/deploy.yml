@@ -51,9 +51,18 @@ jobs:
     - name: Login To Docker Registry
       run: echo "${{ secrets.GIT_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       
-    - name: Push image
+    - name: Build Develop Image
       run: |
-        IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/boated-be | tr '[A-Z]' '[a-z]')
+        IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/boated-be-develop | tr '[A-Z]' '[a-z]')
+        echo IMAGE_ID=$IMAGE_ID
+        
+        docker build -t $IMAGE_ID:${{github.sha}} -t $IMAGE_ID:latest -f ./Dockerfile-develop .
+        docker push $IMAGE_ID:${{github.sha}}
+        docker push $IMAGE_ID:latest
+        
+    - name: Build Deploy Image
+      run: |
+        IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/boated-be-deploy | tr '[A-Z]' '[a-z]')
         echo IMAGE_ID=$IMAGE_ID
         
         docker build -t $IMAGE_ID:${{github.sha}} -t $IMAGE_ID:latest -f ./Dockerfile-deploy .
