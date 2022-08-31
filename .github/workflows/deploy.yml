@@ -60,3 +60,10 @@ jobs:
     
     - name: Login To Docker Registry
       run: echo "${{ secrets.GIT_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+      
+    - name: Push image
+      run: |
+        IMAGE_ID=ghcr.io/${{ github.repository_owner }}/boated-be
+        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+        echo IMAGE_ID=$IMAGE_ID
+        echo VERSION=$VERSION
