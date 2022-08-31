@@ -68,3 +68,11 @@ jobs:
         docker build -t $IMAGE_ID:${{github.sha}} -t $IMAGE_ID:latest -f ./Dockerfile-deploy .
         docker push $IMAGE_ID:${{github.sha}}
         docker push $IMAGE_ID:latest
+        
+    - name: Deploy To Deploy Server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{secrets.DEPLOY_SERVER_HOST}}
+        username: ${{secrets.DEPLOY_USERNAME}}
+        password: ${{secrets.DEPLOY_PASSWORD}}
+        script: cd boated ; sh boated-be.sh
