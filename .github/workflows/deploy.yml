@@ -64,6 +64,8 @@ jobs:
     - name: Push image
       run: |
         IMAGE_ID=ghcr.io/${{ github.repository_owner }}/boated-be
-        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
         echo IMAGE_ID=$IMAGE_ID
-        echo VERSION=$VERSION
+        
+        docker build -t $IMAGE_ID:${{github.sha}} -t $IMAGE_ID:latest -f Dockerfile-deploy .
+        docker push $IMAGE_ID:${{github.sha}}
+        docker push $IMAGE_ID:latest
