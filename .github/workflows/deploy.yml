@@ -13,6 +13,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Slack Notify
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_CHANNEL: general
+        SLACK_COLOR: ${{ job.status }}
+        SLACK_TITLE: Start Deploy
+        SLACK_USERNAME: ${{github.event.commits[0].author.name}}
+        SLACK_WEBHOOK: ${{secrets.SLACK_WEBHOOK}}
+    
     - uses: actions/checkout@v3
     
     - name: Configure AWS credentials
