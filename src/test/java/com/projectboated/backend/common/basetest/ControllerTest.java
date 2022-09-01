@@ -13,6 +13,8 @@ import com.projectboated.backend.domain.project.service.ProjectCaptainService;
 import com.projectboated.backend.domain.project.service.ProjectCrewService;
 import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.ProjectTerminateService;
+import com.projectboated.backend.domain.projectchatting.chatting.service.ChattingService;
+import com.projectboated.backend.domain.projectchatting.projectchattingroom.service.ProjectChattingRoomService;
 import com.projectboated.backend.domain.projectvideo.service.ProjectVideoService;
 import com.projectboated.backend.domain.task.task.service.AccountTaskService;
 import com.projectboated.backend.domain.task.task.service.TaskService;
@@ -20,7 +22,6 @@ import com.projectboated.backend.domain.task.taskfile.service.TaskFileService;
 import com.projectboated.backend.domain.task.tasklike.service.TaskLikeService;
 import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import com.projectboated.backend.infra.aws.AwsS3Service;
-import com.projectboated.backend.security.provider.JsonAuthenticationProvider;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -79,6 +80,14 @@ public class ControllerTest extends BaseTest {
     protected ProjectCrewService projectCrewService;
     @MockBean
     protected ProjectTerminateService projectTerminateService;
+
+    // Project Chatting
+    @MockBean
+    protected ProjectChattingRoomService projectChattingService;
+
+    // Chatting
+    @MockBean
+    protected ChattingService chattingService;
 
     // Task
     @MockBean
