@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.stream.IntStream;
 
+import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.*;
+import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 import static com.projectboated.backend.common.data.BasicDataTask.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -36,19 +38,30 @@ class KanbanLaneTest {
     @Test
     void update_name이null인경우_업데이트안함() {
         // Given
+        Project project = Project.builder()
+                .id(PROJECT_ID)
+                .build();
+        Kanban kanban = Kanban.builder()
+                .id(KANBAN_ID)
+                .build();
+
         KanbanLane dkl = KanbanLane.builder()
+                .order(KANBAN_LANE_ORDER)
+                .project(project)
+                .kanban(kanban)
                 .name(KANBAN_LANE_NAME)
                 .build();
 
         // When
         KanbanLaneUpdateRequest request = KanbanLaneUpdateRequest.builder()
-                .name(null)
                 .build();
 
         dkl.update(request);
 
         // Then
         assertThat(dkl.getName()).isEqualTo(KANBAN_LANE_NAME);
+        assertThat(dkl.getProject()).isEqualTo(project);
+        assertThat(dkl.getKanban()).isEqualTo(kanban);
     }
 
     @Test

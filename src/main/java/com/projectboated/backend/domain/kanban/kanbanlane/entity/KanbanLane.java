@@ -57,8 +57,12 @@ public class KanbanLane extends BaseTimeEntity {
         if (request.getOrder() != null) {
             this.order = request.getOrder();
         }
-        this.project = request.getProject();
-        this.kanban = request.getKanban();
+        if (request.getProject() != null) {
+            this.project = request.getProject();
+        }
+        if (request.getKanban() != null) {
+            this.kanban = request.getKanban();
+        }
     }
 
     @Override
