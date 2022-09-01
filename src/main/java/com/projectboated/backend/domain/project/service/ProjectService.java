@@ -18,15 +18,14 @@ import com.projectboated.backend.domain.project.service.condition.ProjectUpdateC
 import com.projectboated.backend.domain.project.service.dto.MyProjectsDto;
 import com.projectboated.backend.domain.project.service.exception.ProjectNameSameInAccountException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
+import com.projectboated.backend.domain.projectchatting.projectchattingroom.domain.ProjectChattingRoom;
+import com.projectboated.backend.domain.projectchatting.projectchattingroom.repository.ProjectChattingRoomRepository;
 import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -40,6 +39,7 @@ public class ProjectService {
     private final KanbanRepository kanbanRepository;
     private final KanbanLaneRepository kanbanLaneRepository;
     private final TaskRepository taskRepository;
+    private final ProjectChattingRoomRepository projectChattingRepository;
 
     public Project findById(Long projectId) {
         return projectRepository.findById(projectId)
@@ -53,7 +53,10 @@ public class ProjectService {
         }
         projectRepository.save(project);
 
+        // create kanban
         Kanban kanban = kanbanRepository.save(new Kanban(project));
+
+        // create kanban lane
         KanbanLaneType[] laneTypes = KanbanLaneType.values();
         for (int i = 0; i < laneTypes.length; i++) {
             kanbanLaneRepository.save(KanbanLane.builder()
@@ -63,6 +66,11 @@ public class ProjectService {
                     .kanban(kanban)
                     .build());
         }
+
+        // create chatting
+        projectChattingRepository.save(ProjectChattingRoom.builder()
+                .project(project)
+                .build());
 
         return project;
     }
@@ -129,7 +137,7 @@ public class ProjectService {
         for (AccountProject accountProject : accountProjectRepository.findByAccount(account)) {
             Project project = accountProject.getProject();
             if (project.getCreatedDate().isBefore(nextDate) &&
-                    (project.getDeadline().isEqual(targetDate)||project.getDeadline().isAfter(targetDate))
+                    (project.getDeadline().isEqual(targetDate) || project.getDeadline().isAfter(targetDate))
             ) {
                 projects.add(accountProject.getProject());
             }

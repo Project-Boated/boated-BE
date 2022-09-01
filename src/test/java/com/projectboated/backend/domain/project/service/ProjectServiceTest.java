@@ -17,6 +17,7 @@ import com.projectboated.backend.domain.project.service.condition.ProjectUpdateC
 import com.projectboated.backend.domain.project.service.dto.MyProjectsDto;
 import com.projectboated.backend.domain.project.service.exception.ProjectNameSameInAccountException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
+import com.projectboated.backend.domain.projectchatting.projectchattingroom.repository.ProjectChattingRoomRepository;
 import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,6 +54,8 @@ class ProjectServiceTest extends ServiceTest {
     KanbanLaneRepository kanbanLaneRepository;
     @Mock
     TaskRepository taskRepository;
+    @Mock
+    ProjectChattingRoomRepository projectChattingRepository;
 
     @Test
     void findById_존재하지않는ProjectId_예외발생() {
@@ -119,6 +122,7 @@ class ProjectServiceTest extends ServiceTest {
         verify(projectRepository).save(project);
         verify(kanbanRepository).save(any());
         verify(kanbanLaneRepository, times(KanbanLaneType.values().length)).save(any());
+        verify(projectChattingRepository).save(any());
     }
 
     @Test
