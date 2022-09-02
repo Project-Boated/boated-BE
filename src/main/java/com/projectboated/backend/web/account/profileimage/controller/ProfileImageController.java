@@ -57,7 +57,6 @@ public class ProfileImageController {
                 ok()
                 .contentType(MediaType.valueOf(awsS3File.getMediaType()))
                 .contentLength(awsS3File.getBytes().length)
-//                .header("Content-Disposition", "filename=\""+ awsS3File.getFileName() +"\"")
                 .body(awsS3File.getBytes());
     }
 

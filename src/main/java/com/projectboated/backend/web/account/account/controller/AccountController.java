@@ -1,11 +1,8 @@
 package com.projectboated.backend.web.account.account.controller;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.account.account.entity.Role;
 import com.projectboated.backend.domain.account.account.service.AccountService;
 import com.projectboated.backend.domain.account.account.service.condition.AccountUpdateCond;
-import com.projectboated.backend.domain.account.profileimage.entity.ProfileImage;
-import com.projectboated.backend.domain.account.profileimage.entity.UrlProfileImage;
 import com.projectboated.backend.domain.account.profileimage.service.ProfileImageService;
 import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.projectboated.backend.web.account.account.dto.request.PatchAccountProfileRequest;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Objects;
-import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
