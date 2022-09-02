@@ -77,8 +77,8 @@ public class TaskLikeService {
         List<TaskLike> taskLikes = taskLikeRepository.findByAccountOrderByOrder(account);
         TaskLike target = null;
         for (int i = 0; i < taskLikes.size(); i++) {
-            TaskLike taskLike = taskLikes.get(0);
-            if (Objects.equals(taskLike.getTask(), task)) {
+            TaskLike taskLike = taskLikes.get(i);
+            if (Objects.equals(taskLike.getTask().getId(), task.getId())) {
                 target = taskLike;
                 break;
             }
