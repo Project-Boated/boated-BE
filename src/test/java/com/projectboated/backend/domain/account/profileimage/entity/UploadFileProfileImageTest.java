@@ -42,7 +42,7 @@ class UploadFileProfileImageTest {
         String result = profileImage.getUrl("host", true);
 
         // Then
-        assertThat(result).startsWith("http://localhost:3000/api/account/profile/profile-image?dummy=");
+        assertThat(result).startsWith("http://localhost:3000/api/account/profile/profile-image?hash=" + SAVE_FILE_NAME);
     }
 
     @Test
@@ -59,7 +59,7 @@ class UploadFileProfileImageTest {
         String result = profileImage.getUrl("host", false);
 
         // Then
-        assertThat(result).startsWith("http://host/api/account/profile/profile-image?dummy=");
+        assertThat(result).startsWith("http://host/api/account/profile/profile-image?hash="+ SAVE_FILE_NAME);
     }
 
     @Test
@@ -76,7 +76,7 @@ class UploadFileProfileImageTest {
         String result = profileImage.getUrl(null, true);
 
         // Then
-        assertThat(result).startsWith("http://localhost:3000/api/account/profile/profile-image?dummy=");
+        assertThat(result).startsWith("http://localhost:3000/api/account/profile/profile-image?hash="+ SAVE_FILE_NAME);
     }
 
     @Test

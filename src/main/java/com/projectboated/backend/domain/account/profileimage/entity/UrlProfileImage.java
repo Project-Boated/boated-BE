@@ -26,6 +26,6 @@ public class UrlProfileImage extends ProfileImage {
     @Override
     public String getUrl(String hostUrl, Boolean isProxy) {
         assert url != null;
-        return this.url + "?dummy=" + UUID.randomUUID();
+        return this.url;
     }
 }

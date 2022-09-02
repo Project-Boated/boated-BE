@@ -43,7 +43,7 @@ public class UploadFileProfileImage extends ProfileImage {
         }
         uriBuilder.path("/api/account/profile/profile-image");
 
-        uriBuilder.queryParam("dummy", UUID.randomUUID().toString());
+        uriBuilder.queryParam("hash", uploadFile.getSaveFileName());
         return uriBuilder.build().toString();
     }
 }
