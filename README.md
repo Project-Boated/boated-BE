@@ -14,4 +14,4 @@
 
 본 프로젝트에 관련한 모든 내용은 Notion에 정리해 두었습니다.
 
-[Notion으로 이동하기](https://project-compass.notion.site/Project-Compass-1d95ee0947194d39a477b9f70ca34c2a)
+[Notion으로 이동하기](https://bit.ly/3CUoNj2)
