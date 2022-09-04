@@ -38,7 +38,7 @@ public class GanttChartController {
                     LocalDateTime createdDate = p.getCreatedDate();
                     LocalDateTime deadline = p.getDeadline();
 
-                    List<GetMyGanttChartResponse.TaskResponse> taskResponses = accountTaskService.findByProjectIdAndAccountId(p.getId(), account.getId(), LocalDateTime.of(year, month, 1, 0, 0)).stream()
+                    List<GetMyGanttChartResponse.TaskResponse> taskResponses = accountTaskService.findByProjectIdAndAccountIdAndBetweenDate(p.getId(), account.getId(), LocalDateTime.of(year, month, 1, 0, 0)).stream()
                             .map(at -> {
                                 Task task = at.getTask();
                                 return new GetMyGanttChartResponse.TaskResponse(task.getId(),

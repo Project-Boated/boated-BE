@@ -23,11 +23,6 @@ public interface AccountTaskRepository extends JpaRepository<AccountTask, Long> 
     List<AccountTask> findByAccount(Account account);
 
     @Query("""
-            select at from AccountTask at inner join at.task on at.account=:account inner join at.task.project on at.task.project=:project
-            """)
-    List<AccountTask> findByProjectAndAccount(@Param("project") Project project, @Param("account") Account account);
-
-    @Query("""
             select at from AccountTask at inner join at.task t on at.account=:account inner join at.task.project p on at.task.project=:project
             where t.deadline is not null and t.createdDate < :nextMonth and t.deadline >= :currentMonth
             """)
