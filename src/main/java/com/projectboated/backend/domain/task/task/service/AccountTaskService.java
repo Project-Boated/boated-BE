@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -36,12 +37,12 @@ public class AccountTaskService {
         return accountTaskRepository.findByTask(task);
     }
 
-    public List<AccountTask> findByProjectIdAndAccountId(Long projectId, Long accountId) {
+    public List<AccountTask> findByProjectIdAndAccountId(Long projectId, Long accountId, LocalDateTime targetTime) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(AccountNotFoundException::new);
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(ProjectNotFoundException::new);
 
-        return accountTaskRepository.findByProjectAndAccount(project, account);
+        return accountTaskRepository.findByAccountAndProjectAndBetweenDate(account, project, targetTime, targetTime.plusMonths(1));
     }
 }
