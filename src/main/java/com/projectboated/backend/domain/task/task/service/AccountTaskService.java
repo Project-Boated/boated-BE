@@ -12,7 +12,6 @@ import com.projectboated.backend.domain.task.task.entity.Task;
 import com.projectboated.backend.domain.task.task.repository.AccountTaskRepository;
 import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import com.projectboated.backend.domain.task.task.service.exception.TaskNotFoundException;
-import com.projectboated.backend.web.project.dto.common.ProjectResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +36,7 @@ public class AccountTaskService {
         return accountTaskRepository.findByTask(task);
     }
 
-    public List<AccountTask> findByProjectIdAndAccountId(Long projectId, Long accountId, LocalDateTime targetTime) {
+    public List<AccountTask> findByProjectIdAndAccountIdAndBetweenDate(Long projectId, Long accountId, LocalDateTime targetTime) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(AccountNotFoundException::new);
         Project project = projectRepository.findById(projectId)

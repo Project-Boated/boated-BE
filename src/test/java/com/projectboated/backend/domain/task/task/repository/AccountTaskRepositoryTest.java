@@ -170,32 +170,4 @@ class AccountTaskRepositoryTest extends RepositoryTest {
         // Then
         assertThat(result).containsExactly(accountTask, accountTask2);
     }
-
-    @Test
-    void findByProjectAndAccount_2개존재_return_2개() {
-        // Given
-        Account account = insertAccount();
-        Project project = insertProject(account);
-        Kanban kanban = insertKanban(project);
-        KanbanLane kanbanLane = insertKanbanLane(project, kanban);
-        Task task = insertTask(project, kanbanLane);
-        AccountTask accountTask = insertAccountTask(account, task);
-        AccountTask accountTask2 = insertAccountTask(account, task);
-
-        Project project2 = insertProject(account);
-        Kanban kanban2 = insertKanban(project2);
-        KanbanLane kanbanLane2 = insertKanbanLane(project2, kanban2);
-        Task task2 = insertTask(project2, kanbanLane2);
-        AccountTask accountTask3 = insertAccountTask(account, task2);
-        AccountTask accountTask4 = insertAccountTask(account, task2);
-
-        // When
-        List<AccountTask> result = accountTaskRepository.findByProjectAndAccount(project, account);
-        List<AccountTask> result2 = accountTaskRepository.findByProjectAndAccount(project2, account);
-
-        // Then
-        assertThat(result).containsExactly(accountTask, accountTask2);
-        assertThat(result2).containsExactly(accountTask3, accountTask4);
-    }
-
 }
