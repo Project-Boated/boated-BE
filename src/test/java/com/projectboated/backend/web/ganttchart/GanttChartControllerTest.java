@@ -39,7 +39,7 @@ class GanttChartControllerTest extends ControllerTest {
         AccountTask accountTask = createAccountTask(account, task);
 
         when(projectService.findByAccountIdAndDate(any(), any())).thenReturn(List.of(project));
-        when(accountTaskService.findByProjectIdAndAccountId(any(), any())).thenReturn(List.of(accountTask));
+        when(accountTaskService.findByProjectIdAndAccountId(any(), any(), any())).thenReturn(List.of(accountTask));
 
         // When
         // Then

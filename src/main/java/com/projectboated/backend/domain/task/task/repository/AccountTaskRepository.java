@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,4 +26,10 @@ public interface AccountTaskRepository extends JpaRepository<AccountTask, Long> 
             select at from AccountTask at inner join at.task on at.account=:account inner join at.task.project on at.task.project=:project
             """)
     List<AccountTask> findByProjectAndAccount(@Param("project") Project project, @Param("account") Account account);
+
+    @Query("""
+            select at from AccountTask at inner join at.task t on at.account=:account inner join at.task.project p on at.task.project=:project
+            where t.deadline is not null and t.createdDate < :nextMonth and t.deadline >= :currentMonth
+            """)
+    List<AccountTask> findByAccountAndProjectAndBetweenDate(Account account, Project project, LocalDateTime currentMonth, LocalDateTime nextMonth);
 }

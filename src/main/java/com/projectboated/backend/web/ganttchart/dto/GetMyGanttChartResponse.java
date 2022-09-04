@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Getter
@@ -30,6 +31,8 @@ public class GetMyGanttChartResponse {
 
         private List<TaskResponse> assignedTasks;
 
+        private Long period;
+
         @Builder
         public ProjectResponse(Long id, String name, LocalDateTime createdDate, LocalDateTime deadline, List<TaskResponse> assignedTasks) {
             this.id = id;
@@ -37,6 +40,7 @@ public class GetMyGanttChartResponse {
             this.createdDate = createdDate;
             this.deadline = deadline;
             this.assignedTasks = assignedTasks;
+            this.period = deadline != null ? ChronoUnit.DAYS.between(createdDate.toLocalDate(), deadline.toLocalDate()) : null;
         }
     }
 
@@ -51,12 +55,15 @@ public class GetMyGanttChartResponse {
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime deadline;
 
+        private Long period;
+
         @Builder
         public TaskResponse(Long id, String name, LocalDateTime createdDate, LocalDateTime deadline) {
             this.id = id;
             this.name = name;
             this.createdDate = createdDate;
             this.deadline = deadline;
+            this.period = deadline != null ? ChronoUnit.DAYS.between(createdDate.toLocalDate(), deadline.toLocalDate()) : null;
         }
     }
 

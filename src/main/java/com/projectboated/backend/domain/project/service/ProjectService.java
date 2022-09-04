@@ -130,13 +130,13 @@ public class ProjectService {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(AccountNotFoundException::new);
 
-        LocalDateTime nextDate = targetDate.plusMonths(1);
+        LocalDateTime nextMonth = targetDate.plusMonths(1);
 
-        List<Project> projects = projectRepository.findByCaptainAndDate(account, targetDate, nextDate);
+        List<Project> projects = projectRepository.findByCaptainAndDate(account, targetDate, nextMonth);
 
         for (AccountProject accountProject : accountProjectRepository.findByAccount(account)) {
             Project project = accountProject.getProject();
-            if (project.getCreatedDate().isBefore(nextDate) &&
+            if (project.getCreatedDate().isBefore(nextMonth) &&
                     (project.getDeadline().isEqual(targetDate) || project.getDeadline().isAfter(targetDate))
             ) {
                 projects.add(accountProject.getProject());

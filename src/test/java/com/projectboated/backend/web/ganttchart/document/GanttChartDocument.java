@@ -32,11 +32,13 @@ public abstract class GanttChartDocument {
                         fieldWithPath("projects[].name").type(JsonFieldType.STRING).description("프로젝트 이름"),
                         fieldWithPath("projects[].createdDate").type(JsonFieldType.STRING).description("프로젝트 만든날짜"),
                         fieldWithPath("projects[].deadline").type(JsonFieldType.STRING).description("프로젝트 deadline"),
+                        fieldWithPath("projects[].period").type(JsonFieldType.NUMBER).description("프로젝트 총 수행시간"),
                         fieldWithPath("projects[].assignedTasks").type(JsonFieldType.ARRAY).description("배정된 task목록"),
                         fieldWithPath("projects[].assignedTasks[].id").type(JsonFieldType.NUMBER).description("배정된 task의 고유번호"),
                         fieldWithPath("projects[].assignedTasks[].name").type(JsonFieldType.STRING).description("배정된 task의 이름"),
                         fieldWithPath("projects[].assignedTasks[].createdDate").type(JsonFieldType.STRING).description("배정된 task의 만든날짜"),
-                        fieldWithPath("projects[].assignedTasks[].deadline").type(JsonFieldType.STRING).description("배정된 task의 deadline")
+                        fieldWithPath("projects[].assignedTasks[].deadline").type(JsonFieldType.STRING).description("배정된 task의 deadline"),
+                        fieldWithPath("projects[].assignedTasks[].period").type(JsonFieldType.NUMBER).description("배정된 task의 총 수행시간")
                 )
         );
     }
