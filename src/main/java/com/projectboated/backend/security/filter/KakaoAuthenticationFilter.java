@@ -23,7 +23,7 @@ public class KakaoAuthenticationFilter extends AbstractAuthenticationProcessingF
     Logger log = LoggerFactory.getLogger(KakaoAuthenticationFilter.class);
     
     public KakaoAuthenticationFilter() {
-        super(new AntPathRequestMatcher("/api/account/sign-in/kakao"));
+        super(new AntPathRequestMatcher("/api/sign-in/kakao"));
     }
     
     @Override

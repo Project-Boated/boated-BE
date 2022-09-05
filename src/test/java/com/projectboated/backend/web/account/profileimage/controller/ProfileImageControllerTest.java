@@ -24,7 +24,7 @@ class ProfileImageControllerTest extends ControllerTest {
 
         // When
         // Then
-        mockMvc.perform(multipart(HttpMethod.POST, "/api/account/profile-image")
+        mockMvc.perform(multipart(HttpMethod.POST, "/api/account/profile/profile-image")
                         .file(file))
                 .andExpect(status().isOk())
                 .andDo(documentAccountProfileImageUpdate());
@@ -40,7 +40,7 @@ class ProfileImageControllerTest extends ControllerTest {
 
         // When
         // Then
-        mockMvc.perform(get( "/api/account/profile-image"))
+        mockMvc.perform(get( "/api/account/profile/profile-image"))
                 .andExpect(status().isOk())
                 .andDo(documentAccountProfileImageRetrieve());
     }
@@ -51,7 +51,7 @@ class ProfileImageControllerTest extends ControllerTest {
         // Given
         // When
         // Then
-        mockMvc.perform(delete( "/api/account/profile-image"))
+        mockMvc.perform(delete( "/api/account/profile/profile-image"))
                 .andExpect(status().isOk())
                 .andDo(documentAccountProfileImageDelete());
 

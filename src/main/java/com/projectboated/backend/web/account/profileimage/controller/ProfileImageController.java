@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/account/profile-image")
+@RequestMapping("/api/account/profile/profile-image")
 public class ProfileImageController {
 
     private final ProfileImageService profileImageService;

@@ -57,7 +57,7 @@ public class WebSecurityConfig {
                 .disable();
 
         http.logout()
-                .logoutUrl("/api/account/logout")
+                .logoutUrl("/api/logout")
                 .logoutSuccessHandler(logoutSuccessHandler)
                 .permitAll();
 

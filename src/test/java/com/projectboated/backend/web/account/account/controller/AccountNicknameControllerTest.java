@@ -25,7 +25,7 @@ class AccountNicknameControllerTest extends ControllerTest {
         // Given
         // When
         // Then
-        mockMvc.perform(put("/api/account/nickname")
+        mockMvc.perform(put("/api/account/profile/nickname")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toJsonString(new PutNicknameRequest("nickname2"))))
                 .andExpect(status().isOk())
@@ -40,7 +40,7 @@ class AccountNicknameControllerTest extends ControllerTest {
         // Given
         // When
         // Then
-        mockMvc.perform(post("/api/account/nickname/unique-validation")
+        mockMvc.perform(post("/api/account/profile/nickname/unique-validation")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toJsonString(new ValidationNicknameUniqueRequest("notDuplicatedNickname"))))
                 .andExpect(status().isOk())
