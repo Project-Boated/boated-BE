@@ -91,30 +91,6 @@
 
 유저 관련 API
 
-//[[resources-accounts-sign-in]]
-//=== 유저 로그인
-//
-//`POST` 요청을 사용해서 로그인을 할 수 있다.
-//
-//==== Request
-//
-//===== http-request
-//include::{snippets}/sign-in/http-request.adoc[]
-//
-//===== request-headers
-//include::{snippets}/sign-in/request-headers.adoc[]
-//
-//==== Response
-//
-//===== http-response
-//include::{snippets}/sign-in/http-response.adoc[]
-//
-//===== response-headers
-//include::{snippets}/sign-in/response-headers.adoc[]
-//
-//===== response-fields
-//include::{snippets}/sign-in/response-fields.adoc[]
-
 [[resources-account-kakao-continue]]
 === 카카오톡으로 계속하기
 `GET` 요청을 사용해서 카카오톡으로 계속할 수 있습니다.
@@ -138,6 +114,19 @@ GET /api/sign-in/kakao?code=dsa213021lkfds02 HTTP/1.1
 |카카오톡에서 받은 code
 |===
 
+[[resources-accounts-logout]]
+=== 로그아웃
+
+`POST` 요청을 사용해서 로그아웃을 할 수 있다.
+
+==== Request
+
+===== http-request
+
+[source]
+----
+GET /api/logout HTTP/1.1
+----
 
 [[resources-account-sign-up]]
 === 유저 생성
