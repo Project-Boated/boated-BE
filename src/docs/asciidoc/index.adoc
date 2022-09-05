@@ -101,7 +101,7 @@
 
 [source]
 ----
-GET /api/sign-in/kakao?code=dsa213021lkfds02 HTTP/1.1
+GET /api/account/sign-in/kakao?code=dsa213021lkfds02 HTTP/1.1
 ----
 
 ===== request-headers
@@ -125,7 +125,7 @@ GET /api/sign-in/kakao?code=dsa213021lkfds02 HTTP/1.1
 
 [source]
 ----
-GET /api/logout HTTP/1.1
+GET /api/account/logout HTTP/1.1
 ----
 
 [[resources-account-sign-up]]
