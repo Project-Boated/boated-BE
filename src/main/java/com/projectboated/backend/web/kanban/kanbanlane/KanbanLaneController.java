@@ -5,14 +5,16 @@ import com.projectboated.backend.domain.kanban.kanbanlane.service.KanbanLaneServ
 import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.KanbanLaneUpdateRequest;
 import com.projectboated.backend.web.kanban.kanbanlane.dto.GetLanesResponse;
 import com.projectboated.backend.web.kanban.kanbanlane.dto.UpdateKanbanLaneRequest;
+import com.projectboated.backend.web.kanban.kanbanlane.dto.request.CreateKanbanLaneRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/projects/{projectId}/kanban/lanes")
+@RequestMapping("/api/projects/{projectId}/lanes")
 public class KanbanLaneController {
 
     private final KanbanLaneService kanbanLaneService;
@@ -46,5 +48,22 @@ public class KanbanLaneController {
     ) {
         kanbanLaneService.changeKanbanLaneOrder(projectId, originalIndex, changeIndex);
     }
+
+    @PostMapping
+    public void createKanbanLane(
+            @PathVariable Long projectId,
+            @RequestBody CreateKanbanLaneRequest request
+    ) {
+        kanbanLaneService.createNewLine(projectId, request.getName());
+    }
+
+    @DeleteMapping("/{kanbanLaneId}")
+    public void deleteKanbanLane(
+            @PathVariable Long projectId,
+            @PathVariable Long kanbanLaneId
+    ) {
+        kanbanLaneService.deleteKanbanLane(projectId, kanbanLaneId);
+    }
+
 
 }

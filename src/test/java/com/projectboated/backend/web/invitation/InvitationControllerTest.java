@@ -50,7 +50,7 @@ class InvitationControllerTest extends ControllerTest {
 
         // When
         // Then
-        mockMvc.perform(get( "/api/account/invitations"))
+        mockMvc.perform(get( "/api/invitations"))
                 .andExpect(status().isOk())
                 .andDo(documentMyInvitationRetrieve());
 
@@ -65,7 +65,7 @@ class InvitationControllerTest extends ControllerTest {
 
         // When
         // Then
-        mockMvc.perform(post( "/api/account/invitations/{invitationId}/accept", INVITATION_ID))
+        mockMvc.perform(post( "/api/invitations/{invitationId}/accept", INVITATION_ID))
                 .andExpect(status().isOk())
                 .andDo(documentInvitationAccept());
 
@@ -80,7 +80,7 @@ class InvitationControllerTest extends ControllerTest {
 
         // When
         // Then
-        mockMvc.perform(post( "/api/account/invitations/{invitationId}/reject", INVITATION_ID))
+        mockMvc.perform(post( "/api/invitations/{invitationId}/reject", INVITATION_ID))
                 .andExpect(status().isOk())
                 .andDo(documentInvitationReject());
 

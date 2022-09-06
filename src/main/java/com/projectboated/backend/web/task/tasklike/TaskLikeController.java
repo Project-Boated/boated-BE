@@ -24,7 +24,7 @@ public class TaskLikeController {
     private final TaskService taskService;
     private final TaskLikeService taskLikeService;
 
-    @GetMapping("/api/my/likes")
+    @GetMapping("/api/account/tasks/likes")
     public GetMyTaskLikeResponse getMyTaskLike(
             @AuthenticationPrincipal Account account
     ) {
@@ -45,7 +45,7 @@ public class TaskLikeController {
         return new GetMyTaskLikeResponse(taskLikeResponses);
     }
 
-    @PostMapping("/api/my/likes/change/{originalIndex}/{changeIndex}")
+    @PostMapping("/api/account/tasks/likes/change/{originalIndex}/{changeIndex}")
     public void changeMyTaskLikeOrder(
             @AuthenticationPrincipal Account account,
             @PathVariable int originalIndex,

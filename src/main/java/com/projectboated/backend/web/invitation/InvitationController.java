@@ -27,19 +27,19 @@ public class InvitationController {
         return new CreateInvitationResponse(invitation.getId());
     }
 
-    @GetMapping("/account/invitations")
+    @GetMapping("/invitations")
     public GetMyInvitationResponse getMyInvitation(@AuthenticationPrincipal Account account) {
         return new GetMyInvitationResponse(invitationService.findByAccount(account));
     }
 
-    @PostMapping("/account/invitations/{invitationId}/accept")
+    @PostMapping("/invitations/{invitationId}/accept")
     public AcceptInvitationResponse acceptInvitation(@AuthenticationPrincipal Account account,
                                                      @PathVariable Long invitationId) {
         Long projectId = invitationService.accept(account.getId(), invitationId);
         return new AcceptInvitationResponse(projectId);
     }
 
-    @PostMapping("/account/invitations/{invitationId}/reject")
+    @PostMapping("/invitations/{invitationId}/reject")
     public RejectInvitationResponse rejectInvitation(@AuthenticationPrincipal Account account,
                                                      @PathVariable Long invitationId) {
         Long projectId = invitationService.reject(account.getId(), invitationId);

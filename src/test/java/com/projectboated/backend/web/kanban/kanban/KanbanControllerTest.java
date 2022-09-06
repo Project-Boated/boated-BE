@@ -56,32 +56,4 @@ class KanbanControllerTest extends ControllerTest {
                 .andDo(documentKanbanRetrieve());
     }
 
-    @Test
-    @WithMockAccount
-    void createCustomKanbanLane_칸반lane만들기_정상() throws Exception {
-        // Given
-        // When
-        // Then
-        mockMvc.perform(post( "/api/projects/{projectId}/kanban/lanes", PROJECT_ID)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(toJsonString(new CreateKanbanLaneRequest(KANBAN_LANE_NAME))))
-                .andExpect(status().isOk())
-                .andDo(documentKanbanLaneCreate());
-
-        verify(kanbanLaneService).createNewLine(any(), any());
-    }
-
-    @Test
-    @WithMockAccount
-    void deleteCustomKanbanLane_칸반lane지우기_정상() throws Exception {
-        // Given
-        // When
-        // Then
-        mockMvc.perform(delete( "/api/projects/{projectId}/kanban/lanes/{kanbanLaneId}", PROJECT_ID, KANBAN_LANE_ID))
-                .andExpect(status().isOk())
-                .andDo(documentKanbanLaneDelete());
-
-        verify(kanbanLaneService).deleteKanbanLane(PROJECT_ID, KANBAN_LANE_ID);
-    }
-
 }
