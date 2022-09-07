@@ -1,4 +1,4 @@
-package com.projectboated.backend.domain.projectchatting.projectchattingroom.service.exception;
+package com.projectboated.backend.domain.projectchatting.chattingroom.service.exception;
 
 import com.projectboated.backend.domain.common.exception.BusinessException;
 import com.projectboated.backend.domain.common.exception.ErrorCode;

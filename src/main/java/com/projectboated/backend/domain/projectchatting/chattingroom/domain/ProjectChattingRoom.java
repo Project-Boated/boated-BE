@@ -1,4 +1,4 @@
-package com.projectboated.backend.domain.projectchatting.projectchattingroom.domain;
+package com.projectboated.backend.domain.projectchatting.chattingroom.domain;
 
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.projectchatting.chattingroom.domain.ChattingRoom;

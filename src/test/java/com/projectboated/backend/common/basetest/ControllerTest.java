@@ -14,7 +14,7 @@ import com.projectboated.backend.domain.project.service.ProjectCrewService;
 import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.ProjectTerminateService;
 import com.projectboated.backend.domain.projectchatting.chatting.service.ChattingService;
-import com.projectboated.backend.domain.projectchatting.projectchattingroom.service.ProjectChattingRoomService;
+import com.projectboated.backend.domain.projectchatting.chattingroom.service.ChattingRoomService;
 import com.projectboated.backend.domain.projectvideo.service.ProjectVideoService;
 import com.projectboated.backend.domain.task.task.service.AccountTaskService;
 import com.projectboated.backend.domain.task.task.service.TaskService;
@@ -31,6 +31,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -83,7 +84,7 @@ public class ControllerTest extends BaseTest {
 
     // Project Chatting
     @MockBean
-    protected ProjectChattingRoomService projectChattingService;
+    protected ChattingRoomService projectChattingService;
 
     // Chatting
     @MockBean
@@ -108,6 +109,10 @@ public class ControllerTest extends BaseTest {
     protected AwsS3Service awsS3Service;
     @MockBean
     protected AwsS3ProfileImageService awsS3ProfileImageService;
+
+    // Socket message template
+    @MockBean
+    protected SimpMessagingTemplate simpMessagingTemplate;
 
 
     protected String toJsonString(Object object) {

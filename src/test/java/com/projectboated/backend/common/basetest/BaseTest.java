@@ -1,6 +1,6 @@
 package com.projectboated.backend.common.basetest;
 
-import com.projectboated.backend.common.basetest.base.BaseProjectChattingRoomTest;
+import com.projectboated.backend.common.basetest.base.BaseChattingTest;
 
-public class BaseTest extends BaseProjectChattingRoomTest {
+public class BaseTest extends BaseChattingTest {
 }

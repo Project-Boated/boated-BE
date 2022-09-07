@@ -1,4 +1,4 @@
-package com.projectboated.backend.websocket.controller.kanban;
+package com.projectboated.backend.websocket.kanban;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
