@@ -1,5 +1,9 @@
 package com.projectboated.backend.domain.projectchatting.chattingroom.service;
 
+import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.domain.account.account.repository.AccountRepository;
+import com.projectboated.backend.domain.account.account.service.AccountService;
+import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.project.aop.OnlyCaptainOrCrew;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
@@ -19,24 +23,28 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProjectChattingRoomService {
 
+    private final AccountRepository accountRepository;
     private final ProjectRepository projectRepository;
     private final ProjectChattingRoomRepository projectChattingRoomRepository;
     private final ChattingRepository chattingRepository;
 
-//    @OnlyCaptainOrCrew
-//    public void saveChatting(Long projectId, Long accountId, ChattingMessage chattingMessage) {
-//        Project project = projectRepository.findById(projectId)
-//                .orElseThrow(ProjectNotFoundException::new);
-//
-//        ProjectChattingRoom projectChattingRoom = projectChattingRoomRepository.findByProject(project)
-//                .orElseThrow(ProjectChattingRoomNotFoundException::new);
-//
-//        Chatting chatting = Chatting.builder()
-//                .account()
-//                .body(chattingMessage.getBody())
-//                .chattingRoom(projectChattingRoom)
-//                .build();
-//
-//        chattingRepository.save()
-//    }
+    @OnlyCaptainOrCrew
+    public void saveChatting(Long projectId, Long accountId, ChattingMessage chattingMessage) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
+
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(AccountNotFoundException::new);
+
+        ProjectChattingRoom projectChattingRoom = projectChattingRoomRepository.findByProject(project)
+                .orElseThrow(ProjectChattingRoomNotFoundException::new);
+
+        Chatting chatting = Chatting.builder()
+                .chattingRoom(projectChattingRoom)
+                .account(account)
+                .body(chattingMessage.getBody())
+                .build();
+
+        chattingRepository.save(chatting);
+    }
 }

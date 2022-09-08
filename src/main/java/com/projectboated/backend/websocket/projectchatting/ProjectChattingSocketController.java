@@ -1,7 +1,5 @@
 package com.projectboated.backend.websocket.projectchatting;
 
-import com.projectboated.backend.domain.projectchatting.chatting.service.ChattingService;
-import com.projectboated.backend.domain.projectchatting.chattingroom.service.ChattingRoomService;
 import com.projectboated.backend.domain.projectchatting.chattingroom.service.ProjectChattingRoomService;
 import com.projectboated.backend.websocket.projectchatting.dto.ChattingMessage;
 import lombok.RequiredArgsConstructor;

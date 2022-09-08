@@ -15,6 +15,7 @@ import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.ProjectTerminateService;
 import com.projectboated.backend.domain.projectchatting.chatting.service.ChattingService;
 import com.projectboated.backend.domain.projectchatting.chattingroom.service.ChattingRoomService;
+import com.projectboated.backend.domain.projectchatting.chattingroom.service.ProjectChattingRoomService;
 import com.projectboated.backend.domain.projectvideo.service.ProjectVideoService;
 import com.projectboated.backend.domain.task.task.service.AccountTaskService;
 import com.projectboated.backend.domain.task.task.service.TaskService;
@@ -82,13 +83,15 @@ public class ControllerTest extends BaseTest {
     @MockBean
     protected ProjectTerminateService projectTerminateService;
 
-    // Project Chatting
-    @MockBean
-    protected ChattingRoomService projectChattingService;
-
     // Chatting
     @MockBean
     protected ChattingService chattingService;
+
+    // Chatting Room
+    @MockBean
+    protected ChattingRoomService projectChattingService;
+    @MockBean
+    protected ProjectChattingRoomService projectChattingRoomService;
 
     // Task
     @MockBean
