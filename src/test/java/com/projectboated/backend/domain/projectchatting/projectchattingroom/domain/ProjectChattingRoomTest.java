@@ -1,6 +1,7 @@
 package com.projectboated.backend.domain.projectchatting.projectchattingroom.domain;
 
 import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.domain.projectchatting.chattingroom.domain.ProjectChattingRoom;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

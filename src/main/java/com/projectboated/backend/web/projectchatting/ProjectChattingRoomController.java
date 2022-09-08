@@ -1,22 +1,19 @@
 package com.projectboated.backend.web.projectchatting;
 
 import com.projectboated.backend.domain.projectchatting.chatting.service.ChattingService;
-import com.projectboated.backend.domain.projectchatting.projectchattingroom.service.ProjectChattingRoomService;
+import com.projectboated.backend.domain.projectchatting.chattingroom.service.ChattingRoomService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/projects/{projectId}/chatting")
 public class ProjectChattingRoomController {
 
-    private final ProjectChattingRoomService projectChattingRoomService;
+    private final ChattingRoomService projectChattingRoomService;
     private final ChattingService chattingService;
 
-    @GetMapping("/room")
+    @GetMapping
     public void getProjectChattingRoom(
             @PathVariable Long projectId
     ) {

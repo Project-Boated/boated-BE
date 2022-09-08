@@ -2,7 +2,8 @@ package com.projectboated.backend.domain.projectchatting.chatting.domain;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
-import com.projectboated.backend.domain.projectchatting.projectchattingroom.domain.ProjectChattingRoom;
+import com.projectboated.backend.domain.projectchatting.chattingroom.domain.ChattingRoom;
+import com.projectboated.backend.domain.projectchatting.chattingroom.domain.ProjectChattingRoom;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,8 +19,8 @@ public class Chatting extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_chatting_room_id")
-    private ProjectChattingRoom projectChattingRoom;
+    @JoinColumn(name = "chatting_room_id")
+    private ChattingRoom chattingRoom;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
@@ -28,9 +29,9 @@ public class Chatting extends BaseTimeEntity {
     private String body;
 
     @Builder
-    public Chatting(Long id, ProjectChattingRoom projectChattingRoom, Account account, String body) {
+    public Chatting(Long id, ChattingRoom chattingRoom, Account account, String body) {
         this.id = id;
-        this.projectChattingRoom = projectChattingRoom;
+        this.chattingRoom = chattingRoom;
         this.account = account;
         this.body = body;
     }

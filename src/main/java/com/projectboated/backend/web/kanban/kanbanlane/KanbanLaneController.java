@@ -4,8 +4,10 @@ import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.KanbanLaneService;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.KanbanLaneUpdateRequest;
 import com.projectboated.backend.web.kanban.kanbanlane.dto.GetLanesResponse;
+import com.projectboated.backend.web.kanban.kanbanlane.dto.TaskLaneChangeMessage;
 import com.projectboated.backend.web.kanban.kanbanlane.dto.UpdateKanbanLaneRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.List;
 public class KanbanLaneController {
 
     private final KanbanLaneService kanbanLaneService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @GetMapping
     public GetLanesResponse getLanes(
@@ -45,6 +48,7 @@ public class KanbanLaneController {
             @PathVariable int changeIndex
     ) {
         kanbanLaneService.changeKanbanLaneOrder(projectId, originalIndex, changeIndex);
+        messagingTemplate.convertAndSend("/topic/projects/{projectId}/lanes/change", new TaskLaneChangeMessage(originalIndex, changeIndex));
     }
 
 }

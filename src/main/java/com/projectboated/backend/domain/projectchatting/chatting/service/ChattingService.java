@@ -13,10 +13,4 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ChattingService {
-
-    private final ChattingRepository chattingRepository;
-
-    public List<Chatting> findByChattingRoom(ChattingRoom chattingRoom) {
-        return chattingRepository.findByChattingRoom(chattingRoom);
-    }
 }

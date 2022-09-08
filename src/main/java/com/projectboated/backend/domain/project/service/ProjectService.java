@@ -18,8 +18,8 @@ import com.projectboated.backend.domain.project.service.condition.ProjectUpdateC
 import com.projectboated.backend.domain.project.service.dto.MyProjectsDto;
 import com.projectboated.backend.domain.project.service.exception.ProjectNameSameInAccountException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
-import com.projectboated.backend.domain.projectchatting.projectchattingroom.domain.ProjectChattingRoom;
-import com.projectboated.backend.domain.projectchatting.projectchattingroom.repository.ProjectChattingRoomRepository;
+import com.projectboated.backend.domain.projectchatting.chattingroom.domain.ProjectChattingRoom;
+import com.projectboated.backend.domain.projectchatting.chattingroom.repository.ChattingRoomRepository;
 import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,7 +39,7 @@ public class ProjectService {
     private final KanbanRepository kanbanRepository;
     private final KanbanLaneRepository kanbanLaneRepository;
     private final TaskRepository taskRepository;
-    private final ProjectChattingRoomRepository projectChattingRepository;
+    private final ChattingRoomRepository chattingRoomRepository;
 
     public Project findById(Long projectId) {
         return projectRepository.findById(projectId)
@@ -68,7 +68,7 @@ public class ProjectService {
         }
 
         // create chatting
-        projectChattingRepository.save(ProjectChattingRoom.builder()
+        chattingRoomRepository.save(ProjectChattingRoom.builder()
                 .project(project)
                 .build());
 

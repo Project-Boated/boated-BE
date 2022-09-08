@@ -1,0 +1,1 @@
+alter table chatting rename column project_chatting_room_id to chatting_room_id;

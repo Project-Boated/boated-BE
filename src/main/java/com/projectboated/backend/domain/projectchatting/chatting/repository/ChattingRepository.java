@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ChattingRepository extends JpaRepository<Chatting, Long> {
 
-    @Query("select c from Chatting c where c.projectChattingRoom=:chattingRoom order by c.createdDate")
+    @Query("select c from Chatting c where c.chattingRoom=:chattingRoom order by c.createdDate")
     List<Chatting> findByChattingRoom(@Param("chattingRoom") ChattingRoom chattingRoom);
 
 }
