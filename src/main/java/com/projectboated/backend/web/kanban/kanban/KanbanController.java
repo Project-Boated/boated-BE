@@ -52,4 +52,21 @@ public class KanbanController {
 
         return new GetKanbanResponse(kanban, kanbanLaneResponses);
     }
+
+    @PostMapping(value = "/lanes", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void createKanbanLane(
+            @PathVariable Long projectId,
+            @RequestBody CreateKanbanLaneRequest request
+    ) {
+        kanbanLaneService.createNewLine(projectId, request.getName());
+    }
+
+    @DeleteMapping("/lanes/{kanbanLaneId}")
+    public void deleteKanbanLane(
+            @PathVariable Long projectId,
+            @PathVariable Long kanbanLaneId
+    ) {
+        kanbanLaneService.deleteKanbanLane(projectId, kanbanLaneId);
+    }
+
 }

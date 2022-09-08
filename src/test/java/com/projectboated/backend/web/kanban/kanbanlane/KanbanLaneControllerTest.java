@@ -7,7 +7,6 @@ import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.web.config.WithMockAccount;
 import com.projectboated.backend.web.kanban.kanbanlane.dto.UpdateKanbanLaneRequest;
-import com.projectboated.backend.web.kanban.kanbanlane.dto.request.CreateKanbanLaneRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -16,10 +15,9 @@ import java.util.List;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
 import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
-import static com.projectboated.backend.common.data.BasicDataKanbanLane.*;
+import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID;
+import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME2;
 import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
-import static com.projectboated.backend.web.kanban.kanban.document.KanbanDocument.documentKanbanLaneCreate;
-import static com.projectboated.backend.web.kanban.kanban.document.KanbanDocument.documentKanbanLaneDelete;
 import static com.projectboated.backend.web.kanban.kanbanlane.document.KanbanLaneDocument.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -43,7 +41,7 @@ class KanbanLaneControllerTest extends ControllerTest {
 
         // When
         // Then
-        mockMvc.perform(get("/api/projects/{projectId}/lanes", project.getId()))
+        mockMvc.perform(get("/api/projects/{projectId}/kanban/lanes", project.getId()))
                 .andExpect(status().isOk())
                 .andDo(documentLanesRetrieve());
     }
@@ -61,7 +59,7 @@ class KanbanLaneControllerTest extends ControllerTest {
 
         // When
         // Then
-        mockMvc.perform(put("/api/projects/{projectId}/lanes/{kanbanLaneId}", project.getId(), kanbanLanes.get(0).getId())
+        mockMvc.perform(put("/api/projects/{projectId}/kanban/lanes/{kanbanLaneId}", project.getId(), kanbanLanes.get(0).getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toJsonString(new UpdateKanbanLaneRequest(KANBAN_LANE_NAME2))))
                 .andExpect(status().isOk())
@@ -78,39 +76,11 @@ class KanbanLaneControllerTest extends ControllerTest {
         List<KanbanLane> kanbanLanes = createKanbanLanes(KANBAN_LANE_ID, project, kanban, 4);
         // When
         // Then
-        mockMvc.perform(post("/api/projects/{projectId}/lanes/change/{originalIndex}/{changeIndex}", project.getId(), 0, 0))
+        mockMvc.perform(post("/api/projects/{projectId}/kanban/lanes/change/{originalIndex}/{changeIndex}", project.getId(), 0, 0))
                 .andExpect(status().isOk())
                 .andDo(documentKanbanLaneOrderChange());
 
         verify(kanbanLaneService).changeKanbanLaneOrder(any(), anyInt(), anyInt());
-    }
-
-    @Test
-    @WithMockAccount
-    void createCustomKanbanLane_칸반lane만들기_정상() throws Exception {
-        // Given
-        // When
-        // Then
-        mockMvc.perform(post( "/api/projects/{projectId}/lanes", PROJECT_ID)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(toJsonString(new CreateKanbanLaneRequest(KANBAN_LANE_NAME))))
-                .andExpect(status().isOk())
-                .andDo(documentKanbanLaneCreate());
-
-        verify(kanbanLaneService).createNewLine(any(), any());
-    }
-
-    @Test
-    @WithMockAccount
-    void deleteCustomKanbanLane_칸반lane지우기_정상() throws Exception {
-        // Given
-        // When
-        // Then
-        mockMvc.perform(delete( "/api/projects/{projectId}/lanes/{kanbanLaneId}", PROJECT_ID, KANBAN_LANE_ID))
-                .andExpect(status().isOk())
-                .andDo(documentKanbanLaneDelete());
-
-        verify(kanbanLaneService).deleteKanbanLane(PROJECT_ID, KANBAN_LANE_ID);
     }
 
 }

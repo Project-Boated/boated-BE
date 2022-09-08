@@ -52,7 +52,7 @@ class TaskLikeControllerTest extends ControllerTest {
 
         // When
         // Then
-        mockMvc.perform(get("/api/account/tasks/likes"))
+        mockMvc.perform(get("/api/my/likes"))
                 .andExpect(status().isOk())
                 .andDo(documentMyTaskLikeRetrieve());
     }
@@ -63,7 +63,7 @@ class TaskLikeControllerTest extends ControllerTest {
         // Given
         // When
         // Then
-        mockMvc.perform(post("/api/account/tasks/likes/change/{originalIndex}/{changeIndex}", 0, 0))
+        mockMvc.perform(post("/api/my/likes/change/{originalIndex}/{changeIndex}", 0, 0))
                 .andExpect(status().isOk())
                 .andDo(documentTaskLikeOrderChange());
 

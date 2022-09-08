@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/projects/{projectId}/tasks")
+@RequestMapping("/api/projects/{projectId}/kanban/lanes/tasks")
 public class TaskController {
 
     private final TaskService taskService;

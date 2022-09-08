@@ -6,9 +6,7 @@ import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.KanbanLane
 import com.projectboated.backend.web.kanban.kanbanlane.dto.GetLanesResponse;
 import com.projectboated.backend.web.kanban.kanbanlane.dto.TaskLaneChangeMessage;
 import com.projectboated.backend.web.kanban.kanbanlane.dto.UpdateKanbanLaneRequest;
-import com.projectboated.backend.web.kanban.kanbanlane.dto.request.CreateKanbanLaneRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/projects/{projectId}/lanes")
+@RequestMapping("/api/projects/{projectId}/kanban/lanes")
 public class KanbanLaneController {
 
     private final KanbanLaneService kanbanLaneService;
@@ -52,22 +50,5 @@ public class KanbanLaneController {
         kanbanLaneService.changeKanbanLaneOrder(projectId, originalIndex, changeIndex);
         messagingTemplate.convertAndSend("/topic/projects/{projectId}/lanes/change", new TaskLaneChangeMessage(originalIndex, changeIndex));
     }
-
-    @PostMapping
-    public void createKanbanLane(
-            @PathVariable Long projectId,
-            @RequestBody CreateKanbanLaneRequest request
-    ) {
-        kanbanLaneService.createNewLine(projectId, request.getName());
-    }
-
-    @DeleteMapping("/{kanbanLaneId}")
-    public void deleteKanbanLane(
-            @PathVariable Long projectId,
-            @PathVariable Long kanbanLaneId
-    ) {
-        kanbanLaneService.deleteKanbanLane(projectId, kanbanLaneId);
-    }
-
 
 }
