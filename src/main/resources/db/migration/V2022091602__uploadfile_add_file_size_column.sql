@@ -1,0 +1,1 @@
+alter table upload_file add column file_size bigint;

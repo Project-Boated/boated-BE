@@ -16,7 +16,7 @@ class UploadFileTest {
     void 생성자_uploadFile생성_return_생성된uploadFile() {
         // Given
         // When
-        UploadFile uploadFile = new UploadFile(UPLOAD_FILE_ID, ORIGINAL_FILE_NAME, SAVE_FILE_NAME, MEDIATYPE);
+        UploadFile uploadFile = new UploadFile(UPLOAD_FILE_ID, ORIGINAL_FILE_NAME, SAVE_FILE_NAME, MEDIATYPE, FILE_SIZE);
 
         // Then
         assertThat(uploadFile.getOriginalFileName()).isEqualTo(ORIGINAL_FILE_NAME_NO_EXT);
@@ -30,7 +30,7 @@ class UploadFileTest {
         // Given
         // When
         // Then
-        assertThatThrownBy(() -> new UploadFile(UPLOAD_FILE_ID, ORIGINAL_FILE_NAME_NO_EXT, SAVE_FILE_NAME, MEDIATYPE))
+        assertThatThrownBy(() -> new UploadFile(UPLOAD_FILE_ID, ORIGINAL_FILE_NAME_NO_EXT, SAVE_FILE_NAME, MEDIATYPE, FILE_SIZE))
                 .isInstanceOf(UploadFileNotFoundExt.class);
     }
 

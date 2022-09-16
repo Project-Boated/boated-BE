@@ -5,8 +5,7 @@ import org.springframework.http.MediaType;
 
 import java.time.LocalDateTime;
 
-import static com.projectboated.backend.common.data.BasicDataUploadFile.ORIGINAL_FILE_NAME;
-import static com.projectboated.backend.common.data.BasicDataUploadFile.SAVE_FILE_NAME;
+import static com.projectboated.backend.common.data.BasicDataUploadFile.*;
 
 public class BaseUploadFileTest extends BaseAccountTest{
 
@@ -14,6 +13,7 @@ public class BaseUploadFileTest extends BaseAccountTest{
         return UploadFile.builder()
                 .saveFileName(SAVE_FILE_NAME)
                 .originalFileName(ORIGINAL_FILE_NAME)
+                .fileSize(FILE_SIZE)
                 .build();
     }
 
@@ -23,6 +23,7 @@ public class BaseUploadFileTest extends BaseAccountTest{
                 .saveFileName(SAVE_FILE_NAME)
                 .originalFileName(ORIGINAL_FILE_NAME)
                 .mediaType(MediaType.TEXT_PLAIN_VALUE)
+                .fileSize(FILE_SIZE)
                 .build();
         uploadFile.changeCreatedDate(LocalDateTime.now());
         return uploadFile;

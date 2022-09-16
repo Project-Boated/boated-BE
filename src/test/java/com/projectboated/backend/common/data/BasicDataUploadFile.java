@@ -12,6 +12,7 @@ public abstract class BasicDataUploadFile {
     public final static String ORIGINAL_FILE_NAME_NO_EXT = "originalFileName";
     public final static String SAVE_FILE_NAME = UUID.randomUUID().toString();
     public final static String MEDIATYPE = "mediaType";
-    public final static UploadFile UPLOADFILE = new UploadFile(UPLOAD_FILE_ID, ORIGINAL_FILE_NAME, SAVE_FILE_NAME, MEDIATYPE);
+    public static final Long FILE_SIZE = 12954L;
+    public final static UploadFile UPLOADFILE = new UploadFile(UPLOAD_FILE_ID, ORIGINAL_FILE_NAME, SAVE_FILE_NAME, MEDIATYPE, FILE_SIZE);
 
 }
