@@ -34,10 +34,15 @@ public class TaskFileService {
     private final TaskRepository taskRepository;
     private final TaskFileRepository taskFileRepository;
     private final UploadFileRepository uploadFileRepository;
+    private final ProjectRepository projectRepository;
 
     @Transactional
     @OnlyCaptainOrCrew
     public TaskFile uploadFile(Long projectId, Long taskId, MultipartFile file) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
+        project.addTotalFileSize(file.getSize());
+
         Task task = taskRepository.findByProjectIdAndTaskId(projectId, taskId)
                 .orElseThrow(TaskNotFoundException::new);
 
@@ -45,6 +50,7 @@ public class TaskFileService {
                 .originalFileName(file.getOriginalFilename())
                 .saveFileName(UUID.randomUUID().toString())
                 .mediaType(file.getContentType())
+                .fileSize(file.getSize())
                 .build();
         uploadFileRepository.save(uploadFile);
 
@@ -63,7 +69,15 @@ public class TaskFileService {
     public void delete(Long projectId, Long taskId, Long taskFileId) {
         TaskFile taskFile = taskFileRepository.findById(taskFileId)
                 .orElseThrow(TaskFileNotFoundException::new);
+
+        UploadFile uploadFile = taskFile.getUploadFile();
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
+        project.minusTotalFileSize(uploadFile.getFileSize());
+
         taskFileRepository.delete(taskFile);
+        s3Service.deleteFile(taskFile.getKey());
     }
 
     @OnlyCaptainOrCrew
