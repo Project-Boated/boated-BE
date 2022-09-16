@@ -32,6 +32,7 @@ public enum ErrorCode {
     PROJECT_DOESNT_HAVE_KANBAN_LANE(400, "P005", "Project가 해당 kanbanlane을 가지고 있지 않습니다."),
     PROJECT_ONLY_CAPTAIN_OR_CREW(400, "P007", "Captain이나 Crew만 가능합니다. 권한부족."),
     PROJECT_ONLY_CAPTAIN(400, "P007", "Captain만 가능합니다. 권한부족."),
+    PROJECT_TOTAL_FILE_SIZE_IS_MINUS(400, "P008", "프로젝트의 총 size가 마이너스입니다."),
 
     // Crew
     ACCOUNT_PROJECT_NOT_FOUND(400, "CR001", "crew를 찾을 수 없습니다."),
