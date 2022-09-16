@@ -33,7 +33,7 @@ public class GetProjectResponse {
     private Long totalFileSize;
 
     @Builder
-    public GetProjectResponse(Project project, long taskSize, ProjectCaptainResponse projectCaptainResponse) {
+    public GetProjectResponse(Project project, long taskSize, ProjectCaptainResponse projectCaptainResponse, long totalFileSize) {
         this.id = project.getId();
         this.name = project.getName();
         this.description = project.getDescription();
@@ -44,7 +44,7 @@ public class GetProjectResponse {
 
         this.captain = projectCaptainResponse;
         this.taskSize = taskSize;
-        this.totalFileSize = 0L;
+        this.totalFileSize = totalFileSize;
     }
 
 }

@@ -33,6 +33,7 @@ public class ProjectController {
                 .project(project)
                 .taskSize(taskService.taskSize(projectId))
                 .projectCaptainResponse(new ProjectCaptainResponse(project.getCaptain()))
+                .totalFileSize(project.getTotalFileSize())
                 .build();
     }
 
