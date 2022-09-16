@@ -36,8 +36,7 @@ import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 import static com.projectboated.backend.common.data.BasicDataTask.TASK_ID;
 import static com.projectboated.backend.common.data.BasicDataTask.TASK_NAME;
 import static com.projectboated.backend.common.data.BasicDataTaskFile.TASK_FILE_ID;
-import static com.projectboated.backend.common.data.BasicDataUploadFile.ORIGINAL_FILE_NAME;
-import static com.projectboated.backend.common.data.BasicDataUploadFile.UPLOAD_FILE_ID;
+import static com.projectboated.backend.common.data.BasicDataUploadFile.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
@@ -66,6 +65,24 @@ class TaskUploadFileServiceTest extends ServiceTest {
 
 
     @Test
+    void uploadFile_찾을수없는project_예외발생() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        MockMultipartFile multipartFile = new MockMultipartFile("file", ORIGINAL_FILE_NAME, MediaType.IMAGE_JPEG_VALUE, "content".getBytes());
+
+        when(projectRepository.findById(project.getId())).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskFileService.uploadFile(project.getId(), task.getId(), multipartFile))
+                .isInstanceOf(ProjectNotFoundException.class);
+    }
+
+    @Test
     void uploadFile_찾을수없는task일때_예외발생() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
@@ -76,6 +93,7 @@ class TaskUploadFileServiceTest extends ServiceTest {
         MockMultipartFile multipartFile = new MockMultipartFile("file", ORIGINAL_FILE_NAME, MediaType.IMAGE_JPEG_VALUE, "content".getBytes());
 
         when(taskRepository.findByProjectIdAndTaskId(project.getId(), task.getId())).thenReturn(Optional.empty());
+        when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
 
         // When
         // Then
@@ -94,6 +112,7 @@ class TaskUploadFileServiceTest extends ServiceTest {
         MockMultipartFile multipartFile = new MockMultipartFile("file", ORIGINAL_FILE_NAME, MediaType.IMAGE_JPEG_VALUE, "content".getBytes());
 
         when(taskRepository.findByProjectIdAndTaskId(project.getId(), task.getId())).thenReturn(Optional.of(task));
+        when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
 
         // When
         taskFileService.uploadFile(project.getId(), task.getId(), multipartFile);
@@ -118,7 +137,7 @@ class TaskUploadFileServiceTest extends ServiceTest {
     }
 
     @Test
-    void delete_정상요청_delete성공() {
+    void delete_project를찾을수없음_예외발생() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
         Project project = createProject(PROJECT_ID, account);
@@ -129,6 +148,30 @@ class TaskUploadFileServiceTest extends ServiceTest {
         TaskFile taskFile = createTaskFile(TASK_FILE_ID, task, uploadFile);
 
         when(taskFileRepository.findById(TASK_FILE_ID)).thenReturn(Optional.of(taskFile));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> taskFileService.delete(PROJECT_ID, TASK_ID, TASK_FILE_ID))
+                .isInstanceOf(ProjectNotFoundException.class);
+
+        verify(taskFileRepository).findById(TASK_FILE_ID);
+    }
+
+    @Test
+    void delete_정상요청_delete성공() {
+        // Given
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
+        project.addTotalFileSize(FILE_SIZE);
+        Kanban kanban = createKanban(KANBAN_ID, project);
+        KanbanLane kanbanLane = createKanbanLane(KANBAN_ID, project, kanban);
+        Task task = createTask(TASK_ID, project, kanbanLane);
+        UploadFile uploadFile = createUploadFile(UPLOAD_FILE_ID);
+        TaskFile taskFile = createTaskFile(TASK_FILE_ID, task, uploadFile);
+
+        when(taskFileRepository.findById(TASK_FILE_ID)).thenReturn(Optional.of(taskFile));
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
 
         // When
         taskFileService.delete(PROJECT_ID, TASK_ID, TASK_FILE_ID);

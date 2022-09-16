@@ -2,6 +2,7 @@ package com.projectboated.backend.domain.project.entity;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
+import com.projectboated.backend.domain.project.entity.exception.ProjectTotalFileSizeIsMinusException;
 import com.projectboated.backend.domain.project.service.condition.ProjectUpdateCond;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import java.time.temporal.ChronoUnit;
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
 import static com.projectboated.backend.common.data.BasicDataProject.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("Project : Entity 단위 테스트")
 class ProjectTest {
@@ -337,6 +339,32 @@ class ProjectTest {
         assertThat(project.getName()).isEqualTo(newProjectName);
         assertThat(project.getDeadline()).isEqualTo(newDeadline);
         assertThat(project.getDescription()).isEqualTo(newProjectDescription);
+    }
+
+    @Test
+    void minusTotalFileSize_마이너스가되는경우_예외발생() {
+        // Given
+        Project project = Project.builder()
+                .build();
+
+        // When
+        // Then
+        assertThatThrownBy(() -> project.minusTotalFileSize(10L))
+                .isInstanceOf(ProjectTotalFileSizeIsMinusException.class);
+    }
+
+    @Test
+    void minusTotalFileSize_0이되는경우_0으로바뀜() {
+        // Given
+        Project project = Project.builder()
+                .build();
+        project.addTotalFileSize(10L);
+
+        // When
+        project.minusTotalFileSize(10L);
+
+        // Then
+        assertThat(project.getTotalFileSize()).isEqualTo(0);
     }
 
 }

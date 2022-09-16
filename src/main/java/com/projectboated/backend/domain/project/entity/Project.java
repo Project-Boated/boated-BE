@@ -2,7 +2,7 @@ package com.projectboated.backend.domain.project.entity;
 
 import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
-import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
+import com.projectboated.backend.domain.project.entity.exception.ProjectTotalFileSizeIsMinusException;
 import com.projectboated.backend.domain.project.service.condition.ProjectUpdateCond;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -35,6 +34,8 @@ public class Project extends BaseTimeEntity {
 
     private boolean isTerminated;
 
+    private Long totalFileSize;
+
     @Builder
     public Project(Long id, Account captain, String name, String description, LocalDateTime deadline) {
         this.id = id;
@@ -43,6 +44,7 @@ public class Project extends BaseTimeEntity {
         this.deadline = deadline;
         this.captain = captain;
         this.isTerminated = false;
+        this.totalFileSize = 0L;
     }
 
     public void update(ProjectUpdateCond cond) {
@@ -83,5 +85,16 @@ public class Project extends BaseTimeEntity {
 
     public void cancelTerminate() {
         isTerminated = false;
+    }
+
+    public void addTotalFileSize(Long fileSize) {
+        totalFileSize += fileSize;
+    }
+
+    public void minusTotalFileSize(Long fileSize) {
+        if (totalFileSize - fileSize < 0) {
+            throw new ProjectTotalFileSizeIsMinusException();
+        }
+        totalFileSize -= fileSize;
     }
 }

@@ -23,13 +23,16 @@ public class UploadFile extends BaseTimeEntity {
 
     private String mediaType;
 
+    private Long fileSize;
+
     @Builder
-    public UploadFile(Long id, String originalFileName, String saveFileName, String mediaType) {
+    public UploadFile(Long id, String originalFileName, String saveFileName, String mediaType, Long fileSize) {
         this.id = id;
         this.originalFileName = removeExt(originalFileName);
         this.ext = extractExt(originalFileName);
         this.saveFileName = saveFileName;
         this.mediaType = mediaType;
+        this.fileSize = fileSize;
     }
 
     private String extractExt(String originalFileName) {
