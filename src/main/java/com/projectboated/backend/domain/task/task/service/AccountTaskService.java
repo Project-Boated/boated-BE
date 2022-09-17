@@ -1,8 +1,8 @@
 package com.projectboated.backend.domain.task.task.service;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.account.account.repository.AccountRepository;
-import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
+import com.projectboated.backend.account.account.entity.Account;
+import com.projectboated.backend.account.account.repository.AccountRepository;
+import com.projectboated.backend.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.project.aop.OnlyCaptainOrCrew;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;

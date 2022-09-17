@@ -1,7 +1,7 @@
 package com.projectboated.backend.domain.invitation.repository;
 
 import com.projectboated.backend.common.basetest.RepositoryTest;
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.invitation.entity.Invitation;
 import com.projectboated.backend.domain.project.entity.Project;
 import org.junit.jupiter.api.DisplayName;

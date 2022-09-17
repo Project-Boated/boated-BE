@@ -1,7 +1,6 @@
 package com.projectboated.backend.domain.kanban.kanban.service;
 
 import com.projectboated.backend.common.basetest.ServiceTest;
-import com.projectboated.backend.domain.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanban.repository.KanbanRepository;
 import com.projectboated.backend.domain.kanban.kanban.service.exception.KanbanNotFoundException;
@@ -17,7 +16,6 @@ import java.util.Optional;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
 import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
-import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME;
 import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

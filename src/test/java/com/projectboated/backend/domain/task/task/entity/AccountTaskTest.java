@@ -1,8 +1,6 @@
 package com.projectboated.backend.domain.task.task.entity;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.task.task.entity.AccountTask;
-import com.projectboated.backend.domain.task.task.entity.Task;
+import com.projectboated.backend.account.account.entity.Account;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

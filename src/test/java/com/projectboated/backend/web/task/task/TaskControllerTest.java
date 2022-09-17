@@ -1,7 +1,7 @@
 package com.projectboated.backend.web.task.task;
 
 import com.projectboated.backend.common.basetest.ControllerTest;
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;

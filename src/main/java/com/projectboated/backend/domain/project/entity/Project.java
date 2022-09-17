@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.project.entity;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
 import com.projectboated.backend.domain.project.entity.exception.ProjectTotalFileSizeIsMinusException;
 import com.projectboated.backend.domain.project.service.condition.ProjectUpdateCond;

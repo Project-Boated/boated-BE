@@ -1,6 +1,6 @@
 package com.projectboated.backend.common.basetest.repository;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import com.projectboated.backend.domain.task.tasklike.entity.TaskLike;
 import com.projectboated.backend.domain.task.tasklike.repository.TaskLikeRepository;

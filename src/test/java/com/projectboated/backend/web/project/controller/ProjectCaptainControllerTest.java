@@ -1,7 +1,7 @@
 package com.projectboated.backend.web.project.controller;
 
 import com.projectboated.backend.common.basetest.ControllerTest;
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
@@ -22,7 +22,6 @@ import static com.projectboated.backend.web.project.controller.document.ProjectC
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

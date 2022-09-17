@@ -1,7 +1,7 @@
 package com.projectboated.backend.domain.projectchatting.chattingroom.service;
 
 import com.projectboated.backend.common.basetest.ServiceTest;
-import com.projectboated.backend.domain.account.account.repository.AccountRepository;
+import com.projectboated.backend.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.projectchatting.chatting.repository.ChattingRepository;
 import com.projectboated.backend.domain.projectchatting.chattingroom.repository.ProjectChattingRoomRepository;
@@ -9,9 +9,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-
-import static org.mockito.Mockito.*;
 
 @DisplayName("ProjectChattingRoom : Service 단위 테스트")
 class ProjectChattingRoomServiceTest extends ServiceTest {

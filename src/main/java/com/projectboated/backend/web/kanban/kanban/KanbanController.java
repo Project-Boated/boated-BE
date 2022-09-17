@@ -1,6 +1,6 @@
 package com.projectboated.backend.web.kanban.kanban;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanban.service.KanbanService;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.KanbanLaneService;

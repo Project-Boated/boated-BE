@@ -1,8 +1,6 @@
 package com.projectboated.backend.common.basetest.base;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.account.profileimage.entity.ProfileImage;
-import com.projectboated.backend.domain.account.profileimage.entity.UrlProfileImage;
+import com.projectboated.backend.account.account.entity.Account;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
 import static com.projectboated.backend.common.data.BasicDataAccount.ROLES;

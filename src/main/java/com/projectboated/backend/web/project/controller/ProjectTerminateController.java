@@ -1,6 +1,6 @@
 package com.projectboated.backend.web.project.controller;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.project.service.ProjectTerminateService;
 import com.projectboated.backend.web.project.dto.response.CancelTerminateProjectResponse;
 import com.projectboated.backend.web.project.dto.response.TerminateProjectResponse;

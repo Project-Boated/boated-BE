@@ -1,7 +1,7 @@
 package com.projectboated.backend.domain.task.task.service;
 
 import com.projectboated.backend.common.basetest.ServiceTest;
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
@@ -10,12 +10,10 @@ import com.projectboated.backend.domain.task.task.entity.Task;
 import com.projectboated.backend.domain.task.task.repository.AccountTaskRepository;
 import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import com.projectboated.backend.domain.task.task.service.exception.TaskNotFoundException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,7 +1,7 @@
 package com.projectboated.backend.web.project.controller;
 
 import com.projectboated.backend.common.basetest.ControllerTest;
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.service.dto.MyProjectsDto;
 import com.projectboated.backend.web.config.WithMockAccount;

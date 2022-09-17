@@ -1,7 +1,7 @@
 package com.projectboated.backend.web.kanban.kanbanlane.controller;
 
 import com.projectboated.backend.common.basetest.ControllerTest;
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
@@ -20,7 +20,6 @@ import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_L
 import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 import static com.projectboated.backend.web.kanban.kanbanlane.document.KanbanLaneDocument.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

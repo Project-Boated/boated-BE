@@ -1,7 +1,6 @@
 package com.projectboated.backend.web.config;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.security.token.JsonAuthenticationToken;
+import com.projectboated.backend.account.account.entity.Account;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;

@@ -1,6 +1,6 @@
 package com.projectboated.backend.web.invitation;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.web.invitation.dto.response.CreateInvitationResponse;
 import lombok.RequiredArgsConstructor;
 import com.projectboated.backend.domain.invitation.service.InvitationService;

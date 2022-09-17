@@ -4,7 +4,6 @@ import com.projectboated.backend.domain.kanban.kanbanlane.entity.exception.TaskC
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.exception.TaskOriginalIndexOutOfBoundsException;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
 import com.projectboated.backend.domain.project.aop.OnlyCaptainOrCrew;
-import com.projectboated.backend.domain.project.service.exception.OnlyCaptainOrCrewException;
 import com.projectboated.backend.domain.task.task.service.dto.TaskUpdateRequest;
 import com.projectboated.backend.domain.task.task.service.exception.*;
 import com.projectboated.backend.domain.task.taskfile.entity.TaskFile;
@@ -14,15 +13,14 @@ import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.account.account.repository.AccountRepository;
-import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
+import com.projectboated.backend.account.account.entity.Account;
+import com.projectboated.backend.account.account.repository.AccountRepository;
+import com.projectboated.backend.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.kanban.kanbanlane.repository.KanbanLaneRepository;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.exception.KanbanLaneNotFoundException;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
-import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
 import com.projectboated.backend.domain.task.task.entity.AccountTask;
 import com.projectboated.backend.domain.task.task.entity.Task;
@@ -31,7 +29,6 @@ import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 

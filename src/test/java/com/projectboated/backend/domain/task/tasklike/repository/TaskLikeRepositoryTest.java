@@ -1,7 +1,7 @@
 package com.projectboated.backend.domain.task.tasklike.repository;
 
 import com.projectboated.backend.common.basetest.RepositoryTest;
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
@@ -14,11 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
-import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
-import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
-import static com.projectboated.backend.common.data.BasicDataTask.TASK_ID;
-import static com.projectboated.backend.common.data.BasicDataTaskLike.TASK_LIKE_ID;
-import static com.projectboated.backend.common.data.BasicDataTaskLike.TASK_LIKE_ID2;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("TaskLike : Persistence 단위 테스트")

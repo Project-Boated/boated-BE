@@ -1,14 +1,12 @@
 package com.projectboated.backend.domain.project.service;
 
 import com.projectboated.backend.common.basetest.ServiceTest;
-import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.account.account.repository.AccountRepository;
-import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
+import com.projectboated.backend.account.account.entity.Account;
+import com.projectboated.backend.account.account.repository.AccountRepository;
+import com.projectboated.backend.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
-import com.projectboated.backend.domain.project.service.exception.ProjectDeleteCrewAccessDeniedException;
-import com.projectboated.backend.domain.project.service.exception.ProjectFindAllCrewsAccessDeniedException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

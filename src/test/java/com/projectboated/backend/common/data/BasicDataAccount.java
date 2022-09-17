@@ -1,9 +1,9 @@
 package com.projectboated.backend.common.data;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.account.account.entity.Role;
-import com.projectboated.backend.domain.account.profileimage.entity.ProfileImage;
-import com.projectboated.backend.domain.account.profileimage.entity.UrlProfileImage;
+import com.projectboated.backend.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Role;
+import com.projectboated.backend.account.profileimage.entity.ProfileImage;
+import com.projectboated.backend.account.profileimage.entity.UrlProfileImage;
 
 import java.util.Set;
 

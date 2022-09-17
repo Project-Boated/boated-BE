@@ -1,6 +1,6 @@
 package com.projectboated.backend.common.basetest.base;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.AccountTask;
@@ -8,7 +8,6 @@ import com.projectboated.backend.domain.task.task.entity.Task;
 
 import java.time.LocalDateTime;
 
-import static com.projectboated.backend.common.data.BasicDataAccountTask.ACCOUNT_TASK_ID;
 import static com.projectboated.backend.common.data.BasicDataTask.*;
 
 public class BaseTaskTest extends BaseKanbanLaneTest{

@@ -9,12 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
-import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.Task;
 
-import com.querydsl.core.types.Order;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

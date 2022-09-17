@@ -1,7 +1,6 @@
 package com.projectboated.backend.domain.project.aop;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.account.account.repository.AccountRepository;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.project.aop.exception.ProjectIdNotFoundException;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.service.ProjectService;
@@ -9,14 +8,11 @@ import com.projectboated.backend.domain.project.service.exception.OnlyCaptainExc
 import com.projectboated.backend.domain.project.service.exception.OnlyCaptainOrCrewException;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
-import java.security.cert.X509Certificate;
 
 @Component @Aspect
 @RequiredArgsConstructor

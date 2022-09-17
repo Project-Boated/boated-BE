@@ -1,7 +1,7 @@
 package com.projectboated.backend.common.basetest.repository;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.account.account.repository.AccountRepository;
+import com.projectboated.backend.account.account.entity.Account;
+import com.projectboated.backend.account.account.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class AccountRepositoryTest extends BaseRepositoryTest{

@@ -1,7 +1,7 @@
 package com.projectboated.backend.domain.task.taskfile.repository;
 
 import com.projectboated.backend.common.basetest.RepositoryTest;
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
@@ -12,14 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
-import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
-import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID;
-import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
-import static com.projectboated.backend.common.data.BasicDataTask.TASK_ID;
-import static com.projectboated.backend.common.data.BasicDataTaskFile.TASK_FILE_ID;
-import static com.projectboated.backend.common.data.BasicDataTaskFile.TASK_FILE_ID2;
-import static com.projectboated.backend.common.data.BasicDataUploadFile.UPLOAD_FILE_ID;
 import static org.assertj.core.api.Assertions.*;
 
 class TaskFileRepositoryTest extends RepositoryTest {

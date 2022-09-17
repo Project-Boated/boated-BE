@@ -1,10 +1,9 @@
 package com.projectboated.backend.common.basetest.base;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.project.entity.AccountProject;
 import com.projectboated.backend.domain.project.entity.Project;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static com.projectboated.backend.common.data.BasicDataProject.*;

@@ -1,8 +1,8 @@
 package com.projectboated.backend.domain.project.service;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.account.account.repository.AccountRepository;
-import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
+import com.projectboated.backend.account.account.entity.Account;
+import com.projectboated.backend.account.account.repository.AccountRepository;
+import com.projectboated.backend.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanban.repository.KanbanRepository;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;

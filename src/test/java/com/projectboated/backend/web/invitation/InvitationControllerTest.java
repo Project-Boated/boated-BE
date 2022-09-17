@@ -1,11 +1,10 @@
 package com.projectboated.backend.web.invitation;
 
 import com.projectboated.backend.common.basetest.ControllerTest;
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.invitation.entity.Invitation;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.web.config.WithMockAccount;
-import com.projectboated.backend.web.invitation.document.InvitationDocument;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

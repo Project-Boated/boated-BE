@@ -1,14 +1,12 @@
 package com.projectboated.backend.web.task.tasklike;
 
 import com.projectboated.backend.common.basetest.ControllerTest;
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.Task;
-import com.projectboated.backend.domain.task.taskfile.entity.TaskFile;
 import com.projectboated.backend.domain.task.tasklike.entity.TaskLike;
-import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import com.projectboated.backend.web.config.WithMockAccount;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,9 +18,6 @@ import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID;
 import static com.projectboated.backend.common.data.BasicDataProject.*;
 import static com.projectboated.backend.common.data.BasicDataTask.*;
-import static com.projectboated.backend.common.data.BasicDataTaskFile.TASK_FILE_ID;
-import static com.projectboated.backend.common.data.BasicDataUploadFile.UPLOAD_FILE_ID;
-import static com.projectboated.backend.web.task.taskfile.document.TaskFileControllerDocument.documentTaskFileDelete;
 import static com.projectboated.backend.web.task.tasklike.document.TaskLikeControllerDocument.*;
 import static io.restassured.RestAssured.given;
 import static org.mockito.ArgumentMatchers.any;

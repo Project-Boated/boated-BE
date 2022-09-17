@@ -1,7 +1,7 @@
 package com.projectboated.backend.domain.project.aop;
 
 import com.projectboated.backend.common.basetest.BaseTest;
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.exception.OnlyCaptainException;

@@ -1,16 +1,13 @@
 package com.projectboated.backend.web.task.task.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.task.task.entity.Task;
-import com.projectboated.backend.domain.task.taskfile.entity.TaskFile;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import com.projectboated.backend.web.task.task.dto.common.TaskAssignedAccountResponse;
 import com.projectboated.backend.web.task.task.dto.common.TaskAssignedFileResponse;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;

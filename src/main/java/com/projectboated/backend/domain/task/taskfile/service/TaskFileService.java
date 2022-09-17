@@ -1,12 +1,8 @@
 package com.projectboated.backend.domain.task.taskfile.service;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.account.account.repository.AccountRepository;
-import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.project.aop.OnlyCaptainOrCrew;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
-import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import com.projectboated.backend.domain.task.task.repository.TaskRepository;
@@ -14,7 +10,6 @@ import com.projectboated.backend.domain.task.task.service.exception.TaskNotFound
 import com.projectboated.backend.domain.task.taskfile.entity.TaskFile;
 import com.projectboated.backend.domain.task.taskfile.repository.TaskFileRepository;
 import com.projectboated.backend.domain.task.taskfile.service.exception.TaskFileNotFoundException;
-import com.projectboated.backend.domain.task.taskfile.service.exception.UploadTaskFileAccessDeniedException;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import com.projectboated.backend.domain.uploadfile.repository.UploadFileRepository;
 import com.projectboated.backend.infra.aws.AwsS3Service;

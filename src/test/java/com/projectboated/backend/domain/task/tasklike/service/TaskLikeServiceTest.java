@@ -1,17 +1,15 @@
 package com.projectboated.backend.domain.task.tasklike.service;
 
 import com.projectboated.backend.common.basetest.ServiceTest;
-import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.account.account.repository.AccountRepository;
-import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
+import com.projectboated.backend.account.account.entity.Account;
+import com.projectboated.backend.account.account.repository.AccountRepository;
+import com.projectboated.backend.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.ProjectService;
-import com.projectboated.backend.domain.project.service.exception.OnlyCaptainOrCrewException;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
-import com.projectboated.backend.domain.task.task.entity.AccountTask;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import com.projectboated.backend.domain.task.task.service.exception.TaskNotFoundException;
@@ -29,7 +27,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
-import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID2;
 import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
 import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID;
 import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;

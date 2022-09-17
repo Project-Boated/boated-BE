@@ -1,9 +1,8 @@
 package com.projectboated.backend.domain.task.taskfile.service;
 
 import com.projectboated.backend.common.basetest.ServiceTest;
-import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.domain.account.account.repository.AccountRepository;
-import com.projectboated.backend.domain.account.account.service.exception.AccountNotFoundException;
+import com.projectboated.backend.account.account.entity.Account;
+import com.projectboated.backend.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
@@ -16,7 +15,6 @@ import com.projectboated.backend.domain.task.task.service.exception.TaskNotFound
 import com.projectboated.backend.domain.task.taskfile.entity.TaskFile;
 import com.projectboated.backend.domain.task.taskfile.repository.TaskFileRepository;
 import com.projectboated.backend.domain.task.taskfile.service.exception.TaskFileNotFoundException;
-import com.projectboated.backend.domain.task.taskfile.service.exception.UploadTaskFileAccessDeniedException;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import com.projectboated.backend.domain.uploadfile.repository.UploadFileRepository;
 import com.projectboated.backend.infra.aws.AwsS3Service;
@@ -34,7 +32,6 @@ import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
 import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
 import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
 import static com.projectboated.backend.common.data.BasicDataTask.TASK_ID;
-import static com.projectboated.backend.common.data.BasicDataTask.TASK_NAME;
 import static com.projectboated.backend.common.data.BasicDataTaskFile.TASK_FILE_ID;
 import static com.projectboated.backend.common.data.BasicDataUploadFile.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

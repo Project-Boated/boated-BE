@@ -1,6 +1,6 @@
 package com.projectboated.backend.web.ganttchart;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.project.service.ProjectService;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import com.projectboated.backend.domain.task.task.service.AccountTaskService;

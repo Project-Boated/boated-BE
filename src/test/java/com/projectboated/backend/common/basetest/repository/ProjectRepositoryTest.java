@@ -1,16 +1,13 @@
 package com.projectboated.backend.common.basetest.repository;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.project.entity.AccountProject;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.AccountProjectRepository;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import static com.projectboated.backend.common.data.BasicDataProject.*;
 
 public class ProjectRepositoryTest extends ProfileImageRepositoryTest{
 
