@@ -1,24 +1,13 @@
 package com.projectboated.backend.domain.kanban.kanban.entity;
 
-import com.projectboated.backend.domain.common.exception.ErrorCode;
-import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
-import com.projectboated.backend.domain.kanban.kanban.entity.exception.KanbanLaneChangeIndexOutOfBoundsException;
-import com.projectboated.backend.domain.kanban.kanban.entity.exception.KanbanLaneOriginalIndexOutOfBoundsException;
-import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
-import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.KanbanLaneUpdateRequest;
-import com.projectboated.backend.domain.kanban.kanbanlane.service.exception.KanbanLaneAlreadyExists5;
-import com.projectboated.backend.domain.task.task.entity.Task;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
+import com.projectboated.backend.common.entity.BaseTimeEntity;
 import com.projectboated.backend.domain.project.entity.Project;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

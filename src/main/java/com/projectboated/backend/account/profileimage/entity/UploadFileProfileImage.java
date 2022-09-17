@@ -1,7 +1,7 @@
 package com.projectboated.backend.account.profileimage.entity;
 
 import com.projectboated.backend.account.profileimage.entity.exception.ProfileImageNeedsHostUrlException;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
+import com.projectboated.backend.common.exception.ErrorCode;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import lombok.AccessLevel;
 import lombok.Builder;

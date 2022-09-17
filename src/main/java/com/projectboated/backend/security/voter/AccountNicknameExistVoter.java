@@ -2,7 +2,7 @@ package com.projectboated.backend.security.voter;
 
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.account.account.service.AccountService;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
+import com.projectboated.backend.common.exception.ErrorCode;
 import com.projectboated.backend.security.exception.NicknameRequiredException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDecisionVoter;

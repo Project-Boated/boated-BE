@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.task.tasklike.service;
 
-import com.projectboated.backend.utils.basetest.ServiceTest;
+import com.projectboated.backend.utils.base.ServiceTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.account.account.repository.AccountRepository;
 import com.projectboated.backend.account.account.service.exception.AccountNotFoundException;

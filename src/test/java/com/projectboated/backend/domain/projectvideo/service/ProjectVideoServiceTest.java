@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.projectvideo.service;
 
-import com.projectboated.backend.utils.basetest.ServiceTest;
+import com.projectboated.backend.utils.base.ServiceTest;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;

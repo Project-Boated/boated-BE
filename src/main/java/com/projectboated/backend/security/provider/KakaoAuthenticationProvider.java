@@ -3,7 +3,7 @@ package com.projectboated.backend.security.provider;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projectboated.backend.account.account.entity.KakaoAccount;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
+import com.projectboated.backend.common.exception.ErrorCode;
 import com.projectboated.backend.infra.kakao.KakaoWebService;
 import com.projectboated.backend.security.exception.JsonParsingException;
 import com.projectboated.backend.security.exception.KakaoServerException;

@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.task.taskfile.entity;
 
-import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
+import com.projectboated.backend.common.entity.BaseTimeEntity;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import lombok.Builder;

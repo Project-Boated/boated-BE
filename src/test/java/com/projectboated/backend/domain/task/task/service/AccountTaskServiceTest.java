@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.task.task.service;
 
-import com.projectboated.backend.utils.basetest.ServiceTest;
+import com.projectboated.backend.utils.base.ServiceTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;

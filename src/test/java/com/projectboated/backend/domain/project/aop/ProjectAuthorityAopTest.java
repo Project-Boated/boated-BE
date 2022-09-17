@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.project.aop;
 
-import com.projectboated.backend.utils.basetest.BaseTest;
+import com.projectboated.backend.utils.base.BaseTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.service.ProjectService;

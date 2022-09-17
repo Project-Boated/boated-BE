@@ -3,7 +3,7 @@ package com.projectboated.backend.web.exception;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.projectboated.backend.domain.common.exception.BusinessException;
+import com.projectboated.backend.common.exception.BusinessException;
 import com.projectboated.backend.web.exception.dto.BasicErrorResponse;
 import com.projectboated.backend.web.exception.dto.BasicFieldErrorResponse;
 import com.projectboated.backend.web.exception.dto.ExceptionMessageResponse;

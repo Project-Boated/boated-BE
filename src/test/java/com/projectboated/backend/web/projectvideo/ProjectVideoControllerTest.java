@@ -1,11 +1,11 @@
 package com.projectboated.backend.web.projectvideo;
 
 import com.google.common.net.MediaType;
-import com.projectboated.backend.utils.basetest.ControllerTest;
+import com.projectboated.backend.utils.base.ControllerTest;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.projectvideo.entity.ProjectVideo;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
-import com.projectboated.backend.utils.web.WithMockAccount;
+import com.projectboated.backend.utils.controller.WithMockAccount;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;

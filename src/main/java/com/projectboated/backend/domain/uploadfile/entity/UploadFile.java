@@ -1,7 +1,7 @@
 package com.projectboated.backend.domain.uploadfile.entity;
 
-import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
+import com.projectboated.backend.common.entity.BaseTimeEntity;
+import com.projectboated.backend.common.exception.ErrorCode;
 import com.projectboated.backend.domain.uploadfile.entity.exception.UploadFileNotFoundExt;
 import lombok.*;
 

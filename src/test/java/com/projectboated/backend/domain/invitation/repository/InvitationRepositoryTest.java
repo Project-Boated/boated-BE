@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.invitation.repository;
 
-import com.projectboated.backend.utils.basetest.RepositoryTest;
+import com.projectboated.backend.utils.base.RepositoryTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.invitation.entity.Invitation;
 import com.projectboated.backend.domain.project.entity.Project;

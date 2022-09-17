@@ -1,6 +1,6 @@
 package com.projectboated.backend.web.exception.dto;
 
-import com.projectboated.backend.domain.common.exception.ErrorCode;
+import com.projectboated.backend.common.exception.ErrorCode;
 
 public class BasicErrorResponse {
 

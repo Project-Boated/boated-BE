@@ -1,13 +1,13 @@
 package com.projectboated.backend.web.task.tasklike;
 
-import com.projectboated.backend.utils.basetest.ControllerTest;
+import com.projectboated.backend.utils.base.ControllerTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import com.projectboated.backend.domain.task.tasklike.entity.TaskLike;
-import com.projectboated.backend.utils.web.WithMockAccount;
+import com.projectboated.backend.utils.controller.WithMockAccount;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

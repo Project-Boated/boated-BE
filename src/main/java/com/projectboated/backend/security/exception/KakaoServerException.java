@@ -1,7 +1,7 @@
 package com.projectboated.backend.security.exception;
 
-import com.projectboated.backend.domain.common.exception.ErrorCode;
-import com.projectboated.backend.domain.common.exception.ErrorCodeException;
+import com.projectboated.backend.common.exception.ErrorCode;
+import com.projectboated.backend.common.exception.ErrorCodeException;
 import org.springframework.security.core.AuthenticationException;
 
 public class KakaoServerException extends AuthenticationException implements ErrorCodeException {

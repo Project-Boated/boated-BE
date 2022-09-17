@@ -1,8 +1,6 @@
 package com.projectboated.backend.domain.projectchatting.chattingroom.domain;
 
-import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
-import com.projectboated.backend.domain.project.entity.Project;
-import lombok.Builder;
+import com.projectboated.backend.common.entity.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

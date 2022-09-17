@@ -1,7 +1,7 @@
 package com.projectboated.backend.domain.projectchatting.chatting.domain;
 
 import com.projectboated.backend.account.account.entity.Account;
-import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
+import com.projectboated.backend.common.entity.BaseTimeEntity;
 import com.projectboated.backend.domain.projectchatting.chattingroom.domain.ChattingRoom;
 import lombok.Builder;
 import lombok.Getter;

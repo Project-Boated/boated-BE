@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.project.repository;
 
-import com.projectboated.backend.utils.basetest.RepositoryTest;
+import com.projectboated.backend.utils.base.RepositoryTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.project.entity.Project;
 import org.assertj.core.groups.Tuple;

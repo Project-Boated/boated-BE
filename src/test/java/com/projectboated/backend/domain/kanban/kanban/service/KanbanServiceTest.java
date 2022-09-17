@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.kanban.kanban.service;
 
-import com.projectboated.backend.utils.basetest.ServiceTest;
+import com.projectboated.backend.utils.base.ServiceTest;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanban.repository.KanbanRepository;
 import com.projectboated.backend.domain.kanban.kanban.service.exception.KanbanNotFoundException;

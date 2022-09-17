@@ -8,7 +8,7 @@ import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.account.account.service.AccountService;
 import com.projectboated.backend.account.account.service.condition.AccountUpdateCond;
 import com.projectboated.backend.account.profileimage.service.ProfileImageService;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
+import com.projectboated.backend.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

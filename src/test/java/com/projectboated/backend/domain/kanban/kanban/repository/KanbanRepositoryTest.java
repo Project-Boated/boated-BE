@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.kanban.kanban.repository;
 
-import com.projectboated.backend.utils.basetest.RepositoryTest;
+import com.projectboated.backend.utils.base.RepositoryTest;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.project.entity.Project;
 import org.junit.jupiter.api.DisplayName;

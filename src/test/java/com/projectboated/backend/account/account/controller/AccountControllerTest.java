@@ -2,8 +2,8 @@ package com.projectboated.backend.account.account.controller;
 
 import com.google.common.net.MediaType;
 import com.projectboated.backend.account.account.controller.dto.request.SignUpRequest;
-import com.projectboated.backend.utils.basetest.ControllerTest;
-import com.projectboated.backend.utils.web.WithMockAccount;
+import com.projectboated.backend.utils.base.ControllerTest;
+import com.projectboated.backend.utils.controller.WithMockAccount;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;

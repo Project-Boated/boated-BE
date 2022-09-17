@@ -2,18 +2,15 @@ package com.projectboated.backend.domain.task.task.entity;
 
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.task.task.service.dto.TaskUpdateRequest;
-import com.projectboated.backend.domain.task.tasklike.entity.TaskLike;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
+import com.projectboated.backend.common.entity.BaseTimeEntity;
 import com.projectboated.backend.domain.project.entity.Project;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

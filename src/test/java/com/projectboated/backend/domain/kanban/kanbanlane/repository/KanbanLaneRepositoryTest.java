@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.kanban.kanbanlane.repository;
 
-import com.projectboated.backend.utils.basetest.RepositoryTest;
+import com.projectboated.backend.utils.base.RepositoryTest;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;

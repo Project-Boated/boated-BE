@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.projectvideo.entity;
 
-import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
+import com.projectboated.backend.common.entity.BaseTimeEntity;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import lombok.Builder;

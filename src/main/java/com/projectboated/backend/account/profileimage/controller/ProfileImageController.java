@@ -6,7 +6,7 @@ import com.projectboated.backend.account.account.service.exception.AccountProfil
 import com.projectboated.backend.account.profileimage.controller.dto.PostAccountProfileImageRequest;
 import com.projectboated.backend.account.profileimage.controller.dto.PostAccountProfileImageResponse;
 import com.projectboated.backend.account.profileimage.service.ProfileImageService;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
+import com.projectboated.backend.common.exception.ErrorCode;
 import com.projectboated.backend.infra.aws.AwsS3File;
 import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import lombok.RequiredArgsConstructor;

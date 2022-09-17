@@ -1,6 +1,6 @@
 package com.projectboated.backend.web.exception.dto;
 
-import com.projectboated.backend.utils.basetest.BaseTest;
+import com.projectboated.backend.utils.base.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

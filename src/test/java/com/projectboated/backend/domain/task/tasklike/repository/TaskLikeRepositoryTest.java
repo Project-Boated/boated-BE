@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.task.tasklike.repository;
 
-import com.projectboated.backend.utils.basetest.RepositoryTest;
+import com.projectboated.backend.utils.base.RepositoryTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;

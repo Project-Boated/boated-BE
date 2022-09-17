@@ -5,7 +5,7 @@ import com.projectboated.backend.account.account.repository.AccountRepository;
 import com.projectboated.backend.account.account.service.exception.AccountNotFoundException;
 import com.projectboated.backend.account.profileimage.entity.ProfileImage;
 import com.projectboated.backend.account.profileimage.entity.UploadFileProfileImage;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
+import com.projectboated.backend.common.exception.ErrorCode;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import com.projectboated.backend.infra.aws.exception.AccountProfileImageNotUploadFile;
 import com.projectboated.backend.infra.aws.exception.FileUploadInterruptException;

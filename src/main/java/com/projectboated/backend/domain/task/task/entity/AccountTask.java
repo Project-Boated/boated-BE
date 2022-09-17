@@ -1,7 +1,7 @@
 package com.projectboated.backend.domain.task.task.entity;
 
 import com.projectboated.backend.account.account.entity.Account;
-import com.projectboated.backend.domain.common.entity.BaseTimeEntity;
+import com.projectboated.backend.common.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.projectboated.backend.account.account.repository;
 
 import com.projectboated.backend.account.account.entity.Account;
-import com.projectboated.backend.utils.basetest.RepositoryTest;
+import com.projectboated.backend.utils.base.RepositoryTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
