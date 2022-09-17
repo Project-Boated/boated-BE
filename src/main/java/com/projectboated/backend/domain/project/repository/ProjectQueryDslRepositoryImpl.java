@@ -69,15 +69,9 @@ public class ProjectQueryDslRepositoryImpl implements ProjectQueryDslRepository 
             for (Sort.Order order : pageable.getSort()) {
                 Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
                 switch (order.getProperty()) {
-                    case "name":
-                        orderSpecifiers.add(new OrderSpecifier(direction, project.name));
-                        break;
-                    case "createdDate":
-                        orderSpecifiers.add(new OrderSpecifier(direction, project.createdDate));
-                        break;
-                    case "deadline":
-                        orderSpecifiers.add(new OrderSpecifier(direction, project.deadline));
-                        break;
+                    case "name" -> orderSpecifiers.add(new OrderSpecifier<>(direction, project.name));
+                    case "createdDate" -> orderSpecifiers.add(new OrderSpecifier<>(direction, project.createdDate));
+                    case "deadline" -> orderSpecifiers.add(new OrderSpecifier<>(direction, project.deadline));
                 }
             }
         }
