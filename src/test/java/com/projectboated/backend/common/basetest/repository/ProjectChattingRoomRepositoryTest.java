@@ -2,7 +2,6 @@ package com.projectboated.backend.common.basetest.repository;
 
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.projectchatting.chattingroom.domain.ProjectChattingRoom;
-import com.projectboated.backend.domain.projectchatting.chattingroom.repository.ChattingRoomRepository;
 import com.projectboated.backend.domain.projectchatting.chattingroom.repository.ProjectChattingRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 

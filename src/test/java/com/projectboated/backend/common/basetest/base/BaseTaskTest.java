@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 import static com.projectboated.backend.common.data.BasicDataTask.*;
 
-public class BaseTaskTest extends BaseKanbanLaneTest{
+public class BaseTaskTest extends BaseKanbanLaneTest {
 
     protected Task createTask() {
         Task task = Task.builder()
@@ -48,7 +48,7 @@ public class BaseTaskTest extends BaseKanbanLaneTest{
         return task;
     }
 
-    protected Task createTask(Long id, String name, Project project,  KanbanLane kanbanLane) {
+    protected Task createTask(Long id, String name, Project project, KanbanLane kanbanLane) {
         Task task = Task.builder()
                 .id(id)
                 .name(name)
@@ -61,7 +61,7 @@ public class BaseTaskTest extends BaseKanbanLaneTest{
         return task;
     }
 
-    protected Task createTask(String name, Project project,  KanbanLane kanbanLane) {
+    protected Task createTask(String name, Project project, KanbanLane kanbanLane) {
         Task task = Task.builder()
                 .name(name)
                 .description(TASK_DESCRIPTION)

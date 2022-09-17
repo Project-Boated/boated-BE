@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
-public class ProjectRepositoryTest extends ProfileImageRepositoryTest{
+public class ProjectRepositoryTest extends ProfileImageRepositoryTest {
 
     @Autowired
     protected ProjectRepository projectRepository;

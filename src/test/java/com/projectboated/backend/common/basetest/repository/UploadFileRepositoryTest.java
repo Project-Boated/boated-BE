@@ -4,8 +4,6 @@ import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import com.projectboated.backend.domain.uploadfile.repository.UploadFileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.projectboated.backend.common.data.BasicDataUploadFile.*;
-
 public class UploadFileRepositoryTest extends TaskFileRepositoryTest {
 
     @Autowired

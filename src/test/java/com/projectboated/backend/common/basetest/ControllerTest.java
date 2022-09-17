@@ -51,6 +51,7 @@ public class ControllerTest extends BaseTest {
     @Autowired
     protected MockMvc mockMvc;
     protected ObjectMapper objectMapper = new ObjectMapper();
+
     {
         objectMapper.registerModule(new JavaTimeModule());
     }

@@ -3,7 +3,6 @@ package com.projectboated.backend.common.basetest.base;
 import com.projectboated.backend.account.account.entity.Account;
 
 import static com.projectboated.backend.common.data.BasicDataAccount.*;
-import static com.projectboated.backend.common.data.BasicDataAccount.ROLES;
 
 public class BaseAccountTest extends BaseBasicTest {
 

@@ -6,9 +6,7 @@ import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 
 import java.time.LocalDateTime;
 
-import static com.projectboated.backend.common.data.BasicDataTaskFile.TASK_FILE_ID;
-
-public class BaseTaskFileTest extends BaseInvitationTest{
+public class BaseTaskFileTest extends BaseInvitationTest {
 
     protected TaskFile createTaskFile(Task task, UploadFile uploadFile) {
         return TaskFile.builder()

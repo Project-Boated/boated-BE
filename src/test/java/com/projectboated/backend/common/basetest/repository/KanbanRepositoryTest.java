@@ -5,7 +5,7 @@ import com.projectboated.backend.domain.kanban.kanban.repository.KanbanRepositor
 import com.projectboated.backend.domain.project.entity.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class KanbanRepositoryTest extends ProjectRepositoryTest{
+public class KanbanRepositoryTest extends ProjectRepositoryTest {
 
     @Autowired
     protected KanbanRepository kanbanRepository;

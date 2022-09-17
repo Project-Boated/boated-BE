@@ -15,6 +15,4 @@ public class ProjectVideoRepositoryTest extends TaskLikeRepositoryTest {
         return projectVideoRepository.save(createProjectVideo(project, uploadFile));
     }
 
-
-
 }

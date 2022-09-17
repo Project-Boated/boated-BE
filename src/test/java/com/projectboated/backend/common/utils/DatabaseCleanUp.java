@@ -2,7 +2,6 @@ package com.projectboated.backend.common.utils;
 
 import com.google.common.base.CaseFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

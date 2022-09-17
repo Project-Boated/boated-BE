@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 import static com.projectboated.backend.common.data.BasicDataUploadFile.*;
 
-public class BaseUploadFileTest extends BaseAccountTest{
+public class BaseUploadFileTest extends BaseAccountTest {
 
     protected UploadFile createUploadFile() {
         return UploadFile.builder()

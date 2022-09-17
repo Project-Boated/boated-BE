@@ -4,7 +4,7 @@ import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.account.account.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class AccountRepositoryTest extends BaseRepositoryTest{
+public class AccountRepositoryTest extends BaseRepositoryTest {
 
     @Autowired
     protected AccountRepository accountRepository;

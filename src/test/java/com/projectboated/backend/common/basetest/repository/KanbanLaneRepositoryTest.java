@@ -1,13 +1,12 @@
 package com.projectboated.backend.common.basetest.repository;
 
-import java.util.List;
-
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.kanban.kanbanlane.repository.KanbanLaneRepository;
-
 import com.projectboated.backend.domain.project.entity.Project;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 public class KanbanLaneRepositoryTest extends KanbanRepositoryTest {
 
