@@ -147,6 +147,7 @@ jacocoTestCoverageVerification {
 // Spring Rest Docs 시작
 asciidoctor {
     dependsOn jacocoTestReport
+    baseDirFollowsSourceDir()
     configurations 'asciidoctorExtensions'
     inputs.dir snippetsDir
 }
