@@ -8,6 +8,7 @@ import com.projectboated.backend.account.account.repository.KakaoAccountReposito
 import com.projectboated.backend.account.profileimage.entity.ProfileImage;
 import com.projectboated.backend.account.profileimage.entity.UrlProfileImage;
 import com.projectboated.backend.account.profileimage.service.ProfileImageService;
+import com.projectboated.backend.infra.kakao.KakaoWebService;
 import com.projectboated.backend.security.service.dto.KakaoAccountInformation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,7 +24,7 @@ public class KakaoAccountDetailsService {
 
     private final KakaoAccountRepository kakaoAccountRepository;
     private final ProfileImageService profileImageService;
-    private final com.projectboated.backend.security.service.KakaoWebService kakaoWebService;
+    private final KakaoWebService kakaoWebService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Transactional

@@ -24,7 +24,7 @@ public class AwsS3ProfileImageService {
     private final AwsS3Service awsS3Service;
     private final AccountRepository accountRepository;
 
-    public String uploadProfileImage(Account account, UploadFileProfileImage profileImage, MultipartFile multipartFile){
+    public String uploadProfileImage(Account account, UploadFileProfileImage profileImage, MultipartFile multipartFile) {
         UploadFile uploadFile = profileImage.getUploadFile();
         String path = getProfileSavePath(account, uploadFile);
         awsS3Service.uploadFile(path, multipartFile);
@@ -49,7 +49,7 @@ public class AwsS3ProfileImageService {
                 .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
         ProfileImage profileImage = (ProfileImage) Hibernate.unproxy(findAccount.getProfileImage());
-        if(!(profileImage instanceof UploadFileProfileImage)) {
+        if (!(profileImage instanceof UploadFileProfileImage)) {
             throw new AccountProfileImageNotUploadFile(ErrorCode.ACCOUNT_PROFILE_IMAGE_NOT_UPLOAD_FILE);
         }
 

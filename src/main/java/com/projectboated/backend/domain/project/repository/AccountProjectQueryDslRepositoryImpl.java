@@ -7,10 +7,10 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.projectboated.backend.domain.account.account.entity.QAccount.account;
+import static com.projectboated.backend.account.account.entity.QAccount.account;
 import static com.projectboated.backend.domain.project.entity.QAccountProject.accountProject;
 
-public class AccountProjectQueryDslRepositoryImpl implements AccountProjectQueryDslRepository{
+public class AccountProjectQueryDslRepositoryImpl implements AccountProjectQueryDslRepository {
 
     private final JPAQueryFactory queryFactory;
 

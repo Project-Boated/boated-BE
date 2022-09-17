@@ -13,7 +13,7 @@ import com.projectboated.backend.account.profileimage.repository.ProfileImageRep
 import com.projectboated.backend.domain.common.exception.ErrorCode;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
-import com.projectboated.backend.security.service.KakaoWebService;
+import com.projectboated.backend.infra.kakao.KakaoWebService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
