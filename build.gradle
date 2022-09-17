@@ -1,15 +1,11 @@
 plugins {
-    // Java
     id 'java'
 
-    // Spring
     id 'org.springframework.boot' version '2.7.3'
     id 'io.spring.dependency-management' version '1.0.12.RELEASE'
 
-    // Ascii Doctor
     id "org.asciidoctor.jvm.convert" version "3.3.2"
 
-    // Jacoco
     id 'jacoco'
 }
 
@@ -92,14 +88,11 @@ dependencies {
 }
 
 test {
-    // For Spring Rest Docs
     outputs.dir snippetsDir
-
     useJUnitPlatform()
 }
 
 // Jacoco 시작
-
 jacoco{
     toolVersion = "0.8.8"
 }
@@ -141,7 +134,6 @@ jacocoTestCoverageVerification {
         }
     }
 }
-
 // Jacoco 끝
 
 // Spring Rest Docs 시작
