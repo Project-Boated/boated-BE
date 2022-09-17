@@ -2,7 +2,6 @@ package com.projectboated.backend.security.service.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,10 +19,10 @@ public class KakaoAccountInformation {
     private KakaoAccount kakaoAccount;
 
     public String getProfileImageUrl() {
-        if(kakaoAccount.getProfile() == null || kakaoAccount.getProfile().getIsDefaultImage() == null) {
+        if (kakaoAccount.getProfile() == null || kakaoAccount.getProfile().getIsDefaultImage() == null) {
             return null;
         }
-        if(kakaoAccount.getProfile().getIsDefaultImage().equals("true")) {
+        if (kakaoAccount.getProfile().getIsDefaultImage().equals("true")) {
             return null;
         }
         return getKakaoAccount().getProfile().getProfileImageUrl();
