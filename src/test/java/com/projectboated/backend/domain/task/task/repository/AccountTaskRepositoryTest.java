@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.task.task.repository;
 
-import com.projectboated.backend.common.basetest.RepositoryTest;
+import com.projectboated.backend.utils.basetest.RepositoryTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Optional;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.*;
+import static com.projectboated.backend.utils.data.BasicDataAccount.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("AccountTask : Persistence 단위 테스트")

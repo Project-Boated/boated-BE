@@ -5,7 +5,7 @@ import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.projectboated.backend.common.data.BasicDataUploadFile.*;
+import static com.projectboated.backend.utils.data.BasicDataUploadFile.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

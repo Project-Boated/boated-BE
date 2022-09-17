@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.kanban.kanbanlane.service;
 
-import com.projectboated.backend.common.basetest.ServiceTest;
+import com.projectboated.backend.utils.basetest.ServiceTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanban.entity.exception.KanbanLaneChangeIndexOutOfBoundsException;
@@ -26,12 +26,12 @@ import org.mockito.Mock;
 import java.util.List;
 import java.util.Optional;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
-import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
-import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID2;
-import static com.projectboated.backend.common.data.BasicDataKanbanLane.*;
-import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
-import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID2;
+import static com.projectboated.backend.utils.data.BasicDataAccount.ACCOUNT_ID;
+import static com.projectboated.backend.utils.data.BasicDataKanban.KANBAN_ID;
+import static com.projectboated.backend.utils.data.BasicDataKanban.KANBAN_ID2;
+import static com.projectboated.backend.utils.data.BasicDataKanbanLane.*;
+import static com.projectboated.backend.utils.data.BasicDataProject.PROJECT_ID;
+import static com.projectboated.backend.utils.data.BasicDataProject.PROJECT_ID2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.groups.Tuple.tuple;

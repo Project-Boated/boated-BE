@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.projectchatting.projectchattingroom.repository;
 
-import com.projectboated.backend.common.basetest.RepositoryTest;
+import com.projectboated.backend.utils.basetest.RepositoryTest;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.projectchatting.chattingroom.domain.ProjectChattingRoom;
 import org.junit.jupiter.api.DisplayName;
@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.*;
+import static com.projectboated.backend.utils.data.BasicDataAccount.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("ProjectChattingRoom : Persistence 단위 테스트")

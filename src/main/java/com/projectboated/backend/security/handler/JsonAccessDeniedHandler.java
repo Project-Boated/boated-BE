@@ -2,8 +2,8 @@ package com.projectboated.backend.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projectboated.backend.domain.common.exception.ErrorCodeException;
-import com.projectboated.backend.web.common.exception.dto.BasicErrorResponse;
-import com.projectboated.backend.web.common.exception.dto.ExceptionMessageResponse;
+import com.projectboated.backend.web.exception.dto.BasicErrorResponse;
+import com.projectboated.backend.web.exception.dto.ExceptionMessageResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;

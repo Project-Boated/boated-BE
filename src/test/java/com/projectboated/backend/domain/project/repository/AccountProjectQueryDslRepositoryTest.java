@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.project.repository;
 
-import com.projectboated.backend.common.basetest.RepositoryTest;
+import com.projectboated.backend.utils.basetest.RepositoryTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.project.entity.Project;
 import org.assertj.core.groups.Tuple;
@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.*;
+import static com.projectboated.backend.utils.data.BasicDataAccount.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("AccountProjectQueryDsl : Persistence 단위 테스트")

@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.task.task.service;
 
-import com.projectboated.backend.common.basetest.ServiceTest;
+import com.projectboated.backend.utils.basetest.ServiceTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.account.account.repository.AccountRepository;
 import com.projectboated.backend.account.account.service.exception.AccountNotFoundException;
@@ -34,11 +34,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID;
-import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID2;
-import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
-import static com.projectboated.backend.common.data.BasicDataTask.*;
-import static com.projectboated.backend.common.data.BasicDataUploadFile.*;
+import static com.projectboated.backend.utils.data.BasicDataKanbanLane.KANBAN_LANE_ID;
+import static com.projectboated.backend.utils.data.BasicDataKanbanLane.KANBAN_LANE_ID2;
+import static com.projectboated.backend.utils.data.BasicDataProject.PROJECT_ID;
+import static com.projectboated.backend.utils.data.BasicDataTask.*;
+import static com.projectboated.backend.utils.data.BasicDataUploadFile.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;

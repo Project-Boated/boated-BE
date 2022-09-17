@@ -1,7 +1,7 @@
 package com.projectboated.backend.security.entrypoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.projectboated.backend.web.common.exception.dto.ExceptionMessageResponse;
+import com.projectboated.backend.web.exception.dto.ExceptionMessageResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;

@@ -11,7 +11,7 @@ import com.projectboated.backend.account.account.service.exception.AccountPasswo
 import com.projectboated.backend.account.account.service.exception.AccountUsernameAlreadyExistsException;
 import com.projectboated.backend.account.profileimage.entity.UploadFileProfileImage;
 import com.projectboated.backend.account.profileimage.repository.ProfileImageRepository;
-import com.projectboated.backend.common.basetest.ServiceTest;
+import com.projectboated.backend.utils.basetest.ServiceTest;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import com.projectboated.backend.infra.kakao.KakaoWebService;
@@ -24,7 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.*;
+import static com.projectboated.backend.utils.data.BasicDataAccount.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;

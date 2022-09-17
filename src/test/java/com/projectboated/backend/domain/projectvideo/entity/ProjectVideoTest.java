@@ -2,14 +2,13 @@ package com.projectboated.backend.domain.projectvideo.entity;
 
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
-import static com.projectboated.backend.common.data.BasicDataProjectVideo.PROJECT_VIDEO_ID;
-import static com.projectboated.backend.common.data.BasicDataUploadFile.MEDIATYPE;
-import static com.projectboated.backend.common.data.BasicDataUploadFile.ORIGINAL_FILE_NAME;
+import static com.projectboated.backend.utils.data.BasicDataProject.PROJECT_ID;
+import static com.projectboated.backend.utils.data.BasicDataProjectVideo.PROJECT_VIDEO_ID;
+import static com.projectboated.backend.utils.data.BasicDataUploadFile.MEDIATYPE;
+import static com.projectboated.backend.utils.data.BasicDataUploadFile.ORIGINAL_FILE_NAME;
 import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("ProjectVideo : Entity 단위 테스트")

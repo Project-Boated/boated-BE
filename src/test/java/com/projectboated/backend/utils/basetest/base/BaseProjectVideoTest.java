@@ -1,0 +1,24 @@
+package com.projectboated.backend.utils.basetest.base;
+
+import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.domain.projectvideo.entity.ProjectVideo;
+import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
+
+public class BaseProjectVideoTest extends BaseTaskLikeTest {
+
+    protected ProjectVideo createProjectVideo(Project project, UploadFile uploadFile) {
+        return ProjectVideo.builder()
+                .project(project)
+                .uploadFile(uploadFile)
+                .build();
+    }
+
+    protected ProjectVideo createProjectVideo(Long id, Project project, UploadFile uploadFile) {
+        return ProjectVideo.builder()
+                .id(id)
+                .project(project)
+                .uploadFile(uploadFile)
+                .build();
+    }
+
+}

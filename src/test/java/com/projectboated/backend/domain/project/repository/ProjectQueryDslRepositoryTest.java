@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.project.repository;
 
-import com.projectboated.backend.common.basetest.RepositoryTest;
+import com.projectboated.backend.utils.basetest.RepositoryTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.project.service.condition.GetMyProjectsCond;
 import org.junit.jupiter.api.DisplayName;
@@ -11,8 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.*;
-import static com.projectboated.backend.common.data.BasicDataProject.*;
+import static com.projectboated.backend.utils.data.BasicDataAccount.*;
+import static com.projectboated.backend.utils.data.BasicDataProject.*;
 import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("AccountProjectQueryDsl: Persistence 단위 테스트")

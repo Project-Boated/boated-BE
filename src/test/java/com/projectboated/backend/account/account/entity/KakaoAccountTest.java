@@ -3,8 +3,8 @@ package com.projectboated.backend.account.account.entity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.ROLES;
-import static com.projectboated.backend.common.data.BasicDataAccount.URL_PROFILE_IMAGE;
+import static com.projectboated.backend.utils.data.BasicDataAccount.ROLES;
+import static com.projectboated.backend.utils.data.BasicDataAccount.URL_PROFILE_IMAGE;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("KakaoAccount : Entity 단위 테스트")

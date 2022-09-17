@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.project.service;
 
-import com.projectboated.backend.common.basetest.ServiceTest;
+import com.projectboated.backend.utils.basetest.ServiceTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.account.account.repository.AccountRepository;
 import com.projectboated.backend.account.account.service.exception.AccountNotFoundException;
@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.*;
-import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
+import static com.projectboated.backend.utils.data.BasicDataAccount.*;
+import static com.projectboated.backend.utils.data.BasicDataProject.PROJECT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;

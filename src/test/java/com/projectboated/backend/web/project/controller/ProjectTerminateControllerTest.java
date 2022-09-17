@@ -1,14 +1,14 @@
 package com.projectboated.backend.web.project.controller;
 
-import com.projectboated.backend.common.basetest.ControllerTest;
+import com.projectboated.backend.utils.basetest.ControllerTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.project.entity.Project;
-import com.projectboated.backend.web.config.WithMockAccount;
+import com.projectboated.backend.utils.web.WithMockAccount;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
-import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
+import static com.projectboated.backend.utils.data.BasicDataAccount.ACCOUNT_ID;
+import static com.projectboated.backend.utils.data.BasicDataProject.PROJECT_ID;
 import static com.projectboated.backend.web.project.controller.document.ProjectTerminateDocument.documentProjectCancelTerminate;
 import static com.projectboated.backend.web.project.controller.document.ProjectTerminateDocument.documentProjectTerminate;
 import static org.mockito.ArgumentMatchers.any;

@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.*;
-import static com.projectboated.backend.common.data.BasicDataProject.*;
+import static com.projectboated.backend.utils.data.BasicDataAccount.*;
+import static com.projectboated.backend.utils.data.BasicDataProject.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

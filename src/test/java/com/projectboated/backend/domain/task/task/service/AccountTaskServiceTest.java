@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.task.task.service;
 
-import com.projectboated.backend.common.basetest.ServiceTest;
+import com.projectboated.backend.utils.basetest.ServiceTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
@@ -18,8 +18,8 @@ import org.mockito.Mock;
 import java.util.List;
 import java.util.Optional;
 
-import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
-import static com.projectboated.backend.common.data.BasicDataTask.TASK_ID;
+import static com.projectboated.backend.utils.data.BasicDataProject.PROJECT_ID;
+import static com.projectboated.backend.utils.data.BasicDataTask.TASK_ID;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

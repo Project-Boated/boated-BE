@@ -5,8 +5,8 @@ import com.projectboated.backend.domain.projectchatting.chattingroom.domain.Chat
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.projectboated.backend.common.data.BasicDataChatting.CHATTING_BODY;
-import static com.projectboated.backend.common.data.BasicDataChatting.CHATTING_ID;
+import static com.projectboated.backend.utils.data.BasicDataChatting.CHATTING_BODY;
+import static com.projectboated.backend.utils.data.BasicDataChatting.CHATTING_ID;
 
 @DisplayName("Chatting : Entity 단위 테스트")
 class ChattingTest {

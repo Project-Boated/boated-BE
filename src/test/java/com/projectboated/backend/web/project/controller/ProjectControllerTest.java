@@ -1,23 +1,23 @@
 package com.projectboated.backend.web.project.controller;
 
-import com.projectboated.backend.common.basetest.ControllerTest;
+import com.projectboated.backend.utils.basetest.ControllerTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.Task;
-import com.projectboated.backend.web.config.WithMockAccount;
+import com.projectboated.backend.utils.web.WithMockAccount;
 import com.projectboated.backend.web.project.dto.request.CreateProjectRequest;
 import com.projectboated.backend.web.project.dto.request.PatchProjectRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
-import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
-import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID;
-import static com.projectboated.backend.common.data.BasicDataProject.*;
-import static com.projectboated.backend.common.data.BasicDataTask.TASK_ID;
+import static com.projectboated.backend.utils.data.BasicDataAccount.ACCOUNT_ID;
+import static com.projectboated.backend.utils.data.BasicDataKanban.KANBAN_ID;
+import static com.projectboated.backend.utils.data.BasicDataKanbanLane.KANBAN_LANE_ID;
+import static com.projectboated.backend.utils.data.BasicDataProject.*;
+import static com.projectboated.backend.utils.data.BasicDataTask.TASK_ID;
 import static com.projectboated.backend.web.project.controller.document.ProjectDocument.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;

@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.invitation.service;
 
-import com.projectboated.backend.common.basetest.ServiceTest;
+import com.projectboated.backend.utils.basetest.ServiceTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.account.account.repository.AccountRepository;
 import com.projectboated.backend.account.account.service.exception.AccountNotFoundException;
@@ -23,10 +23,10 @@ import org.mockito.Mock;
 import java.util.List;
 import java.util.Optional;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.*;
-import static com.projectboated.backend.common.data.BasicDataInvitation.INVITATION_ID;
-import static com.projectboated.backend.common.data.BasicDataProject.ACCOUNT_PROJECT_ID;
-import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
+import static com.projectboated.backend.utils.data.BasicDataAccount.*;
+import static com.projectboated.backend.utils.data.BasicDataInvitation.INVITATION_ID;
+import static com.projectboated.backend.utils.data.BasicDataProject.ACCOUNT_PROJECT_ID;
+import static com.projectboated.backend.utils.data.BasicDataProject.PROJECT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;

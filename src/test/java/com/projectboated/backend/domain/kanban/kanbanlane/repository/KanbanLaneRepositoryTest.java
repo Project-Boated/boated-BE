@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.kanban.kanbanlane.repository;
 
-import com.projectboated.backend.common.basetest.RepositoryTest;
+import com.projectboated.backend.utils.basetest.RepositoryTest;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Optional;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.NICKNAME;
-import static com.projectboated.backend.common.data.BasicDataAccount.USERNAME;
+import static com.projectboated.backend.utils.data.BasicDataAccount.NICKNAME;
+import static com.projectboated.backend.utils.data.BasicDataAccount.USERNAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class KanbanLaneRepositoryTest extends RepositoryTest {

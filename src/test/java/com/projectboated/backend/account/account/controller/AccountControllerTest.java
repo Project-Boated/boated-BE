@@ -2,15 +2,15 @@ package com.projectboated.backend.account.account.controller;
 
 import com.google.common.net.MediaType;
 import com.projectboated.backend.account.account.controller.dto.request.SignUpRequest;
-import com.projectboated.backend.common.basetest.ControllerTest;
-import com.projectboated.backend.web.config.WithMockAccount;
+import com.projectboated.backend.utils.basetest.ControllerTest;
+import com.projectboated.backend.utils.web.WithMockAccount;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.mock.web.MockMultipartFile;
 
 import static com.projectboated.backend.account.account.controller.document.AccountDocument.*;
-import static com.projectboated.backend.common.data.BasicDataAccount.*;
+import static com.projectboated.backend.utils.data.BasicDataAccount.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

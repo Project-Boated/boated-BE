@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.projectchatting.chattingroom.service;
 
-import com.projectboated.backend.common.basetest.ServiceTest;
+import com.projectboated.backend.utils.basetest.ServiceTest;
 import com.projectboated.backend.account.account.repository.AccountRepository;
 import com.projectboated.backend.domain.project.repository.ProjectRepository;
 import com.projectboated.backend.domain.projectchatting.chatting.repository.ChattingRepository;

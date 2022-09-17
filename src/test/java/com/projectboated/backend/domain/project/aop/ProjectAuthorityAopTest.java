@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.project.aop;
 
-import com.projectboated.backend.common.basetest.BaseTest;
+import com.projectboated.backend.utils.basetest.BaseTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.project.service.ProjectService;
@@ -19,9 +19,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
-import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID2;
-import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
+import static com.projectboated.backend.utils.data.BasicDataAccount.ACCOUNT_ID;
+import static com.projectboated.backend.utils.data.BasicDataAccount.ACCOUNT_ID2;
+import static com.projectboated.backend.utils.data.BasicDataProject.PROJECT_ID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;

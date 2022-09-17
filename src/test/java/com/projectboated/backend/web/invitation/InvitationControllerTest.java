@@ -1,18 +1,18 @@
 package com.projectboated.backend.web.invitation;
 
-import com.projectboated.backend.common.basetest.ControllerTest;
+import com.projectboated.backend.utils.basetest.ControllerTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.invitation.entity.Invitation;
 import com.projectboated.backend.domain.project.entity.Project;
-import com.projectboated.backend.web.config.WithMockAccount;
+import com.projectboated.backend.utils.web.WithMockAccount;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
-import static com.projectboated.backend.common.data.BasicDataInvitation.INVITATION_ID;
-import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
+import static com.projectboated.backend.utils.data.BasicDataAccount.ACCOUNT_ID;
+import static com.projectboated.backend.utils.data.BasicDataInvitation.INVITATION_ID;
+import static com.projectboated.backend.utils.data.BasicDataProject.PROJECT_ID;
 import static com.projectboated.backend.web.invitation.document.InvitationDocument.*;
 import static com.projectboated.backend.web.invitation.document.InvitationDocument.documentInvitationCreate;
 import static org.mockito.Mockito.*;

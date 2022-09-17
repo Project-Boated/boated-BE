@@ -1,13 +1,13 @@
 package com.projectboated.backend.web.task.task;
 
-import com.projectboated.backend.common.basetest.ControllerTest;
+import com.projectboated.backend.utils.basetest.ControllerTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.domain.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
-import com.projectboated.backend.web.config.WithMockAccount;
+import com.projectboated.backend.utils.web.WithMockAccount;
 import com.projectboated.backend.web.task.task.dto.PatchTaskRequest;
 import com.projectboated.backend.web.task.task.dto.request.AssignAccountTaskRequest;
 import com.projectboated.backend.web.task.task.dto.request.CreateTaskRequest;
@@ -17,13 +17,13 @@ import org.springframework.http.MediaType;
 
 import java.util.List;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
-import static com.projectboated.backend.common.data.BasicDataAccount.NICKNAME2;
-import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
-import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_ID;
-import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
-import static com.projectboated.backend.common.data.BasicDataTask.*;
-import static com.projectboated.backend.common.data.BasicDataUploadFile.UPLOAD_FILE_ID;
+import static com.projectboated.backend.utils.data.BasicDataAccount.ACCOUNT_ID;
+import static com.projectboated.backend.utils.data.BasicDataAccount.NICKNAME2;
+import static com.projectboated.backend.utils.data.BasicDataKanban.KANBAN_ID;
+import static com.projectboated.backend.utils.data.BasicDataKanbanLane.KANBAN_LANE_ID;
+import static com.projectboated.backend.utils.data.BasicDataProject.PROJECT_ID;
+import static com.projectboated.backend.utils.data.BasicDataTask.*;
+import static com.projectboated.backend.utils.data.BasicDataUploadFile.UPLOAD_FILE_ID;
 import static com.projectboated.backend.web.task.task.document.TaskDocument.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;

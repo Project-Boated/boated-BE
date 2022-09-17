@@ -5,7 +5,7 @@ import com.projectboated.backend.domain.projectchatting.chattingroom.domain.Proj
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.projectboated.backend.common.data.BasicDataProjectChattingRoom.PROJECT_CHATTING_ROOM_ID;
+import static com.projectboated.backend.utils.data.BasicDataProjectChattingRoom.PROJECT_CHATTING_ROOM_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("ProjectChattingRoom : Entity 단위 테스트")

@@ -1,20 +1,20 @@
 package com.projectboated.backend.web.projectvideo;
 
 import com.google.common.net.MediaType;
-import com.projectboated.backend.common.basetest.ControllerTest;
+import com.projectboated.backend.utils.basetest.ControllerTest;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.projectvideo.entity.ProjectVideo;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
-import com.projectboated.backend.web.config.WithMockAccount;
+import com.projectboated.backend.utils.web.WithMockAccount;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
-import static com.projectboated.backend.common.data.BasicDataProject.PROJECT_ID;
-import static com.projectboated.backend.common.data.BasicDataProjectVideo.PROJECT_VIDEO_ID;
-import static com.projectboated.backend.common.data.BasicDataUploadFile.UPLOAD_FILE_ID;
+import static com.projectboated.backend.utils.data.BasicDataAccount.ACCOUNT_ID;
+import static com.projectboated.backend.utils.data.BasicDataProject.PROJECT_ID;
+import static com.projectboated.backend.utils.data.BasicDataProjectVideo.PROJECT_VIDEO_ID;
+import static com.projectboated.backend.utils.data.BasicDataUploadFile.UPLOAD_FILE_ID;
 import static com.projectboated.backend.web.projectvideo.document.ProjectVideoDocument.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;

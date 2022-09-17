@@ -7,7 +7,7 @@ import com.projectboated.backend.account.account.service.exception.AccountProfil
 import com.projectboated.backend.account.profileimage.entity.UploadFileProfileImage;
 import com.projectboated.backend.account.profileimage.entity.UrlProfileImage;
 import com.projectboated.backend.account.profileimage.repository.ProfileImageRepository;
-import com.projectboated.backend.common.basetest.ServiceTest;
+import com.projectboated.backend.utils.basetest.ServiceTest;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import org.junit.jupiter.api.DisplayName;
@@ -19,8 +19,8 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import java.util.Optional;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT_ID;
-import static com.projectboated.backend.common.data.BasicDataAccount.NICKNAME;
+import static com.projectboated.backend.utils.data.BasicDataAccount.ACCOUNT_ID;
+import static com.projectboated.backend.utils.data.BasicDataAccount.NICKNAME;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;

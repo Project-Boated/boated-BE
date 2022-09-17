@@ -1,24 +1,12 @@
 package com.projectboated.backend.domain.kanban.kanban.entity;
 
-import com.projectboated.backend.domain.kanban.kanban.entity.exception.KanbanLaneChangeIndexOutOfBoundsException;
-import com.projectboated.backend.domain.kanban.kanban.entity.exception.KanbanLaneOriginalIndexOutOfBoundsException;
-import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
-import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
-import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.KanbanLaneUpdateRequest;
-import com.projectboated.backend.domain.kanban.kanbanlane.service.exception.KanbanLaneAlreadyExists5;
 import com.projectboated.backend.domain.project.entity.Project;
-import com.projectboated.backend.domain.task.task.entity.Task;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.stream.IntStream;
-
-import static com.projectboated.backend.common.data.BasicDataAccount.ACCOUNT;
-import static com.projectboated.backend.common.data.BasicDataKanban.KANBAN_ID;
-import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME;
-import static com.projectboated.backend.common.data.BasicDataKanbanLane.KANBAN_LANE_NAME2;
-import static com.projectboated.backend.common.data.BasicDataProject.*;
-import static com.projectboated.backend.common.data.BasicDataTask.TASK_NAME;
+import static com.projectboated.backend.utils.data.BasicDataAccount.ACCOUNT;
+import static com.projectboated.backend.utils.data.BasicDataKanban.KANBAN_ID;
+import static com.projectboated.backend.utils.data.BasicDataProject.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

@@ -6,8 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
-import static com.projectboated.backend.common.data.BasicDataTask.TASK_ID;
-import static com.projectboated.backend.common.data.BasicDataTaskFile.TASK_FILE_ID;
+import static com.projectboated.backend.utils.data.BasicDataTask.TASK_ID;
+import static com.projectboated.backend.utils.data.BasicDataTaskFile.TASK_FILE_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("TaskUploadFile : Entity 단위 테스트")

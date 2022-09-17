@@ -4,8 +4,8 @@ import com.projectboated.backend.account.account.entity.Account;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.projectboated.backend.common.data.BasicDataAccount.*;
-import static com.projectboated.backend.common.data.BasicDataProject.*;
+import static com.projectboated.backend.utils.data.BasicDataAccount.*;
+import static com.projectboated.backend.utils.data.BasicDataProject.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("AccountProject : Entity 단위 테스트")

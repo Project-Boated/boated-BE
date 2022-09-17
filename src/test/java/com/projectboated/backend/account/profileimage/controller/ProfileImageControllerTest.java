@@ -1,9 +1,9 @@
 package com.projectboated.backend.account.profileimage.controller;
 
 import com.projectboated.backend.account.profileimage.controller.document.ProfileImageDocument;
-import com.projectboated.backend.common.basetest.ControllerTest;
+import com.projectboated.backend.utils.basetest.ControllerTest;
 import com.projectboated.backend.infra.aws.AwsS3File;
-import com.projectboated.backend.web.config.WithMockAccount;
+import com.projectboated.backend.utils.web.WithMockAccount;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;

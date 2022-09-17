@@ -2,13 +2,12 @@ package com.projectboated.backend.domain.task.task.entity;
 
 import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.project.entity.Project;
-import com.projectboated.backend.domain.task.task.entity.Task;
 
 import com.projectboated.backend.domain.task.task.service.dto.TaskUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.projectboated.backend.common.data.BasicDataTask.*;
+import static com.projectboated.backend.utils.data.BasicDataTask.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Task : Entity 단위 테스트")

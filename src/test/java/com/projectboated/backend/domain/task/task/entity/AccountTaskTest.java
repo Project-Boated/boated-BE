@@ -5,7 +5,7 @@ import com.projectboated.backend.account.account.entity.Account;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.projectboated.backend.common.data.BasicDataAccountTask.ACCOUNT_TASK_ID;
+import static com.projectboated.backend.utils.data.BasicDataAccountTask.ACCOUNT_TASK_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("AccountTask : Entity 단위 테스트")

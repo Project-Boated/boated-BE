@@ -1,10 +1,9 @@
 package com.projectboated.backend.domain.projectvideo.repository;
 
-import com.projectboated.backend.common.basetest.RepositoryTest;
+import com.projectboated.backend.utils.basetest.RepositoryTest;
 import com.projectboated.backend.domain.project.entity.Project;
 import com.projectboated.backend.domain.projectvideo.entity.ProjectVideo;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

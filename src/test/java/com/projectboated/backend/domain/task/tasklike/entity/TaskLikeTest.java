@@ -5,7 +5,7 @@ import com.projectboated.backend.domain.task.task.entity.Task;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.projectboated.backend.common.data.BasicDataTask.TASK_ID;
+import static com.projectboated.backend.utils.data.BasicDataTask.TASK_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("TaskLike : Entity 단위 테스트")
