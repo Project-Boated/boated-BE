@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.projectboated.backend.account.account.entity.QAccount.account;
-import static com.projectboated.backend.domain.project.entity.QAccountProject.accountProject;
+import static com.projectboated.backend.project.project.entity.QAccountProject.accountProject;
 
 public class AccountProjectQueryDslRepositoryImpl implements AccountProjectQueryDslRepository {
 

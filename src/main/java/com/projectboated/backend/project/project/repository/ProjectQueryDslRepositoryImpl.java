@@ -16,8 +16,8 @@ import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.projectboated.backend.domain.project.entity.QAccountProject.accountProject;
-import static com.projectboated.backend.domain.project.entity.QProject.project;
+import static com.projectboated.backend.project.project.entity.QAccountProject.accountProject;
+import static com.projectboated.backend.project.project.entity.QProject.project;
 
 public class ProjectQueryDslRepositoryImpl implements ProjectQueryDslRepository {
 
