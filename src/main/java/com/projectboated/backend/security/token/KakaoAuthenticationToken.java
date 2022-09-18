@@ -1,10 +1,9 @@
 package com.projectboated.backend.security.token;
 
-import java.util.Collection;
-
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.util.Assert;
+
+import java.util.Collection;
 
 public class KakaoAuthenticationToken extends AbstractAuthenticationToken {
 
@@ -20,11 +19,11 @@ public class KakaoAuthenticationToken extends AbstractAuthenticationToken {
     }
 
     public KakaoAuthenticationToken(Object principal, Object credentials,
-									Collection<? extends GrantedAuthority> authorities) {
+                                    Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;
         this.credentials = credentials;
-        super.setAuthenticated(true); // must use super, as we override
+        super.setAuthenticated(true);
     }
 
     @Override
@@ -39,8 +38,6 @@ public class KakaoAuthenticationToken extends AbstractAuthenticationToken {
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-        Assert.isTrue(!isAuthenticated,
-                "Cannot set this token to trusted - use constructor which takes a GrantedAuthority list instead");
         super.setAuthenticated(false);
     }
 

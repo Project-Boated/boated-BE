@@ -2,12 +2,13 @@ package com.projectboated.backend.security.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.projectboated.backend.domain.account.account.entity.KakaoAccount;
-import com.projectboated.backend.domain.account.account.entity.Role;
-import com.projectboated.backend.domain.account.account.repository.KakaoAccountRepository;
-import com.projectboated.backend.domain.account.profileimage.entity.ProfileImage;
-import com.projectboated.backend.domain.account.profileimage.entity.UrlProfileImage;
-import com.projectboated.backend.domain.account.profileimage.service.ProfileImageService;
+import com.projectboated.backend.account.account.entity.KakaoAccount;
+import com.projectboated.backend.account.account.entity.Role;
+import com.projectboated.backend.account.account.repository.KakaoAccountRepository;
+import com.projectboated.backend.account.profileimage.entity.ProfileImage;
+import com.projectboated.backend.account.profileimage.entity.UrlProfileImage;
+import com.projectboated.backend.account.profileimage.service.ProfileImageService;
+import com.projectboated.backend.infra.kakao.KakaoWebService;
 import com.projectboated.backend.security.service.dto.KakaoAccountInformation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,7 +24,7 @@ public class KakaoAccountDetailsService {
 
     private final KakaoAccountRepository kakaoAccountRepository;
     private final ProfileImageService profileImageService;
-    private final com.projectboated.backend.security.service.KakaoWebService kakaoWebService;
+    private final KakaoWebService kakaoWebService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Transactional

@@ -8,7 +8,6 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 @Component
 public class CharacterEncodingHttpConfigurer extends AbstractHttpConfigurer<CharacterEncodingHttpConfigurer, HttpSecurity> {
-
     @Override
     public void configure(HttpSecurity builder) throws Exception {
         builder.addFilterBefore(characterEncodingFilter(), CsrfFilter.class);

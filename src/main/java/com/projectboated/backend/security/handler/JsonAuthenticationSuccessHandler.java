@@ -1,8 +1,8 @@
 package com.projectboated.backend.security.handler;
 
-import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.security.dto.IdDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.projectboated.backend.account.account.entity.Account;
+import com.projectboated.backend.security.dto.IdDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;

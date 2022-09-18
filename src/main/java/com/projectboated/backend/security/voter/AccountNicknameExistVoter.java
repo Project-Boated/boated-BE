@@ -1,11 +1,8 @@
 package com.projectboated.backend.security.voter;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import com.projectboated.backend.domain.account.account.entity.Account;
+import com.projectboated.backend.account.account.entity.Account;
+import com.projectboated.backend.account.account.service.AccountService;
+import com.projectboated.backend.common.exception.ErrorCode;
 import com.projectboated.backend.security.exception.NicknameRequiredException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDecisionVoter;
@@ -15,8 +12,10 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import com.projectboated.backend.domain.account.account.service.AccountService;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor

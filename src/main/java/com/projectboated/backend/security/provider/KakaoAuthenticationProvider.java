@@ -1,28 +1,26 @@
 package com.projectboated.backend.security.provider;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import com.projectboated.backend.domain.account.account.entity.KakaoAccount;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.projectboated.backend.account.account.entity.KakaoAccount;
+import com.projectboated.backend.common.exception.ErrorCode;
+import com.projectboated.backend.infra.kakao.KakaoWebService;
 import com.projectboated.backend.security.exception.JsonParsingException;
 import com.projectboated.backend.security.exception.KakaoServerException;
+import com.projectboated.backend.security.provider.dto.KakaoTokenResponse;
+import com.projectboated.backend.security.service.KakaoAccountDetailsService;
+import com.projectboated.backend.security.token.KakaoAuthenticationToken;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import lombok.RequiredArgsConstructor;
-import com.projectboated.backend.security.provider.dto.KakaoTokenResponse;
-import com.projectboated.backend.security.service.KakaoAccountDetailsService;
-import com.projectboated.backend.security.service.KakaoWebService;
-import com.projectboated.backend.security.token.KakaoAuthenticationToken;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
