@@ -1,6 +1,7 @@
 package com.projectboated.backend.infra.kakao;
 
-import com.projectboated.backend.security.exception.KakaoTimeoutException;
+import com.projectboated.backend.infra.kakao.exception.KakaoTimeoutException;
+import com.projectboated.backend.security.kakao.provider.dto.KakaoAuthenicationToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -70,10 +71,10 @@ public class KakaoWebService {
                 .block();
     }
 
-    public void logout(String token) {
+    public void logout(KakaoAuthenicationToken kakaoAuthenicationToken) {
         apiClient.get()
                 .uri("/v1/user/logout")
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + kakaoAuthenicationToken.getAccessToken())
                 .retrieve()
                 .bodyToMono(String.class)
                 .timeout(Duration.ofMillis(timeoutMills), Mono.error(new KakaoTimeoutException("timeout")))
