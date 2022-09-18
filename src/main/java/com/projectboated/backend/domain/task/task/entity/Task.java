@@ -1,6 +1,6 @@
 package com.projectboated.backend.domain.task.task.entity;
 
-import com.projectboated.backend.domain.kanban.kanbanlane.entity.KanbanLane;
+import com.projectboated.backend.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.domain.task.task.service.dto.TaskUpdateRequest;
 import lombok.AccessLevel;
 import lombok.Builder;

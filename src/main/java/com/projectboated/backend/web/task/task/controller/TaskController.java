@@ -1,6 +1,6 @@
 package com.projectboated.backend.web.task.task.controller;
 
-import com.projectboated.backend.domain.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
+import com.projectboated.backend.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import com.projectboated.backend.domain.task.task.service.TaskService;
 import com.projectboated.backend.web.task.task.dto.PatchTaskRequest;
