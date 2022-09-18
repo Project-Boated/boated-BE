@@ -1,7 +1,7 @@
 package com.projectboated.backend.kanban.kanbanlane.controller.dto.common;
 
 import com.projectboated.backend.kanban.kanbanlane.entity.KanbanLane;
-import com.projectboated.backend.web.task.task.dto.common.TaskResponse;
+import com.projectboated.backend.task.task.controller.dto.common.TaskResponse;
 import lombok.Getter;
 
 import java.util.List;

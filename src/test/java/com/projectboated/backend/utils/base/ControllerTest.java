@@ -17,10 +17,10 @@ import com.projectboated.backend.projectchatting.chatting.service.ChattingServic
 import com.projectboated.backend.projectchatting.chattingroom.service.ChattingRoomService;
 import com.projectboated.backend.projectchatting.chattingroom.service.ProjectChattingRoomService;
 import com.projectboated.backend.projectvideo.service.ProjectVideoService;
-import com.projectboated.backend.domain.task.task.service.AccountTaskService;
-import com.projectboated.backend.domain.task.task.service.TaskService;
-import com.projectboated.backend.domain.task.taskfile.service.TaskFileService;
-import com.projectboated.backend.domain.task.tasklike.service.TaskLikeService;
+import com.projectboated.backend.task.task.service.AccountTaskService;
+import com.projectboated.backend.task.task.service.TaskService;
+import com.projectboated.backend.task.taskfile.service.TaskFileService;
+import com.projectboated.backend.task.tasklike.service.TaskLikeService;
 import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import com.projectboated.backend.infra.aws.AwsS3Service;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,8 +1,8 @@
 package com.projectboated.backend.utils.base.base;
 
 import com.projectboated.backend.account.account.entity.Account;
-import com.projectboated.backend.domain.task.task.entity.Task;
-import com.projectboated.backend.domain.task.tasklike.entity.TaskLike;
+import com.projectboated.backend.task.task.entity.Task;
+import com.projectboated.backend.task.tasklike.entity.TaskLike;
 
 public class BaseTaskLikeTest extends BaseTaskFileTest {
 

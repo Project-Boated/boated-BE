@@ -3,7 +3,7 @@ package com.projectboated.backend.project.service;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.account.account.repository.AccountRepository;
 import com.projectboated.backend.account.account.service.exception.AccountNotFoundException;
-import com.projectboated.backend.domain.task.task.repository.TaskRepository;
+import com.projectboated.backend.task.task.repository.TaskRepository;
 import com.projectboated.backend.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.kanban.kanban.repository.KanbanRepository;
 import com.projectboated.backend.kanban.kanbanlane.entity.KanbanLaneType;

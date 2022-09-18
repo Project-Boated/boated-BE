@@ -17,7 +17,7 @@ import com.projectboated.backend.kanban.kanbanlane.service.exception.KanbanLaneN
 import com.projectboated.backend.project.entity.Project;
 import com.projectboated.backend.project.repository.ProjectRepository;
 import com.projectboated.backend.project.service.exception.ProjectNotFoundException;
-import com.projectboated.backend.domain.task.task.repository.TaskRepository;
+import com.projectboated.backend.task.task.repository.TaskRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

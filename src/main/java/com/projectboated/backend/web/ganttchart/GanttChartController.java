@@ -2,8 +2,8 @@ package com.projectboated.backend.web.ganttchart;
 
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.project.service.ProjectService;
-import com.projectboated.backend.domain.task.task.entity.Task;
-import com.projectboated.backend.domain.task.task.service.AccountTaskService;
+import com.projectboated.backend.task.task.entity.Task;
+import com.projectboated.backend.task.task.service.AccountTaskService;
 import com.projectboated.backend.web.ganttchart.dto.GetMyGanttChartResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

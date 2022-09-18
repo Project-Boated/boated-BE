@@ -1,7 +1,7 @@
 package com.projectboated.backend.project.controller;
 
 import com.projectboated.backend.account.account.entity.Account;
-import com.projectboated.backend.domain.task.task.service.TaskService;
+import com.projectboated.backend.task.task.service.TaskService;
 import com.projectboated.backend.project.controller.dto.common.ProjectCaptainResponse;
 import com.projectboated.backend.project.controller.dto.request.CreateProjectRequest;
 import com.projectboated.backend.project.controller.dto.request.PatchProjectRequest;

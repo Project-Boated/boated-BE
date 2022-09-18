@@ -1,19 +1,19 @@
 package com.projectboated.backend.kanban.kanban.controller;
 
 import com.projectboated.backend.account.account.entity.Account;
-import com.projectboated.backend.domain.task.task.entity.AccountTask;
-import com.projectboated.backend.domain.task.task.entity.Task;
-import com.projectboated.backend.domain.task.task.service.AccountTaskService;
-import com.projectboated.backend.domain.task.task.service.TaskService;
-import com.projectboated.backend.domain.task.tasklike.service.TaskLikeService;
+import com.projectboated.backend.task.task.entity.AccountTask;
+import com.projectboated.backend.task.task.entity.Task;
+import com.projectboated.backend.task.task.service.AccountTaskService;
+import com.projectboated.backend.task.task.service.TaskService;
+import com.projectboated.backend.task.tasklike.service.TaskLikeService;
 import com.projectboated.backend.kanban.kanban.controller.response.GetKanbanResponse;
 import com.projectboated.backend.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.kanban.kanban.service.KanbanService;
 import com.projectboated.backend.kanban.kanbanlane.controller.dto.common.KanbanLaneResponse;
 import com.projectboated.backend.kanban.kanbanlane.controller.dto.request.CreateKanbanLaneRequest;
 import com.projectboated.backend.kanban.kanbanlane.service.KanbanLaneService;
-import com.projectboated.backend.web.task.task.dto.common.TaskAssignedAccountResponse;
-import com.projectboated.backend.web.task.task.dto.common.TaskResponse;
+import com.projectboated.backend.task.task.controller.dto.common.TaskAssignedAccountResponse;
+import com.projectboated.backend.task.task.controller.dto.common.TaskResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

@@ -1,9 +1,9 @@
 package com.projectboated.backend.utils.base.repository;
 
 import com.projectboated.backend.account.account.entity.Account;
-import com.projectboated.backend.domain.task.task.entity.Task;
-import com.projectboated.backend.domain.task.tasklike.entity.TaskLike;
-import com.projectboated.backend.domain.task.tasklike.repository.TaskLikeRepository;
+import com.projectboated.backend.task.task.entity.Task;
+import com.projectboated.backend.task.tasklike.entity.TaskLike;
+import com.projectboated.backend.task.tasklike.repository.TaskLikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TaskLikeRepositoryTest extends UploadFileRepositoryTest {
