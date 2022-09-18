@@ -1,7 +1,7 @@
 package com.projectboated.backend.utils.base.base;
 
 import com.projectboated.backend.account.account.entity.Account;
-import com.projectboated.backend.domain.invitation.entity.Invitation;
+import com.projectboated.backend.invitation.entity.Invitation;
 import com.projectboated.backend.domain.project.entity.Project;
 
 import java.time.LocalDateTime;

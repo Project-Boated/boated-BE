@@ -6,7 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.projectboated.backend.account.account.service.AccountNicknameService;
 import com.projectboated.backend.account.account.service.AccountService;
 import com.projectboated.backend.account.profileimage.service.ProfileImageService;
-import com.projectboated.backend.domain.invitation.service.InvitationService;
+import com.projectboated.backend.invitation.service.InvitationService;
 import com.projectboated.backend.domain.kanban.kanban.service.KanbanService;
 import com.projectboated.backend.domain.kanban.kanbanlane.service.KanbanLaneService;
 import com.projectboated.backend.domain.project.service.ProjectCaptainService;
