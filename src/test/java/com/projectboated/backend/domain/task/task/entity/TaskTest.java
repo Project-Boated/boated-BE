@@ -1,7 +1,7 @@
 package com.projectboated.backend.domain.task.task.entity;
 
 import com.projectboated.backend.kanban.kanbanlane.entity.KanbanLane;
-import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.project.entity.Project;
 
 import com.projectboated.backend.domain.task.task.service.dto.TaskUpdateRequest;
 import org.junit.jupiter.api.DisplayName;

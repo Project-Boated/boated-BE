@@ -1,8 +1,8 @@
 package com.projectboated.backend.utils.base.repository;
 
-import com.projectboated.backend.domain.project.entity.Project;
-import com.projectboated.backend.domain.projectvideo.entity.ProjectVideo;
-import com.projectboated.backend.domain.projectvideo.repository.ProjectVideoRepository;
+import com.projectboated.backend.project.entity.Project;
+import com.projectboated.backend.projectvideo.entity.ProjectVideo;
+import com.projectboated.backend.projectvideo.repository.ProjectVideoRepository;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
 import org.springframework.beans.factory.annotation.Autowired;
 

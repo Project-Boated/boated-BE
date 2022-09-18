@@ -1,7 +1,7 @@
 package com.projectboated.backend.utils.base.base;
 
 import com.projectboated.backend.kanban.kanban.entity.Kanban;
-import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.project.entity.Project;
 
 public class BaseKanbanTest extends BaseProjectTest {
 

@@ -2,7 +2,7 @@ package com.projectboated.backend.invitation.entity;
 
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.common.entity.BaseTimeEntity;
-import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.project.entity.Project;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

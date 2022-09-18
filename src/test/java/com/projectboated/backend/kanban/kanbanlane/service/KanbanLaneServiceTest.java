@@ -1,6 +1,5 @@
 package com.projectboated.backend.kanban.kanbanlane.service;
 
-import com.projectboated.backend.kanban.kanbanlane.service.KanbanLaneService;
 import com.projectboated.backend.utils.base.ServiceTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.kanban.kanban.entity.Kanban;
@@ -15,9 +14,9 @@ import com.projectboated.backend.kanban.kanbanlane.service.exception.KanbanLaneA
 import com.projectboated.backend.kanban.kanbanlane.service.exception.KanbanLaneExists1Exception;
 import com.projectboated.backend.kanban.kanbanlane.service.exception.KanbanLaneExistsTaskException;
 import com.projectboated.backend.kanban.kanbanlane.service.exception.KanbanLaneNotFoundException;
-import com.projectboated.backend.domain.project.entity.Project;
-import com.projectboated.backend.domain.project.repository.ProjectRepository;
-import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
+import com.projectboated.backend.project.entity.Project;
+import com.projectboated.backend.project.repository.ProjectRepository;
+import com.projectboated.backend.project.service.exception.ProjectNotFoundException;
 import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

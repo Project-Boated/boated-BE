@@ -1,10 +1,10 @@
 package com.projectboated.backend.kanban.kanbanlane.service;
 
-import com.projectboated.backend.domain.project.aop.OnlyCaptain;
-import com.projectboated.backend.domain.project.aop.OnlyCaptainOrCrew;
-import com.projectboated.backend.domain.project.entity.Project;
-import com.projectboated.backend.domain.project.repository.ProjectRepository;
-import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
+import com.projectboated.backend.project.aop.OnlyCaptain;
+import com.projectboated.backend.project.aop.OnlyCaptainOrCrew;
+import com.projectboated.backend.project.entity.Project;
+import com.projectboated.backend.project.repository.ProjectRepository;
+import com.projectboated.backend.project.service.exception.ProjectNotFoundException;
 import com.projectboated.backend.domain.task.task.repository.TaskRepository;
 import com.projectboated.backend.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.kanban.kanban.entity.exception.KanbanLaneChangeIndexOutOfBoundsException;

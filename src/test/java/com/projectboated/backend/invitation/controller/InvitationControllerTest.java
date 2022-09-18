@@ -1,7 +1,7 @@
 package com.projectboated.backend.invitation.controller;
 
 import com.projectboated.backend.account.account.entity.Account;
-import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.project.entity.Project;
 import com.projectboated.backend.invitation.entity.Invitation;
 import com.projectboated.backend.utils.base.ControllerTest;
 import com.projectboated.backend.utils.controller.WithMockAccount;

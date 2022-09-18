@@ -1,6 +1,6 @@
 package com.projectboated.backend.projectchatting.chattingroom.domain;
 
-import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.project.entity.Project;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

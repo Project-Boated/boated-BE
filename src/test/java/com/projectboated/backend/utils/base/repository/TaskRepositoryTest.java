@@ -2,7 +2,7 @@ package com.projectboated.backend.utils.base.repository;
 
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.kanban.kanbanlane.entity.KanbanLane;
-import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.AccountTask;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import com.projectboated.backend.domain.task.task.repository.AccountTaskRepository;

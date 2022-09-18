@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import com.projectboated.backend.common.entity.BaseTimeEntity;
-import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.project.entity.Project;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

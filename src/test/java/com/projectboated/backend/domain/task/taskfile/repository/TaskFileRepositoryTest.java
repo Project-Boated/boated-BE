@@ -4,7 +4,7 @@ import com.projectboated.backend.utils.base.RepositoryTest;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.kanban.kanbanlane.entity.KanbanLane;
-import com.projectboated.backend.domain.project.entity.Project;
+import com.projectboated.backend.project.entity.Project;
 import com.projectboated.backend.domain.task.task.entity.Task;
 import com.projectboated.backend.domain.task.taskfile.entity.TaskFile;
 import com.projectboated.backend.domain.uploadfile.entity.UploadFile;

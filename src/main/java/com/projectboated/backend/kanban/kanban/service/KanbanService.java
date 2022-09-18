@@ -1,9 +1,9 @@
 package com.projectboated.backend.kanban.kanban.service;
 
-import com.projectboated.backend.domain.project.aop.OnlyCaptainOrCrew;
-import com.projectboated.backend.domain.project.entity.Project;
-import com.projectboated.backend.domain.project.repository.ProjectRepository;
-import com.projectboated.backend.domain.project.service.exception.ProjectNotFoundException;
+import com.projectboated.backend.project.aop.OnlyCaptainOrCrew;
+import com.projectboated.backend.project.entity.Project;
+import com.projectboated.backend.project.repository.ProjectRepository;
+import com.projectboated.backend.project.service.exception.ProjectNotFoundException;
 import com.projectboated.backend.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.kanban.kanban.repository.KanbanRepository;
 import com.projectboated.backend.kanban.kanban.service.exception.KanbanNotFoundException;

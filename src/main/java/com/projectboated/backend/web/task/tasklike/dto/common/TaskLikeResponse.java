@@ -1,6 +1,6 @@
 package com.projectboated.backend.web.task.tasklike.dto.common;
 
-import com.projectboated.backend.web.project.dto.common.ProjectNoAccountsResponse;
+import com.projectboated.backend.project.controller.dto.common.ProjectNoAccountsResponse;
 import com.projectboated.backend.web.task.task.dto.common.TaskNoLikeResponse;
 import lombok.Getter;
 
