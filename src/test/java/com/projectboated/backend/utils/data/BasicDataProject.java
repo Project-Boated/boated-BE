@@ -1,6 +1,6 @@
 package com.projectboated.backend.utils.data;
 
-import com.projectboated.backend.project.entity.Project;
+import com.projectboated.backend.project.project.entity.Project;
 
 import java.time.LocalDateTime;
 

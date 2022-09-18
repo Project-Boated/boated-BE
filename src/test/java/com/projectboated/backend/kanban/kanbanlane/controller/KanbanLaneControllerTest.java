@@ -1,7 +1,7 @@
 package com.projectboated.backend.kanban.kanbanlane.controller;
 
 import com.projectboated.backend.account.account.entity.Account;
-import com.projectboated.backend.project.entity.Project;
+import com.projectboated.backend.project.project.entity.Project;
 import com.projectboated.backend.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.kanban.kanbanlane.controller.dto.UpdateKanbanLaneRequest;
 import com.projectboated.backend.kanban.kanbanlane.entity.KanbanLane;

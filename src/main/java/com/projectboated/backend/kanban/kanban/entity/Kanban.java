@@ -1,7 +1,7 @@
 package com.projectboated.backend.kanban.kanban.entity;
 
 import com.projectboated.backend.common.entity.BaseTimeEntity;
-import com.projectboated.backend.project.entity.Project;
+import com.projectboated.backend.project.project.entity.Project;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

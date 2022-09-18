@@ -1,7 +1,7 @@
 package com.projectboated.backend.utils.base.base;
 
-import com.projectboated.backend.projectchatting.chatting.domain.Chatting;
-import com.projectboated.backend.projectchatting.chattingroom.domain.ChattingRoom;
+import com.projectboated.backend.project.projectchatting.chatting.domain.Chatting;
+import com.projectboated.backend.project.projectchatting.chattingroom.domain.ChattingRoom;
 
 public class BaseChattingTest extends BaseProjectChattingRoomTest {
 

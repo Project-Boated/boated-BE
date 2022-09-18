@@ -2,7 +2,7 @@ package com.projectboated.backend.task.task.entity;
 
 import com.projectboated.backend.common.entity.BaseTimeEntity;
 import com.projectboated.backend.kanban.kanbanlane.entity.KanbanLane;
-import com.projectboated.backend.project.entity.Project;
+import com.projectboated.backend.project.project.entity.Project;
 import com.projectboated.backend.task.task.service.dto.TaskUpdateRequest;
 import lombok.AccessLevel;
 import lombok.Builder;

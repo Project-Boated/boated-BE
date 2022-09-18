@@ -10,10 +10,10 @@ import com.projectboated.backend.kanban.kanbanlane.entity.exception.TaskOriginal
 import com.projectboated.backend.kanban.kanbanlane.repository.KanbanLaneRepository;
 import com.projectboated.backend.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
 import com.projectboated.backend.kanban.kanbanlane.service.exception.KanbanLaneNotFoundException;
-import com.projectboated.backend.project.aop.OnlyCaptainOrCrew;
-import com.projectboated.backend.project.entity.Project;
-import com.projectboated.backend.project.repository.ProjectRepository;
-import com.projectboated.backend.project.service.exception.ProjectNotFoundException;
+import com.projectboated.backend.project.project.aop.OnlyCaptainOrCrew;
+import com.projectboated.backend.project.project.entity.Project;
+import com.projectboated.backend.project.project.repository.ProjectRepository;
+import com.projectboated.backend.project.project.service.exception.ProjectNotFoundException;
 import com.projectboated.backend.task.task.entity.AccountTask;
 import com.projectboated.backend.task.task.entity.Task;
 import com.projectboated.backend.task.task.repository.AccountTaskRepository;

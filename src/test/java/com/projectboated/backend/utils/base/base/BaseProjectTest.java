@@ -1,8 +1,8 @@
 package com.projectboated.backend.utils.base.base;
 
 import com.projectboated.backend.account.account.entity.Account;
-import com.projectboated.backend.project.entity.AccountProject;
-import com.projectboated.backend.project.entity.Project;
+import com.projectboated.backend.project.project.entity.AccountProject;
+import com.projectboated.backend.project.project.entity.Project;
 
 import java.time.LocalDateTime;
 

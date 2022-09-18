@@ -1,6 +1,6 @@
 package com.projectboated.backend.kanban.kanbanlane.service.dto;
 
-import com.projectboated.backend.project.entity.Project;
+import com.projectboated.backend.project.project.entity.Project;
 import com.projectboated.backend.kanban.kanban.entity.Kanban;
 import lombok.Builder;
 import lombok.Getter;

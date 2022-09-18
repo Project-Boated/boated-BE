@@ -4,7 +4,7 @@ import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.uploadfile.entity.UploadFile;
 import com.projectboated.backend.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.kanban.kanbanlane.entity.KanbanLane;
-import com.projectboated.backend.project.entity.Project;
+import com.projectboated.backend.project.project.entity.Project;
 import com.projectboated.backend.task.task.controller.dto.request.AssignAccountTaskRequest;
 import com.projectboated.backend.task.task.controller.dto.request.CreateTaskRequest;
 import com.projectboated.backend.task.task.controller.dto.request.PatchTaskRequest;

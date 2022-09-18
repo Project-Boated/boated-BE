@@ -1,10 +1,10 @@
 package com.projectboated.backend.utils.base.repository;
 
 import com.projectboated.backend.account.account.entity.Account;
-import com.projectboated.backend.project.entity.AccountProject;
-import com.projectboated.backend.project.entity.Project;
-import com.projectboated.backend.project.repository.AccountProjectRepository;
-import com.projectboated.backend.project.repository.ProjectRepository;
+import com.projectboated.backend.project.project.entity.AccountProject;
+import com.projectboated.backend.project.project.entity.Project;
+import com.projectboated.backend.project.project.repository.AccountProjectRepository;
+import com.projectboated.backend.project.project.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;

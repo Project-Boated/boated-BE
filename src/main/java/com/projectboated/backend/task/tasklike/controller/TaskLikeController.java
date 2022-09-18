@@ -1,8 +1,8 @@
 package com.projectboated.backend.task.tasklike.controller;
 
 import com.projectboated.backend.account.account.entity.Account;
-import com.projectboated.backend.project.controller.dto.common.ProjectNoAccountsResponse;
-import com.projectboated.backend.project.entity.Project;
+import com.projectboated.backend.project.project.controller.dto.common.ProjectNoAccountsResponse;
+import com.projectboated.backend.project.project.entity.Project;
 import com.projectboated.backend.task.task.controller.dto.common.TaskAssignedAccountResponse;
 import com.projectboated.backend.task.task.controller.dto.common.TaskNoLikeResponse;
 import com.projectboated.backend.task.task.entity.Task;

@@ -1,7 +1,7 @@
 package com.projectboated.backend.task.task.repository;
 
 import com.projectboated.backend.account.account.entity.Account;
-import com.projectboated.backend.project.entity.Project;
+import com.projectboated.backend.project.project.entity.Project;
 import com.projectboated.backend.task.task.entity.AccountTask;
 import com.projectboated.backend.task.task.entity.Task;
 import org.springframework.data.jpa.repository.JpaRepository;

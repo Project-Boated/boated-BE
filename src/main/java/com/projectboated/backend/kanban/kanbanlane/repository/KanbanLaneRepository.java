@@ -1,6 +1,6 @@
 package com.projectboated.backend.kanban.kanbanlane.repository;
 
-import com.projectboated.backend.project.entity.Project;
+import com.projectboated.backend.project.project.entity.Project;
 import com.projectboated.backend.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.kanban.kanbanlane.entity.KanbanLane;
 import org.springframework.data.jpa.repository.JpaRepository;

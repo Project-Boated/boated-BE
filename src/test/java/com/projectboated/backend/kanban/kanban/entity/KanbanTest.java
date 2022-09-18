@@ -1,6 +1,6 @@
 package com.projectboated.backend.kanban.kanban.entity;
 
-import com.projectboated.backend.project.entity.Project;
+import com.projectboated.backend.project.project.entity.Project;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
