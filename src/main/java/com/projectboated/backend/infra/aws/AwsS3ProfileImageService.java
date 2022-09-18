@@ -6,7 +6,7 @@ import com.projectboated.backend.account.account.service.exception.AccountNotFou
 import com.projectboated.backend.account.profileimage.entity.ProfileImage;
 import com.projectboated.backend.account.profileimage.entity.UploadFileProfileImage;
 import com.projectboated.backend.common.exception.ErrorCode;
-import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
 import com.projectboated.backend.infra.aws.exception.AccountProfileImageNotUploadFile;
 import com.projectboated.backend.infra.aws.exception.FileUploadInterruptException;
 import lombok.RequiredArgsConstructor;

@@ -3,7 +3,7 @@ package com.projectboated.backend.task.task.service;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.account.account.repository.AccountRepository;
 import com.projectboated.backend.account.account.service.exception.AccountNotFoundException;
-import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
 import com.projectboated.backend.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.kanban.kanbanlane.entity.exception.TaskChangeIndexOutOfBoundsException;
 import com.projectboated.backend.kanban.kanbanlane.entity.exception.TaskOriginalIndexOutOfBoundsException;

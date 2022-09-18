@@ -8,7 +8,7 @@ import com.projectboated.backend.account.profileimage.entity.UploadFileProfileIm
 import com.projectboated.backend.account.profileimage.entity.UrlProfileImage;
 import com.projectboated.backend.account.profileimage.repository.ProfileImageRepository;
 import com.projectboated.backend.utils.base.ServiceTest;
-import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
 import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

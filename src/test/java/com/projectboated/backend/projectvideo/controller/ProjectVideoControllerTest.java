@@ -1,7 +1,7 @@
 package com.projectboated.backend.projectvideo.controller;
 
 import com.google.common.net.MediaType;
-import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
 import com.projectboated.backend.project.entity.Project;
 import com.projectboated.backend.projectvideo.entity.ProjectVideo;
 import com.projectboated.backend.utils.base.ControllerTest;

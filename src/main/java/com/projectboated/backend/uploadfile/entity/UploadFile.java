@@ -1,17 +1,22 @@
-package com.projectboated.backend.domain.uploadfile.entity;
+package com.projectboated.backend.uploadfile.entity;
 
 import com.projectboated.backend.common.entity.BaseTimeEntity;
 import com.projectboated.backend.common.exception.ErrorCode;
-import com.projectboated.backend.domain.uploadfile.entity.exception.UploadFileNotFoundExt;
-import lombok.*;
+import com.projectboated.backend.uploadfile.entity.exception.UploadFileNotFoundExt;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity @Getter
+@Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UploadFile extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "upload_file_id")
     private Long id;
 
@@ -37,12 +42,12 @@ public class UploadFile extends BaseTimeEntity {
 
     private String extractExt(String originalFileName) {
         int lastIndexOfDot = originalFileName.lastIndexOf('.');
-        return originalFileName.substring(lastIndexOfDot+1);
+        return originalFileName.substring(lastIndexOfDot + 1);
     }
 
     private String removeExt(String originalFileName) {
         int lastIndexOfDot = originalFileName.lastIndexOf('.');
-        if(lastIndexOfDot == -1) {
+        if (lastIndexOfDot == -1) {
             throw new UploadFileNotFoundExt(ErrorCode.UPLOAD_FILE_NOT_FOUND_EXT);
         }
         return originalFileName.substring(0, lastIndexOfDot);

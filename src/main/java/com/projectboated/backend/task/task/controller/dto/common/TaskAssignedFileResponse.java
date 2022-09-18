@@ -1,7 +1,7 @@
 package com.projectboated.backend.task.task.controller.dto.common;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
 import lombok.Builder;
 import lombok.Getter;
 

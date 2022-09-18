@@ -1,7 +1,7 @@
 package com.projectboated.backend.projectvideo.service;
 
-import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
-import com.projectboated.backend.domain.uploadfile.repository.UploadFileRepository;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
+import com.projectboated.backend.uploadfile.repository.UploadFileRepository;
 import com.projectboated.backend.infra.aws.AwsS3Service;
 import com.projectboated.backend.project.entity.Project;
 import com.projectboated.backend.project.repository.ProjectRepository;

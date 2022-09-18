@@ -1,6 +1,6 @@
 package com.projectboated.backend.utils.base.base;
 
-import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
 import org.springframework.http.MediaType;
 
 import java.time.LocalDateTime;

@@ -1,6 +1,6 @@
-package com.projectboated.backend.domain.uploadfile.entity;
+package com.projectboated.backend.uploadfile.entity;
 
-import com.projectboated.backend.domain.uploadfile.entity.exception.UploadFileNotFoundExt;
+import com.projectboated.backend.uploadfile.entity.exception.UploadFileNotFoundExt;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,6 @@
 package com.projectboated.backend.projectvideo.repository;
 
-import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
 import com.projectboated.backend.project.entity.Project;
 import com.projectboated.backend.projectvideo.entity.ProjectVideo;
 import com.projectboated.backend.utils.base.RepositoryTest;

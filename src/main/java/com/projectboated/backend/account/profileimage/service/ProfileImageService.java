@@ -8,7 +8,7 @@ import com.projectboated.backend.account.profileimage.entity.ProfileImage;
 import com.projectboated.backend.account.profileimage.entity.UploadFileProfileImage;
 import com.projectboated.backend.account.profileimage.repository.ProfileImageRepository;
 import com.projectboated.backend.common.exception.ErrorCode;
-import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
 import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;

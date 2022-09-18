@@ -1,6 +1,6 @@
 package com.projectboated.backend.utils.data;
 
-import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
 
 import java.util.UUID;
 

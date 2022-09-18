@@ -1,7 +1,7 @@
 package com.projectboated.backend.account.profileimage.entity;
 
 import com.projectboated.backend.account.profileimage.entity.exception.ProfileImageNeedsHostUrlException;
-import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

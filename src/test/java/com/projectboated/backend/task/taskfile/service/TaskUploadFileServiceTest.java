@@ -2,8 +2,8 @@ package com.projectboated.backend.task.taskfile.service;
 
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.account.account.repository.AccountRepository;
-import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
-import com.projectboated.backend.domain.uploadfile.repository.UploadFileRepository;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
+import com.projectboated.backend.uploadfile.repository.UploadFileRepository;
 import com.projectboated.backend.infra.aws.AwsS3Service;
 import com.projectboated.backend.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.kanban.kanbanlane.entity.KanbanLane;

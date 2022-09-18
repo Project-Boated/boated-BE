@@ -1,4 +1,4 @@
-package com.projectboated.backend.domain.uploadfile.entity.exception;
+package com.projectboated.backend.uploadfile.entity.exception;
 
 import com.projectboated.backend.common.exception.BusinessException;
 import com.projectboated.backend.common.exception.ErrorCode;

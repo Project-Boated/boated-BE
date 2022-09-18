@@ -2,7 +2,7 @@ package com.projectboated.backend.task.task.controller.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.projectboated.backend.account.account.entity.Account;
-import com.projectboated.backend.domain.uploadfile.entity.UploadFile;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
 import com.projectboated.backend.task.task.controller.dto.common.TaskAssignedAccountResponse;
 import com.projectboated.backend.task.task.controller.dto.common.TaskAssignedFileResponse;
 import com.projectboated.backend.task.task.entity.Task;
