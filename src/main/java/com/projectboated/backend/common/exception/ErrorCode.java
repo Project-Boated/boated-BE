@@ -92,6 +92,16 @@ public enum ErrorCode {
     // AOP
     AOP_PROJECT_ID_NOT_FOUND(400, "AO001", "project id를 찾을 수 없습니다. 이 에러는 서버에러입니다. 카톡주세요."),
 
+    // Login
+    LOGIN_IS_NOT_JSON_REQUEST(400, "LO001", "json으로 요청해주십시오."),
+    LOGIN_USERNAME_PASSWORD_REQUIRED(400, "LO002", "username이나 password를 채워서 보내주세요."),
+    LOGIN_IS_NOT_KAKAO_REQUEST(400, "LO003", "카카오 로그인이 아닙니다."),
+    LOGIN_KAKAO_AUTHENTICATION_EXCEPTION(400, "L004", "카카오 내부 에러"),
+    LOGIN_PASSWORD_NOT_MATCHES(400, "L005", "password가 일치하지 않습니다"),
+
+    // Json
+    JSON_PARSING_EXCEPTION(400, "JS001", "json parsing error"),
+
     // For Testing
     FOR_TESTING(507, "T001", "테스트용입니다.");
 

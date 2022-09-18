@@ -1,13 +1,11 @@
 package com.projectboated.backend.project.project.aop;
 
 import com.projectboated.backend.account.account.entity.Account;
-import com.projectboated.backend.project.project.aop.OnlyCaptain;
-import com.projectboated.backend.project.project.aop.OnlyCaptainOrCrew;
 import com.projectboated.backend.project.project.entity.Project;
 import com.projectboated.backend.project.project.service.ProjectService;
 import com.projectboated.backend.project.project.service.exception.OnlyCaptainException;
 import com.projectboated.backend.project.project.service.exception.OnlyCaptainOrCrewException;
-import com.projectboated.backend.security.token.JsonAuthenticationToken;
+import com.projectboated.backend.security.json.token.JsonAuthenticationToken;
 import com.projectboated.backend.utils.base.BaseTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
