@@ -4,7 +4,7 @@ import com.projectboated.backend.common.exception.BusinessException;
 import com.projectboated.backend.common.exception.ErrorCode;
 
 public class AccountPasswordWrong extends BusinessException {
-    public AccountPasswordWrong(ErrorCode errorCode) {
-        super(errorCode);
+    public AccountPasswordWrong() {
+        super(ErrorCode.ACCOUNT_PASSWORD_WRONG);
     }
 }

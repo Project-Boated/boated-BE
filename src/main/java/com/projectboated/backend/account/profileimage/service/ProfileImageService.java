@@ -6,10 +6,11 @@ import com.projectboated.backend.account.account.service.exception.AccountNotFou
 import com.projectboated.backend.account.account.service.exception.AccountProfileImageFileNotExist;
 import com.projectboated.backend.account.profileimage.entity.ProfileImage;
 import com.projectboated.backend.account.profileimage.entity.UploadFileProfileImage;
+import com.projectboated.backend.account.profileimage.entity.exception.ProfileImageNeedsHostUrlException;
 import com.projectboated.backend.account.profileimage.repository.ProfileImageRepository;
 import com.projectboated.backend.common.exception.ErrorCode;
-import com.projectboated.backend.uploadfile.entity.UploadFile;
 import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
@@ -50,16 +51,15 @@ public class ProfileImageService {
         awsS3ProfileImageService.uploadProfileImage(account, uploadFileProfileImage, file);
     }
 
-    public String getProfileUrl(Long accountId, String hostUrl, boolean isProxy) {
+    public String getProfileUrl(Long accountId, String hostUrl) {
         Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+                .orElseThrow(AccountNotFoundException::new);
 
         ProfileImage profileImage = (ProfileImage) Hibernate.unproxy(account.getProfileImage());
         if (profileImage == null) {
             return null;
         }
-
-        return profileImage.getUrl(hostUrl, isProxy);
+        return profileImage.getUrl(hostUrl);
     }
 
     @Transactional

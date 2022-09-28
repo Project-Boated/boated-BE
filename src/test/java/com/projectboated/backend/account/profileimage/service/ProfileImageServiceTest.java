@@ -109,7 +109,7 @@ class ProfileImageServiceTest extends ServiceTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> profileImageService.getProfileUrl(account.getId(), "hostUrl", true))
+        assertThatThrownBy(() -> profileImageService.getProfileUrl(account.getId(), "hostUrl"))
                 .isInstanceOf(AccountNotFoundException.class);
     }
 
@@ -124,31 +124,11 @@ class ProfileImageServiceTest extends ServiceTest {
         when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
 
         // When
-        String result = profileImageService.getProfileUrl(account.getId(), "hostUrl", true);
+        String result = profileImageService.getProfileUrl(account.getId(), "hostUrl");
 
         // Then
         assertThat(result).isEqualTo(null);
 
-        verify(accountRepository).findById(ACCOUNT_ID);
-    }
-
-    @Test
-    void getProfileUrl_정상입력_return_url() {
-        // Given
-        UrlProfileImage profileImage = new UrlProfileImage("url");
-
-        Account account = Account.builder()
-                .id(ACCOUNT_ID)
-                .nickname(NICKNAME)
-                .profileImageFile(profileImage)
-                .build();
-
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
-
-        // When
-        profileImageService.getProfileUrl(account.getId(), "hostUrl", true);
-
-        // Then
         verify(accountRepository).findById(ACCOUNT_ID);
     }
 

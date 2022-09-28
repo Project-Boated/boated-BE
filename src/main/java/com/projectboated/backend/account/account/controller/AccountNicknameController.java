@@ -6,7 +6,6 @@ import com.projectboated.backend.account.account.controller.dto.response.Validat
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.account.account.service.AccountNicknameService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +17,14 @@ public class AccountNicknameController {
 
     private final AccountNicknameService nicknameService;
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping
     public void putNickname(
             @RequestBody @Validated PutNicknameRequest request,
             @AuthenticationPrincipal Account account) {
         nicknameService.updateNickname(account.getId(), request.getNickname());
     }
 
-    @PostMapping(value = "/unique-validation", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/unique-validation")
     public ValidationNicknameUniqueResponse validationNicknameUnique(
             @Validated @RequestBody ValidationNicknameUniqueRequest request) {
         return new ValidationNicknameUniqueResponse(nicknameService.existsByNickname(request.getNickname()));

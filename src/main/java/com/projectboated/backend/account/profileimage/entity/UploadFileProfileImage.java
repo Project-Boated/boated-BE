@@ -1,7 +1,6 @@
 package com.projectboated.backend.account.profileimage.entity;
 
 import com.projectboated.backend.account.profileimage.entity.exception.ProfileImageNeedsHostUrlException;
-import com.projectboated.backend.common.exception.ErrorCode;
 import com.projectboated.backend.uploadfile.entity.UploadFile;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -29,20 +28,11 @@ public class UploadFileProfileImage extends ProfileImage {
     }
 
     @Override
-    public String getUrl(String hostUrl, Boolean isProxy) {
+    public String getUrl(String hostUrl) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
         uriBuilder.scheme("http");
-
-        if (isProxy) {
-            uriBuilder.host("localhost:3000");
-        } else {
-            if (hostUrl == null) {
-                throw new ProfileImageNeedsHostUrlException(ErrorCode.PROFILE_IMAGE_NEEDS_HOST_URL);
-            }
-            uriBuilder.host(hostUrl);
-        }
+        uriBuilder.host(hostUrl);
         uriBuilder.path("/api/account/profile/profile-image");
-
         uriBuilder.queryParam("hash", uploadFile.getSaveFileName());
         return uriBuilder.build().toString();
     }

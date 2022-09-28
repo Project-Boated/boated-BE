@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.projectboated.backend.account.account.service.AccountNicknameService;
 import com.projectboated.backend.account.account.service.AccountService;
 import com.projectboated.backend.account.profileimage.service.ProfileImageService;
+import com.projectboated.backend.common.utils.HttpUtils;
 import com.projectboated.backend.invitation.service.InvitationService;
 import com.projectboated.backend.kanban.kanban.service.KanbanService;
 import com.projectboated.backend.kanban.kanbanlane.service.KanbanLaneService;
@@ -55,6 +56,10 @@ public class ControllerTest extends BaseTest {
     {
         objectMapper.registerModule(new JavaTimeModule());
     }
+
+    // Utils
+    @MockBean
+    protected HttpUtils httpUtils;
 
     // Account
     @MockBean

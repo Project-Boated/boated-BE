@@ -18,6 +18,6 @@ public abstract class ProfileImage {
     @Column(name = "profile_image_id")
     private Long id;
 
-    public abstract String getUrl(String hostUrl, Boolean isProxy);
+    public abstract String getUrl(String hostUrl);
 
 }
