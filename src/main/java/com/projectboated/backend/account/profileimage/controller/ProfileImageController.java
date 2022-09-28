@@ -7,8 +7,10 @@ import com.projectboated.backend.account.profileimage.controller.dto.PostAccount
 import com.projectboated.backend.account.profileimage.controller.dto.PostAccountProfileImageResponse;
 import com.projectboated.backend.account.profileimage.service.ProfileImageService;
 import com.projectboated.backend.common.exception.ErrorCode;
+import com.projectboated.backend.common.utils.HttpUtils;
 import com.projectboated.backend.infra.aws.AwsS3File;
 import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
+import io.netty.handler.codec.http.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/api/account/profile/profile-image")
 public class ProfileImageController {
 
+    private final HttpUtils httpUtils;
     private final ProfileImageService profileImageService;
     private final AwsS3ProfileImageService awsS3ProfileImageService;
 
@@ -41,12 +44,13 @@ public class ProfileImageController {
 
         MimeType mimeType = MimeType.valueOf(file.getContentType());
         if (!mimeType.getType().equals("image")) {
-            throw new NotImageFileException(ErrorCode.COMMON_NOT_IMAGE_FILE_EXCEPTION);
+            throw new NotImageFileException();
         }
 
         profileImageService.updateProfileImage(account.getId(), file);
 
-        return new PostAccountProfileImageResponse(profileImageService.getProfileUrl(account.getId(), httpRequest.getHeader("HOST"), request.isProxy()));
+        return new PostAccountProfileImageResponse(profileImageService.getProfileUrl(account.getId(),
+                httpUtils.getHostUrl(httpRequest, request.isProxy())));
     }
 
     @GetMapping

@@ -27,7 +27,7 @@ class UrlProfileImageTest {
         UrlProfileImage urlProfileImage = new UrlProfileImage(url);
 
         // When
-        String result = urlProfileImage.getUrl(null, false);
+        String result = urlProfileImage.getUrl(null);
 
         // Then
         assertThat(result).startsWith(url);

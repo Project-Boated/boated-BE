@@ -39,59 +39,10 @@ class UploadFileProfileImageTest {
         UploadFileProfileImage profileImage = new UploadFileProfileImage(uploadFile);
 
         // When
-        String result = profileImage.getUrl("host", true);
+        String result = profileImage.getUrl("host");
 
         // Then
-        assertThat(result).startsWith("http://localhost:3000/api/account/profile/profile-image?hash=" + SAVE_FILE_NAME);
+        assertThat(result).startsWith("http://host/api/account/profile/profile-image?hash=");
     }
 
-    @Test
-    void getUrl_hostUrl주어짐isNotProxy_return_hostUrl() {
-        // Given
-        UploadFile uploadFile = UploadFile.builder()
-                .originalFileName(ORIGINAL_FILE_NAME)
-                .saveFileName(SAVE_FILE_NAME)
-                .mediaType(MEDIATYPE)
-                .build();
-        UploadFileProfileImage profileImage = new UploadFileProfileImage(uploadFile);
-
-        // When
-        String result = profileImage.getUrl("host", false);
-
-        // Then
-        assertThat(result).startsWith("http://host/api/account/profile/profile-image?hash=" + SAVE_FILE_NAME);
-    }
-
-    @Test
-    void getUrl_hostUrl안주어짐isProxy_return_proxyUrl() {
-        // Given
-        UploadFile uploadFile = UploadFile.builder()
-                .originalFileName(ORIGINAL_FILE_NAME)
-                .saveFileName(SAVE_FILE_NAME)
-                .mediaType(MEDIATYPE)
-                .build();
-        UploadFileProfileImage profileImage = new UploadFileProfileImage(uploadFile);
-
-        // When
-        String result = profileImage.getUrl(null, true);
-
-        // Then
-        assertThat(result).startsWith("http://localhost:3000/api/account/profile/profile-image?hash=" + SAVE_FILE_NAME);
-    }
-
-    @Test
-    void getUrl_hostUrl안주어짐isNotProxy_예외발생() {
-        // Given
-        UploadFile uploadFile = UploadFile.builder()
-                .originalFileName(ORIGINAL_FILE_NAME)
-                .saveFileName(SAVE_FILE_NAME)
-                .mediaType(MEDIATYPE)
-                .build();
-        UploadFileProfileImage profileImage = new UploadFileProfileImage(uploadFile);
-
-        // When
-        // Then
-        assertThatThrownBy(() -> profileImage.getUrl(null, false))
-                .isInstanceOf(ProfileImageNeedsHostUrlException.class);
-    }
 }

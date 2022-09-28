@@ -126,15 +126,6 @@ class AccountNicknameServiceTest extends ServiceTest {
     }
 
     @Test
-    void existsByNickname_nickname이null로주어진경우_assert예외발생() {
-        // Given
-        // When
-        // Then
-        assertThatThrownBy(() -> nicknameService.existsByNickname(null))
-                .isInstanceOf(AssertionError.class);
-    }
-
-    @Test
     void existsByNickname_nickname이존재하는경우_return_true() {
         // Given
         String nickname = "nickname";

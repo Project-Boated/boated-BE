@@ -45,7 +45,7 @@ class AccountControllerTest extends ControllerTest {
     void getAccountProfile_자신의profile가져오기_성공() throws Exception {
         // Given
         when(accountService.findById(anyLong())).thenReturn(createAccount());
-        when(profileImageService.getProfileUrl(any(), any(), anyBoolean())).thenReturn("url");
+        when(profileImageService.getProfileUrl(any(), any())).thenReturn("url");
 
         // When
         // Then
@@ -54,7 +54,7 @@ class AccountControllerTest extends ControllerTest {
                 .andDo(documentAccountProfileRetrieve());
 
         verify(accountService).findById(anyLong());
-        verify(profileImageService).getProfileUrl(any(), any(), anyBoolean());
+        verify(profileImageService).getProfileUrl(any(), any());
     }
 
     @Test
@@ -62,7 +62,7 @@ class AccountControllerTest extends ControllerTest {
     void patchAccountProfile_프로필update_성공() throws Exception {
         // Given
         when(accountService.findById(anyLong())).thenReturn(createAccount());
-        when(profileImageService.getProfileUrl(any(), any(), anyBoolean())).thenReturn("url");
+        when(profileImageService.getProfileUrl(any(), any())).thenReturn("url");
 
         // When
         // Then

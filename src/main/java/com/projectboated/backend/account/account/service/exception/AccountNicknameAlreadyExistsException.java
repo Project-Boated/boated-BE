@@ -4,7 +4,7 @@ import com.projectboated.backend.common.exception.BusinessException;
 import com.projectboated.backend.common.exception.ErrorCode;
 
 public class AccountNicknameAlreadyExistsException extends BusinessException {
-    public AccountNicknameAlreadyExistsException(ErrorCode errorCode) {
-        super(errorCode);
+    public AccountNicknameAlreadyExistsException() {
+        super(ErrorCode.ACCOUNT_NICKNAME_EXISTS);
     }
 }

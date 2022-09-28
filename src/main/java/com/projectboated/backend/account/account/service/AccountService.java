@@ -10,10 +10,9 @@ import com.projectboated.backend.account.account.service.exception.AccountPasswo
 import com.projectboated.backend.account.account.service.exception.AccountUsernameAlreadyExistsException;
 import com.projectboated.backend.account.profileimage.entity.UploadFileProfileImage;
 import com.projectboated.backend.account.profileimage.repository.ProfileImageRepository;
-import com.projectboated.backend.common.exception.ErrorCode;
-import com.projectboated.backend.uploadfile.entity.UploadFile;
 import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import com.projectboated.backend.infra.kakao.KakaoWebService;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,21 +34,17 @@ public class AccountService {
 
     public Account findById(Long accountId) {
         return accountRepository.findById(accountId)
-                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+                .orElseThrow(AccountNotFoundException::new);
     }
 
     @Transactional
     public Account save(Account account) {
-        assert (account.getUsername() != null);
-        assert (account.getNickname() != null);
-        assert (account.getPassword() != null);
-
         if (accountRepository.existsByUsername(account.getUsername())) {
-            throw new AccountUsernameAlreadyExistsException(ErrorCode.ACCOUNT_USERNAME_EXISTS);
+            throw new AccountUsernameAlreadyExistsException();
         }
 
         if (accountRepository.existsByNickname(account.getNickname())) {
-            throw new AccountNicknameAlreadyExistsException(ErrorCode.ACCOUNT_NICKNAME_EXISTS);
+            throw new AccountNicknameAlreadyExistsException();
         }
 
         account.changePassword(passwordEncoder.encode(account.getPassword()));
@@ -59,18 +54,14 @@ public class AccountService {
     @Transactional
     public void updateProfile(Long accountId, AccountUpdateCond updateCond) {
         Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+                .orElseThrow(AccountNotFoundException::new);
 
-        if (!(account instanceof KakaoAccount)) {
-            if (!checkValidPassword(account, updateCond.getOriginalPassword())) {
-                throw new AccountPasswordWrong(ErrorCode.ACCOUNT_PASSWORD_WRONG);
-            }
+        if (!checkValidPassword(account, updateCond.getOriginalPassword())) {
+            throw new AccountPasswordWrong();
         }
 
-        if (updateCond.getNickname() != null &&
-                !updateCond.getNickname().equals(account.getNickname()) &&
-                accountRepository.existsByNickname(updateCond.getNickname())) {
-            throw new AccountNicknameAlreadyExistsException(ErrorCode.ACCOUNT_NICKNAME_EXISTS);
+        if (checkValidNickname(updateCond, account)) {
+            throw new AccountNicknameAlreadyExistsException();
         }
 
         if (updateCond.getNewPassword() != null) {
@@ -79,22 +70,35 @@ public class AccountService {
 
         if (updateCond.getProfileImageFile() != null) {
             MultipartFile file = updateCond.getProfileImageFile();
+
             UploadFile uploadFile = UploadFile.builder()
                     .originalFileName(file.getOriginalFilename())
                     .saveFileName(UUID.randomUUID().toString())
                     .mediaType(file.getContentType())
                     .build();
+
             UploadFileProfileImage uploadFileProfileImage = new UploadFileProfileImage(uploadFile);
+            profileImageRepository.save(uploadFileProfileImage);
+
+            account.changeProfileImage(uploadFileProfileImage);
 
             awsS3ProfileService.uploadProfileImage(account, uploadFileProfileImage, updateCond.getProfileImageFile());
-            profileImageRepository.save(uploadFileProfileImage);
-            account.changeProfileImage(uploadFileProfileImage);
         }
 
         account.changeNickname(updateCond.getNickname());
     }
 
+    private boolean checkValidNickname(AccountUpdateCond updateCond, Account account) {
+        return updateCond.getNickname() != null &&
+                !updateCond.getNickname().equals(account.getNickname()) &&
+                accountRepository.existsByNickname(updateCond.getNickname());
+    }
+
     private boolean checkValidPassword(Account account, String password) {
+        if (account instanceof KakaoAccount) {
+            return true;
+        }
+
         if (password == null) {
             return false;
         }
@@ -104,7 +108,7 @@ public class AccountService {
     @Transactional
     public void delete(Long accountId) {
         Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new AccountNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+                .orElseThrow(AccountNotFoundException::new);
 
         if (account instanceof KakaoAccount kakaoAccount) {
             kakaoWebService.disconnect(kakaoAccount.getKakaoId());

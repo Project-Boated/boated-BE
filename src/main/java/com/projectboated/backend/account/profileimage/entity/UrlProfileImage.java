@@ -22,8 +22,7 @@ public class UrlProfileImage extends ProfileImage {
     }
 
     @Override
-    public String getUrl(String hostUrl, Boolean isProxy) {
-        assert url != null;
+    public String getUrl(String hostUrl) {
         return this.url;
     }
 }

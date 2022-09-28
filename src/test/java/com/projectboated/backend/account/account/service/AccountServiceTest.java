@@ -11,10 +11,10 @@ import com.projectboated.backend.account.account.service.exception.AccountPasswo
 import com.projectboated.backend.account.account.service.exception.AccountUsernameAlreadyExistsException;
 import com.projectboated.backend.account.profileimage.entity.UploadFileProfileImage;
 import com.projectboated.backend.account.profileimage.repository.ProfileImageRepository;
-import com.projectboated.backend.utils.base.ServiceTest;
-import com.projectboated.backend.uploadfile.entity.UploadFile;
 import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import com.projectboated.backend.infra.kakao.KakaoWebService;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
+import com.projectboated.backend.utils.base.ServiceTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -95,51 +95,6 @@ class AccountServiceTest extends ServiceTest {
     }
 
     @Test
-    void save_username이null인경우_assertionError() {
-        // Given
-        Account account = Account.builder()
-                .username(null)
-                .nickname(NICKNAME)
-                .password(PASSWORD)
-                .build();
-
-        // When
-        // Then
-        assertThatThrownBy(() -> accountService.save(account))
-                .isInstanceOf(AssertionError.class);
-    }
-
-    @Test
-    void save_nickname이null인경우_assertionError() {
-        // Given
-        Account account = Account.builder()
-                .username(USERNAME)
-                .nickname(null)
-                .password(PASSWORD)
-                .build();
-
-        // When
-        // Then
-        assertThatThrownBy(() -> accountService.save(account))
-                .isInstanceOf(AssertionError.class);
-    }
-
-    @Test
-    void save_password가null인경우_assertionError() {
-        // Given
-        Account account = Account.builder()
-                .username(USERNAME)
-                .nickname(NICKNAME)
-                .password(null)
-                .build();
-
-        // When
-        // Then
-        assertThatThrownBy(() -> accountService.save(account))
-                .isInstanceOf(AssertionError.class);
-    }
-
-    @Test
     void save_존재하는username_예외발생() {
         // Given
         Account account = Account.builder()
@@ -208,6 +163,7 @@ class AccountServiceTest extends ServiceTest {
                 .build();
 
         when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
+        when(passwordEncoder.matches(any(), any())).thenReturn(false);
 
         // When
         // Then
@@ -231,8 +187,8 @@ class AccountServiceTest extends ServiceTest {
                 .build();
 
         when(accountRepository.findById(account.getId())).thenReturn(Optional.of(account));
-        when(accountRepository.existsByNickname(cond.getNickname())).thenReturn(true);
         when(passwordEncoder.matches(cond.getOriginalPassword(), PASSWORD)).thenReturn(true);
+        when(accountRepository.existsByNickname(cond.getNickname())).thenReturn(true);
 
         // When
         // Then

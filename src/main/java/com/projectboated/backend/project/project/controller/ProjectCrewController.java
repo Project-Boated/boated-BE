@@ -2,6 +2,7 @@ package com.projectboated.backend.project.project.controller;
 
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.account.profileimage.service.ProfileImageService;
+import com.projectboated.backend.common.utils.HttpUtils;
 import com.projectboated.backend.project.project.controller.dto.response.CrewResponse;
 import com.projectboated.backend.project.project.controller.dto.response.GetCrewsResponse;
 import com.projectboated.backend.project.project.service.ProjectCrewService;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequestMapping("/api/projects/{projectId}/crews")
 public class ProjectCrewController {
 
+    private final HttpUtils httpUtils;
     private final ProjectCrewService projectCrewService;
     private final ProfileImageService profileImageService;
 
@@ -26,7 +28,7 @@ public class ProjectCrewController {
                                      @AuthenticationPrincipal Account account,
                                      @PathVariable Long projectId) {
         List<CrewResponse> crewResponses = projectCrewService.findAllCrews(projectId).stream()
-                .map(c -> new CrewResponse(c, profileImageService.getProfileUrl(c.getId(), httpRequest.getHeader("HOST"), isProxy)))
+                .map(c -> new CrewResponse(c, profileImageService.getProfileUrl(c.getId(), httpUtils.getHostUrl(httpRequest, isProxy))))
                 .toList();
 
         return new GetCrewsResponse(crewResponses);
