@@ -80,7 +80,7 @@ public abstract class TaskDocument {
                         fieldWithPath("name").type(JsonFieldType.STRING).description("task 이름"),
                         fieldWithPath("description").type(JsonFieldType.STRING).description("task 설명"),
                         fieldWithPath("deadline").type(JsonFieldType.STRING).description("deadline"),
-                        fieldWithPath("laneId").type(JsonFieldType.NUMBER).description("task가 속한 lane의 id"),
+                        fieldWithPath("laneName").type(JsonFieldType.STRING).description("task가 속한 lane의 이"),
                         fieldWithPath("assignedAccounts").type(JsonFieldType.ARRAY).description("배정된 account"),
                         fieldWithPath("assignedAccounts[].id").type(JsonFieldType.NUMBER).description("배정된 account의 고유번호"),
                         fieldWithPath("assignedAccounts[].nickname").type(JsonFieldType.STRING).description("배정된 account의 닉네임"),
@@ -103,7 +103,7 @@ public abstract class TaskDocument {
                         fieldWithPath("name").type(JsonFieldType.STRING).description("이름").optional(),
                         fieldWithPath("description").type(JsonFieldType.STRING).description("설명").optional(),
                         fieldWithPath("deadline").type(JsonFieldType.STRING).description("deadline").optional(),
-                        fieldWithPath("laneId").type(JsonFieldType.NUMBER).description("다른 lane").optional()
+                        fieldWithPath("laneName").type(JsonFieldType.STRING).description("바꾸고 싶은 lane의 이").optional()
                 )
         );
     }

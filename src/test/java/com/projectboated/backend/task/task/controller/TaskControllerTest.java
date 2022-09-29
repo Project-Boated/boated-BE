@@ -92,7 +92,7 @@ class TaskControllerTest extends ControllerTest {
         // Then
         mockMvc.perform(patch("/api/projects/{projectId}/kanban/lanes/tasks/{taskId}", project.getId(), task.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(toJsonString(new PatchTaskRequest(TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE, 129L)))
+                        .content(toJsonString(new PatchTaskRequest(TASK_NAME, TASK_DESCRIPTION, TASK_DEADLINE, "이름")))
                 )
                 .andExpect(status().isOk())
                 .andDo(documentTaskUpdate());
