@@ -12,14 +12,14 @@ public class TaskUpdateRequest {
     private String description;
     private LocalDateTime deadline;
 
-    private Long laneId;
+    private String laneName;
 
     @Builder
-    public TaskUpdateRequest(String name, String description, LocalDateTime deadline, Long laneId) {
+    public TaskUpdateRequest(String name, String description, LocalDateTime deadline, String laneName) {
         this.name = name;
         this.description = description;
         this.deadline = deadline;
-        this.laneId = laneId;
+        this.laneName = laneName;
     }
 
 }

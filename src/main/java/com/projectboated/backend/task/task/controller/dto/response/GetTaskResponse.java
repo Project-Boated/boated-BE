@@ -24,7 +24,7 @@ public class GetTaskResponse {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deadline;
 
-    private Long laneId;
+    private String laneName;
 
     private List<TaskAssignedAccountResponse> assignedAccounts;
 
@@ -36,7 +36,7 @@ public class GetTaskResponse {
         this.name = task.getName();
         this.description = task.getDescription();
         this.deadline = task.getDeadline();
-        this.laneId = task.getKanbanLane().getId();
+        this.laneName = task.getKanbanLane().getName();
         this.assignedAccounts = assignedAccounts.stream()
                 .map(TaskAssignedAccountResponse::new)
                 .toList();

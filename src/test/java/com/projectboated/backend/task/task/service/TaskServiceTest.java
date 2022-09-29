@@ -3,7 +3,6 @@ package com.projectboated.backend.task.task.service;
 import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.account.account.repository.AccountRepository;
 import com.projectboated.backend.account.account.service.exception.AccountNotFoundException;
-import com.projectboated.backend.uploadfile.entity.UploadFile;
 import com.projectboated.backend.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.kanban.kanbanlane.entity.exception.TaskChangeIndexOutOfBoundsException;
@@ -26,6 +25,7 @@ import com.projectboated.backend.task.task.service.exception.TaskNotFoundExcepti
 import com.projectboated.backend.task.taskfile.entity.TaskFile;
 import com.projectboated.backend.task.taskfile.repository.TaskFileRepository;
 import com.projectboated.backend.task.tasklike.repository.TaskLikeRepository;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
 import com.projectboated.backend.utils.base.ServiceTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.projectboated.backend.utils.data.BasicDataAccount.ACCOUNT_ID;
 import static com.projectboated.backend.utils.data.BasicDataKanbanLane.KANBAN_LANE_ID;
 import static com.projectboated.backend.utils.data.BasicDataKanbanLane.KANBAN_LANE_ID2;
 import static com.projectboated.backend.utils.data.BasicDataProject.PROJECT_ID;
@@ -236,19 +237,19 @@ class TaskServiceTest extends ServiceTest {
     @Test
     void updateTask_바꾸고싶은kanbanlane이없는경우_예외발생() {
         // Given
-        Account account = createAccount();
-        Project project = createProject(account);
+        Account account = createAccount(ACCOUNT_ID);
+        Project project = createProject(PROJECT_ID, account);
         Kanban kanban = createKanban(project);
         KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
         KanbanLane kanbanLane2 = createKanbanLane(KANBAN_LANE_ID2, project, kanban);
         Task task = createTask(project, kanbanLane);
 
         TaskUpdateRequest request = TaskUpdateRequest.builder()
-                .laneId(kanbanLane2.getId())
+                .laneName(kanbanLane2.getName())
                 .build();
 
         when(taskRepository.findByProjectIdAndTaskId(project.getId(), task.getId())).thenReturn(Optional.of(task));
-        when(kanbanLaneRepository.findById(request.getLaneId())).thenReturn(Optional.empty());
+        when(kanbanLaneRepository.findByProjectIdAndName(project.getId(), request.getLaneName())).thenReturn(Optional.empty());
 
         // When
         // Then
@@ -260,7 +261,7 @@ class TaskServiceTest extends ServiceTest {
     void updateTask_정상요청_정상Update() {
         // Given
         Account account = createAccount();
-        Project project = createProject(account);
+        Project project = createProject(PROJECT_ID, account);
         Kanban kanban = createKanban(project);
         KanbanLane kanbanLane = createKanbanLane(KANBAN_LANE_ID, project, kanban);
         KanbanLane kanbanLane2 = createKanbanLane(KANBAN_LANE_ID2, project, kanban);
@@ -270,11 +271,11 @@ class TaskServiceTest extends ServiceTest {
                 .name(TASK_NAME2)
                 .description(TASK_DESCRIPTION2)
                 .deadline(TASK_DEADLINE2)
-                .laneId(kanbanLane2.getId())
+                .laneName(kanbanLane2.getName())
                 .build();
 
         when(taskRepository.findByProjectIdAndTaskId(project.getId(), task.getId())).thenReturn(Optional.of(task));
-        when(kanbanLaneRepository.findById(request.getLaneId())).thenReturn(Optional.of(kanbanLane2));
+        when(kanbanLaneRepository.findByProjectIdAndName(project.getId(), request.getLaneName())).thenReturn(Optional.of(kanbanLane2));
 
         // When
         taskService.updateTask(project.getId(), task.getId(), request);
