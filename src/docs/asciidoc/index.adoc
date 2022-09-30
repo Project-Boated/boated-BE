@@ -352,7 +352,7 @@ include::{snippets}/project-retrieve/response-fields.adoc[]
 === 프로젝트에 참여한 Crew
 `GET` 요청을 사용해서 프로젝트에 참여한 Crew를 확인할 수 있습니다.
 
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
+include::./project/noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 
@@ -377,7 +377,7 @@ include::{snippets}/project-crews-retrieve/response-fields.adoc[]
 === 프로젝트에 참여한 Crew방출
 `DELETE` 요청을 사용해서 프로젝트에 참여한 Crew를 방출할 수 있습니다.
 
-include::./adoc/noteCaptainOnly.adoc[]
+include::./project/noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -396,7 +396,7 @@ include::{snippets}/projects-crew-delete/http-response.adoc[]
 === 프로젝트 업데이트
 `PATCH` 요청을 사용해서 프로젝트의 내용을 업데이트 할 수 있다.
 
-include::./adoc/noteCaptainOnly.adoc[]
+include::./project/noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -424,7 +424,7 @@ include::{snippets}/project-update/response-fields.adoc[]
 === 프로젝트의 captain 바꾸기
 `PUT` 요청을 사용해서 프로젝트의 Captain을 바꿀 수 있습니다.
 
-include::./adoc/noteCaptainOnly.adoc[]
+include::./project/noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -446,7 +446,7 @@ include::{snippets}/project-captain-update/http-response.adoc[]
 === 프로젝트 종료
 `POST` 요청을 사용해서 프로젝트를 종료시킬 수 있습니다.
 
-include::./adoc/noteCaptainOnly.adoc[]
+include::./project/noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -468,7 +468,7 @@ include::{snippets}/project-terminate/response-fields.adoc[]
 === 프로젝트 종료 취소
 `POST` 요청을 사용해서 프로젝트 종료를 취소 시킬 수 있습니다.
 
-include::./adoc/noteCaptainOnly.adoc[]
+include::./project/noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -490,7 +490,7 @@ include::{snippets}/project-cancel-terminate/response-fields.adoc[]
 === 프로젝트 삭제
 `DELETE` 요청을 사용해서 프로젝트를 삭제할 수 있습니다.
 
-include::./adoc/noteCaptainOnly.adoc[]
+include::./project/noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -535,7 +535,7 @@ include::{snippets}/project-my-retrieve/response-fields.adoc[]
 === 칸반 정보 조회
 `GET` 요청을 사용해서 칸반 정보를 조회할 수 있습니다.
 
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
+include::./project/noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 
@@ -557,7 +557,7 @@ include::{snippets}/kanban-retrieve/response-fields.adoc[]
 === 칸반에 포함된 lane 조회
 `GET` 요청을 사용해서 칸반에 포함된 lane의 정보를 조회할 수 있습니다.
 
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
+include::./project/noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 
@@ -579,7 +579,7 @@ include::{snippets}/kanban-lanes-retrieve/response-fields.adoc[]
 === 칸반 lane 업데이트
 `PUT` 요청을 사용해서 칸반 정보를 업데이트 할 수 있습니다.
 
-include::./adoc/noteCaptainOnly.adoc[]
+include::./project/noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -596,7 +596,7 @@ include::{snippets}/kanban-lanes-update/request-fields.adoc[]
 === 칸반 lane 순서 업데이트
 `POST` 요청을 사용해서 칸반 정보를 업데이트 할 수 있습니다.
 
-include::./adoc/noteCaptainOnly.adoc[]
+include::./project/noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -615,7 +615,7 @@ include::{snippets}/kanban-lanes-order-change/http-response.adoc[]
 === 칸반 lane 추가
 `POST` 요청을 사용해서 칸반에 lane을 추가할 수 있습니다.
 
-include::./adoc/noteCaptainOnly.adoc[]
+include::./project/noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -640,7 +640,7 @@ include::{snippets}/kanban-lane-create/http-response.adoc[]
 === 칸반 lane 삭제
 `DELETE` 요청을 사용해서 칸반에 lane을 삭제할 수 있습니다.
 
-include::./adoc/noteCaptainOnly.adoc[]
+include::./project/noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -659,7 +659,7 @@ include::{snippets}/kanban-lane-delete/http-response.adoc[]
 === 칸반 task 순서 바꾸기
 `POST` 요청을 사용해서 칸반 task의 순서를 바꿀 수 있습니다.
 
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
+include::./project/noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 
@@ -682,7 +682,7 @@ include::{snippets}/kanban-lanes-tasks-order-change/http-response.adoc[]
 === 프로젝트 초대하기
 `POST` 요청을 사용해서 프로젝트에 초대할 수 있습니다.
 
-include::./adoc/noteCaptainOnly.adoc[]
+include::./project/noteCaptainOnly.adoc[]
 
 ==== Request
 
@@ -779,7 +779,7 @@ include::{snippets}/invitation-reject/response-fields.adoc[]
 === Task생성
 `POST` 요청을 사용해서 Task를 생성할 수 있습니다.
 
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
+include::./project/noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 
@@ -807,7 +807,7 @@ include::{snippets}/tasks-create/response-fields.adoc[]
 === Task조회
 `GET` 요청을 사용해서 Task를 조회할 수 있습니다.
 
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
+include::./project/noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 
@@ -829,7 +829,7 @@ include::{snippets}/tasks-retrieve/response-fields.adoc[]
 === Task업데이트
 `PATCH` 요청을 사용해서 Task를 update할 수 있습니다.
 
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
+include::./project/noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 
@@ -851,7 +851,7 @@ include::{snippets}/tasks-update/http-response.adoc[]
 === Task삭제
 `DELETE` 요청을 사용해서 Task를 삭제할 수 있습니다.
 
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
+include::./project/noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 
@@ -870,7 +870,7 @@ include::{snippets}/tasks-delete/http-response.adoc[]
 === Task배정
 `POST` 요청을 사용해서 Task를 배정할 수 있습니다
 
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
+include::./project/noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 
@@ -895,7 +895,7 @@ include::{snippets}/tasks-assign/http-response.adoc[]
 === Task배정취소
 `POST` 요청을 사용해서 Task를 배정을 취소할 수 있습니다.
 
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
+include::./project/noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 
@@ -923,7 +923,7 @@ include::{snippets}/tasks-assign-cancel/http-response.adoc[]
 === Task찜하기
 `POST` 요청을 사용해서 Task를 찜할 수 있습니다.
 
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
+include::./project/noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 
@@ -942,7 +942,7 @@ include::{snippets}/tasks-like/http-response.adoc[]
 === Task찜 취소
 `DELETE` 요청을 사용해서 Task의 찜을 취소할 수 있습니다.
 
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
+include::./project/noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 
@@ -998,9 +998,9 @@ include::{snippets}/tasks-like-my-order-change/http-response.adoc[]
 === Task File 업로드
 `POST` 요청을 사용해서 Task에 file을 업로드할 수 있습니다.
 
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
+include::./project/noteCaptainOrCrewOnly.adoc[]
 
-include::./adoc/noteFileSize.adoc[]
+include::./uploadfile/noteFileSize.adoc[]
 
 ==== Request
 
@@ -1029,7 +1029,7 @@ include::{snippets}/tasks-files-create/response-fields.adoc[]
 === Task File조회
 `GET` 요청을 사용해서 file을 조회할 수 있습니다.
 
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
+include::./project/noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 
@@ -1048,7 +1048,7 @@ include::{snippets}/tasks-files-retrieve/http-response.adoc[]
 === Task File삭제
 `DELETE` 요청을 사용해서 Task에 file을 삭제할 수 있습니다.
 
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
+include::./project/noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 
@@ -1070,9 +1070,9 @@ include::{snippets}/tasks-files-delete/http-response.adoc[]
 === Project Video 업로드(수정)
 `PUT` 요청을 사용해서 Project에 Video을 업로드(수정)할 수 있습니다.
 
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
+include::./project/noteCaptainOrCrewOnly.adoc[]
 
-include::./adoc/noteFileSize.adoc[]
+include::./uploadfile/noteFileSize.adoc[]
 
 ==== Request
 
@@ -1094,7 +1094,7 @@ include::{snippets}/project-video-put/http-response.adoc[]
 === Project Video 조회
 `GET` 요청을 사용해서 Project에 Video을 조회할 수 있습니다.
 
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
+include::./project/noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 
@@ -1113,7 +1113,7 @@ include::{snippets}/project-video-retrieve/http-response.adoc[]
 === Project Video 삭제
 `DELETE` 요청을 사용해서 Project에 Video을 삭제할 수 있습니다.
 
-include::./adoc/noteCaptainOrCrewOnly.adoc[]
+include::./project/noteCaptainOrCrewOnly.adoc[]
 
 ==== Request
 

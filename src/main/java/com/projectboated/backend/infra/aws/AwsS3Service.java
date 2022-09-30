@@ -7,9 +7,9 @@ import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.util.IOUtils;
+import com.projectboated.backend.common.exception.ErrorCode;
 import com.projectboated.backend.infra.aws.exception.FileDownloadInterruptException;
 import com.projectboated.backend.infra.aws.exception.FileUploadInterruptException;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +39,7 @@ public class AwsS3Service {
         try {
             upload.waitForUploadResult();
         } catch (InterruptedException e) {
-            throw new FileUploadInterruptException(ErrorCode.FILE_UPLOAD_INTERRUPT, e);
+            throw new FileUploadInterruptException(e);
         }
     }
 
@@ -56,12 +56,12 @@ public class AwsS3Service {
         try {
             upload = transferManager.upload(BUCKET_NAME, key, multipartFile.getInputStream(), objectMetadata);
         } catch (IOException e) {
-            throw new FileUploadInterruptException(ErrorCode.FILE_UPLOAD_INTERRUPT, e);
+            throw new FileUploadInterruptException(e);
         }
         try {
             upload.waitForUploadResult();
         } catch (InterruptedException e) {
-            throw new FileUploadInterruptException(ErrorCode.FILE_UPLOAD_INTERRUPT, e);
+            throw new FileUploadInterruptException(e);
         }
     }
 

@@ -1,22 +1,19 @@
 package com.projectboated.backend.security.voter;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import com.projectboated.backend.domain.account.account.entity.Account;
-import com.projectboated.backend.security.exception.NicknameRequiredException;
+import com.projectboated.backend.account.account.entity.Account;
+import com.projectboated.backend.account.account.service.AccountService;
+import com.projectboated.backend.security.voter.exception.NicknameRequiredException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
-import com.projectboated.backend.domain.account.account.service.AccountService;
-import com.projectboated.backend.domain.common.exception.ErrorCode;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -42,18 +39,16 @@ public class AccountNicknameExistVoter implements AccessDecisionVoter {
     public int vote(Authentication authentication, Object object, Collection collection) {
         if (authentication.getPrincipal() instanceof Account) {
             FilterInvocation filterInvocation = (FilterInvocation) object;
-            String requestURI = filterInvocation.getHttpRequest()
-                    .getRequestURI();
-            String method = filterInvocation.getHttpRequest()
-                    .getMethod();
+            String requestURI = filterInvocation.getHttpRequest().getRequestURI();
+            String method = filterInvocation.getHttpRequest().getMethod();
+            
             if (isInWhiteList(requestURI, method)) {
                 return ACCESS_ABSTAIN;
             }
 
             Account account = accountService.findById(((Account) authentication.getPrincipal()).getId());
-
-            if (!StringUtils.hasText(account.getNickname())) {
-                throw new NicknameRequiredException(ErrorCode.ACCOUNT_NICKNAME_REQUIRED);
+            if (account.getNickname().isBlank()) {
+                throw new NicknameRequiredException();
             }
         }
         return ACCESS_ABSTAIN;

@@ -1,0 +1,1 @@
+alter table project add column total_file_size bigint;
