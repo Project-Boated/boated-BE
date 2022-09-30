@@ -1,7 +1,8 @@
 package com.projectboated.backend.common.utils;
 
-import com.projectboated.backend.account.account.controller.exception.NotImageFileException;
 import com.projectboated.backend.account.profileimage.entity.exception.ProfileImageNeedsHostUrlException;
+import com.projectboated.backend.common.utils.exception.MultiPartFileIsEmptyException;
+import com.projectboated.backend.common.utils.exception.NotImageFileException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MimeType;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,16 +13,18 @@ import javax.servlet.http.HttpServletRequest;
 public class HttpUtils {
 
     public void validateIsImageFile(MultipartFile multipartFile) {
-        if (multipartFile != null) {
-            String contentType = multipartFile.getContentType();
-            if (contentType == null) {
-                throw new NotImageFileException();
-            }
+        if (multipartFile == null || multipartFile.isEmpty()) {
+            throw new MultiPartFileIsEmptyException();
+        }
 
-            MimeType mimeType = MimeType.valueOf(contentType);
-            if (!mimeType.getType().equals("image")) {
-                throw new NotImageFileException();
-            }
+        String contentType = multipartFile.getContentType();
+        if (contentType == null) {
+            throw new NotImageFileException();
+        }
+
+        MimeType mimeType = MimeType.valueOf(contentType);
+        if (!mimeType.getType().equals("image")) {
+            throw new NotImageFileException();
         }
     }
 

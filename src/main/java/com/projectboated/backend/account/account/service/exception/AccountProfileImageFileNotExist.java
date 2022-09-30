@@ -4,7 +4,7 @@ import com.projectboated.backend.common.exception.BusinessException;
 import com.projectboated.backend.common.exception.ErrorCode;
 
 public class AccountProfileImageFileNotExist extends BusinessException {
-    public AccountProfileImageFileNotExist(ErrorCode errorCode) {
-        super(errorCode);
+    public AccountProfileImageFileNotExist() {
+        super(ErrorCode.ACCOUNT_PROFILE_IMAGE_FILE_NOT_EXIST);
     }
 }

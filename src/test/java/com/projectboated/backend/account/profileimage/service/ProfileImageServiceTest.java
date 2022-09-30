@@ -144,7 +144,7 @@ class ProfileImageServiceTest extends ServiceTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> profileImageService.deleteProfileImageFile(account))
+        assertThatThrownBy(() -> profileImageService.deleteProfileImageFile(account.getId()))
                 .isInstanceOf(AccountNotFoundException.class);
     }
 
@@ -160,7 +160,7 @@ class ProfileImageServiceTest extends ServiceTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> profileImageService.deleteProfileImageFile(account))
+        assertThatThrownBy(() -> profileImageService.deleteProfileImageFile(account.getId()))
                 .isInstanceOf(AccountProfileImageFileNotExist.class);
     }
 
@@ -177,7 +177,7 @@ class ProfileImageServiceTest extends ServiceTest {
         when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
 
         // When
-        profileImageService.deleteProfileImageFile(account);
+        profileImageService.deleteProfileImageFile(account.getId());
 
         // Then
         assertThat(account.getProfileImage()).isNull();
@@ -203,7 +203,7 @@ class ProfileImageServiceTest extends ServiceTest {
         when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
 
         // When
-        profileImageService.deleteProfileImageFile(account);
+        profileImageService.deleteProfileImageFile(account.getId());
 
         // Then
         assertThat(account.getProfileImage()).isNull();

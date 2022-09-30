@@ -1,4 +1,4 @@
-package com.projectboated.backend.account.account.controller.exception;
+package com.projectboated.backend.common.utils.exception;
 
 import com.projectboated.backend.common.exception.BusinessException;
 import com.projectboated.backend.common.exception.ErrorCode;
