@@ -39,7 +39,7 @@ public class AwsS3Service {
         try {
             upload.waitForUploadResult();
         } catch (InterruptedException e) {
-            throw new FileUploadInterruptException(ErrorCode.FILE_UPLOAD_INTERRUPT, e);
+            throw new FileUploadInterruptException(e);
         }
     }
 
@@ -56,12 +56,12 @@ public class AwsS3Service {
         try {
             upload = transferManager.upload(BUCKET_NAME, key, multipartFile.getInputStream(), objectMetadata);
         } catch (IOException e) {
-            throw new FileUploadInterruptException(ErrorCode.FILE_UPLOAD_INTERRUPT, e);
+            throw new FileUploadInterruptException(e);
         }
         try {
             upload.waitForUploadResult();
         } catch (InterruptedException e) {
-            throw new FileUploadInterruptException(ErrorCode.FILE_UPLOAD_INTERRUPT, e);
+            throw new FileUploadInterruptException(e);
         }
     }
 

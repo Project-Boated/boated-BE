@@ -1,6 +1,7 @@
 package com.projectboated.backend.common.utils;
 
-import com.projectboated.backend.account.account.controller.exception.NotImageFileException;
+import com.projectboated.backend.common.utils.exception.MultiPartFileIsEmptyException;
+import com.projectboated.backend.common.utils.exception.NotImageFileException;
 import com.projectboated.backend.account.profileimage.entity.exception.ProfileImageNeedsHostUrlException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,8 +9,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
 
 import static com.projectboated.backend.utils.data.BasicDataUploadFile.ORIGINAL_FILE_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,13 +18,27 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class HttpUtilsTest {
 
     @Test
-    void validateIsImageFile_multipartFile이null일경우_아무것도안함() {
+    void validateIsImageFile_multipartFile이null일경우_예외발생() {
         // Given
         HttpUtils httpUtils = new HttpUtils();
 
         // When
         // Then
-        httpUtils.validateIsImageFile(null);
+        assertThatThrownBy(() -> httpUtils.validateIsImageFile(null))
+                .isInstanceOf(MultiPartFileIsEmptyException.class);
+    }
+
+    @Test
+    void validateIsImageFile_multipartFile이empty일경우_예외발생() {
+        // Given
+        HttpUtils httpUtils = new HttpUtils();
+
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", (byte[]) null);
+
+        // When
+        // Then
+        assertThatThrownBy(() -> httpUtils.validateIsImageFile(null))
+                .isInstanceOf(MultiPartFileIsEmptyException.class);
     }
 
     @Test
