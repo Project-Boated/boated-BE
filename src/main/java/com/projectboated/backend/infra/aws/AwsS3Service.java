@@ -7,7 +7,6 @@ import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.util.IOUtils;
-import com.projectboated.backend.common.exception.ErrorCode;
 import com.projectboated.backend.infra.aws.exception.FileDownloadInterruptException;
 import com.projectboated.backend.infra.aws.exception.FileUploadInterruptException;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,26 +42,21 @@ public class AwsS3Service {
         }
     }
 
-    public void deleteFile(String key) {
-        amazonS3.deleteObject(BUCKET_NAME, key);
-    }
-
     public void uploadFile(String key, MultipartFile multipartFile) {
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(multipartFile.getSize());
         objectMetadata.setContentType(multipartFile.getContentType());
 
-        Upload upload = null;
         try {
-            upload = transferManager.upload(BUCKET_NAME, key, multipartFile.getInputStream(), objectMetadata);
-        } catch (IOException e) {
-            throw new FileUploadInterruptException(e);
-        }
-        try {
+            Upload upload = transferManager.upload(BUCKET_NAME, key, multipartFile.getInputStream(), objectMetadata);
             upload.waitForUploadResult();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             throw new FileUploadInterruptException(e);
         }
+    }
+
+    public void deleteFile(String key) {
+        amazonS3.deleteObject(BUCKET_NAME, key);
     }
 
     public byte[] getBytes(String filename) {
