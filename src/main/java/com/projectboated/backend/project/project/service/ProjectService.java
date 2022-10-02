@@ -118,14 +118,6 @@ public class ProjectService {
                 .build();
     }
 
-    public boolean isCrew(Project project, Account account) {
-        return accountProjectRepository.countByCrewInProject(account, project) == 1;
-    }
-
-    public boolean isCaptainOrCrew(Project project, Account account) {
-        return project.isCaptain(account) || isCrew(project, account);
-    }
-
     public List<Project> findByAccountIdAndDate(Long accountId, LocalDateTime targetDate) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(AccountNotFoundException::new);
@@ -144,5 +136,13 @@ public class ProjectService {
         }
 
         return projects;
+    }
+
+    public boolean isCaptainOrCrew(Project project, Account account) {
+        return project.isCaptain(account) || isCrew(project, account);
+    }
+
+    public boolean isCrew(Project project, Account account) {
+        return accountProjectRepository.countByCrewInProject(account, project) == 1;
     }
 }

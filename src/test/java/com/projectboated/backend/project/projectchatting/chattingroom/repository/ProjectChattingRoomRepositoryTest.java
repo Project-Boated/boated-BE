@@ -21,7 +21,7 @@ class ProjectChattingRoomRepositoryTest extends RepositoryTest {
         ProjectChattingRoom projectChattingRoom = insertProjectChattingRoom(project);
 
         // When
-        Optional<ProjectChattingRoom> result = projectChattingRoomRepository.findByProject(project);
+        Optional<ProjectChattingRoom> result = projectChattingRoomRepository.findByProjectId(project.getId());
 
         // Then
         assertThat(result).isPresent();
@@ -34,7 +34,7 @@ class ProjectChattingRoomRepositoryTest extends RepositoryTest {
         Project project = insertProjectAndCaptain();
 
         // When
-        Optional<ProjectChattingRoom> result = projectChattingRoomRepository.findByProject(project);
+        Optional<ProjectChattingRoom> result = projectChattingRoomRepository.findByProjectId(project.getId());
 
         // Then
         assertThat(result).isEmpty();
@@ -48,7 +48,7 @@ class ProjectChattingRoomRepositoryTest extends RepositoryTest {
         ProjectChattingRoom projectChattingRoom2 = insertProjectChattingRoom(project2);
 
         // When
-        Optional<ProjectChattingRoom> result = projectChattingRoomRepository.findByProject(project);
+        Optional<ProjectChattingRoom> result = projectChattingRoomRepository.findByProjectId(project.getId());
 
         // Then
         assertThat(result).isEmpty();
