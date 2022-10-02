@@ -72,7 +72,7 @@ class InvitationRepositoryTest extends RepositoryTest {
         Invitation invitation = insertInvitation(project, account);
 
         // When
-        Optional<Invitation> result = invitationRepository.findByIdAndAccount(invitation.getId(), account);
+        Optional<Invitation> result = invitationRepository.findByIdAndAccountId(invitation.getId(), account.getId());
 
         // Then
         assertThat(result).isPresent();

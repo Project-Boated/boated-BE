@@ -160,23 +160,11 @@ class InvitationServiceTest extends ServiceTest {
     }
 
     @Test
-    void accept_account가없는경우_예외발생() {
-        // Given
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.empty());
-
-        // When
-        // Then
-        assertThatThrownBy(() -> invitationService.accept(ACCOUNT_ID, INVITATION_ID))
-                .isInstanceOf(AccountNotFoundException.class);
-    }
-
-    @Test
     void accept_invitation이없는경우_예외발생() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
 
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
-        when(invitationRepository.findByIdAndAccount(INVITATION_ID, account)).thenReturn(Optional.empty());
+        when(invitationRepository.findByIdAndAccountId(INVITATION_ID, account.getId())).thenReturn(Optional.empty());
 
         // When
         // Then
@@ -191,8 +179,7 @@ class InvitationServiceTest extends ServiceTest {
         Project project = createProject(PROJECT_ID, account);
         Invitation invitation = createInvitation(INVITATION_ID, project, account);
 
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
-        when(invitationRepository.findByIdAndAccount(INVITATION_ID, account)).thenReturn(Optional.of(invitation));
+        when(invitationRepository.findByIdAndAccountId(INVITATION_ID, account.getId())).thenReturn(Optional.of(invitation));
 
         // When
         Long result = invitationService.accept(ACCOUNT_ID, INVITATION_ID);
@@ -205,23 +192,11 @@ class InvitationServiceTest extends ServiceTest {
     }
 
     @Test
-    void reject_찾을수없는account_예외발생() {
-        // Given
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.empty());
-
-        // When
-        // Then
-        assertThatThrownBy(() -> invitationService.reject(ACCOUNT_ID, INVITATION_ID))
-                .isInstanceOf(AccountNotFoundException.class);
-    }
-
-    @Test
     void reject_찾을수없는Invitation_예외발생() {
         // Given
         Account account = createAccount(ACCOUNT_ID);
 
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
-        when(invitationRepository.findByIdAndAccount(INVITATION_ID, account)).thenReturn(Optional.empty());
+        when(invitationRepository.findByIdAndAccountId(INVITATION_ID, account.getId())).thenReturn(Optional.empty());
 
         // When
         // Then
@@ -236,8 +211,7 @@ class InvitationServiceTest extends ServiceTest {
         Project project = createProject(PROJECT_ID, account);
         Invitation invitation = createInvitation(INVITATION_ID, project, account);
 
-        when(accountRepository.findById(ACCOUNT_ID)).thenReturn(Optional.of(account));
-        when(invitationRepository.findByIdAndAccount(INVITATION_ID, account)).thenReturn(Optional.of(invitation));
+        when(invitationRepository.findByIdAndAccountId(INVITATION_ID, account.getId())).thenReturn(Optional.of(invitation));
 
         // When
         invitationService.reject(ACCOUNT_ID, INVITATION_ID);

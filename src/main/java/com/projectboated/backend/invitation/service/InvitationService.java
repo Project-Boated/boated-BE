@@ -37,24 +37,31 @@ public class InvitationService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(ProjectNotFoundException::new);
 
-        Account crew = accountRepository.findByNickname(nickname)
+        Account account = accountRepository.findByNickname(nickname)
                 .orElseThrow(AccountNotFoundException::new);
 
-        if (project.getCaptain().equals(crew)) {
+        if (project.isCaptain(account)) {
             throw new InviteCanNotInviteCaptain();
         }
 
-        accountProjectRepository.findByAccountAndProject(crew, project)
+        validateIsCrew(project, account);
+        validateAlreadyInvite(project, account);
+
+        return invitationRepository.save(new Invitation(123L, account, project));
+    }
+
+    private void validateIsCrew(Project project, Account account) {
+        accountProjectRepository.findByAccountAndProject(account, project)
                 .ifPresent(ap -> {
                     throw new InviteCanNotInviteCrew();
                 });
+    }
 
-        invitationRepository.findByAccountAndProject(crew, project)
+    private void validateAlreadyInvite(Project project, Account account) {
+        invitationRepository.findByAccountAndProject(account, project)
                 .ifPresent(invitation -> {
                     throw new InvitationExistsAccount();
                 });
-
-        return invitationRepository.save(new Invitation(123L, crew, project));
     }
 
     public List<Invitation> findByAccount(Account account) {
@@ -63,12 +70,10 @@ public class InvitationService {
 
     @Transactional
     public Long accept(Long accountId, Long invitationId) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(AccountNotFoundException::new);
-
-        Invitation invitation = invitationRepository.findByIdAndAccount(invitationId, account)
+        Invitation invitation = invitationRepository.findByIdAndAccountId(invitationId, accountId)
                 .orElseThrow(InvitationNotFoundException::new);
 
+        Account account = invitation.getAccount();
         Project project = invitation.getProject();
         accountProjectRepository.save(AccountProject.builder()
                 .account(account)
@@ -82,14 +87,10 @@ public class InvitationService {
 
     @Transactional
     public Long reject(Long accountId, Long invitationId) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(AccountNotFoundException::new);
-
-        Invitation invitation = invitationRepository.findByIdAndAccount(invitationId, account)
+        Invitation invitation = invitationRepository.findByIdAndAccountId(invitationId, accountId)
                 .orElseThrow(InvitationNotFoundException::new);
 
         invitationRepository.delete(invitation);
-
         return invitation.getProject().getId();
     }
 }
