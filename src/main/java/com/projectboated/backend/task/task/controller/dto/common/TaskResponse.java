@@ -2,6 +2,7 @@ package com.projectboated.backend.task.task.controller.dto.common;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.projectboated.backend.task.task.entity.Task;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -24,6 +25,7 @@ public class TaskResponse {
 
     private List<TaskAssignedAccountResponse> assignedAccounts;
 
+    @Builder
     public TaskResponse(Task task, Map<Task, Boolean> taskLikeMap, List<TaskAssignedAccountResponse> assignedAccounts) {
         this.id = task.getId();
         this.name = task.getName();
