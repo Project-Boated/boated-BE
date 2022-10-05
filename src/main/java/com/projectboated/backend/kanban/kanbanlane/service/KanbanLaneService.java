@@ -1,11 +1,5 @@
 package com.projectboated.backend.kanban.kanbanlane.service;
 
-import com.projectboated.backend.project.project.aop.OnlyCaptain;
-import com.projectboated.backend.project.project.aop.OnlyCaptainOrCrew;
-import com.projectboated.backend.project.project.entity.Project;
-import com.projectboated.backend.project.project.repository.ProjectRepository;
-import com.projectboated.backend.project.project.service.exception.ProjectNotFoundException;
-import com.projectboated.backend.task.task.repository.TaskRepository;
 import com.projectboated.backend.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.kanban.kanban.entity.exception.KanbanLaneChangeIndexOutOfBoundsException;
 import com.projectboated.backend.kanban.kanban.entity.exception.KanbanLaneOriginalIndexOutOfBoundsException;
@@ -18,6 +12,12 @@ import com.projectboated.backend.kanban.kanbanlane.service.exception.KanbanLaneA
 import com.projectboated.backend.kanban.kanbanlane.service.exception.KanbanLaneExists1Exception;
 import com.projectboated.backend.kanban.kanbanlane.service.exception.KanbanLaneExistsTaskException;
 import com.projectboated.backend.kanban.kanbanlane.service.exception.KanbanLaneNotFoundException;
+import com.projectboated.backend.project.project.aop.OnlyCaptain;
+import com.projectboated.backend.project.project.aop.OnlyCaptainOrCrew;
+import com.projectboated.backend.project.project.entity.Project;
+import com.projectboated.backend.project.project.repository.ProjectRepository;
+import com.projectboated.backend.project.project.service.exception.ProjectNotFoundException;
+import com.projectboated.backend.task.task.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +36,8 @@ public class KanbanLaneService {
     private final KanbanRepository kanbanRepository;
 
     @OnlyCaptainOrCrew
-    public List<KanbanLane> findByProjectId(Long projectId) {
+    public List<KanbanLane>
+    findByProjectId(Long projectId) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(ProjectNotFoundException::new);
         return kanbanLaneRepository.findByProject(project);
@@ -92,24 +93,18 @@ public class KanbanLaneService {
     }
 
     private void removeKanbanLane(Long kanbanLaneId, List<KanbanLane> kanbanLanes) {
-        KanbanLane targetLane = null;
-        for (KanbanLane kanbanLane : kanbanLanes) {
-            if (Objects.equals(kanbanLane.getId(), kanbanLaneId)) {
-                targetLane = kanbanLane;
-                break;
-            }
-        }
-        if (targetLane == null) {
-            throw new KanbanLaneNotFoundException();
-        }
+        KanbanLane targetLane = getKanbanLane(kanbanLaneId, kanbanLanes);
         kanbanLanes.remove(targetLane);
         kanbanLaneRepository.delete(targetLane);
     }
 
-    private void reorderKanbanLanes(List<KanbanLane> kanbanLanes) {
-        for (int i = 0; i < kanbanLanes.size(); i++) {
-            kanbanLanes.get(i).changeOrder(i);
+    private static KanbanLane getKanbanLane(Long kanbanLaneId, List<KanbanLane> kanbanLanes) {
+        for (KanbanLane kanbanLane : kanbanLanes) {
+            if (Objects.equals(kanbanLane.getId(), kanbanLaneId)) {
+                return kanbanLane;
+            }
         }
+        throw new KanbanLaneNotFoundException();
     }
 
     @Transactional
@@ -130,5 +125,11 @@ public class KanbanLaneService {
         kanbanLanes.add(changeIndex, kanbanLane);
 
         reorderKanbanLanes(kanbanLanes);
+    }
+
+    private void reorderKanbanLanes(List<KanbanLane> kanbanLanes) {
+        for (int i = 0; i < kanbanLanes.size(); i++) {
+            kanbanLanes.get(i).changeOrder(i);
+        }
     }
 }

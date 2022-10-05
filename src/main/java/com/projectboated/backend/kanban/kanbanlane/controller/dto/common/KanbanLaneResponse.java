@@ -2,6 +2,7 @@ package com.projectboated.backend.kanban.kanbanlane.controller.dto.common;
 
 import com.projectboated.backend.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.task.task.controller.dto.common.TaskResponse;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
@@ -12,6 +13,8 @@ public class KanbanLaneResponse {
     private Long id;
     private String name;
     private List<TaskResponse> tasks;
+
+    @Builder
 
     public KanbanLaneResponse(KanbanLane kanbanLane, List<TaskResponse> tasks) {
         this.id = kanbanLane.getId();
