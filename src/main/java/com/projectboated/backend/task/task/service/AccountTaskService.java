@@ -37,11 +37,6 @@ public class AccountTaskService {
     }
 
     public List<AccountTask> findByProjectIdAndAccountIdAndBetweenDate(Long projectId, Long accountId, LocalDateTime targetTime) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(AccountNotFoundException::new);
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(ProjectNotFoundException::new);
-
-        return accountTaskRepository.findByAccountAndProjectAndBetweenDate(account, project, targetTime, targetTime.plusMonths(1));
+        return accountTaskRepository.findByAccountAndProjectAndBetweenDate(accountId, projectId, targetTime, targetTime.plusMonths(1));
     }
 }
