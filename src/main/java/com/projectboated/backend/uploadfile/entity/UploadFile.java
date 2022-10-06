@@ -1,16 +1,13 @@
 package com.projectboated.backend.uploadfile.entity;
 
 import com.projectboated.backend.common.entity.BaseTimeEntity;
-import com.projectboated.backend.common.exception.ErrorCode;
 import com.projectboated.backend.uploadfile.entity.exception.UploadFileNotFoundExt;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -50,7 +47,7 @@ public class UploadFile extends BaseTimeEntity {
     private String removeExt(String originalFileName) {
         int lastIndexOfDot = originalFileName.lastIndexOf('.');
         if (lastIndexOfDot == -1) {
-            throw new UploadFileNotFoundExt(ErrorCode.UPLOAD_FILE_NOT_FOUND_EXT);
+            throw new UploadFileNotFoundExt();
         }
         return originalFileName.substring(0, lastIndexOfDot);
     }
@@ -58,6 +55,5 @@ public class UploadFile extends BaseTimeEntity {
     public String getFullOriginalFileName() {
         return this.getOriginalFileName() + "." + this.getExt();
     }
-
 
 }

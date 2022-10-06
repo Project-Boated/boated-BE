@@ -4,7 +4,7 @@ import com.projectboated.backend.common.exception.BusinessException;
 import com.projectboated.backend.common.exception.ErrorCode;
 
 public class UploadFileNotFoundExt extends BusinessException {
-    public UploadFileNotFoundExt(ErrorCode errorCode) {
-        super(errorCode);
+    public UploadFileNotFoundExt() {
+        super(ErrorCode.UPLOAD_FILE_NOT_FOUND_EXT);
     }
 }

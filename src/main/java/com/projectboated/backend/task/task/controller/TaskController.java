@@ -1,9 +1,9 @@
 package com.projectboated.backend.task.task.controller;
 
 import com.projectboated.backend.kanban.kanbanlane.service.dto.ChangeTaskOrderRequest;
-import com.projectboated.backend.task.task.controller.dto.request.PatchTaskRequest;
 import com.projectboated.backend.task.task.controller.dto.request.AssignAccountTaskRequest;
 import com.projectboated.backend.task.task.controller.dto.request.CreateTaskRequest;
+import com.projectboated.backend.task.task.controller.dto.request.PatchTaskRequest;
 import com.projectboated.backend.task.task.controller.dto.response.CreateTaskResponse;
 import com.projectboated.backend.task.task.controller.dto.response.GetTaskResponse;
 import com.projectboated.backend.task.task.entity.Task;
@@ -24,15 +24,14 @@ public class TaskController {
             @PathVariable Long projectId,
             @RequestBody CreateTaskRequest request
     ) {
-        Task task = Task.builder()
-                .name(request.getName())
-                .description(request.getDescription())
-                .deadline(request.getDeadline())
-                .build();
-
-        Task newTask = taskService.save(projectId, task);
-
-        return new CreateTaskResponse(newTask);
+        Task task = taskService.save(projectId,
+                Task.builder()
+                        .name(request.getName())
+                        .description(request.getDescription())
+                        .deadline(request.getDeadline())
+                        .build()
+        );
+        return new CreateTaskResponse(task);
     }
 
     @GetMapping("/{taskId}")
