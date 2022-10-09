@@ -28,11 +28,14 @@ public class ProjectVideo extends BaseTimeEntity {
     @JoinColumn(name = "upload_file_id")
     private UploadFile uploadFile;
 
+    private String description;
+
     @Builder
-    public ProjectVideo(Long id, Project project, UploadFile uploadFile) {
+    public ProjectVideo(Long id, Project project, UploadFile uploadFile, String description) {
         this.id = id;
         this.project = project;
         this.uploadFile = uploadFile;
+        this.description = description;
     }
 
     public String getKey() {
@@ -52,5 +55,9 @@ public class ProjectVideo extends BaseTimeEntity {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
+    }
+
+    public void changeDescription(String description) {
+        this.description = description;
     }
 }

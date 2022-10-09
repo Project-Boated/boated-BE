@@ -30,5 +30,21 @@ class ProjectVideoRepositoryTest extends RepositoryTest {
         assertThat(result.get().getUploadFile()).isEqualTo(uploadFile);
     }
 
+    @Test
+    void findByProjectId_video가1개존재_return_1video() {
+        // given
+        Project project = insertProjectAndCaptain();
+        UploadFile uploadFile = insertUploadFile();
+        insertProjectVideo(project, uploadFile);
+
+        // when
+        Optional<ProjectVideo> result = projectVideoRepository.findByProjectId(project.getId());
+
+        // then
+        assertThat(result).isPresent();
+        assertThat(result.get().getProject()).isEqualTo(project);
+        assertThat(result.get().getUploadFile()).isEqualTo(uploadFile);
+    }
+
 
 }

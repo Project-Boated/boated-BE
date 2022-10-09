@@ -1,6 +1,8 @@
 package com.projectboated.backend.project.projectvideo.controller;
 
 import com.projectboated.backend.infra.aws.AwsS3Service;
+import com.projectboated.backend.project.projectvideo.controller.dto.response.GetDescriptionResponse;
+import com.projectboated.backend.project.projectvideo.controller.dto.request.PutDescriptionRequest;
 import com.projectboated.backend.project.projectvideo.entity.ProjectVideo;
 import com.projectboated.backend.project.projectvideo.service.ProjectVideoService;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,22 @@ public class ProjectVideoController {
                 .contentType(MediaType.valueOf(projectVideo.getUploadFile().getMediaType()))
                 .contentLength(body.length)
                 .body(body);
+    }
+
+    @PutMapping("/description")
+    public void putDescription(
+            @PathVariable Long projectId,
+            @RequestBody PutDescriptionRequest request
+    ) {
+        projectVideoService.updateDescription(projectId, request.getDescription());
+    }
+
+    @GetMapping("/description")
+    public GetDescriptionResponse getDescription(
+            @PathVariable Long projectId
+    ) {
+        String description = projectVideoService.getDescription(projectId);
+        return new GetDescriptionResponse(description);
     }
 
     @DeleteMapping

@@ -1,7 +1,5 @@
 package com.projectboated.backend.project.projectvideo.service;
 
-import com.projectboated.backend.uploadfile.entity.UploadFile;
-import com.projectboated.backend.uploadfile.repository.UploadFileRepository;
 import com.projectboated.backend.infra.aws.AwsS3Service;
 import com.projectboated.backend.project.project.entity.Project;
 import com.projectboated.backend.project.project.repository.ProjectRepository;
@@ -9,7 +7,10 @@ import com.projectboated.backend.project.project.service.exception.ProjectNotFou
 import com.projectboated.backend.project.projectvideo.entity.ProjectVideo;
 import com.projectboated.backend.project.projectvideo.repository.ProjectVideoRepository;
 import com.projectboated.backend.project.projectvideo.service.exception.ProjectVideoNotFoundException;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
+import com.projectboated.backend.uploadfile.repository.UploadFileRepository;
 import com.projectboated.backend.utils.base.ServiceTest;
+import com.projectboated.backend.utils.data.BasicDataProjectVideo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 import static com.projectboated.backend.utils.data.BasicDataAccount.ACCOUNT_ID;
 import static com.projectboated.backend.utils.data.BasicDataProject.PROJECT_ID;
+import static com.projectboated.backend.utils.data.BasicDataProjectVideo.*;
 import static com.projectboated.backend.utils.data.BasicDataUploadFile.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -179,5 +181,60 @@ class ProjectVideoServiceTest extends ServiceTest {
         verify(uploadFileRepository).delete(projectVideo.getUploadFile());
         verify(projectVideoRepository).delete(projectVideo);
     }
+
+    @Test
+    void updateDescription_ProjectVideo를찾을수없음_예외발생() {
+        // Given
+        when(projectVideoRepository.findByProjectId(PROJECT_ID)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> projectVideoService.updateDescription(PROJECT_ID, PROJECT_VIDEO_DESCRIPTION))
+                .isInstanceOf(ProjectVideoNotFoundException.class);
+    }
+
+    @Test
+    void updateDescription_정상요청_정상update() {
+        // Given
+        Project project = createProjectAndCaptain();
+        UploadFile uploadFile = createUploadFile();
+        ProjectVideo projectVideo = createProjectVideo(project, uploadFile);
+
+        when(projectVideoRepository.findByProjectId(PROJECT_ID)).thenReturn(Optional.of(projectVideo));
+
+        // When
+        projectVideoService.updateDescription(PROJECT_ID, PROJECT_VIDEO_DESCRIPTION);
+
+        // Then
+        assertThat(projectVideo.getDescription()).isEqualTo(PROJECT_VIDEO_DESCRIPTION);
+    }
+
+    @Test
+    void getDescription_ProjectVideo를찾을수없음_예외발생() {
+        // Given
+        when(projectVideoRepository.findByProjectId(PROJECT_ID)).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        assertThatThrownBy(() -> projectVideoService.getDescription(PROJECT_ID))
+                .isInstanceOf(ProjectVideoNotFoundException.class);
+    }
+
+    @Test
+    void getDescription_정상요청_dreturn_escription() {
+        // Given
+        Project project = createProjectAndCaptain();
+        UploadFile uploadFile = createUploadFile();
+        ProjectVideo projectVideo = createProjectVideo(project, uploadFile, PROJECT_VIDEO_DESCRIPTION);
+
+        when(projectVideoRepository.findByProjectId(PROJECT_ID)).thenReturn(Optional.of(projectVideo));
+
+        // When
+        String result = projectVideoService.getDescription(PROJECT_ID);
+
+        // Then
+        assertThat(result).isEqualTo(PROJECT_VIDEO_DESCRIPTION);
+    }
+
 
 }
