@@ -13,11 +13,28 @@ public class BaseProjectVideoTest extends BaseTaskLikeTest {
                 .build();
     }
 
+    protected ProjectVideo createProjectVideo(Project project, UploadFile uploadFile, String description) {
+        return ProjectVideo.builder()
+                .project(project)
+                .uploadFile(uploadFile)
+                .description(description)
+                .build();
+    }
+
     protected ProjectVideo createProjectVideo(Long id, Project project, UploadFile uploadFile) {
         return ProjectVideo.builder()
                 .id(id)
                 .project(project)
                 .uploadFile(uploadFile)
+                .build();
+    }
+
+    protected ProjectVideo createProjectVideo(Long id, Project project, UploadFile uploadFile, String description) {
+        return ProjectVideo.builder()
+                .id(id)
+                .project(project)
+                .uploadFile(uploadFile)
+                .description(description)
                 .build();
     }
 

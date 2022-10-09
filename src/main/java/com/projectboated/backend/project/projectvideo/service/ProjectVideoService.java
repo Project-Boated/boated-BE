@@ -78,4 +78,19 @@ public class ProjectVideoService {
         uploadFileRepository.delete(projectVideo.getUploadFile());
         projectVideoRepository.delete(projectVideo);
     }
+
+    @OnlyCaptainOrCrew
+    @Transactional
+    public void updateDescription(Long projectId, String description) {
+        ProjectVideo projectVideo = projectVideoRepository.findByProjectId(projectId)
+                .orElseThrow(ProjectVideoNotFoundException::new);
+        projectVideo.changeDescription(description);
+    }
+
+    @OnlyCaptainOrCrew
+    public String getDescription(Long projectId) {
+        ProjectVideo projectVideo = projectVideoRepository.findByProjectId(projectId)
+                .orElseThrow(ProjectVideoNotFoundException::new);
+        return projectVideo.getDescription();
+    }
 }

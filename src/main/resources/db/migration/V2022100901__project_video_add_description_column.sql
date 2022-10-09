@@ -1,0 +1,1 @@
+alter table project_video add column description varchar(255);

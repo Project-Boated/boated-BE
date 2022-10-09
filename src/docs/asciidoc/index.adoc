@@ -1128,6 +1128,47 @@ include::{snippets}/project-video-delete/path-parameters.adoc[]
 ===== http-response
 include::{snippets}/project-video-delete/http-response.adoc[]
 
+[[resources-project-video-description-put]]
+=== Project Video description 업로드(수정)
+`PUT` 요청을 사용해서 Project Video의 설명을 업로드(수정)할 수 있습니다.
+
+include::./project/noteCaptainOrCrewOnly.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/project-video-description-put/http-request.adoc[]
+
+===== request-path-parameters
+include::{snippets}/project-video-description-put/path-parameters.adoc[]
+
+===== request-fields
+include::{snippets}/project-video-description-put/request-fields.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/project-video-description-put/http-response.adoc[]
+
+[[resources-project-video-description-retireve]]
+=== Project Video Description 조회
+`GET` 요청을 사용해서 Project Video의 설명을 조회할 수 있습니다.
+
+include::./project/noteCaptainOrCrewOnly.adoc[]
+
+==== Request
+
+===== http-request
+include::{snippets}/project-video-description-retrieve/http-request.adoc[]
+
+===== request-path-parameters
+include::{snippets}/project-video-description-retrieve/path-parameters.adoc[]
+
+==== Response
+
+===== http-response
+include::{snippets}/project-video-description-retrieve/http-response.adoc[]
+
 [[resources-gantt-chart]]
 == 간트차트
 
