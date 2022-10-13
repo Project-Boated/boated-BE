@@ -8,6 +8,7 @@ import com.projectboated.backend.common.utils.HttpUtils;
 import com.projectboated.backend.infra.aws.AwsS3File;
 import com.projectboated.backend.infra.aws.AwsS3ProfileImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequiredArgsConstructor
@@ -46,6 +48,7 @@ public class ProfileImageController {
                 ok()
                 .contentType(MediaType.valueOf(awsS3File.getMediaType()))
                 .contentLength(awsS3File.getBytes().length)
+                .cacheControl(CacheControl.maxAge(31536000, TimeUnit.SECONDS))
                 .body(awsS3File.getBytes());
     }
 
