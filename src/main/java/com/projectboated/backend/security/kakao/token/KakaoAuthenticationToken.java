@@ -11,6 +11,8 @@ public class KakaoAuthenticationToken extends AbstractAuthenticationToken {
 
     private Object credentials;
 
+    private boolean isLogin;
+
     public KakaoAuthenticationToken(Object principal, Object credentials) {
         super(null);
         this.principal = principal;
@@ -19,10 +21,12 @@ public class KakaoAuthenticationToken extends AbstractAuthenticationToken {
     }
 
     public KakaoAuthenticationToken(Object principal, Object credentials,
-                                    Collection<? extends GrantedAuthority> authorities) {
+                                    Collection<? extends GrantedAuthority> authorities,
+                                    boolean isLogin) {
         super(authorities);
         this.principal = principal;
         this.credentials = credentials;
+        this.isLogin = isLogin;
         super.setAuthenticated(true);
     }
 
@@ -45,5 +49,9 @@ public class KakaoAuthenticationToken extends AbstractAuthenticationToken {
     public void eraseCredentials() {
         super.eraseCredentials();
         this.credentials = null;
+    }
+
+    public boolean isLogin() {
+        return isLogin;
     }
 }

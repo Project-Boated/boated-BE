@@ -2,9 +2,10 @@ package com.projectboated.backend.security.kakao.provider;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.projectboated.backend.account.account.entity.KakaoAccount;
+import com.projectboated.backend.account.account.entity.Account;
 import com.projectboated.backend.infra.kakao.KakaoWebService;
 import com.projectboated.backend.security.common.exception.JsonParsingException;
+import com.projectboated.backend.security.kakao.provider.dto.KakaoAccount;
 import com.projectboated.backend.security.kakao.provider.dto.KakaoAuthenicationToken;
 import com.projectboated.backend.security.kakao.provider.exception.KakaoServerException;
 import com.projectboated.backend.security.kakao.token.KakaoAuthenticationToken;
@@ -18,6 +19,8 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.projectboated.backend.security.kakao.provider.KakaoAccountDetailsService.*;
 
 @RequiredArgsConstructor
 @Component
@@ -33,13 +36,15 @@ public class KakaoAuthenticationProvider implements AuthenticationProvider {
             String authenticationToken = kakaoWebService.getToken((String) authentication.getPrincipal());
             KakaoAuthenicationToken kakaoAuthenticationToken = objectMapper.readValue(authenticationToken, KakaoAuthenicationToken.class);
 
-            KakaoAccount account = kakaoUserDetailsService.loadKakaoAccount(kakaoAuthenticationToken);
+            KakaoAccountLoginInform accountLoginInform = kakaoUserDetailsService.loadKakaoAccount(kakaoAuthenticationToken);
+
+            Account account = accountLoginInform.getAccount();
             List<SimpleGrantedAuthority> grantedAuthorities = account.getRoles().stream()
                     .map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
 
             kakaoWebService.logout(kakaoAuthenticationToken);
 
-            return new KakaoAuthenticationToken(account, null, grantedAuthorities);
+            return new KakaoAuthenticationToken(account, null, grantedAuthorities, accountLoginInform.isLogin());
         } catch (JsonProcessingException e) {
             throw new JsonParsingException();
         } catch (WebClientResponseException e) {

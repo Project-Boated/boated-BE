@@ -2,6 +2,7 @@ package com.projectboated.backend.security.kakao.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projectboated.backend.account.account.entity.Account;
+import com.projectboated.backend.security.kakao.token.KakaoAuthenticationToken;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,15 +26,19 @@ public class KakaoAuthenticationSuccessHandler implements AuthenticationSuccessH
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         Account account = (Account) authentication.getPrincipal();
-        objectMapper.writeValue(response.getWriter(), new LoginSuccessResponse(account));
+        KakaoAuthenticationToken kakaoAuthenticationToken = (KakaoAuthenticationToken) authentication;
+
+        objectMapper.writeValue(response.getWriter(), new LoginSuccessResponse(account,kakaoAuthenticationToken.isLogin()));
     }
 
     @Getter
     static class LoginSuccessResponse {
         private Long id;
+        private boolean isLogin;
 
-        public LoginSuccessResponse(Account account) {
+        public LoginSuccessResponse(Account account, boolean isLogin) {
             this.id = account.getId();
+            this.isLogin = isLogin;
         }
     }
 }
