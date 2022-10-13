@@ -11,11 +11,13 @@ import com.projectboated.backend.account.profileimage.service.ProfileImageServic
 import com.projectboated.backend.infra.kakao.KakaoWebService;
 import com.projectboated.backend.security.kakao.provider.dto.KakaoAccountInformation;
 import com.projectboated.backend.security.kakao.provider.dto.KakaoAuthenicationToken;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -28,27 +30,40 @@ public class KakaoAccountDetailsService {
     private final KakaoWebService kakaoWebService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public KakaoAccount loadKakaoAccount(KakaoAuthenicationToken kakaoAuthenicationToken) throws
+    public KakaoAccountLoginInform loadKakaoAccount(KakaoAuthenicationToken kakaoAuthenicationToken) throws
             UsernameNotFoundException,
             JsonProcessingException {
-
         String accessToken = kakaoAuthenicationToken.getAccessToken();
         String accountInformation = kakaoWebService.getAccountInformation(accessToken);
         KakaoAccountInformation accountInform = objectMapper.readValue(accountInformation,
                 KakaoAccountInformation.class);
 
-        return kakaoAccountRepository.findByKakaoId(accountInform.getId())
-                .orElseGet(() -> {
-                    ProfileImage profileImage = null;
-                    if (accountInform.getProfileImageUrl() != null) {
-                        profileImage = profileImageService.save(new UrlProfileImage(accountInform.getProfileImageUrl()));
-                    }
+        Optional<KakaoAccount> byKakaoId = kakaoAccountRepository.findByKakaoId(accountInform.getId());
+        if(byKakaoId.isPresent()) {
+            return new KakaoAccountLoginInform(byKakaoId.get(), true);
+        } else {
+            ProfileImage profileImage = null;
+            if (accountInform.getProfileImageUrl() != null) {
+                profileImage = profileImageService.save(new UrlProfileImage(accountInform.getProfileImageUrl()));
+            }
 
-                    return kakaoAccountRepository.save(KakaoAccount.kakaoBuilder()
-                            .profileImageFile(profileImage)
-                            .roles(Set.of(Role.USER))
-                            .kakaoId(accountInform.getId())
-                            .build());
-                });
+            KakaoAccount kakaoAccount = kakaoAccountRepository.save(KakaoAccount.kakaoBuilder()
+                    .profileImageFile(profileImage)
+                    .roles(Set.of(Role.USER))
+                    .kakaoId(accountInform.getId())
+                    .build());
+            return new KakaoAccountLoginInform(kakaoAccount, false);
+        }
+    }
+
+    @Getter
+    public static class KakaoAccountLoginInform {
+        private KakaoAccount account;
+        private boolean isLogin;
+
+        public KakaoAccountLoginInform(KakaoAccount account, boolean isLogin) {
+            this.account = account;
+            this.isLogin = isLogin;
+        }
     }
 }
