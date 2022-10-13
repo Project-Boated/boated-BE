@@ -18,18 +18,17 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class HttpUtilsTest {
 
     @Test
-    void validateIsImageFile_multipartFile이null일경우_예외발생() {
+    void validateIsImageFile_multipartFile이null일경우_return() {
         // Given
         HttpUtils httpUtils = new HttpUtils();
 
         // When
         // Then
-        assertThatThrownBy(() -> httpUtils.validateIsImageFile(null))
-                .isInstanceOf(MultiPartFileIsEmptyException.class);
+        httpUtils.validateIsImageFile(null);
     }
 
     @Test
-    void validateIsImageFile_multipartFile이empty일경우_예외발생() {
+    void validateIsImageFile_multipartFile이empty일경우_리턴() {
         // Given
         HttpUtils httpUtils = new HttpUtils();
 
@@ -37,8 +36,7 @@ class HttpUtilsTest {
 
         // When
         // Then
-        assertThatThrownBy(() -> httpUtils.validateIsImageFile(null))
-                .isInstanceOf(MultiPartFileIsEmptyException.class);
+        httpUtils.validateIsImageFile(mockMultipartFile);
     }
 
     @Test
