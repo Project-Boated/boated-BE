@@ -68,7 +68,7 @@ public class AccountService {
             account.changePassword(passwordEncoder.encode(updateCond.getNewPassword()));
         }
 
-        if (updateCond.getProfileImageFile() != null) {
+        if (updateCond.getProfileImageFile() != null && !updateCond.getProfileImageFile().isEmpty()) {
             MultipartFile file = updateCond.getProfileImageFile();
 
             UploadFile uploadFile = UploadFile.builder()

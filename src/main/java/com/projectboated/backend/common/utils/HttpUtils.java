@@ -13,9 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 public class HttpUtils {
 
     public void validateIsImageFile(MultipartFile multipartFile) {
-        if (multipartFile == null || multipartFile.isEmpty()) {
-            throw new MultiPartFileIsEmptyException();
-        }
+        if (multipartFile == null || multipartFile.isEmpty()) return;
 
         String contentType = multipartFile.getContentType();
         if (contentType == null) {
