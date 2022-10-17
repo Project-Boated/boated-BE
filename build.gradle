@@ -109,11 +109,15 @@ jacocoTestReport {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
                     // QFile, 테스트 불필요.
-                    "com/projectboated/backend/domain/**/Q*.*",
+                    "com/projectboated/backend/**/Q*.*",
+                    // Spring MVC 예외관련 테스트, 자동화 테스트가 아닌, 직접 테스트
+                    "com/projectboated/backend/web/exception/**",
                     // Infra, 자동화 테스트 불가
                     "com/projectboated/backend/infra/**/*",
                     // Spring Security : 테스트 작성해야함 (현재 단위 테스트를 어떻게 해야하나 고민중)
-                    "com/projectboated/backend/security/**/*"
+                    "com/projectboated/backend/security/**/*",
+                    // Domain: Project Chatting, 기능을 완성하지 못함
+                    "com/projectboated/backend/project/projectchatting/**"
             ])
         }))
     }

@@ -1,7 +1,6 @@
 package com.projectboated.backend.common.utils;
 
 import com.projectboated.backend.account.profileimage.entity.exception.ProfileImageNeedsHostUrlException;
-import com.projectboated.backend.common.utils.exception.MultiPartFileIsEmptyException;
 import com.projectboated.backend.common.utils.exception.NotImageFileException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MimeType;

@@ -1,11 +1,14 @@
 package com.projectboated.backend.task.task.entity;
 
+import com.projectboated.backend.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.project.project.entity.Project;
 import com.projectboated.backend.task.task.service.dto.TaskUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.projectboated.backend.utils.data.BasicDataAccount.ACCOUNT;
+import static com.projectboated.backend.utils.data.BasicDataProject.*;
 import static com.projectboated.backend.utils.data.BasicDataTask.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -176,5 +179,133 @@ class TaskTest {
         assertThat(task.getDescription()).isEqualTo(TASK_DESCRIPTION2);
         assertThat(task.getDeadline()).isEqualTo(TASK_DEADLINE2);
     }
+
+
+    @Test
+    void equals_reference가같을경우_true() {
+        // Given
+        Task task = Task.builder()
+                .name(TASK_NAME)
+                .description(TASK_DESCRIPTION)
+                .deadline(TASK_DEADLINE)
+                .build();
+
+        // When
+        boolean result = task.equals(task);
+
+        // Then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    void equals_null인경우_false() {
+        // Given
+        Task task = Task.builder()
+                .name(TASK_NAME)
+                .description(TASK_DESCRIPTION)
+                .deadline(TASK_DEADLINE)
+                .build();
+
+        // When
+        boolean result = task.equals(null);
+
+        // Then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    void equals_다른class가주어진경우_false() {
+        // Given
+        Task task = Task.builder()
+                .name(TASK_NAME)
+                .description(TASK_DESCRIPTION)
+                .deadline(TASK_DEADLINE)
+                .build();
+
+        // When
+        boolean result = task.equals("test");
+
+        // Then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    void equals_id가nulL인경우_false() {
+        // Given
+        Task task1 = Task.builder()
+                .id(null)
+                .name(TASK_NAME)
+                .description(TASK_DESCRIPTION)
+                .deadline(TASK_DEADLINE)
+                .build();
+        Task task2 = Task.builder()
+                .id(TASK_ID)
+                .name(TASK_NAME)
+                .description(TASK_DESCRIPTION)
+                .deadline(TASK_DEADLINE)
+                .build();
+
+        // When
+        boolean result = task1.equals(task2);
+
+        // Then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    void equals_같은경우_true() {
+        // Given
+        Task task1 = Task.builder()
+                .id(TASK_ID)
+                .name(TASK_NAME)
+                .description(TASK_DESCRIPTION)
+                .deadline(TASK_DEADLINE)
+                .build();
+        Task task2 = Task.builder()
+                .id(TASK_ID)
+                .name(TASK_NAME)
+                .description(TASK_DESCRIPTION)
+                .deadline(TASK_DEADLINE)
+                .build();
+
+        // When
+        boolean result = task1.equals(task2);
+
+        // Then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    void hashCode_id가null인경우_return_0() {
+        // Given
+        Task task1 = Task.builder()
+                .id(null)
+                .name(TASK_NAME)
+                .description(TASK_DESCRIPTION)
+                .deadline(TASK_DEADLINE)
+                .build();
+
+        // When
+        int result = task1.hashCode();
+
+        // Then
+        assertThat(result).isEqualTo(0);
+    }
+
+    @Test
+    void hashCode_id가null이아닌경우_return_해시값() {
+        // Given
+        Task task = Task.builder()
+                .id(TASK_ID)
+                .name(TASK_NAME)
+                .description(TASK_DESCRIPTION)
+                .deadline(TASK_DEADLINE)
+                .build();
+
+        // When
+        // Then
+        int result = task.hashCode();
+    }
+
 
 }

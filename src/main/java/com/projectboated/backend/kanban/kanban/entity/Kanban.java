@@ -2,10 +2,7 @@ package com.projectboated.backend.kanban.kanban.entity;
 
 import com.projectboated.backend.common.entity.BaseTimeEntity;
 import com.projectboated.backend.project.project.entity.Project;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -40,7 +37,8 @@ public class Kanban extends BaseTimeEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null ||
+                getClass() != o.getClass()) return false;
 
         Kanban kanban = (Kanban) o;
 

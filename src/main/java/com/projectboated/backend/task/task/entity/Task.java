@@ -4,10 +4,7 @@ import com.projectboated.backend.common.entity.BaseTimeEntity;
 import com.projectboated.backend.kanban.kanbanlane.entity.KanbanLane;
 import com.projectboated.backend.project.project.entity.Project;
 import com.projectboated.backend.task.task.service.dto.TaskUpdateRequest;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

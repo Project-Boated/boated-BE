@@ -3,14 +3,18 @@ package com.projectboated.backend.kanban.kanbanlane.entity;
 import com.projectboated.backend.kanban.kanban.entity.Kanban;
 import com.projectboated.backend.kanban.kanbanlane.service.dto.KanbanLaneUpdateRequest;
 import com.projectboated.backend.project.project.entity.Project;
+import com.projectboated.backend.project.projectvideo.entity.ProjectVideo;
+import com.projectboated.backend.uploadfile.entity.UploadFile;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.projectboated.backend.utils.data.BasicDataKanban.KANBAN_ID;
 import static com.projectboated.backend.utils.data.BasicDataKanbanLane.*;
 import static com.projectboated.backend.utils.data.BasicDataProject.PROJECT_ID;
+import static com.projectboated.backend.utils.data.BasicDataProjectVideo.PROJECT_VIDEO_DESCRIPTION;
+import static com.projectboated.backend.utils.data.BasicDataProjectVideo.PROJECT_VIDEO_ID;
+import static com.projectboated.backend.utils.data.BasicDataUploadFile.MEDIATYPE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("KanbanLane : Entity 단위 테스트")
 class KanbanLaneTest {
@@ -77,7 +81,7 @@ class KanbanLaneTest {
     }
 
     @Test
-    void changeOrder_order주어짐_change성공(){
+    void changeOrder_order주어짐_change성공() {
         // Given
         KanbanLane dkl = KanbanLane.builder()
                 .name(KANBAN_LANE_NAME)
@@ -88,6 +92,115 @@ class KanbanLaneTest {
 
         // Then
         assertThat(dkl.getOrder()).isEqualTo(KANBAN_LANE_ORDER2);
+    }
+
+    @Test
+    void equals_reference가같을경우_true() {
+        // Given
+        KanbanLane dkl = KanbanLane.builder()
+                .name(KANBAN_LANE_NAME)
+                .build();
+
+        // When
+        boolean result = dkl.equals(dkl);
+
+        // Then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    void equals_null인경우_false() {
+        // Given
+        KanbanLane dkl = KanbanLane.builder()
+                .name(KANBAN_LANE_NAME)
+                .build();
+
+        // When
+        boolean result = dkl.equals(null);
+
+        // Then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    void equals_다른class가주어진경우_false() {
+        // Given
+        KanbanLane dkl = KanbanLane.builder()
+                .name(KANBAN_LANE_NAME)
+                .build();
+
+
+        // When
+        boolean result = dkl.equals("test");
+
+        // Then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    void equals_id가nulL인경우_false() {
+        // Given
+        KanbanLane dkl1 = KanbanLane.builder()
+                .id(null)
+                .name(KANBAN_LANE_NAME)
+                .build();
+        KanbanLane dkl2 = KanbanLane.builder()
+                .id(KANBAN_LANE_ID)
+                .name(KANBAN_LANE_NAME)
+                .build();
+
+        // When
+        boolean result = dkl1.equals(dkl2);
+
+        // Then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    void equals_같은경우_true() {
+        // Given
+        KanbanLane dkl1 = KanbanLane.builder()
+                .id(KANBAN_LANE_ID)
+                .name(null)
+                .build();
+        KanbanLane dkl2 = KanbanLane.builder()
+                .id(KANBAN_LANE_ID)
+                .name(KANBAN_LANE_NAME)
+                .build();
+
+        // When
+        boolean result = dkl1.equals(dkl2);
+
+        // Then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    void hashCode_id가null인경우_return_0() {
+        // Given
+        KanbanLane dkl1 = KanbanLane.builder()
+                .id(null)
+                .name(null)
+                .build();
+
+        // When
+        int result = dkl1.hashCode();
+
+        // Then
+        assertThat(result).isEqualTo(0);
+    }
+
+    @Test
+    void hashCode_id가null이아닌경우_return_해시값() {
+        // Given
+        KanbanLane dkl1 = KanbanLane.builder()
+                .id(KANBAN_LANE_ID)
+                .name(null)
+                .build();
+
+        // When
+        // Then
+        int result = dkl1.hashCode();
     }
 
 }

@@ -1,6 +1,7 @@
 package com.projectboated.backend.project.project.aop;
 
 import com.projectboated.backend.account.account.entity.Account;
+import com.projectboated.backend.project.project.aop.exception.ProjectIdNotFoundException;
 import com.projectboated.backend.project.project.entity.Project;
 import com.projectboated.backend.project.project.service.ProjectService;
 import com.projectboated.backend.project.project.service.exception.OnlyCaptainException;
@@ -62,6 +63,19 @@ class ProjectAuthorityAopTest extends BaseTest {
     }
 
     @Test
+    void onlyCaptain_projectId가없는경우_예외발생() {
+        // Given
+        Account captain = Account.builder().id(ACCOUNT_ID).build();
+
+        SecurityContextHolder.getContext().setAuthentication(new JsonAuthenticationToken(captain, null));
+
+        // When
+        // Then
+        assertThatThrownBy(() -> target.onlyCaptain(null)).isInstanceOf(ProjectIdNotFoundException.class);
+    }
+
+
+    @Test
     void onlyCaptain_captain인경우_넘어감() {
         // Given
         Account captain = Account.builder().id(ACCOUNT_ID).build();
@@ -91,6 +105,18 @@ class ProjectAuthorityAopTest extends BaseTest {
         // Then
         assertThatThrownBy(() -> target.onlyCaptain(PROJECT_ID))
                 .isInstanceOf(OnlyCaptainException.class);
+    }
+
+    @Test
+    void onlyCaptainOrCrew_projectId가없는경우_예외발생() {
+        // Given
+        Account captain = Account.builder().id(ACCOUNT_ID).build();
+
+        SecurityContextHolder.getContext().setAuthentication(new JsonAuthenticationToken(captain, null));
+
+        // When
+        // Then
+        assertThatThrownBy(() -> target.onlyCaptainOrCrew(null)).isInstanceOf(ProjectIdNotFoundException.class);
     }
 
     @Test
