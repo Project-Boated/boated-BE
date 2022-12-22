@@ -50,6 +50,7 @@ jobs:
     - name: Build Develop Image
       uses: docker/build-push-action@v3
       with:
+        context: .
         file: Dockerfile-develop
         push: true
         cache-from: type=gha
