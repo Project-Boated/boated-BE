@@ -4,6 +4,9 @@ on:
   push:
     branches: [ "develop" ]
 
+env:
+  PROJECT_NAME: project-boated 
+
 permissions:
   contents: read
   packages: write
@@ -57,8 +60,8 @@ jobs:
         cache-to: type=gha,mode=max
         build-args: SPRING_PROFILE=dev
         tags: |
-          ghcr.io/project-boated/boated-be-develop:${{ github.sha }}
-          ghcr.io/project-boated/boated-be-develop:latest
+          ghcr.io/$PROJECT_NAME/boated-be-develop:${{ github.sha }}
+          ghcr.io/${{ PROJECT_NAME }}/boated-be-develop:latest
         
     - name: Build Deploy Image
       run: |
