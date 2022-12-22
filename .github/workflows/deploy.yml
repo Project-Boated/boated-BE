@@ -56,8 +56,8 @@ jobs:
         cache-to: type=gha,mode=max
         build-args: SPRING_PROFILE=dev
         tags: |
-          ghcr.io/${{ github.repository_owner }}/boated-be-develop:${{ github.sha }}
-          ghcr.io/${{ github.repository_owner }}/boated-be-develop:latest
+          ghcr.io/project-boated/boated-be-develop:${{ github.sha }}
+          ghcr.io/project-boated/boated-be-develop:latest
         
     - name: Build Deploy Image
       run: |
