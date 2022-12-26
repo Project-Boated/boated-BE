@@ -68,4 +68,4 @@ jobs:
       env:
         IMAGE_ID: ${{ steps.build-image.outputs.metadata }}
       run: |
-        echo $IMAGE_ID
+        echo $IMAGE_ID.image.name
