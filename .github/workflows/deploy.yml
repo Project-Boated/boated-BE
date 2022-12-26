@@ -66,15 +66,6 @@ jobs:
     
     - name: echo image
       env:
-        IMAGE_ID: ${{ steps.build-image.outputs.metadata.image.name }}
+        IMAGE_ID: ${{ steps.build-image.outputs.metadata }}
       run: |
         echo $IMAGE_ID
-        
-    - name: Build Deploy Image
-      run: |
-        IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/boated-be-deploy | tr '[A-Z]' '[a-z]')
-        echo IMAGE_ID=$IMAGE_ID
-        
-        docker build -t $IMAGE_ID:${{github.sha}} -t $IMAGE_ID:latest -f ./Dockerfile-deploy .
-        docker push $IMAGE_ID:${{github.sha}}
-        docker push $IMAGE_ID:latest
