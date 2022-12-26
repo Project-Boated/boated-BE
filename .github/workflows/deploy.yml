@@ -51,6 +51,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Build Develop Image
+      id: build-image
       uses: docker/build-push-action@v3
       with:
         context: .
@@ -62,6 +63,12 @@ jobs:
         tags: |
           ghcr.io/${{ env.PROJECT_NAME }}/boated-be-develop:${{ github.sha }}
           ghcr.io/${{ env.PROJECT_NAME }}/boated-be-develop:latest
+    
+    - name: echo image
+      env:
+        IMAGE_ID: ${{ build-image.outputs.imageid }}
+      run: |
+        echo $IMAGE_ID
         
     - name: Build Deploy Image
       run: |
