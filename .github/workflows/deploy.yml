@@ -66,4 +66,4 @@ jobs:
     
     - name: echo image
       run: |
-        echo '${{ fromJSON(steps.build-image.outputs.metadata) }}'
+        echo '${{ fromJSON(steps.build-image.outputs.metadata).["image.name"] }}'
