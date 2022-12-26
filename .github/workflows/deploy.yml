@@ -66,7 +66,7 @@ jobs:
     
     - name: echo image
       env:
-        IMAGE_ID: ${{ steps.build-image.outputs.metadata }}.["image.name"]
+        IMAGE_ID: ${{ fromJSON(steps.build-image.outputs.metadata) }}.["image.name"]
       run: |
         echo $IMAGE_ID
         
