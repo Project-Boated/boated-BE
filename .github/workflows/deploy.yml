@@ -65,7 +65,5 @@ jobs:
           ghcr.io/${{ env.PROJECT_NAME }}/boated-be-develop:latest
     
     - name: echo image
-      env:
-        IMAGE_ID: ${{ fromJSON(steps.build-image.outputs.metadata) }}
       run: |
-        echo $IMAGE_ID
+        echo '${{ fromJSON(steps.build-image.outputs.metadata) }}'
